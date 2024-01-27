@@ -64,10 +64,10 @@ public class SysData {
 			JSONObject que = QuestionIter.next();
 			String ques = (String) que.get("question");
 			JSONArray ans = (JSONArray) que.get("answers");
-			ArrayList<Answer> answers = new  ArrayList<Answer>();
+			ArrayList<String> answers = new  ArrayList<String>();
 			for (int i = 0; i < ans.size(); i++) {
 				String answercontent = (String) ans.get(i);
-				Answer answerCo = new Answer(answercontent);
+				String answerCo = new String(answercontent);
 				answers.add(answerCo);	
 
 	}
