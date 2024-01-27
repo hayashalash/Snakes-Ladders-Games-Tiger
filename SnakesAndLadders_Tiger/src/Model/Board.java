@@ -114,5 +114,12 @@ public class Board {
 		this.grid = grid;
 	}
 	
-	
+	public void createBoard () {
+		private int boardCounter = 1;
+		for (i = boardLen-1 ; i >= 0 ; i--) {
+			for (j = 0 ; j < boardLen : j++) {
+				grid[i][j] = new Tile(boardCounter++, i, j);
+			}
+		}	
+	}
 }
