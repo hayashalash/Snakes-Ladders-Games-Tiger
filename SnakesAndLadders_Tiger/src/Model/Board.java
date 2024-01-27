@@ -86,7 +86,7 @@ public class Board {
 	}
 	
 	public Tile getTile(int id) {
-		// how??
+		// how to get a tile from the board based on its unique ID??
 	}
 	
 	public void createBoard() {
@@ -105,12 +105,13 @@ public class Board {
 				}
 			}
 		}
-		private int boardSize = boardLen*boardLen;
-		if (this.bType == BoardType.Easy) {
-			for (i=0 ; i < 3 ; i++) {
-				
-				(Math.random() * (boardSize-1))+1;
-			}
-		}
+//		private int boardSize = boardLen*boardLen;
+//		if (this.bType == BoardType.Easy) {
+//			for (i=0 ; i < 3 ; i++) { // an easy board has 3 question tiles - one of each difficulty
+//				int random = (Math.random() * (boardSize-1)) + 1;
+//				QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
+//				grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back n the board
+//			}
+//		}
 	}
 }
