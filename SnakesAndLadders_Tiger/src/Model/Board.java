@@ -7,23 +7,18 @@ public class Board {
 	private Integer boardID;
 	private BoardType bType;
 	private Integer boardLen; //based on board type - 7 / 10 / 13
-	private ArrayList<Integer> snakes;
-	private ArrayList<Integer> ladders;
-	private ArrayList<Integer> questions;
+//	private ArrayList<Integer> snakes;
+//	private ArrayList<Integer> ladders;
+//	private ArrayList<Integer> questions;
 	private ArrayList<Integer> plusOnes;
 	private ArrayList<Integer> surprises;
 	private Tile[][] grid;
 	
-	public Board(BoardType bType, ArrayList<Integer> snakes,
-			ArrayList<Integer> ladders, ArrayList<Integer> questions, ArrayList<Integer> plusOnes,
-			ArrayList<Integer> surprises) {
+	public Board(BoardType bType, ArrayList<Integer> plusOnes, ArrayList<Integer> surprises) {
 		super();
 		this.boardID = idCounter++;
 		this.bType = bType;
 		setBoardLen(bType);
-		this.snakes = snakes;
-		this.ladders = ladders;
-		this.questions = questions;
 		this.plusOnes = plusOnes;
 		this.surprises = surprises;
 		this.grid = new Tile[boardLen][boardLen];
@@ -66,30 +61,6 @@ public class Board {
 			this.boardLen = 13;	
 	}
 
-	public ArrayList<Integer> getSnakes() {
-		return snakes;
-	}
-
-	public void setSnakes(ArrayList<Integer> snakes) {
-		this.snakes = snakes;
-	}
-
-	public ArrayList<Integer> getLadders() {
-		return ladders;
-	}
-
-	public void setLadders(ArrayList<Integer> ladders) {
-		this.ladders = ladders;
-	}
-
-	public ArrayList<Integer> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(ArrayList<Integer> questions) {
-		this.questions = questions;
-	}
-
 	public ArrayList<Integer> getPlusOnes() {
 		return plusOnes;
 	}
@@ -114,20 +85,31 @@ public class Board {
 		this.grid = grid;
 	}
 	
+	public Tile getTile(int id) {
+		// how??
+	}
+	
 	public void createBoard() {
 		private int boardCounter = 1;
 		private int i = boardLen-1;
 		while (i>=0) {
 			for (j = 0 ; j < boardLen : j++) {
-				grid[i][j] = new Tile(boardCounter++, i, j);
+				this.grid[i][j] = new Tile(boardCounter++, i, j);
 				if (j==boardLen-1) {
 					i--;
 					for (j = boardLen-1 ; j >= 0 ; j--) {
-						grid[i][j] = new Tile(boardCounter++, i, j);
+						this.grid[i][j] = new Tile(boardCounter++, i, j);
 						if (j==0)
 							i--;
 					}
 				}
+			}
+		}
+		private int boardSize = boardLen*boardLen;
+		if (this.bType == BoardType.Easy) {
+			for (i=0 ; i < 3 ; i++) {
+				
+				(Math.random() * (boardSize-1))+1;
 			}
 		}
 	}
