@@ -4,7 +4,7 @@ public class Answer {
 
 	private int answerID;
 	private String answer;
-	private boolean isCorrect;
+	// private boolean isCorrect;
 	public int getAnswerID() {
 		return answerID;
 	}
@@ -17,11 +17,6 @@ public class Answer {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	public boolean isCorrect() {
-		return isCorrect;
-	}
-	public void setCorrect(boolean isCorrect) {
-		this.isCorrect = isCorrect;
-	}
+
 	
 }

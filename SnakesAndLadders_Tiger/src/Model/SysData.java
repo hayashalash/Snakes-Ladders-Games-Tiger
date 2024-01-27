@@ -46,38 +46,6 @@ public class SysData {
 			return sysData;
 		}
 
-	public void ReadFromJson() throws IOException, ParseException {
-		
-		JSONParser parser = new JSONParser();
-		
-		FileInputStream fis = new FileInputStream("JSON/questions_scheme.json");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-		Object obj = parser.parse(reader);
-		JSONObject jsonobj = (JSONObject) obj;
-		JSONArray quesArray = (JSONArray) jsonobj.get("questions");
-		
-		Iterator<JSONObject> QuestionIter = quesArray.iterator();
-		while (QuestionIter.hasNext()) {
-
-			JSONObject que = QuestionIter.next();
-			String AnswerText = (String) que.get("question");
-			JSONArray answeer = (JSONArray) que.get("answers");
-			ArrayList<Answer> answers = new  ArrayList<Answer>();
-			for (int i = 0; i < answeer.size(); i++) {
-				String answercontent = (String) answeer.get(i);
-				Answer answer = new Answer(answercontent);
-				answers.add(answer);
-				
-			}
-
-			int correctAnswerNum = Integer.valueOf(que.get("correct_ans").toString());
-
-			String teams = (String) que.get("team");
-			String levelDiffuclty = (String) que.get("level");
-			//read and prints the json
-			Question questionToAdd = new Question(AnswerText,correctAnswerNum,levelDiffuclty,teams,answers);
-		}
-	}
 		
 	}
 	
