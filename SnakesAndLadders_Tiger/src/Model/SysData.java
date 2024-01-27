@@ -10,6 +10,8 @@ import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+
+
 import org.json.simple.parser.JSONParser;
 
 
@@ -17,12 +19,12 @@ public class SysData {
 	   //singleton
 		private static SysData sysData = null;
 	
-//	private ArrayList<Integer> EasyQuestions; // change "Integer" to class "Question" once created
-//	private ArrayList<Integer> MediumQuestions; // change "Integer" to class "Question" once created
-//	private ArrayList<Integer> HardQuestions; // change "Integer" to class "Question" once created
+	private ArrayList<Question> EasyQuestions; 
+	private ArrayList<Question> MediumQuestions; 
+	private ArrayList<Question> HardQuestions; 
 		
 	private ArrayList<Game> games;
-	private ArrayList<Question>questions;
+	private ArrayList<Question> questions;
 
 	public ArrayList<Game> getGames() {
 			return games;
@@ -46,7 +48,33 @@ public class SysData {
 			return sysData;
 		}
 
+	public void readFromJson() throws IOException,  ParseException {
 		
+		JSONParser parser = new JSONParser();
+		
+		FileInputStream file = new FileInputStream("JSON/questions_schema.json");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+		Object obj = parser.parse(reader);
+		JSONObject jsonObj = (JSONObject)obj;
+		JSONArray queArray = (JSONArray) jsonObj.get("questions");
+		
+		Iterator<JSONObject> QuestionIter = queArray.iterator();
+		while (QuestionIter.hasNext()) {
+
+			JSONObject que = QuestionIter.next();
+			String ques = (String) que.get("question");
+			JSONArray ans = (JSONArray) que.get("answers");
+			ArrayList<Answer> answers = new  ArrayList<Answer>();
+			for (int i = 0; i < ans.size(); i++) {
+				String answercontent = (String) ans.get(i);
+				Answer answerCo = new Answer(answercontent);
+				answers.add(answerCo);	
+
 	}
-	
+		
+			int corrAns = Integer.valueOf(que.get("correct_ans").toString());
+			String diff = (String) que.get("difficulty");
+			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),ques,diff,corrAns);
+		}
+	}
 }
