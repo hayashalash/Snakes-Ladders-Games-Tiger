@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Json/json-simple-2.3.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Javafx"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LIB"/>
+	<classpathentry kind="lib" path="/HW4_Design2022/LIB/json-simple-2.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
