@@ -66,9 +66,9 @@ public class SysData {
 			JSONArray ans = (JSONArray) que.get("answers");
 			ArrayList<String> answers = new  ArrayList<String>();
 			for (int i = 0; i < ans.size(); i++) {
-				String answercontent = (String) ans.get(i);
-				String answerCo = new String(answercontent);
-				answers.add(answerCo);	
+				String answerText = (String) ans.get(i);
+				String answerT = new String(answerText);
+				answers.add(answerT);	
 
 	}
 		
