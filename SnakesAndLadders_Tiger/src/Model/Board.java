@@ -107,7 +107,6 @@ public class Board {
 	}
 
 	public Tile[][] getGrid() {
-		//if (this.boardLen != 1) //if boardLen is 1, it hasn't been initialized yet - boardLen can only be 7 / 10 / 13
 			return grid;
 	}
 
