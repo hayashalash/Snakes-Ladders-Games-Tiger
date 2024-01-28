@@ -1,24 +1,29 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 public class Board {
 	private static int idCounter = 1;
 	private Integer boardID;
 	private BoardType bType;
 	private Integer boardLen; //based on board type - 7 / 10 / 13
+	private int boardSize;
 //	private ArrayList<Integer> snakes;
 //	private ArrayList<Integer> ladders;
 //	private ArrayList<Integer> questions;
 	private ArrayList<Integer> plusOnes;
 	private ArrayList<Integer> surprises;
 	private Tile[][] grid;
+	private HashMap<Integer, Tile> tiles;
 	
 	public Board(BoardType bType, ArrayList<Integer> plusOnes, ArrayList<Integer> surprises) {
 		super();
 		this.boardID = idCounter++;
 		this.bType = bType;
 		setBoardLen(bType);
+		this.boardSize = boardLen*boardLen;
 		this.plusOnes = plusOnes;
 		this.surprises = surprises;
 		this.grid = new Tile[boardLen][boardLen];
@@ -84,34 +89,49 @@ public class Board {
 	public void setGrid(Tile[][] grid) {
 		this.grid = grid;
 	}
-} /**/
-	/*public Tile getTile(int id) {
-		// how to get a tile from the board based on its unique ID??
+ 
+	public HashMap<Integer, Tile> getTiles() {
+		return tiles;
+	}
+
+	public void setTiles(HashMap<Integer, Tile> tiles) {
+		this.tiles = tiles;
+	}
+
+	public void setBoardLen(Integer boardLen) {
+		this.boardLen = boardLen;
+	}
+
+	public Tile getTile(int id) {
+		return getTiles().get(id);
 	}
 	
 	public void createBoard() {
-		private int boardCounter = 1;
-		private int i = boardLen-1;
+		int boardCounter = 1;
+		int i = boardLen-1;
 		while (i>=0) {
-			for (j = 0 ; j < boardLen : j++) {
+			for (int j = 0 ; j < boardLen ; j++) {
 				this.grid[i][j] = new Tile(boardCounter++, i, j);
+				getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
 				if (j==boardLen-1) {
 					i--;
 					for (j = boardLen-1 ; j >= 0 ; j--) {
 						this.grid[i][j] = new Tile(boardCounter++, i, j);
+						getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
 						if (j==0)
 							i--;
 					}
 				}
 			}
 		}
-//		private int boardSize = boardLen*boardLen;
-//		if (this.bType == BoardType.Easy) {
-//			for (i=0 ; i < 3 ; i++) { // an easy board has 3 question tiles - one of each difficulty
-//				int random = (Math.random() * (boardSize-1)) + 1;
-//				QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
-//				grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back n the board
-//			}
-//		}
+		if (this.bType == BoardType.Easy) {
+			for (i=0 ; i < 3 ; i++) { // an easy board has 3 question tiles - one of each difficulty
+				int random = (int) (Math.random() * (boardSize-1)) + 1;
+				QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
+//				if (i==0)
+//					qt.getQuestion().
+				this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
+			}
+		}
 	}
-}*/
+}
