@@ -84,8 +84,8 @@ public class Board {
 	public void setGrid(Tile[][] grid) {
 		this.grid = grid;
 	}
-	
-	public Tile getTile(int id) {
+} /**/
+	/*public Tile getTile(int id) {
 		// how to get a tile from the board based on its unique ID??
 	}
 	
@@ -114,4 +114,4 @@ public class Board {
 //			}
 //		}
 	}
-}
+}*/
