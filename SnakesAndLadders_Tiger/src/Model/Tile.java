@@ -1,10 +1,10 @@
 package Model;
 
 public class Tile {
-	private Integer tNum;
-	private TileType tType;
-	private Integer xCoord;
-	private Integer yCoord;
+	protected Integer tNum;
+	protected TileType tType;
+	protected Integer xCoord;
+	protected Integer yCoord;
 	
 	public Tile(Integer tNum, TileType tType, Integer xCoord, Integer yCoord) {
 		super();
