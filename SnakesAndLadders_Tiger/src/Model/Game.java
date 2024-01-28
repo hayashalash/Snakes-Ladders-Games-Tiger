@@ -11,6 +11,6 @@ public class Game {
 	private int gameDuration;
 	private ArrayList<Player> players;
 	private String winner;
-	
+	 
 	
 }
