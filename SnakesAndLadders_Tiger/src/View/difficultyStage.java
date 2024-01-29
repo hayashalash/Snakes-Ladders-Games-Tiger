@@ -19,7 +19,7 @@ public class difficultyStage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Home");
+        primaryStage.setTitle("Difficulty");
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         // Create a StackPane as the root node
