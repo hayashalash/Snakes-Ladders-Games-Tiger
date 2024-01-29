@@ -2,32 +2,41 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class Board {
 	private static int idCounter = 1;
 	private Integer boardID;
-	private BoardType bType;
-	private Integer boardLen; //based on board type - 7 / 10 / 13
-	private int boardSize;
-//	private ArrayList<Integer> snakes;
-//	private ArrayList<Integer> ladders;
-//	private ArrayList<Integer> questions;
-	private ArrayList<Integer> plusOnes;
-	private ArrayList<Integer> surprises;
+	private Difficulty bType;
+	private Integer boardLen; // equals width, based on board type - 7 / 10 / 13
+	private int boardSize; //based on board type - 49 / 100 / 169
+
+	private ArrayList<Integer> plusOnes; // tiles that provide an additional turn
+	private ArrayList<Integer> surprises; // tiles with surprises [+10/-10]
 	private Tile[][] grid;
-	private HashMap<Integer, Tile> tiles;
-	private HashMap<String, Integer> playerOn;
+	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
+	private HashMap<Integer, Snake> snakes; // all the snakes and the tile with their head
+	private HashMap<Integer, Ladder> ladders; // all the ladder and the tile with their top
+	private HashMap<Integer, Question> easyQuestions; // tiles with easy questions on them
+	private HashMap<Integer, Question> mediumQuestions; // tiles with medium questions on them
+	private HashMap<Integer, Question> hardQuestions; // tiles with hard questions on them
+	private HashMap<Integer, Player> playerOn; // where the player is placed on the board
 	
-	public Board(BoardType bType, ArrayList<Integer> plusOnes, ArrayList<Integer> surprises) {
+	public Board(Difficulty bType) {
 		super();
 		this.boardID = idCounter++;
 		this.bType = bType;
 		setBoardLen(bType);
-		this.boardSize = boardLen*boardLen;
-		this.plusOnes = plusOnes;
-		this.surprises = surprises;
+		setBoardSize(boardLen);
 		this.grid = new Tile[boardLen][boardLen];
+		plusOnes = new ArrayList<>();
+		surprises = new ArrayList<>();
+		tiles = new HashMap<>();
+		snakes = new HashMap<>();
+		ladders = new HashMap<>();
+		easyQuestions = new HashMap<>();
+		mediumQuestions = new HashMap<>();
+		hardQuestions = new HashMap<>();
+		playerOn = new HashMap<>();
 	}
 
 	public static int getIdCounter() {
@@ -46,24 +55,26 @@ public class Board {
 		this.boardID = boardID;
 	}
 
-	public BoardType getbType() {
+	public Difficulty getbType() {
 		return bType;
 	}
 
-	public void setbType(BoardType bType) {
+	public void setbType(Difficulty bType) {
 		this.bType = bType;
+		setBoardLen(bType); // board length is set based on the board level
+		setBoardSize(boardLen); // board size is set based on the board length
 	}
 
 	public Integer getBoardLen() {
 		return boardLen;
 	}
 
-	public void setBoardLen(BoardType bType) {
-		if (bType == BoardType.Easy)
+	public void setBoardLen(Difficulty bType) {
+		if (bType == Difficulty.Easy)
 			this.boardLen = 7;
-		if (bType == BoardType.Medium)
+		if (bType == Difficulty.Medium)
 			this.boardLen = 10;
-		if (bType == BoardType.Hard)
+		if (bType == Difficulty.Hard)
 			this.boardLen = 13;	
 	}
 
@@ -99,22 +110,66 @@ public class Board {
 		this.tiles = tiles;
 	}
 
-	public void setBoardLen(Integer boardLen) {
-		this.boardLen = boardLen;
+	public int getBoardSize() {
+		return boardSize;
+	}
+
+	public void setBoardSize(int boardLen) {
+		this.boardSize = boardLen*boardLen;
+	}
+
+	public HashMap<Integer, Player> getPlayerOn() {
+		return playerOn;
+	}
+
+	public void setPlayerOn(HashMap<Integer, Player> playerOn) {
+		this.playerOn = playerOn;
+	}
+
+	public HashMap<Integer, Snake> getSnakes() {
+		return snakes;
+	}
+
+	public void setSnakes(HashMap<Integer, Snake> snakes) {
+		this.snakes = snakes;
+	}
+
+	public HashMap<Integer, Ladder> getLadders() {
+		return ladders;
+	}
+
+	public void setLadders(HashMap<Integer, Ladder> ladders) {
+		this.ladders = ladders;
+	}
+
+	public HashMap<Integer, Question> getEasyQuestions() {
+		return easyQuestions;
+	}
+
+	public void setEasyQuestions(HashMap<Integer, Question> easyQuestions) {
+		this.easyQuestions = easyQuestions;
+	}
+
+	public HashMap<Integer, Question> getMediumQuestions() {
+		return mediumQuestions;
+	}
+
+	public void setMediumQuestions(HashMap<Integer, Question> mediumQuestions) {
+		this.mediumQuestions = mediumQuestions;
+	}
+
+	public HashMap<Integer, Question> getHardQuestions() {
+		return hardQuestions;
+	}
+
+	public void setHardQuestions(HashMap<Integer, Question> hardQuestions) {
+		this.hardQuestions = hardQuestions;
 	}
 
 	public Tile getTile(int id) {
 		return getTiles().get(id);
 	}
 	
-	
-	public HashMap<String, Integer> getPlayerOn() {
-		return playerOn;
-	}
-
-	public void setPlayerOn(HashMap<String, Integer> playerOn) {
-		this.playerOn = playerOn;
-	}
 
 	public void createBoard() {
 		int boardCounter = 1;
@@ -134,7 +189,7 @@ public class Board {
 				}
 			}
 		}
-		if (this.bType == BoardType.Easy) {
+		if (this.bType == Difficulty.Easy) {
 			for (i=0 ; i < 3 ; i++) { // an easy board has 3 question tiles - one of each difficulty
 				int random = (int) (Math.random() * (boardSize-1)) + 1;
 				QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile

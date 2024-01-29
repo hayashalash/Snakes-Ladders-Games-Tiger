@@ -1,5 +1,5 @@
 package Model;
 
-public enum BoardType {
+public enum Difficulty {
 	Easy, Medium, Hard
 }
