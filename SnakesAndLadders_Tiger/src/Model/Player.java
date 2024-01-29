@@ -6,7 +6,6 @@ public class Player {
 	private Color playerColor;
 	private int playerPlace=1;
 	private int hasStarted=0;
-	private int demjo;
 	
 	public Player(int playerId, String playerName, Color playerColor) {
 		super();
