@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import model.Question;
 
 import org.json.simple.parser.JSONParser;
 
@@ -19,12 +20,13 @@ public class SysData {
 	   //singleton
 		private static SysData sysData = null;
 	
-	private ArrayList<Question> EasyQuestions; 
-	private ArrayList<Question> MediumQuestions; 
-	private ArrayList<Question> HardQuestions; 
-		
+//	private ArrayList<Question> EasyQuestions; 
+//	private ArrayList<Question> MediumQuestions; 
+//	private ArrayList<Question> HardQuestions; 
+	private Difficulty d;	
 	private ArrayList<Game> games;
 	private ArrayList<Question> questions;
+	
 
 	public ArrayList<Game> getGames() {
 			return games;
@@ -39,6 +41,7 @@ public class SysData {
 			this.questions = questions;
 		}
 		
+			
 	public static SysData getInstance() {
 			if (sysData == null) {
 
@@ -74,7 +77,35 @@ public class SysData {
 		
 			int corrAns = Integer.valueOf(que.get("correct_ans").toString());
 			String diff = (String) que.get("difficulty");
-			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),ques,diff,corrAns);
+			if (diff == "1") 
+				this.d = Difficulty.Easy;		
+			else if (diff == "2")
+				this.d = Difficulty.Medium;
+			else if (diff == "3")
+				this.d = Difficulty.Hard;
+			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),ques,d,corrAns);
+			
+			
 		}
 	}
-}
+		
+
+		public void writeJson(Question question) throws IOException, ParseException {
+			JSONParser parser = new JSONParser();
+			
+			FileInputStream file = new FileInputStream("JSON/quetion.json");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+			Object obj = parser.parse(reader);
+			JSONObject jsonObj = (JSONObject) obj;
+			JSONArray quesArray = (JSONArray) jsonObj.get("questions");
+
+
+			JSONObject jsonObject = new JSONObject();
+			//write question text
+			jsonObject.put("question", question.getQuestion());
+			
+			
+		}
+	}
+	
+	
