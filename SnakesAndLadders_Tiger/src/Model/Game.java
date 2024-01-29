@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class Game {
 
 	private int GameID;
-	private GameType type;
+	private Difficulty type;
 	private Dice dice;
 	private int playersNum;
 	private int gameDuration;
 	private ArrayList<Player> players;
 	private String winner;
 	
-	public Game(int gameID, GameType type, Dice dice, int playersNum, int gameDuration, ArrayList<Player> players,
+	public Game(int gameID, Difficulty type, Dice dice, int playersNum, int gameDuration, ArrayList<Player> players,
 			String winner) {
 		super();
 		GameID = gameID;
@@ -32,11 +32,11 @@ public class Game {
 		GameID = gameID;
 	}
 
-	public GameType getType() {
+	public Difficulty getType() {
 		return type;
 	}
 
-	public void setType(GameType type) {
+	public void setType(Difficulty type) {
 		this.type = type;
 	}
 

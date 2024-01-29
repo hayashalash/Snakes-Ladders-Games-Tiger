@@ -59,13 +59,13 @@ public class SysData {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
-		JSONArray queArray = (JSONArray) jsonObj.get("questions");
+		JSONArray qArray = (JSONArray) jsonObj.get("questions");
 		
-		Iterator<JSONObject> QuestionIter = queArray.iterator();
+		Iterator<JSONObject> QuestionIter = qArray.iterator();
 		while (QuestionIter.hasNext()) {
 
 			JSONObject que = QuestionIter.next();
-			String ques = (String) que.get("question");
+			String q = (String) que.get("question");
 			JSONArray ans = (JSONArray) que.get("answers");
 			ArrayList<String> answers = new  ArrayList<String>();
 			for (int i = 0; i < ans.size(); i++) {
@@ -83,7 +83,7 @@ public class SysData {
 				this.d = Difficulty.Medium;
 			else if (diff == "3")
 				this.d = Difficulty.Hard;
-			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),ques,d,corrAns);
+			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),q,d,corrAns);
 			
 			
 		}
@@ -93,16 +93,30 @@ public class SysData {
 		public void writeJson(Question question) throws IOException, ParseException {
 			JSONParser parser = new JSONParser();
 			
-			FileInputStream file = new FileInputStream("JSON/quetion.json");
+			FileInputStream file = new FileInputStream("JSON/quetions.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 			Object obj = parser.parse(reader);
 			JSONObject jsonObj = (JSONObject) obj;
-			JSONArray quesArray = (JSONArray) jsonObj.get("questions");
-
+			JSONArray qArray = (JSONArray) jsonObj.get("questions");
 
 			JSONObject jsonObject = new JSONObject();
-			//write question text
+			//add new question about software engineering and QA
 			jsonObject.put("question", question.getQuestion());
+			
+			JSONArray newQuestion = new JSONArray();
+			
+			newQuestion.add(question.getAnswer1());
+			newQuestion.add(question.getAnswer2());
+			newQuestion.add(question.getAnswer3());
+			newQuestion.add(question.getAnswer4());
+			jsonObject.put("difficulty", question.getDifficulty());
+			jsonObject.put("correct_ans", Integer.toString(question.getCorrectAnswer()));
+			qArray.add(newQuestion);
+			
+			
+
+			
+			
 			
 			
 		}
