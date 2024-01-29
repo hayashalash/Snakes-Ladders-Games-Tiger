@@ -170,6 +170,12 @@ public class Board {
 		return getTiles().get(id);
 	}
 	
+	public void importQuestions () {
+		for (Question q : SysData.getInstance().getQuestions()) {
+		    addQuestion(q);
+		}
+	}
+	
 	public boolean addQuestion(Question q) {
 		if(q == null || getEasyQuestions().containsKey(q.getQuestionID()) || getMediumQuestions().containsKey(q.getQuestionID()) || getHardQuestions().containsKey(q.getQuestionID()))
 			return false;
@@ -199,14 +205,19 @@ public class Board {
 				}
 			}
 		}
-		if (this.bType == Difficulty.Easy) {
-			for (i=0 ; i < 3 ; i++) { // an easy board has 3 question tiles - one of each difficulty
-				int random = (int) (Math.random() * (boardSize-1)) + 1;
-				QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
-//				if (i==0)
-//					qt.getQuestion().
-				this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
-			}
+
+		for (i=0 ; i < 3 ; i++) { // a board has 3 question tiles - one of each difficulty
+			int random = (int) (Math.random() * (boardSize-1)) + 1;
+			QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
+			if (i==0)
+				qt.getQuestion().setDifficulty(Difficulty.Easy);
+			if (i==1)
+				qt.getQuestion().setDifficulty(Difficulty.Medium);
+			if (i==2)
+				qt.getQuestion().setDifficulty(Difficulty.Hard);
+			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
 		}
+		
+		
 	}
 }
