@@ -228,7 +228,7 @@ public class Board {
 	public void addSurpriseTiles() {
 		if (this.bType == Difficulty.Easy)
 			return;
-		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard
+		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard boards
 			int rand = chooseRandomTile();
 			getTile(rand).settType(TileType.Surprise);
 		}
