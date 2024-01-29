@@ -170,6 +170,16 @@ public class Board {
 		return getTiles().get(id);
 	}
 	
+	public boolean addQuestion(Question q) {
+		if(q == null || getEasyQuestions().containsKey(q.getQuestionID()) || getMediumQuestions().containsKey(q.getQuestionID()) || getHardQuestions().containsKey(q.getQuestionID()))
+			return false;
+		if (q.getDifficulty() == Difficulty.Easy)
+			return getEasyQuestions().put(q.getQuestionID(), q) == null;
+		else if (q.getDifficulty() == Difficulty.Medium) 
+			return getMediumQuestions().put(q.getQuestionID(), q) == null;
+		else // if difficulty isn't easy/medium - it is hard
+			return getHardQuestions().put(q.getQuestionID(), q) == null;
+	}
 
 	public void createBoard() {
 		int boardCounter = 1;
