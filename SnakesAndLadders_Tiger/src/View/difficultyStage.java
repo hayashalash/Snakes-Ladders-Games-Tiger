@@ -13,10 +13,25 @@ import javafx.stage.StageStyle;
 public class difficultyStage extends Application {
 
     private static final int S_WIDTH = 852; 
-    private static final int S_HEIGHT = 595; 
+    private static final int S_HEIGHT = 595;
+    // Define a constant for difficulty
+    private static final String DIFFICULTY_EASY = "easy";
+    private static final String DIFFICULTY_NORMAL = "normal";
+    private static final String DIFFICULTY_HARD = "hard";
+    // Variable to store the selected difficulty
+	private String selectedDifficulty;
+    private Stage primaryStage; 
+
+	
+    // Public method to get the selected difficulty
+    public String getSelectedDifficulty() {
+        return selectedDifficulty;
+    }
 
     @Override
     public void start(Stage primaryStage) {
+    	
+    	this.primaryStage = primaryStage; 
         primaryStage.setTitle("Difficulty");
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
@@ -77,9 +92,16 @@ public class difficultyStage extends Application {
         
         // Create buttons with icons
         Button homeButton = createIconButton(homeIconImageView);
+
+        
         Button easyButton = createIconButton(easyIconImageView);
+        easyButton.setOnAction(e -> handleDifficultySelection(DIFFICULTY_EASY));
+
         Button normalButton = createIconButton(normalIconImageView);
+        normalButton.setOnAction(e -> handleDifficultySelection(DIFFICULTY_NORMAL));
+
         Button hardButton = createIconButton(hardIconImageView);
+        hardButton.setOnAction(e -> handleDifficultySelection(DIFFICULTY_HARD));
 
 
         // Set the positions of buttons using coordinates within the Pane
@@ -125,6 +147,30 @@ public class difficultyStage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    
+    private void handleDifficultySelection(String difficulty) {
+        this.selectedDifficulty = difficulty;
+        System.out.println("Selected Difficulty: " + selectedDifficulty);
+
+        // Open choosePlayerStage when a difficulty button is pressed
+        openChoosePlayerStage();
+    }
+
+    private void openChoosePlayerStage() {
+        // Close the current stage
+        primaryStage.close();
+
+        // Create an instance of choosePlayerStage
+        choosePlayersStage choosePlayerInstance = new choosePlayersStage(selectedDifficulty);
+
+        // Call the start method to initialize the new window
+        try {
+            choosePlayerInstance.start(new Stage());
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Handle exceptions as needed
+        }
+    }
+
 
     // Helper method to create icon button
     private Button createIconButton(ImageView iconImageView) {
@@ -137,4 +183,33 @@ public class difficultyStage extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
+    
+    /*
+
+     package View;
+
+public class CallFromAnotherClass {
+
+    public static void main(String[] args) {
+        // Create an instance of difficultyStage
+        difficultyStage difficultyInstance = new difficultyStage();
+
+        // Call the start method to initialize the stage
+        try {
+            difficultyInstance.start(new Stage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // to retrieve the selected difficulty
+        String selectedDifficulty = difficultyInstance.getSelectedDifficulty();
+        System.out.println("Selected Difficulty from CallFromAnotherClass: " + selectedDifficulty);
+    }
+}
+
+     */
+
+    
 }
