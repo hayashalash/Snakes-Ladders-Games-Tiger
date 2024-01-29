@@ -96,22 +96,26 @@ public class SysData {
 			FileInputStream file = new FileInputStream("JSON/quetions.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 			Object obj = parser.parse(reader);
-			JSONObject jsonObj = (JSONObject) obj;
-			JSONArray qArray = (JSONArray) jsonObj.get("questions");
+			JSONObject jsonObject = (JSONObject) obj;
+			JSONArray qArray = (JSONArray) jsonObject.get("questions");
 
-			JSONObject jsonObject = new JSONObject();
+			JSONObject json = new JSONObject();
 			//add new question about software engineering and QA
-			jsonObject.put("question", question.getQuestion());
+			json.put("question", question.getQuestion()); //maps the name question to a specific question
 			
 			JSONArray newQuestion = new JSONArray();
 			
-			newQuestion.add(question.getAnswer1());
+			newQuestion.add(question.getAnswer1()); //adding answers to the array
 			newQuestion.add(question.getAnswer2());
 			newQuestion.add(question.getAnswer3());
 			newQuestion.add(question.getAnswer4());
-			jsonObject.put("difficulty", question.getDifficulty());
-			jsonObject.put("correct_ans", Integer.toString(question.getCorrectAnswer()));
-			qArray.add(newQuestion);
+			json.put("difficulty", question.getDifficulty()); // choosing the difficulty for each question
+			json.put("correct_ans", Integer.toString(question.getCorrectAnswer())); // specified whoch answer is the correct answer
+			qArray.add(newQuestion); //addig 4 answers to each question 
+			
+			JSONObject Json2 = new JSONObject();
+			Json2.put("questions", qArray);
+			
 			
 			
 
