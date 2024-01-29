@@ -1,7 +1,5 @@
 package View;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -25,7 +23,7 @@ public class homeStage extends Application {
         // Create a StackPane as the root node
         StackPane root = new StackPane();
 
-        // Set the preferred size of the root node (optional)
+        // Set the preferred size of the root node 
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
@@ -135,6 +133,21 @@ public class homeStage extends Application {
                 ex.printStackTrace(); // Handle exceptions as needed
             }
         });
+        
+        historyButton.setOnAction(e -> {
+            // Close the current stage
+            primaryStage.close();
+
+            // Create an instance of the home class
+            historyStage historyInstance = new historyStage();
+
+            // Call the start method to initialize the new window
+            try {
+            	historyInstance.start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Handle exceptions as needed
+            }
+        });
 
         // Create the Scene with the specified width and height
         Scene scene = new Scene(root, S_WIDTH, S_HEIGHT);
@@ -149,20 +162,6 @@ public class homeStage extends Application {
         button.setGraphic(iconImageView);
         button.setStyle("-fx-background-color: transparent;");
         return button;
-    }
-
-    // Helper method to create navigation buttons
-    private Button createNavigationButton(String buttonText, String screenName) {
-        Button button = new Button(buttonText);
-        button.setOnAction(e -> navigateToScreen(screenName));
-        return button;
-    }
-
-    // Helper method to handle button actions (navigation)
-    private void navigateToScreen(String screenName) {
-        // Implement navigation logic based on the screenName
-        System.out.println("Navigating to screen: " + screenName);
-        // You can add code here to switch to different screens
     }
 
     public static void main(String[] args) {
