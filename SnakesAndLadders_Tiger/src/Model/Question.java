@@ -11,7 +11,7 @@ public class Question {
 	private String answer4;
 	private int questionID;
 	private String question;
-	private String difficulty;
+	private Difficulty difficulty;
 	private int correctAnswer;
 
 //	private int stepsForward = 0;
@@ -29,10 +29,10 @@ public class Question {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-	public String getDifficulty() {
+	public Difficulty getDifficulty() {
 		return difficulty;
 	}
-	public void setDifficulty(String difficulty) {
+	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 	public int getCorrectAnswer() {
@@ -80,7 +80,7 @@ public class Question {
 		Question other = (Question) obj;
 		return Objects.equals(question, other.question);
 	}
-	public Question(String answer1, String answer2, String answer3, String answer4, String question, String difficulty,
+	public Question(String answer1, String answer2, String answer3, String answer4, String question, Difficulty difficulty,
 			int correctAnswer) {
 		super();
 		this.answer1 = answer1;
