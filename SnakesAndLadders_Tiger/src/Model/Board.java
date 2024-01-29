@@ -17,6 +17,7 @@ public class Board {
 	private ArrayList<Integer> surprises;
 	private Tile[][] grid;
 	private HashMap<Integer, Tile> tiles;
+	private HashMap<String, Integer> playerOn;
 	
 	public Board(BoardType bType, ArrayList<Integer> plusOnes, ArrayList<Integer> surprises) {
 		super();
@@ -106,6 +107,15 @@ public class Board {
 		return getTiles().get(id);
 	}
 	
+	
+	public HashMap<String, Integer> getPlayerOn() {
+		return playerOn;
+	}
+
+	public void setPlayerOn(HashMap<String, Integer> playerOn) {
+		this.playerOn = playerOn;
+	}
+
 	public void createBoard() {
 		int boardCounter = 1;
 		int i = boardLen-1;

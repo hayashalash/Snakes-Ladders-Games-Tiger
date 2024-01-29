@@ -1,7 +1,7 @@
 package Model;
 
 public class Player {
-	private int playerId;
+	private int playerID;
 	private String playerName;
 	private Color playerColor;
 	private int playerPlace=1;
@@ -9,7 +9,7 @@ public class Player {
 	
 	public Player(int playerId, String playerName, Color playerColor) {
 		super();
-		this.playerId = playerId;
+		this.playerID = playerID;
 		this.playerName = playerName;
 		this.playerColor = playerColor;
 	}
@@ -18,12 +18,12 @@ public class Player {
         System.out.println("New player" + playerName + "added successfully!");
     }
 
-	public int getPlayerId() {
-		return playerId;
+	public int getPlayerID() {
+		return playerID;
 	}
 
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
 	}
 
 	public String getPlayerName() {
@@ -60,7 +60,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [playerId=" + playerId + ", playerName=" + playerName + ", playerColor=" + playerColor
+		return "Player [playerID=" + playerID + ", playerName=" + playerName + ", playerColor=" + playerColor
 				+ ", playerPlace=" + playerPlace + ", hasStarted=" + hasStarted + "]";
 	}
 }
