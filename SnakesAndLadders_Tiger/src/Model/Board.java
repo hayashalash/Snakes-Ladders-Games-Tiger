@@ -187,7 +187,7 @@ public class Board {
 			return getHardQuestions().put(q.getQuestionID(), q) == null;
 	}
 
-	public void createBoard() {
+	public boolean createBoard() {
 		int boardCounter = 1;
 		int i = boardLen-1;
 		while (i>=0) {
@@ -205,8 +205,14 @@ public class Board {
 				}
 			}
 		}
-
-		for (i=0 ; i < 3 ; i++) { // a board has 3 question tiles - one of each difficulty
+		addQuestionTiles(); // adds 3 question tiles to the board
+		addSurpriseTiles();
+		return (boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
+	}
+	
+	public void addQuestionTiles() {
+		// boolean retVal = false; //value to return indicating of success 
+		for (int i=0 ; i < 3 ; i++) { // a board has 3 question tiles - one of each difficulty
 			int random = (int) (Math.random() * (boardSize-1)) + 1;
 			QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
 			if (i==0)
@@ -217,7 +223,26 @@ public class Board {
 				qt.getQuestion().setDifficulty(Difficulty.Hard);
 			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
 		}
-		
-		
+	}
+	
+	public void addSurpriseTiles() {
+		if (this.bType == Difficulty.Easy)
+			return;
+		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard
+			int rand = chooseRandomTile();
+			getTile(rand).settType(TileType.Surprise);
+		}
+		if (this.bType == Difficulty.Hard) { // if hard, add another surprise tile
+			int random = chooseRandomTile();
+			getTile(random).settType(TileType.Surprise);
+		}
+	}
+	
+	public Integer chooseRandomTile() {
+		int random = (int) (Math.random() * (boardSize-1)) + 1;
+		while (getTile(random).gettType() != TileType.Classic) { // ensure we don't change a non-classic tile
+			random = (int) (Math.random() * (boardSize-1)) + 1;
+		}
+		return random;
 	}
 }
