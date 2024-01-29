@@ -10,24 +10,24 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
-public class infoStage extends Application {
+public class historyStage extends Application {
 
     private static final int S_WIDTH = 852; 
     private static final int S_HEIGHT = 595; 
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Information");
+        primaryStage.setTitle("history");
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         // Create a StackPane as the root node
         StackPane root = new StackPane();
 
-        // Set the preferred size of the root node 
+        // Set the preferred size of the root node (optional)
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/infoBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/View/historyBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -43,13 +43,11 @@ public class infoStage extends Application {
         
         // Load the icons from the same package
         Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image infoIconImage = new Image(getClass().getResource("/View/info.png").toExternalForm());
         Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
 
 
          // Create ImageViews to display the icons
         ImageView closeIconImageView = new ImageView(closeIconImage);
-        ImageView infoIconImageView = new ImageView(infoIconImage);
         ImageView homeIconImageView = new ImageView(homeIconImage);
 
 
@@ -57,8 +55,6 @@ public class infoStage extends Application {
         // Set the size of the icons
         closeIconImageView.setFitWidth(30);
         closeIconImageView.setFitHeight(30);
-        infoIconImageView.setFitWidth(50);
-        infoIconImageView.setFitHeight(50);
         homeIconImageView.setFitWidth(40);
         homeIconImageView.setFitHeight(40);
 
@@ -70,7 +66,6 @@ public class infoStage extends Application {
         closeButton.setStyle("-fx-background-color: transparent;"); // Make the button transparent
         
         // Create buttons with icons
-        Button infoButton = createIconButton(infoIconImageView);
         Button homeButton = createIconButton(homeIconImageView);
 
 
@@ -79,15 +74,12 @@ public class infoStage extends Application {
         closeButton.setLayoutX(800);
         closeButton.setLayoutY(10);
 
-        infoButton.setLayoutX(100);
-        infoButton.setLayoutY(100);
-
         homeButton.setLayoutX(700);
         homeButton.setLayoutY(100);
 
 
         // Add buttons to the Pane
-        buttonsPane.getChildren().addAll(closeButton, infoButton, homeButton);
+        buttonsPane.getChildren().addAll(closeButton, homeButton);
 
         // Add the background image and buttonsPane to the StackPane
         root.getChildren().addAll(imageView, buttonsPane);
@@ -121,7 +113,6 @@ public class infoStage extends Application {
         button.setStyle("-fx-background-color: transparent;");
         return button;
     }
-
 
     public static void main(String[] args) {
         launch(args);

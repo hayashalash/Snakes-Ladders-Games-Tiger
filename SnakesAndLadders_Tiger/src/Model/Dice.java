@@ -33,8 +33,8 @@ public class Dice {
 	           Random rand = new Random();
 	           playingOrder=new ArrayList<Integer>();
 	           for(int i=1 ; i<=n ; i++)
-	             {
-	        	   int rollResult = rand.nextInt(n) + 1;
+	              {
+	        	   int rollResult = rand.nextInt(n);
 	             
 	        	   if (rollResult == 6) {
 	        		   playingOrder.add(i);

@@ -1,7 +1,5 @@
 package View;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -25,10 +23,10 @@ public class difficultyStage extends Application {
         // Create a StackPane as the root node
         StackPane root = new StackPane();
 
-        // Set the preferred size of the root node (optional)
+        // Set the preferred size of the root node
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
-        // Load the image from the same package
+        // Load the image from the package
         Image backgroundImage = new Image(getClass().getResource("/View/difficultyBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
@@ -43,7 +41,7 @@ public class difficultyStage extends Application {
         Pane buttonsPane = new Pane();
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
-        // Load the icons from the same package
+        // Load the icons from the package
         Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
         Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
         Image easyIconImage = new Image(getClass().getResource("/View/easy.png").toExternalForm());
@@ -71,7 +69,7 @@ public class difficultyStage extends Application {
         hardIconImageView.setFitWidth(210);
         hardIconImageView.setFitHeight(140);
         
-     // Create Close button with icon
+        // Create Close button with icon
         Button closeButton = new Button();
         closeButton.setGraphic(closeIconImageView);
         closeButton.setOnAction(e -> primaryStage.close());
@@ -134,20 +132,6 @@ public class difficultyStage extends Application {
         button.setGraphic(iconImageView);
         button.setStyle("-fx-background-color: transparent;");
         return button;
-    }
-
-    // Helper method to create navigation buttons
-    private Button createNavigationButton(String buttonText, String screenName) {
-        Button button = new Button(buttonText);
-        button.setOnAction(e -> navigateToScreen(screenName));
-        return button;
-    }
-
-    // Helper method to handle button actions (navigation)
-    private void navigateToScreen(String screenName) {
-        // Implement navigation logic based on the screenName
-        System.out.println("Navigating to screen: " + screenName);
-        // You can add code here to switch to different screens
     }
 
     public static void main(String[] args) {
