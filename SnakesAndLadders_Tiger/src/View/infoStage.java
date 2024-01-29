@@ -12,14 +12,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
-public class homeStage extends Application {
+public class infoStage extends Application {
 
     private static final int S_WIDTH = 852; 
     private static final int S_HEIGHT = 595; 
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Home");
+        primaryStage.setTitle("Information");
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         // Create a StackPane as the root node
@@ -29,7 +29,7 @@ public class homeStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/homeBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/View/infoBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -46,17 +46,14 @@ public class homeStage extends Application {
         // Load the icons from the same package
         Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
         Image infoIconImage = new Image(getClass().getResource("/View/info.png").toExternalForm());
-        Image historyIconImage = new Image(getClass().getResource("/View/history.png").toExternalForm());
-        Image qaIconImage = new Image(getClass().getResource("/View/Q&A.png").toExternalForm());
-        Image startIconImage = new Image(getClass().getResource("/View/start.png").toExternalForm());
+        Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
 
 
          // Create ImageViews to display the icons
         ImageView closeIconImageView = new ImageView(closeIconImage);
         ImageView infoIconImageView = new ImageView(infoIconImage);
-        ImageView historyIconImageView = new ImageView(historyIconImage);
-        ImageView qaIconImageView = new ImageView(qaIconImage);
-        ImageView startIconImageView = new ImageView(startIconImage);
+        ImageView homeIconImageView = new ImageView(homeIconImage);
+
 
         
         // Set the size of the icons
@@ -64,12 +61,9 @@ public class homeStage extends Application {
         closeIconImageView.setFitHeight(30);
         infoIconImageView.setFitWidth(50);
         infoIconImageView.setFitHeight(50);
-        historyIconImageView.setFitWidth(60);
-        historyIconImageView.setFitHeight(60);
-        qaIconImageView.setFitWidth(60);
-        qaIconImageView.setFitHeight(60);
-        startIconImageView.setFitWidth(130);
-        startIconImageView.setFitHeight(62);
+        homeIconImageView.setFitWidth(40);
+        homeIconImageView.setFitHeight(40);
+
         
      // Create Close button with icon
         Button closeButton = new Button();
@@ -79,9 +73,8 @@ public class homeStage extends Application {
         
         // Create buttons with icons
         Button infoButton = createIconButton(infoIconImageView);
-        Button historyButton = createIconButton(historyIconImageView);
-        Button qaButton = createIconButton(qaIconImageView);
-        Button startButton = createIconButton(startIconImageView);
+        Button homeButton = createIconButton(homeIconImageView);
+
 
 
         // Set the positions of buttons using coordinates within the Pane
@@ -91,46 +84,26 @@ public class homeStage extends Application {
         infoButton.setLayoutX(100);
         infoButton.setLayoutY(100);
 
-        historyButton.setLayoutX(620);
-        historyButton.setLayoutY(100);
+        homeButton.setLayoutX(700);
+        homeButton.setLayoutY(100);
 
-        qaButton.setLayoutX(700);
-        qaButton.setLayoutY(100);
-
-        startButton.setLayoutX(360);
-        startButton.setLayoutY(350);
 
         // Add buttons to the Pane
-        buttonsPane.getChildren().addAll(closeButton, infoButton, historyButton, qaButton, startButton);
+        buttonsPane.getChildren().addAll(closeButton, infoButton, homeButton);
 
         // Add the background image and buttonsPane to the StackPane
         root.getChildren().addAll(imageView, buttonsPane);
 
-        startButton.setOnAction(e -> {
+        homeButton.setOnAction(e -> {
             // Close the current stage
             primaryStage.close();
 
             // Create an instance of the home class
-            difficultyStage difficultyInstance = new difficultyStage();
+            homeStage homeInstance = new homeStage();
 
             // Call the start method to initialize the new window
             try {
-            	difficultyInstance.start(new Stage());
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Handle exceptions as needed
-            }
-        });
-        
-        infoButton.setOnAction(e -> {
-            // Close the current stage
-            primaryStage.close();
-
-            // Create an instance of the home class
-            infoStage infoInstance = new infoStage();
-
-            // Call the start method to initialize the new window
-            try {
-            	infoInstance.start(new Stage());
+            	homeInstance.start(new Stage());
             } catch (Exception ex) {
                 ex.printStackTrace(); // Handle exceptions as needed
             }
