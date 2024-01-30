@@ -2,6 +2,7 @@ package Model;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import model.Question;
+import model.SysData;
 
 import org.json.simple.parser.JSONParser;
 
@@ -51,7 +53,7 @@ public class SysData {
 			return sysData;
 		}
 
-	public void readFromJson() throws IOException,  ParseException {
+	public void importJson() throws IOException,  ParseException {
 		
 		JSONParser parser = new JSONParser();
 		
@@ -117,10 +119,17 @@ public class SysData {
 			Json2.put("questions", qArray);
 			
 			
-			
-
-			
-			
+			try {
+				FileWriter file2 = new FileWriter("JSON/quetions.json");
+				file2.write(Json2.toJSONString());
+				file2.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally {
+				SysData.getInstance().importJson();
+			}
 			
 			
 		}
