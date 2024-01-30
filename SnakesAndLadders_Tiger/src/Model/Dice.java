@@ -35,7 +35,7 @@ public class Dice {
 	           for(int i=1 ; i<=n ; i++)
 	              {
 	        	   int rollResult = rand.nextInt(n);
-	             
+	        	   
 	        	   if (rollResult == 6) {
 	        		   playingOrder.add(i);
 	        	   }
