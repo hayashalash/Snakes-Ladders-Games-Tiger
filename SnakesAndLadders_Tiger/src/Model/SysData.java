@@ -12,9 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import model.Question;
-import model.SysData;
-
 import org.json.simple.parser.JSONParser;
 
 
@@ -118,7 +115,7 @@ public class SysData {
 			JSONObject Json2 = new JSONObject();
 			Json2.put("questions", qArray);
 			
-<<<<<<< Updated upstream
+
 			
 			try {
 				FileWriter file2 = new FileWriter("JSON/quetions.json");
@@ -131,15 +128,17 @@ public class SysData {
 			finally {
 				SysData.getInstance().importJson();
 			}
-=======
 		}
-			public void initializeGame(Difficulty Type,String name1,String name2,String name3,String name4,Color Color1,Color Color2,Color Color3,Color Color4) {//init the game 
+		
+
+		
+		
+		public void initializeGame(Difficulty Type,String name1,String name2,String name3,String name4,Color Color1,Color Color2,Color Color3,Color Color4) {//init the game 
 		       
 		    }
 
 			
 			
->>>>>>> Stashed changes
 			
 			
 		
