@@ -7,9 +7,11 @@ import org.json.simple.parser.ParseException;
 
 import Model.SysData;
 import View.difficultyStage;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 
-public class InfoController implements Initializable{
+public class InfoController {
 	   //buttons
     @FXML
     private Button closeButton; 
@@ -39,9 +41,9 @@ public class InfoController implements Initializable{
 	       // initializeGame(player);
 	    }
 
-		@Override
-		public void initialize(URL location, ResourceBundle resources) {
-			// TODO Auto-generated method stub
-			
-		}
+//		@Override
+//		public void initialize(URL location, ResourceBundle resources) {
+//			// TODO Auto-generated method stub
+//			
+//		}
 }

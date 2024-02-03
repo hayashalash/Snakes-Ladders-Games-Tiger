@@ -1,4 +1,5 @@
 package View;
+
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
@@ -27,7 +28,7 @@ public class questionsStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/img/Q&ABack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/screens/Q&ABack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -42,8 +43,8 @@ public class questionsStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the same package
-        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
-        Image homeIconImage = new Image(getClass().getResource("/img/home.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/icons/X.png").toExternalForm());
+        Image homeIconImage = new Image(getClass().getResource("/img/icons/home.png").toExternalForm());
 
 
          // Create ImageViews to display the icons

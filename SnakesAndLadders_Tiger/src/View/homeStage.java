@@ -1,4 +1,7 @@
 package View;
+
+
+import View.difficultyStage;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
