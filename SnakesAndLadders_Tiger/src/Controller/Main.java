@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
-public class main extends Application {
+public class Main extends Application {
 
 	public static Stage mainWindow=null;
 
@@ -33,7 +33,7 @@ public class main extends Application {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void Main(String[] args) throws IOException {
 		launch(args);
 //		Model.SysData.initializeMyFileWriter();
 	}

@@ -68,7 +68,7 @@ public class ChoosePlayersController implements Initializable{
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
 			Scene scene = new Scene(root);
-			main.mainWindow.setScene(scene);
+			Main.mainWindow.setScene(scene);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
