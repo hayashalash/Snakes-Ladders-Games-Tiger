@@ -181,7 +181,7 @@
                   <Button fx:id="backBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="Back" GridPane.rowIndex="2" />
                   <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <right>
-                        <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="63.0" style="-fx-background-color: clear;" BorderPane.alignment="CENTER">
+                        <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: clear; -fx-background-radius: 50;" BorderPane.alignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="99.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
                                  <image>
