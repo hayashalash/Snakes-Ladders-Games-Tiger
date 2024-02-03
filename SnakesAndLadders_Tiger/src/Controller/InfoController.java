@@ -1,20 +1,47 @@
 package Controller;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class InfoController {
-	    private View.infoStage infoView;
+import org.json.simple.parser.ParseException;
 
-	    public void GameController(View.infoStage infoView) {
-	        this.infoView = infoView;
-	    }
+import Model.SysData;
+import View.difficultyStage;
 
-	    public void startGame() {
+
+public class InfoController implements Initializable{
+	   //buttons
+    @FXML
+    private Button closeButton; 
+    @FXML
+    private Button homeButton;
+    @FXML
+    private Button easyButton; 
+    @FXML
+    private Button normalButton;
+    @FXML
+    private Button hardButton;
+
+	    public void chooseGame() {
 	        // Get players name from the view 
-	        String playerName = infoView.getPlayerName();
+	        try {
+				String diff = View.difficultyStage.getSelectedDifficulty();
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	        // Create a new Player object with the provided name
-	        Player player = new Player(playerName);
+	       // Player player = new Player(playerName);
 
 	        // Initialize the game with the player's information
-	        initializeGame(player);
+	       // initializeGame(player);
 	    }
+
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			// TODO Auto-generated method stub
+			
+		}
 }
