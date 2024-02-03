@@ -16,8 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -178,7 +177,10 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button fx:id="backBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="Back" GridPane.rowIndex="2" />
+                  <Button fx:id="backBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="Back" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Californian FB Italic" size="18.0" />
+                     </font></Button>
                   <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <right>
                         <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: clear; -fx-background-radius: 50;" BorderPane.alignment="CENTER">
