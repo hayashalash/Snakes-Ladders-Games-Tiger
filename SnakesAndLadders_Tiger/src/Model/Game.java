@@ -85,5 +85,6 @@ public class Game {
 		return "Game [GameID=" + GameID + ", type=" + type + ", dice=" + dice + ", playersNum=" + playersNum
 				+ ", gameDuration=" + gameDuration + ", players=" + players + ", winner=" + winner + "]";
 	}
+	
 }
 

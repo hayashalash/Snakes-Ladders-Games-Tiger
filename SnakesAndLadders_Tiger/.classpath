@@ -4,7 +4,11 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LIB"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="C:/Users/areen/Documents/GitHub/Snakes-Ladders-Games-Tiger/json-simple-1.1.jar"/>
+=======
 	<classpathentry kind="lib" path="C:/Json/json-simple-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
+>>>>>>> ed3619b6e53085009c5801c8713a969f11e1c6b8
 	<classpathentry kind="output" path="bin"/>
 </classpath>
