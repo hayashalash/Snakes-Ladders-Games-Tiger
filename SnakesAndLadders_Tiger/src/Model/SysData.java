@@ -118,6 +118,9 @@ public class SysData {
 			
 			JSONObject Json2 = new JSONObject();
 			Json2.put("questions", qArray);
+<<<<<<< HEAD
+				
+=======
 			
 <<<<<<< HEAD
 		}
@@ -126,6 +129,7 @@ public class SysData {
 =======
 
 			
+>>>>>>> a18be0b7420e0a31e70336862891df4649001cde
 			try {
 				FileWriter file2 = new FileWriter("JSON/quetions.json");
 				file2.write(Json2.toJSONString());
@@ -136,9 +140,12 @@ public class SysData {
 			}
 			finally {
 				SysData.getInstance().importJson();
+			
 			}
-		}
 		
+<<<<<<< HEAD
+		}						
+=======
 
 		
 		
@@ -151,6 +158,7 @@ public class SysData {
 			
 >>>>>>> ed3619b6e53085009c5801c8713a969f11e1c6b8
 			
+>>>>>>> a18be0b7420e0a31e70336862891df4649001cde
 		
 }
 	

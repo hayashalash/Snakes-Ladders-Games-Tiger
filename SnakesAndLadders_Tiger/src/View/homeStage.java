@@ -27,7 +27,7 @@ public class homeStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/homeBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/homeBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -42,11 +42,11 @@ public class homeStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the same package
-        Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image infoIconImage = new Image(getClass().getResource("/View/info.png").toExternalForm());
-        Image historyIconImage = new Image(getClass().getResource("/View/history.png").toExternalForm());
-        Image qaIconImage = new Image(getClass().getResource("/View/Q&A.png").toExternalForm());
-        Image startIconImage = new Image(getClass().getResource("/View/start.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
+        Image infoIconImage = new Image(getClass().getResource("/img/info.png").toExternalForm());
+        Image historyIconImage = new Image(getClass().getResource("/img/history.png").toExternalForm());
+        Image qaIconImage = new Image(getClass().getResource("/img/Q&A.png").toExternalForm());
+        Image startIconImage = new Image(getClass().getResource("/img/start.png").toExternalForm());
 
 
          // Create ImageViews to display the icons

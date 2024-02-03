@@ -42,7 +42,7 @@ public class difficultyStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the package
-        Image backgroundImage = new Image(getClass().getResource("/View/difficultyBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/difficultyBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -57,11 +57,11 @@ public class difficultyStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the package
-        Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
-        Image easyIconImage = new Image(getClass().getResource("/View/easy.png").toExternalForm());
-        Image normalIconImage = new Image(getClass().getResource("/View/normal.png").toExternalForm());
-        Image hardIconImage = new Image(getClass().getResource("/View/hard.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
+        Image homeIconImage = new Image(getClass().getResource("/img/home.png").toExternalForm());
+        Image easyIconImage = new Image(getClass().getResource("/img/easy.png").toExternalForm());
+        Image normalIconImage = new Image(getClass().getResource("/img/normal.png").toExternalForm());
+        Image hardIconImage = new Image(getClass().getResource("/img/hard.png").toExternalForm());
 
 
          // Create ImageViews to display the icons
@@ -161,7 +161,7 @@ public class difficultyStage extends Application {
         primaryStage.close();
 
         // Create an instance of choosePlayerStage
-        choosePlayersStage choosePlayerInstance = new choosePlayersStage(selectedDifficulty);
+        choosePlayersStage choosePlayerInstance = new choosePlayersStage();
 
         // Call the start method to initialize the new window
         try {
