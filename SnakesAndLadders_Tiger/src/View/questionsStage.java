@@ -27,7 +27,7 @@ public class questionsStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/Q&ABack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/Q&ABack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -42,8 +42,8 @@ public class questionsStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the same package
-        Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
+        Image homeIconImage = new Image(getClass().getResource("/img/home.png").toExternalForm());
 
 
          // Create ImageViews to display the icons

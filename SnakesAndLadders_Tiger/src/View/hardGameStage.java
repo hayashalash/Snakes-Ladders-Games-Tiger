@@ -27,7 +27,7 @@ public class hardGameStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/hardStageBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/hardStageBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -42,8 +42,8 @@ public class hardGameStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the same package
-        Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image endGameIconImage = new Image(getClass().getResource("/View/exit.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
+        Image endGameIconImage = new Image(getClass().getResource("/img/exit.png").toExternalForm());
 
 
          // Create ImageViews to display the icons

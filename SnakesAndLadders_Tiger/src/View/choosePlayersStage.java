@@ -15,9 +15,11 @@ public class choosePlayersStage extends Application {
     private static final int S_WIDTH = 852; 
     private static final int S_HEIGHT = 595; 
     private String selectedDifficulty;
+    
+    public choosePlayersStage() {
+    }
 
-    // Constructor to receive the selected difficulty
-    public choosePlayersStage(String selectedDifficulty) {
+    public void setSelectedDifficulty(String selectedDifficulty) {
         this.selectedDifficulty = selectedDifficulty;
     }
 
@@ -37,7 +39,7 @@ public class choosePlayersStage extends Application {
         root.setPrefSize(S_WIDTH, S_HEIGHT);
 
         // Load the image from the same package
-        Image backgroundImage = new Image(getClass().getResource("/View/playersBack.jpg").toExternalForm());
+        Image backgroundImage = new Image(getClass().getResource("/img/playersBack.jpg").toExternalForm());
 
         // Create an ImageView to display the image
         ImageView imageView = new ImageView(backgroundImage);
@@ -52,8 +54,8 @@ public class choosePlayersStage extends Application {
         buttonsPane.setPrefSize(S_WIDTH, S_HEIGHT);
         
         // Load the icons from the same package
-        Image closeIconImage = new Image(getClass().getResource("/View/X.png").toExternalForm());
-        Image homeIconImage = new Image(getClass().getResource("/View/home.png").toExternalForm());
+        Image closeIconImage = new Image(getClass().getResource("/img/X.png").toExternalForm());
+        Image homeIconImage = new Image(getClass().getResource("/img/home.png").toExternalForm());
 
 
          // Create ImageViews to display the icons
@@ -125,6 +127,9 @@ public class choosePlayersStage extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        choosePlayersStage choosePlayersInstance = new choosePlayersStage();
+        choosePlayersInstance.setSelectedDifficulty("your_selected_difficulty");
+        launch(choosePlayersStage.class, args);
     }
+
 }
