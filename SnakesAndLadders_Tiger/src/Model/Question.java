@@ -2,7 +2,9 @@ package Model;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Question {
+import model.Question;
+
+public  class  Question implements Comparable<Question>{
 	
 	//private ArrayList<Answer> answers;
 	private static int idCounter = 1;
@@ -97,6 +99,11 @@ public class Question {
 			return false;
 		Question other = (Question) obj;
 		return Objects.equals(question, other.question);
+	}
+	@Override
+	public int compareTo(Question o) {
+		return this.question.compareToIgnoreCase(o.getQuestion());
+		
 	}
 	
 	
