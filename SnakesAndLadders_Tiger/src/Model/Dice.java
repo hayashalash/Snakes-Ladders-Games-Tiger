@@ -52,10 +52,10 @@ public class Dice {
 	public static int RandomNumberGenerator(Difficulty type){
 		Random random = new Random();
 		if(type==Difficulty.Easy)
-        return random.nextInt(5);
+        return random.nextInt(7);//the player can move up to 4 steps and 5+6+7 is a question foe each difficulty  because the chance is dual statistic
 		else {
 			if(type==Difficulty.Medium)
-				return random.nextInt(8);//the player can move up to 6 steps and 7+8 is a question  because the chance is dual statistic
+				return random.nextInt(12);//the player can move up to 6 steps and 7+8 is a  easy question and middle 9+10 11+12 hard   because the chance is dual statistic
 			else
 				if(type==Difficulty.Hard)
 				return random.nextInt(14);//7+8 for ease question, 9+10 normal , 10-14 hard question 
