@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -24,13 +25,13 @@ public class ChoosePlayersController implements Initializable{
     private TextField player1txt;
 
     @FXML
-    private ChoiceBox<Color> player1clr;
+    private ComboBox<Color> player1clr;
 
     @FXML
     private TextField player2txt;
 
     @FXML
-    private ChoiceBox<Color> player2clr;
+    private ComboBox<Color> player2clr;
 
     @FXML
     private VBox player3box;
@@ -39,7 +40,7 @@ public class ChoosePlayersController implements Initializable{
     private TextField player3txt;
 
     @FXML
-    private ChoiceBox<Color> player3clr;
+    private ComboBox<Color> player3clr;
 
     @FXML
     private VBox player4box;
@@ -48,7 +49,7 @@ public class ChoosePlayersController implements Initializable{
     private TextField player4txt;
 
     @FXML
-    private ChoiceBox<Color> player4clr;
+    private ComboBox<Color> player4clr;
 
     @FXML
     private Button backBtn;
