@@ -4,20 +4,21 @@ import java.util.ArrayList;
 
 public class Game {
 
+	private static int idCounter = 1;
 	private int GameID;
 	private Difficulty type;
-	private Dice dice;
+	//private Dice dice;
 	private int playersNum;
-	private int gameDuration;
+	private int gameDuration = 0;
 	private ArrayList<Player> players;
 	private String winner;
 	
-	public Game(int gameID, Difficulty type, Dice dice, int playersNum, int gameDuration, ArrayList<Player> players,
+	public Game(Difficulty type, int playersNum, int gameDuration, ArrayList<Player> players,
 			String winner) {
 		super();
-		GameID = gameID;
+		GameID = idCounter++;
 		this.type = type;
-		this.dice = dice;
+		//this.dice = dice;
 		this.playersNum = playersNum;
 		this.gameDuration = gameDuration;
 		this.players = players;
@@ -40,13 +41,13 @@ public class Game {
 		this.type = type;
 	}
 
-	public Dice getDice() {
-		return dice;
-	}
-
-	public void setDice(Dice dice) {
-		this.dice = dice;
-	}
+//	public Dice getDice() {
+//		return dice;
+//	}
+//
+//	public void setDice(Dice dice) {
+//		this.dice = dice;
+//	}
 
 	public int getPlayersNum() {
 		return playersNum;
@@ -80,11 +81,11 @@ public class Game {
 		this.winner = winner;
 	}
 
-	@Override
-	public String toString() {
-		return "Game [GameID=" + GameID + ", type=" + type + ", dice=" + dice + ", playersNum=" + playersNum
-				+ ", gameDuration=" + gameDuration + ", players=" + players + ", winner=" + winner + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Game [GameID=" + GameID + ", type=" + type + ", dice=" + dice + ", playersNum=" + playersNum
+//				+ ", gameDuration=" + gameDuration + ", players=" + players + ", winner=" + winner + "]";
+//	}
 	
 }
 

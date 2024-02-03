@@ -1,15 +1,16 @@
 package Model;
 
 public class Player {
+	private static int idCounter = 1;
 	private int playerID;
 	private String playerName;
 	private Color playerColor;
 	private int playerPlace=1;
 	private int hasStarted=0;
 	
-	public Player(int playerId, String playerName, Color playerColor) {
+	public Player(String playerName, Color playerColor) {
 		super();
-		this.playerID = playerID;
+		this.playerID = idCounter++;
 		this.playerName = playerName;
 		this.playerColor = playerColor;
 		hasStarted=1;

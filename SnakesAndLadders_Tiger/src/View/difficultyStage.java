@@ -1,5 +1,21 @@
 package View;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
@@ -155,7 +171,21 @@ public class difficultyStage extends Application {
 
         // Open choosePlayerStage when a difficulty button is pressed
         openChoosePlayerStage();
+//        newScreen("ChoosePlayers");
     }
+    
+//    void newScreen(String path) { // open a new fxml screen
+//    	// Close the current stage
+//        primaryStage.close();
+//    	try {
+//			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
+//			Scene scene = new Scene(root);
+//			Controller.main.mainWindow.setScene(scene);
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}  	
+//    }
 
     private void openChoosePlayerStage() {
         // Close the current stage

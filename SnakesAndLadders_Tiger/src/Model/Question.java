@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Question {
 	
 	//private ArrayList<Answer> answers;
+	private static int idCounter = 1;
 	private String answer1;
 	private String answer2;
 	private String answer3;
@@ -17,6 +18,23 @@ public class Question {
 //	private int stepsForward = 0;
 //	private int stepsBack = 0;
 
+	public Question(String answer1, String answer2, String answer3, String answer4, String question, Difficulty difficulty,
+			int correctAnswer) {
+		super();
+		this.questionID = idCounter++;
+		this.answer1 = answer1;
+		this.answer2 = answer2;
+		this.answer3 = answer3;
+		this.answer4 = answer4;
+		this.question = question;
+		this.difficulty = difficulty;
+		this.correctAnswer = correctAnswer;
+	}
+	public Question(String question) {
+		super();
+		this.question = question;
+	}
+	
 	public int getQuestionID() {
 		return questionID;
 	}
@@ -80,22 +98,6 @@ public class Question {
 		Question other = (Question) obj;
 		return Objects.equals(question, other.question);
 	}
-	public Question(String answer1, String answer2, String answer3, String answer4, String question, Difficulty difficulty,
-			int correctAnswer) {
-		super();
-		this.answer1 = answer1;
-		this.answer2 = answer2;
-		this.answer3 = answer3;
-		this.answer4 = answer4;
-		this.question = question;
-		this.difficulty = difficulty;
-		this.correctAnswer = correctAnswer;
-	}
-	public Question(String question) {
-		super();
-		this.question = question;
-	}
-
 	
 	
 }
