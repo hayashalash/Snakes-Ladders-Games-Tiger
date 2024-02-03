@@ -59,15 +59,7 @@ public class ManageQuestionsController {
 
     @FXML
     void addQuestion(ActionEvent event) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("addQuestion.fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    	
+    	newScreen("addQuestion");
     }
 
     @FXML
@@ -81,33 +73,28 @@ public class ManageQuestionsController {
     
     @FXML
     void editQuestion(ActionEvent event) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("editQuestion.fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
+    	newScreen("editQuestion");
     }
 
     @FXML
     void exitGame(ActionEvent event) {
-
+		if (Alerts.exit()==1)
+			Main.mainWindow.close();
     }
 
     @FXML
     void returnHome(ActionEvent event) {
+    	newScreen("Home");
+    }
+    void newScreen(String path) {
     	try {
-			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
 			Scene scene = new Scene(root);
 			Main.mainWindow.setScene(scene);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}  	
-    
-
     }
 
 }

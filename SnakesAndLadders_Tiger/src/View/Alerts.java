@@ -2,6 +2,8 @@ package View;
 
 import java.util.Optional;
 
+import Controller.Main;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -16,15 +18,15 @@ public class Alerts {
 	 * @param content
 	 * @return
 	 */
-	public static int remove (String content){
+	public static int delete(String content){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Remove");
+		alert.setTitle("Delete");
 		Character ch = content.charAt(0);
 		if (ch.equals('a')||ch.equals('e')||ch.equals('o')||ch.equals('u')||ch.equals('i'))
-			alert.setHeaderText("You're about to remove an "+content);
+			alert.setHeaderText("You're about to delete an "+content);
 		else
-			alert.setHeaderText("You're about to remove a "+content);
-		alert.setContentText("Are you sure you want to remove the selected "+content+"?");
+			alert.setHeaderText("You're about to delete a "+content);
+		alert.setContentText("Are you sure you want to delete the selected "+content+"?");
 		
 		if (alert.showAndWait().get() == ButtonType.OK)
 			return 1;
@@ -34,11 +36,11 @@ public class Alerts {
 	/** Update alert
 	 * @return
 	 */
-	public static int update() {
+	public static int edit() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Updating");
-		alert.setHeaderText("Are you sure want to update?");
+		alert.setTitle("Edit");
+		alert.setHeaderText("Are you sure want to edit?");
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 //		stage.getIcons().add(new Image("img/logo.png"));
 
@@ -50,21 +52,31 @@ public class Alerts {
 
 	}
 
-	
+	public static int exit() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Exit");
+		alert.setHeaderText("You're about to exit!");
+		alert.setContentText("Are you sure you want to exit?");
+		
+		Optional<ButtonType> option = alert.showAndWait();
+		if (option.get() == ButtonType.OK)
+			return 1;
+		return -1;
+    }
 	/** Confirmation alert tell us that the item or question was added successfully
 	 * @param operation
 	 */
-//	public static void confirmation(String operation) {
-//
-//		Alert alert = new Alert(AlertType.CONFIRMATION);
-//		alert.setTitle("Confirmation");
-//		alert.setHeaderText("Item was " + operation + " successfully");
-//		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-////		stage.getIcons().add(Constants.SUCCESS_IMAGE); // change
-//		stage.setAlwaysOnTop(true);
-//		alert.show();
-//
-//	}
+	public static void confirmation(String operation) {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText("Item was " + operation + " successfully");
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+//		stage.getIcons().add(Constants.SUCCESS_IMAGE); // change
+		stage.setAlwaysOnTop(true);
+		alert.show();
+
+	}
 
 	/** Warning alert
 	 * @param content

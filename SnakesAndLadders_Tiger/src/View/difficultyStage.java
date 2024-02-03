@@ -171,21 +171,7 @@ public class difficultyStage extends Application {
 
         // Open choosePlayerStage when a difficulty button is pressed
         openChoosePlayerStage();
-//        newScreen("ChoosePlayers");
     }
-    
-//    void newScreen(String path) { // open a new fxml screen
-//    	// Close the current stage
-//        primaryStage.close();
-//    	try {
-//			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-//			Scene scene = new Scene(root);
-//			Controller.main.mainWindow.setScene(scene);
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}  	
-//    }
 
     private void openChoosePlayerStage() {
         // Close the current stage
