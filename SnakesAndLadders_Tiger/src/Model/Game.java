@@ -11,16 +11,15 @@ public class Game {
 	private int playersNum;
 	private int gameDuration = 0;
 	private ArrayList<Player> players;
-	private String winner;
+	private Player winner;
 	
-	public Game(Difficulty type, int playersNum, int gameDuration, ArrayList<Player> players,
-			String winner) {
+	public Game(Difficulty type, int playersNum, ArrayList<Player> players,	Player winner) {
 		super();
 		GameID = idCounter++;
 		this.type = type;
 		//this.dice = dice;
 		this.playersNum = playersNum;
-		this.gameDuration = gameDuration;
+		//this.gameDuration = gameDuration;
 		this.players = players;
 		this.winner = winner;
 	}
@@ -73,11 +72,11 @@ public class Game {
 		this.players = players;
 	}
 
-	public String getWinner() {
+	public Player getWinner() {
 		return winner;
 	}
 
-	public void setWinner(String winner) {
+	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
 

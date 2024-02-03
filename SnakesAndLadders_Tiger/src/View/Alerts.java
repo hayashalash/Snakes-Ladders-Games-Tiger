@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 public class Alerts {
 
 	
-	/** remove alert
-	 * after press on remove, this alert will pop up. 
+	/** delete alert
+	 * after pressing on "delete", this alert will pop up. 
 	 * @param content
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public class Alerts {
 		return -1;
 
 	}
-
+	// alert to make sure the user wants to completely exit the game
 	public static int exit() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Exit");
@@ -63,7 +63,7 @@ public class Alerts {
 			return 1;
 		return -1;
     }
-	/** Confirmation alert tell us that the item or question was added successfully
+	/** Confirmation alert tells us that the item or question was added or edited successfully
 	 * @param operation
 	 */
 	public static void confirmation(String operation) {
