@@ -2,7 +2,6 @@ package Model;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,6 +11,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+<<<<<<< HEAD
+import model.Question;
+
+=======
+>>>>>>> ed3619b6e53085009c5801c8713a969f11e1c6b8
 import org.json.simple.parser.JSONParser;
 
 
@@ -50,7 +54,7 @@ public class SysData {
 			return sysData;
 		}
 
-	public void importJson() throws IOException,  ParseException {
+	public void readFromJson() throws IOException,  ParseException {
 		
 		JSONParser parser = new JSONParser();
 		
@@ -114,7 +118,18 @@ public class SysData {
 			
 			JSONObject Json2 = new JSONObject();
 			Json2.put("questions", qArray);
+<<<<<<< HEAD
 				
+=======
+			
+<<<<<<< HEAD
+		}
+			
+			
+=======
+
+			
+>>>>>>> a18be0b7420e0a31e70336862891df4649001cde
 			try {
 				FileWriter file2 = new FileWriter("JSON/quetions.json");
 				file2.write(Json2.toJSONString());
@@ -128,7 +143,22 @@ public class SysData {
 			
 			}
 		
+<<<<<<< HEAD
 		}						
+=======
+
+		
+		
+		public void initializeGame(Difficulty Type,String name1,String name2,String name3,String name4,Color Color1,Color Color2,Color Color3,Color Color4) {//init the game 
+		       
+		    }
+
+			
+			
+			
+>>>>>>> ed3619b6e53085009c5801c8713a969f11e1c6b8
+			
+>>>>>>> a18be0b7420e0a31e70336862891df4649001cde
 		
 }
 	
