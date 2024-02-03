@@ -18,16 +18,16 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0">
+      <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@difficultyBack.jpg" />
          </image>
       </ImageView>
-      <BorderPane prefHeight="400.0" prefWidth="600.0">
+      <BorderPane layoutX="66.0" layoutY="64.0" prefHeight="462.0" prefWidth="737.0">
          <center>
-            <GridPane hgap="15.0" vgap="15.0" BorderPane.alignment="CENTER">
+            <GridPane hgap="20.0" prefHeight="279.0" prefWidth="578.0" vgap="30.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -178,12 +178,12 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button fx:id="backBtn" mnemonicParsing="false" text="Back" GridPane.rowIndex="2" />
+                  <Button fx:id="backBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="58.0" text="Back" GridPane.rowIndex="2" />
                   <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <right>
                         <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="63.0" style="-fx-background-color: clear;" BorderPane.alignment="CENTER">
                            <graphic>
-                              <ImageView fitHeight="35.0" fitWidth="69.0">
+                              <ImageView fitHeight="50.0" fitWidth="99.0">
                                  <image>
                                     <Image url="@start.png" />
                                  </image>
@@ -196,45 +196,32 @@
             </GridPane>
          </center>
          <top>
-            <AnchorPane prefHeight="134.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="146.0" prefWidth="737.0" BorderPane.alignment="CENTER">
                <children>
-                  <BorderPane prefHeight="134.0" prefWidth="600.0">
-                     <right>
-                        <HBox prefHeight="85.0" prefWidth="97.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" style="-fx-background-color: clear;">
-                                 <graphic>
-                                    <ImageView fitHeight="23.0" fitWidth="25.0">
-                                       <image>
-                                          <Image url="@X.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </right>
-                     <top>
-                        <AnchorPane prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-                     </top>
+                  <BorderPane layoutX="630.0" prefHeight="66.0" prefWidth="93.0">
                      <center>
-                        <AnchorPane prefHeight="63.0" prefWidth="239.0" BorderPane.alignment="CENTER" />
+                        <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" style="-fx-background-color: clear;" BorderPane.alignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="25.0">
+                                 <image>
+                                    <Image url="@X.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </center>
-                     <left>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                     </left>
                   </BorderPane>
                </children>
             </AnchorPane>
          </top>
          <bottom>
-            <AnchorPane prefHeight="96.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="37.0" prefWidth="737.0" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
             <AnchorPane prefHeight="175.0" prefWidth="98.0" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <AnchorPane prefHeight="175.0" prefWidth="73.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="279.0" prefWidth="49.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
    </children>
