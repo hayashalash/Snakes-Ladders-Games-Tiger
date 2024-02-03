@@ -2,7 +2,6 @@ package Model;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import model.Question;
 
 public  class  Question implements Comparable<Question>{
 	
@@ -32,6 +31,15 @@ public  class  Question implements Comparable<Question>{
 		this.difficulty = difficulty;
 		this.correctAnswer = correctAnswer;
 	}
+	
+	
+	public Question(String question, Difficulty difficulty) {
+	super();
+	this.question = question;
+	this.difficulty = difficulty;
+}
+
+
 	public Question(String question) {
 		super();
 		this.question = question;

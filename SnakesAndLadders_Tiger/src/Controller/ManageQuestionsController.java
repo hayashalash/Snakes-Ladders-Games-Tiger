@@ -17,6 +17,7 @@ import Model.SysData;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
@@ -37,19 +38,7 @@ public class ManageQuestionsController implements Initializable {
     private TableColumn<Question, String> question;
 
     @FXML
-    private TableColumn<Question, String> answer1;
-
-    @FXML
-    private TableColumn<Question, String> answer2;
-
-    @FXML
-    private TableColumn<Question, String> answer3;
-
-    @FXML
-    private TableColumn<Question, String> answer4;
-
-    @FXML
-    private TableColumn<Question, String> difficulty;
+    private TableColumn<Question, Difficulty> difficulty;
 
     @FXML
     private Button delete;
@@ -71,24 +60,14 @@ public class ManageQuestionsController implements Initializable {
     	newScreen("addQuestion");
     }
 
-    @FXML
-    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
-    	if(questionTable.getSelectionModel().getSelectedIndex() == -1)
-    		Alerts.message("Error","Please select a question to delete");
-    		return;
-    }
-    String qustion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
-    String ans1 = questionTable.getSelectionModel().getSelectedItem().getAnswer1();
-    String ans2 = questionTable.getSelectionModel().getSelectedItem().getAnswer2();
-    String ans3 = questionTable.getSelectionModel().getSelectedItem().getAnswer3();
-    String ans4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
-    Difficulty diff = questionTable.getSelectionModel().getSelectedItem().getDifficulty();
-	Integer corr = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
-	
-	Question newQues = new Question(ans1,ans2,ans3,ans4,question,diff,corr);
-
-
-
+//    @FXML
+//    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
+//    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
+//    		Alerts.message("Error","Please select a question to delete");
+//    		return;
+//    }
+//    
+//    }
     
     
     @FXML
@@ -130,16 +109,13 @@ public class ManageQuestionsController implements Initializable {
 		
 	}
     public void fill() {
+    	
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
-  		question.setCellValueFactory(new PropertyValueFactory<Question, String>("questionText"));
-  		diff.setCellValueFactory(new PropertyValueFactory<Question, String>("diffuclty"));
-  		answer1.setCellValueFactory(new PropertyValueFactory<Question, String>("answer1"));
-  		answer2.setCellValueFactory(new PropertyValueFactory<Question, String>("answer2"));
-  		answer3.setCellValueFactory(new PropertyValueFactory<Question, String>("answer3"));
-  		answer4.setCellValueFactory(new PropertyValueFactory<Question, String>("answer4"));
-  		HashSet<Question> set = new HashSet<>();
-  		set.addAll(dataQues);
-  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(set);
+  		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
+		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("diffuclty"));
+  		ArrayList<Question> arr = new ArrayList<>();
+  		arr.addAll(dataQues);
+  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
   	}
 

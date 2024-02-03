@@ -13,15 +13,12 @@ public class Game {
 	private ArrayList<Player> players;
 	private Player winner;
 	
-	public Game(Difficulty type, int playersNum, ArrayList<Player> players,	Player winner) {
+	public Game(Difficulty type, int playersNum, ArrayList<Player> players) {
 		super();
 		GameID = idCounter++;
 		this.type = type;
-		//this.dice = dice;
 		this.playersNum = playersNum;
-		//this.gameDuration = gameDuration;
 		this.players = players;
-		this.winner = winner;
 	}
 
 	public int getGameID() {
@@ -39,14 +36,6 @@ public class Game {
 	public void setType(Difficulty type) {
 		this.type = type;
 	}
-
-//	public Dice getDice() {
-//		return dice;
-//	}
-//
-//	public void setDice(Dice dice) {
-//		this.dice = dice;
-//	}
 
 	public int getPlayersNum() {
 		return playersNum;
@@ -80,11 +69,7 @@ public class Game {
 		this.winner = winner;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Game [GameID=" + GameID + ", type=" + type + ", dice=" + dice + ", playersNum=" + playersNum
-//				+ ", gameDuration=" + gameDuration + ", players=" + players + ", winner=" + winner + "]";
-//	}
+
 	
 }
 

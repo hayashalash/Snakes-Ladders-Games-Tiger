@@ -6,6 +6,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
@@ -15,47 +16,12 @@
             <Image url="@../img/screens/Q&amp;ABack.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="Question" layoutX="109.0" layoutY="147.0" prefHeight="301.0" prefWidth="512.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="Question" layoutX="146.0" layoutY="147.0" prefHeight="256.0" prefWidth="584.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="question" prefWidth="74.0" style="-fx-background-color: #FFDAB9;" text="Question" />
-            <TableColumn fx:id="answer1" prefWidth="77.0" style="-fx-background-color: #FFDAB9;" text="Answer 1" />
-            <TableColumn fx:id="answer2" prefWidth="92.0" style="-fx-background-color: #FFDAB9;" text="Answer 2" />
-            <TableColumn fx:id="answer3" prefWidth="90.0" style="-fx-background-color: #FFDAB9;" text="Answer 3" />
-            <TableColumn fx:id="answer4" prefWidth="86.0" style="-fx-background-color: #FFDAB9;" text="Answer 4" />
-            <TableColumn fx:id="difficulty" prefWidth="92.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
+            <TableColumn fx:id="question" prefWidth="467.0" style="-fx-background-color: #FFDAB9;" text="Question" />
+            <TableColumn fx:id="difficulty" prefWidth="119.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
       </TableView>
-      <AnchorPane layoutX="632.0" layoutY="218.0" prefHeight="175.0" prefWidth="75.0">
-         <children>
-            <Button fx:id="delete" layoutX="18.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="40.0">
-                     <image>
-                        <Image url="@../img/icons/delete.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="edit" layoutX="18.0" layoutY="71.0" mnemonicParsing="false" onAction="#editQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="40.0">
-                     <image>
-                        <Image url="@../img/icons/edit.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="add" layoutX="15.0" layoutY="127.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="47.0">
-                     <image>
-                        <Image url="@../img/icons/add.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </AnchorPane>
       <Button fx:id="home" layoutX="730.0" layoutY="64.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0">
@@ -74,5 +40,33 @@
             </ImageView>
          </graphic>
       </Button>
+      <Button fx:id="add" layoutX="679.0" layoutY="403.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d" />
+      <HBox layoutX="146.0" layoutY="407.0" prefHeight="43.0" prefWidth="113.0">
+         <children>
+            <Button fx:id="edit" mnemonicParsing="false" onAction="#editQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
+               <graphic>
+                  <ImageView fitHeight="37.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../img/icons/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="38.0">
+                     <image>
+                        <Image url="@../img/icons/delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="687.0" layoutY="408.0">
+         <image>
+            <Image url="@../img/icons/add.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

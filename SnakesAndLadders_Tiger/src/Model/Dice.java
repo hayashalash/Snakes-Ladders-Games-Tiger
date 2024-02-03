@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Dice {
-	private int side;
+	private int side; // current result of the dice
 	
 
 	public int getSide() {
