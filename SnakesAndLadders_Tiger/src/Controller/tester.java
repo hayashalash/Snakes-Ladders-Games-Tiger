@@ -19,7 +19,7 @@ public class tester extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/info.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/difficulty.fxml"));
             Parent root = loader.load();
 
             primaryStage.setTitle("Info");

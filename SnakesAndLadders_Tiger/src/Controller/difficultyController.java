@@ -2,18 +2,25 @@ package Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class difficultyController {
+<<<<<<< Updated upstream
+=======
+import View.Alerts;
 
-    @FXML
-    private StackPane rootPane;
+>>>>>>> Stashed changes
+public class difficultyController implements Initializable{
+
 
     @FXML
     private Button closeButton;
@@ -32,11 +39,12 @@ public class difficultyController {
 
     private String selectedDifficulty;
 
+<<<<<<< Updated upstream
     @FXML
     private void initialize() {
         // Set up the root pane
-        rootPane.setPrefSize(852, 595);
-        loadFXML("/View/difficulty.fxml");
+//        rootPane.setPrefSize(852, 595);
+//        loadFXML("/View/difficulty.fxml");
     }
 
     private void loadFXML(String fxmlPath) {
@@ -60,15 +68,18 @@ public class difficultyController {
         this.rootPane = rootPane;
     }
 
+=======
+ 
+>>>>>>> Stashed changes
     @FXML
     private void closeStage() {
-        Stage stage = (Stage) rootPane.getScene().getWindow();
-        stage.close();
+    	if (Alerts.exit()==1)
+			Main.mainWindow.close();
     }
 
     @FXML
     private void goHome() {
-        loadFXML("/View/Home.fxml");
+    	newScreen("Home");
     }
 
     @FXML
@@ -90,6 +101,28 @@ public class difficultyController {
         this.selectedDifficulty = difficulty;
         System.out.println("Selected Difficulty: " + selectedDifficulty);
         // Open choosePlayers.fxml when a difficulty button is pressed
-        loadFXML("/View/choosePlayers.fxml");
+    	newScreen("choosePlayer");
     }
+<<<<<<< Updated upstream
+=======
+    
+    void newScreen(String path) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+			Main.mainWindow.show();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	
+    }
+>>>>>>> Stashed changes
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }
