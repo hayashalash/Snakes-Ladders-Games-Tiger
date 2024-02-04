@@ -2,6 +2,7 @@ package Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -9,8 +10,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class difficultyController {
+public class difficultyController implements Initializable{
 
     @FXML
     private StackPane rootPane;
@@ -35,8 +38,8 @@ public class difficultyController {
     @FXML
     private void initialize() {
         // Set up the root pane
-        rootPane.setPrefSize(852, 595);
-        loadFXML("/View/difficulty.fxml");
+//        rootPane.setPrefSize(852, 595);
+//        loadFXML("/View/difficulty.fxml");
     }
 
     private void loadFXML(String fxmlPath) {
@@ -92,4 +95,10 @@ public class difficultyController {
         // Open choosePlayers.fxml when a difficulty button is pressed
         loadFXML("/View/choosePlayers.fxml");
     }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }
