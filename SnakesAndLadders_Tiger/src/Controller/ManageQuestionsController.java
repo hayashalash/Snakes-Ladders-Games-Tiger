@@ -94,25 +94,27 @@ public class ManageQuestionsController implements Initializable {
     }
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		try {
-//			SysData.getInstance().importJson();
-//		} catch (IOException | ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		fill();
-//		questionTable.refresh();
+		try {
+			SysData.getInstance().importJson();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fill();
+		questionTable.refresh();
 		
 	}
     public void fill() {
     	
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
-		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("diffiuclty"));
+		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
   		ArrayList<Question> arr = new ArrayList<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
+  		System.out.println(arr);
+
   	}
 
 }

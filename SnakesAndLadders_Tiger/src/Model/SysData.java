@@ -23,8 +23,8 @@ public class SysData {
 //	private ArrayList<Question> MediumQuestions; 
 //	private ArrayList<Question> HardQuestions; 
 //	private Difficulty d;	
-	private ArrayList<Game> games;
-	private ArrayList<Question> questions;
+	private ArrayList<Game> games = new ArrayList();
+	private ArrayList<Question> questions = new ArrayList();
 	
 
 	public ArrayList<Game> getGames() {
@@ -77,15 +77,16 @@ public class SysData {
 			int corrAns = Integer.valueOf(que.get("correct_ans").toString());
 			String diff = (String) que.get("difficulty");
 			Difficulty d;
-			if (diff == "1") 
+			if (diff.equals("1")) 
 				d = Difficulty.Easy;		
-			else if (diff == "2")
+			else if (diff.equals("2"))
 				d = Difficulty.Medium;
 			else // if (diff == "3")
 				d = Difficulty.Hard;
+		
 			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),q,d,corrAns);
 			this.questions.add(newQues);
-			
+		//	System.out.println(newQues.getDifficulty());
 		}
 	}
 		

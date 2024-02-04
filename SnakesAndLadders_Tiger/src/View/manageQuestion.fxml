@@ -15,7 +15,7 @@
             <Image url="@../img/screens/Q&amp;ABack.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="Question" layoutX="146.0" layoutY="147.0" prefHeight="256.0" prefWidth="584.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="questionTable" layoutX="146.0" layoutY="147.0" prefHeight="256.0" prefWidth="584.0" style="-fx-background-color: #FFEFD5;">
          <columns>
             <TableColumn fx:id="question" prefWidth="467.0" style="-fx-background-color: #FFDAB9;" text="Question" />
             <TableColumn fx:id="difficulty" prefWidth="119.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
@@ -67,5 +67,6 @@
             <Image url="@../img/icons/add.png" />
          </image>
       </ImageView>
+      <Button layoutX="410.0" layoutY="79.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d" />
    </children>
 </AnchorPane>
