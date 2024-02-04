@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,17 +25,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
 
 	// color images paths to be displayed in the combobox
-	private static final String GREEN = "file:/img/icons/green.png";
-	private static final String BLUE = "file:/img/icons/blue.png";
-	private static final String PINK = "file:/img/icons/pink.png";
-	private static final String RED = "file:/img/icons/red.png";
-	private static final String PURPLE = "file:/img/icons/purple.png";
-	private static final String YELLOW = "file:/img/icons/yellow.png";
+	private static final String GREEN = "file:/View/img/icons/green.png";
+	private static final String BLUE = "file:/View/img/icons/blue.png";
+	private static final String PINK = "file:/View/img/icons/pink.png";
+	private static final String RED = "file:/View/img/icons/red.png";
+	private static final String PURPLE = "file:/View/img/icons/purple.png";
+	private static final String YELLOW = "file:/View/img/icons/yellow.png";
 	private int playersNum = 2; //default value
 	@FXML
     private Button exitBtn;
@@ -94,6 +96,8 @@ public class ChoosePlayersController implements Initializable{
     	player2clr = fillComboBox(images);
     	player3clr = fillComboBox(images);
     	player4clr = fillComboBox(images);
+//    	player1clr.getItems().addAll(Color.values());
+//    	player1clr.getSelectionModel().select(0);
 //    	Media mediaFile = new Media(this.getClass().getResource(MEDIA_URL).toExternalForm());
 //    	player = new MediaPlayer(mediaFile);
 //    	media.setMediaPlayer(player);
@@ -151,7 +155,7 @@ public class ChoosePlayersController implements Initializable{
     	if (player3box.isDisable()) // cannot add 4th player before 3rd
     		return;
     	if (player4box.isDisable()) {
-    		player3box.setDisable(false); // enable the box
+    		player4box.setDisable(false); // enable the box
     		removeFourth.setDisable(false); // enable the option to remove 4th player
     		addFourth.setDisable(true); // gray out the option to add
     		playersNum++;
@@ -175,7 +179,7 @@ public class ChoosePlayersController implements Initializable{
     	player4txt.clear(); // clear the name
 		player4box.setDisable(true); // gray out the box
 		removeFourth.setDisable(true); // gray out the option to disable
-		addThird.setDisable(false); // enable the option to add
+		addFourth.setDisable(false); // enable the option to add
 		playersNum--;
     }
 

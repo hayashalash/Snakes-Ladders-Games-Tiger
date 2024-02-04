@@ -8,22 +8,36 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ChoosePlayersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ChoosePlayersController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/playersBack.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
+      <Button fx:id="addThird" layoutX="117.0" layoutY="331.0" mnemonicParsing="false" onAction="#addThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/add.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="removeThird" disable="true" layoutX="117.0" layoutY="360.0" mnemonicParsing="false" onAction="#remvoveThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/minus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exitGame" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
                <image>
@@ -32,222 +46,176 @@
             </ImageView>
          </graphic>
       </Button>
-      <BorderPane layoutX="66.0" layoutY="64.0" prefHeight="412.0" prefWidth="726.0">
-         <center>
-            <GridPane prefHeight="176.0" prefWidth="604.0" vgap="30.0" BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+      <AnchorPane layoutX="71.0" layoutY="412.0" prefHeight="80.0" prefWidth="737.0">
+         <children>
+            <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" onAction="#backToDifficulty" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+               <font>
+                  <Font name="Californian FB Italic" size="18.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/previous.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/startGame.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <Button fx:id="addFourth" layoutX="426.0" layoutY="331.0" mnemonicParsing="false" onAction="#addFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/add.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="removeFourth" disable="true" layoutX="426.0" layoutY="360.0" mnemonicParsing="false" onAction="#removeFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/minus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <VBox layoutX="156.0" layoutY="231.0" prefHeight="70.0" prefWidth="220.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Player 1:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="player1txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Color:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
-                                 <HBox.margin>
-                                    <Insets left="31.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Player 2:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="player2txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Color:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
-                                 <HBox.margin>
-                                    <Insets left="31.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="player3box" disable="true" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Player 3:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="player3txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
-                                 <HBox.margin>
-                                    <Insets left="10.0" right="35.0" />
-                                 </HBox.margin>
-                              </TextField>
-                              <Button fx:id="addFourth" mnemonicParsing="false" onAction="#addFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
-                                       <image>
-                                          <Image url="@../img/icons/add.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Color:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
-                                 <HBox.margin>
-                                    <Insets left="31.0" right="35.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                              <Button fx:id="removeFourth" mnemonicParsing="false" onAction="#removeFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
-                                       <image>
-                                          <Image url="@../img/icons/minus.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="player4box" disable="true" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Player 4:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="player4txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Color:">
-                                 <font>
-                                    <Font name="Comic Sans MS Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
-                                 <HBox.margin>
-                                    <Insets left="31.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </GridPane>
-         </center>
-         <top>
-            <AnchorPane prefHeight="156.0" prefWidth="737.0" BorderPane.alignment="CENTER" />
-         </top>
-         <bottom>
-            <AnchorPane prefHeight="80.0" prefWidth="737.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+                  <Label text="Player 1:">
                      <font>
-                        <Font name="Californian FB Italic" size="18.0" />
+                        <Font name="Comic Sans MS Bold" size="14.0" />
                      </font>
-                     <graphic>
-                        <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
-                           <image>
-                              <Image url="@../img/icons/previous.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
-                     <graphic>
-                        <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
-                           <image>
-                              <Image url="@../img/icons/startGame.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children></AnchorPane>
-         </bottom>
-         <left>
-            <AnchorPane prefHeight="176.0" prefWidth="81.0" BorderPane.alignment="CENTER">
+                  </Label>
+                  <TextField fx:id="player1txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addThird" layoutX="75.0" layoutY="98.0" mnemonicParsing="false" onAction="#addThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
-                           <image>
-                              <Image url="@../img/icons/add.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="removeThird" disable="true" layoutX="75.0" layoutY="133.0" mnemonicParsing="false" onAction="#remvoveThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
-                           <image>
-                              <Image url="@../img/icons/minus.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children></AnchorPane>
-         </left>
-         <right>
-            <AnchorPane prefHeight="176.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
-         </right>
-      </BorderPane>
+                  <Label text="Color:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                     <HBox.margin>
+                        <Insets left="31.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="465.0" layoutY="231.0" prefHeight="70.0" prefWidth="220.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Player 2:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="player2txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Color:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                     <HBox.margin>
+                        <Insets left="31.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox fx:id="player3box" disable="true" layoutX="156.0" layoutY="331.0" prefHeight="70.0" prefWidth="271.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Player 3:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="player3txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Color:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                     <HBox.margin>
+                        <Insets left="31.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox fx:id="player4box" disable="true" layoutX="465.0" layoutY="331.0" prefHeight="70.0" prefWidth="220.0">
+         <children>
+            <HBox prefHeight="103.0" prefWidth="188.0">
+               <children>
+                  <Label text="Player 4:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="player4txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Color:">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                     <HBox.margin>
+                        <Insets left="31.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
