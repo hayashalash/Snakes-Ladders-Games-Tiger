@@ -18,6 +18,7 @@ import Model.SysData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import org.json.simple.parser.ParseException;
@@ -110,7 +111,7 @@ public class ManageQuestionsController implements Initializable {
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-  		ArrayList<Question> arr = new ArrayList<>();
+		 HashSet<Question> arr = new  HashSet<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);

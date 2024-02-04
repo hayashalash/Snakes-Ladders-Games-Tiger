@@ -12,7 +12,10 @@ import Model.SysData;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -46,6 +49,13 @@ public class AddQuestionController  implements Initializable{
 
     @FXML
     private Button clear;
+
+
+    @FXML
+    private Button previousButton;
+
+    @FXML
+    private Button exitButton;
 
     @FXML
     void addQuestion(ActionEvent event) throws IOException, ParseException {
@@ -92,6 +102,26 @@ public class AddQuestionController  implements Initializable{
 		ans2Text.clear();
 		ans3Text.clear();
 		ans4Text.clear();
+
+    }
+    
+
+    @FXML
+    void exit(ActionEvent event) {
+    	if (Alerts.exit()==1)
+			Main.mainWindow.close();
+    }
+
+    @FXML
+    void previous(ActionEvent event) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/manageQuestion.fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	
 
     }
 
