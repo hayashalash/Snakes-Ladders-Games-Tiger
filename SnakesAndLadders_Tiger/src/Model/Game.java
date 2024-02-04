@@ -1,5 +1,6 @@
 package Model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Game {
@@ -7,7 +8,7 @@ public class Game {
 	private static int idCounter = 1;
 	private int GameID;
 	private Difficulty type;
-	//private Dice dice;
+	private Date date;
 	private int playersNum;
 	private int gameDuration = 0;
 	private ArrayList<Player> players;
@@ -67,6 +68,14 @@ public class Game {
 
 	public void setWinner(Player winner) {
 		this.winner = winner;
+	}
+
+	public final Date getDate() {
+		return date;
+	}
+
+	public final void setDate(Date date) {
+		this.date = date;
 	}
 
 
