@@ -1,5 +1,8 @@
 package Controller;
 import java.io.IOException;
+
+import View.Alerts;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,7 +13,6 @@ import javafx.stage.StageStyle;
 
 public class infoController {
 
-    @FXML
     private Button closeButton;
 
     @FXML
@@ -23,6 +25,11 @@ public class infoController {
     private void closeStage() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+    
+	void exit(ActionEvent event) {
+    	if (Alerts.exit()==1)
+			Main.mainWindow.close();
     }
 
     @FXML
@@ -48,7 +55,10 @@ public class infoController {
             e.printStackTrace(); // Handle exceptions as needed
         }
     }
-
 }
+
+
+
+
 
 
