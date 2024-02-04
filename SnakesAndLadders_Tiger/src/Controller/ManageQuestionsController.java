@@ -94,14 +94,14 @@ public class ManageQuestionsController implements Initializable {
     }
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			SysData.getInstance().importJson();
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		fill();
-		questionTable.refresh();
+//		try {
+//			SysData.getInstance().importJson();
+//		} catch (IOException | ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		fill();
+//		questionTable.refresh();
 		
 	}
     public void fill() {
