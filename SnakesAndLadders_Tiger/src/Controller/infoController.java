@@ -1,60 +1,55 @@
 package Controller;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class infoController {
+public class infoController implements Initializable {
+	@FXML
+    private Button exitButton;
 
-    private Button closeButton;
-
-    @FXML
-    private Button infoButton;
 
     @FXML
     private Button homeButton;
 
     @FXML
-    private void closeStage() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-    }
-    
-	void exit(ActionEvent event) {
+    private void exit() {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
-
-    @FXML
-    private void openInfo() {
-    }
+    
 
     @FXML
     private void goHome() {
-        // Close the current stage
-        Stage stage = (Stage) homeButton.getScene().getWindow();
-        stage.close();
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+			Main.mainWindow.show();
 
-        // Load and display the home.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/Home.fxml"));
-        try {
-            Pane root = loader.load();
-            Stage homeStage = new Stage();
-            homeStage.setTitle("Home");
-            homeStage.initStyle(StageStyle.UNDECORATED);
-            homeStage.setScene(new Scene(root));
-            homeStage.show();
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle exceptions as needed
-        }
-    }
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} 
+}
+
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 

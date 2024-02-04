@@ -8,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -48,8 +51,16 @@ public class historyController implements Initializable{
     }
 	
 	void home(ActionEvent event) {
-		homeController homeController = new homeController();
-		homeController.openNewScene("Home");
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+			Main.mainWindow.show();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  
     }
 	
 	@Override
