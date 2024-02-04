@@ -14,7 +14,7 @@
       </ImageView>
       <Button fx:id="closeButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeStage" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="30.0" fitWidth="30.0">
+            <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                <image>
                   <Image url="@../img/icons/X.png" />
                </image>
@@ -23,7 +23,7 @@
       </Button>
       <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="40.0" fitWidth="40.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                <image>
                   <Image url="@../img/icons/home.png" />
                </image>

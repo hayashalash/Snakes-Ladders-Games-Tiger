@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -23,9 +23,9 @@
             <TableColumn fx:id="duration" prefWidth="180.0" style="-fx-background-color: #FFDAB9;" text="Duration" />
          </columns>
       </TableView>
-      <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#home" style="-fx-background-color: tranparent;">
+      <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#home" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="730.0" layoutY="65.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="730.0" layoutY="65.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
                   <Image url="@../img/icons/home.png" />
                </image>
@@ -34,7 +34,7 @@
       </Button>
       <Button fx:id="exitButton" accessibleText="exit" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="30.0" fitWidth="30.0">
+            <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
                   <Image url="@../img/icons/X.png" />
                </image>

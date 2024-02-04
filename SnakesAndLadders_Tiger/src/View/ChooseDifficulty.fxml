@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.difficultyController">
    <children>
-      <ImageView fitHeight="595.0" fitWidth="851.0">
+      <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/difficultyBack.jpg" />
          </image>
@@ -17,7 +17,7 @@
          <children>
             <Button fx:id="easyButton" mnemonicParsing="false" onAction="#easy" prefHeight="120.0" prefWidth="180.0" style="-fx-background-radius: 40; -fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="120.0" fitWidth="180.0">
+                  <ImageView fitHeight="120.0" fitWidth="180.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                      <image>
                         <Image url="@../img/icons/easy.png" />
                      </image>
@@ -26,7 +26,7 @@
             </Button>
             <Button fx:id="normalButtom" mnemonicParsing="false" onAction="#normal" prefHeight="105.0" prefWidth="169.0" style="-fx-background-radius: 40; -fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="120.0" fitWidth="180.0">
+                  <ImageView fitHeight="120.0" fitWidth="180.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                      <image>
                         <Image url="@../img/icons/normal.png" />
                      </image>
@@ -35,7 +35,7 @@
             </Button>
             <Button fx:id="hardButton" mnemonicParsing="false" onAction="#hard" prefHeight="105.0" prefWidth="169.0" style="-fx-background-radius: 40; -fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="120.0" fitWidth="180.0">
+                  <ImageView fitHeight="120.0" fitWidth="180.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                      <image>
                         <Image url="@../img/icons/hard.png" />
                      </image>
@@ -55,7 +55,7 @@
       </Button>
       <Button fx:id="homeButton" layoutX="726.0" layoutY="63.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="40.0" fitWidth="40.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
                   <Image url="@../img/icons/home.png" />
                </image>

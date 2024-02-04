@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.hardGameController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.hardGameController">
     <children>
         <ImageView fitHeight="595.0" fitWidth="852.0">
             <image>
@@ -17,7 +17,7 @@
             <children>
                 <Button fx:id="closeButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeStage" style="-fx-background-color: transparent;">
                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                             <image>
                                 <Image url="@../img/icons/X.png" />
                             </image>
@@ -25,7 +25,7 @@
                     </graphic>
                 </Button>
                 <Button fx:id="endGameButton" layoutX="700.0" layoutY="500.0" mnemonicParsing="false" onAction="#endGame" style="-fx-background-color: transparent;" />
-                  <ImageView fitHeight="40.0" fitWidth="68.0" layoutX="778.0" layoutY="541.0">
+                  <ImageView fitHeight="40.0" fitWidth="68.0" layoutX="778.0" layoutY="541.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                       <image>
                           <Image url="@../img/icons/exit.png" />
                       </image>

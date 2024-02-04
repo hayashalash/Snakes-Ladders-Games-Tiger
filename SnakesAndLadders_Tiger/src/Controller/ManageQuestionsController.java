@@ -92,6 +92,7 @@ public class ManageQuestionsController implements Initializable {
 			e.printStackTrace();
 		}  	
     }
+    
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -113,7 +114,7 @@ public class ManageQuestionsController implements Initializable {
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
-  		System.out.println(arr);
+  		// System.out.println(arr);
 
   	}
 

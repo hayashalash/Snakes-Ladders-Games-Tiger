@@ -20,7 +20,7 @@ public class Main extends Application {
 		try {
 			primaryStage.initStyle(StageStyle.UNDECORATED);
 			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
-			Scene scene = new Scene(root, 852, 525);
+			Scene scene = new Scene(root, 852, 595);
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
 //			primaryStage.getIcons().add(new Image("/View/images/logo.png"));
