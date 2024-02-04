@@ -52,9 +52,9 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="start" layoutX="359.0" layoutY="382.0" mnemonicParsing="false" onAction="#start" prefHeight="45.0" prefWidth="119.0" style="-fx-background-color: transparent;">
+      <Button fx:id="start" layoutX="337.0" layoutY="369.0" mnemonicParsing="false" onAction="#start" prefHeight="69.0" prefWidth="178.0" style="-fx-background-color: transparent;">
                <graphic>
-            <ImageView fitHeight="61.0" fitWidth="117.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
+            <ImageView fitHeight="71.0" fitWidth="158.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
                <image>
                   <Image url="@../img/icons/start.png" />
                </image>
