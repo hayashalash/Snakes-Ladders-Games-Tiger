@@ -93,20 +93,6 @@ public class infoStage extends Application {
         // Add the background image and buttonsPane to the StackPane
         root.getChildren().addAll(imageView, buttonsPane);
 
-        homeButton.setOnAction(e -> {
-            // Close the current stage
-            primaryStage.close();
-
-            // Create an instance of the home class
-            homeStage homeInstance = new homeStage();
-
-            // Call the start method to initialize the new window
-            try {
-            	homeInstance.start(new Stage());
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Handle exceptions as needed
-            }
-        });
 
         // Create the Scene with the specified width and height
         Scene scene = new Scene(root, S_WIDTH, S_HEIGHT);

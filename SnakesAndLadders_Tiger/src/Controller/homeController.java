@@ -1,19 +1,15 @@
 package Controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import View.Alerts;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
-public class homeController implements Initializable{
+import java.io.IOException;
+
+public class homeController {
 
     @FXML
     private Button history;
@@ -22,56 +18,58 @@ public class homeController implements Initializable{
     private Button question;
 
     @FXML
-    private Button exit;
+    private Button close;
 
     @FXML
     private Button info;
-    
-    @FXML
-    private Button editbutton;
 
-    public void initialize(URL location, ResourceBundle resources) {
-    	
-    }
     @FXML
-    void editt(ActionEvent event) {
-    	newScreen("manageQuestion");
+    private Button start;
+
+    @FXML
+    private void showHistory() {
+        openNewScene("/View/GameHistory.fxml");
     }
 
     @FXML
-    void exit(ActionEvent event) {
-    	if (Alerts.exit()==1)
-			Main.mainWindow.close();
-    }
-    void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-			Main.mainWindow.show();
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
+    private void showQuestion() {
+        openNewScene("/View/manageQuestions.fxml");
     }
 
     @FXML
-    void showHistory(ActionEvent event) throws IOException{
-    	newScreen("History");
-
+    private void exit() {
+        // Handle the event when exit button is clicked
+        Stage stage = (Stage) close.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
-    void showInfo(ActionEvent event) throws IOException{
-    	newScreen("Info");
-
+    private void showInfo() {
+        openNewScene("/View/Info.fxml");
     }
 
     @FXML
-    void showQuestion(ActionEvent event) throws IOException{
-    	newScreen("manageQuestion");
+    private void start() {
+    	openNewScene("/View/difficulty.fxml");
     }
 
-  
+    private void openNewScene(String fxmlPath) {
+        Stage currentStage = (Stage) close.getScene().getWindow();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root));
+
+            // Access the controller of the loaded FXML
+            // If your controller has a constructor that accepts parameters, pass them here
+            // ControllerClass controller = loader.getController();
+
+            currentStage.close();
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions as needed
+        }
+    }
 }
