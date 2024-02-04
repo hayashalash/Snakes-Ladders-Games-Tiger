@@ -54,7 +54,7 @@ public class homeController {
         // Your edit button logic here
     }
 
-    private void openNewScene(String fxmlPath) {
+    public void openNewScene(String fxmlPath) {
         Stage currentStage = (Stage) exit.getScene().getWindow();
 
         try {

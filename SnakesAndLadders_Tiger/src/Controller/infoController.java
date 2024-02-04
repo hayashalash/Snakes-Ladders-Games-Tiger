@@ -22,7 +22,7 @@ public class infoController implements Initializable {
     }
 	void home(ActionEvent event) {
 		homeController homeController = new homeController();
-		homeController.newScreen("Home");
+		homeController.openNewScene("Home");
     }
 	
 	
