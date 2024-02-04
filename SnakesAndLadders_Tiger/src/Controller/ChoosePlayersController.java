@@ -284,6 +284,7 @@ public class ChoosePlayersController implements Initializable{
     	}
     	
     	// TODO create game object and move to Game screen based on difficulty provided in previous screen
+    	
     }
     
     void newScreen(String path) {
