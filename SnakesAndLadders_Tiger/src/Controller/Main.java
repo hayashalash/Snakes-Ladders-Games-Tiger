@@ -19,8 +19,8 @@ public class Main extends Application {
 		// TODO Auto-generated method stub
 		try {
 			primaryStage.initStyle(StageStyle.DECORATED);
-			Parent root = FXMLLoader.load(getClass().getResource("/View/ChoosePlayers.fxml"));
-			Scene scene = new Scene(root, 600, 400);
+			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
+			Scene scene = new Scene(root, 852, 525);
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
 //			primaryStage.getIcons().add(new Image("/View/images/logo.png"));
