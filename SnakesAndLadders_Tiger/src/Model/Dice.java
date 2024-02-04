@@ -64,10 +64,9 @@ public class Dice {
 	}
 	
 	
-//	public static int roll(Difficulty type,Player player){
-//		
-//		
-//	}
-//	
+	public static void roll(Difficulty type,Player player){
+			
+	}
+
 
 }
