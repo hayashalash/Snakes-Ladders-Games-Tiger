@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.homeController">
+   <children>
+      <ImageView fitHeight="595.0" fitWidth="852.0">
+         <image>
+            <Image url="@../img/screens/homeBack.jpg" />
+         </image>
+      </ImageView>
+      <HBox layoutX="620.0" layoutY="82.0" prefHeight="69.0" prefWidth="161.0">
+         <children>
+            <Button fx:id="history" mnemonicParsing="false" onAction="#showHistory" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="55.0" fitWidth="55.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/history.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="question" mnemonicParsing="false" onAction="#showQuestion" prefHeight="60.0" prefWidth="76.0" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="57.0" fitWidth="60.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/Q&amp;A.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+         </children>
+      </HBox>
+      <Button fx:id="close" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" prefHeight="47.0" prefWidth="41.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="800.0" layoutY="10.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/X.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="info" layoutX="84.0" layoutY="85.0" mnemonicParsing="false" onAction="#showInfo" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -4 , 0 );">
+               <image>
+                  <Image url="@../img/icons/info.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="start" layoutX="359.0" layoutY="382.0" mnemonicParsing="false" onAction="#start" prefHeight="45.0" prefWidth="119.0" style="-fx-background-color: transparent;">
+               <graphic>
+            <ImageView fitHeight="61.0" fitWidth="117.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
+               <image>
+                  <Image url="@../img/icons/start.png" />
+               </image>
+            </ImageView>
+         </graphic>
+        </Button>
+   </children>
+</AnchorPane>
