@@ -4,6 +4,8 @@ import java.util.ResourceBundle;
 
 import Model.Color;
 import View.Alerts;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
@@ -25,13 +32,13 @@ public class ChoosePlayersController implements Initializable{
     private TextField player1txt;
 
     @FXML
-    private ComboBox<Color> player1clr;
+    private ComboBox<Image> player1clr;
 
     @FXML
     private TextField player2txt;
 
     @FXML
-    private ComboBox<Color> player2clr;
+    private ComboBox<Image> player2clr;
 
     @FXML
     private VBox player3box;
@@ -40,7 +47,7 @@ public class ChoosePlayersController implements Initializable{
     private TextField player3txt;
 
     @FXML
-    private ComboBox<Color> player3clr;
+    private ComboBox<Image> player3clr;
 
     @FXML
     private VBox player4box;
@@ -49,7 +56,7 @@ public class ChoosePlayersController implements Initializable{
     private TextField player4txt;
 
     @FXML
-    private ComboBox<Color> player4clr;
+    private ComboBox<Image> player4clr;
 
     @FXML
     private Button backBtn;
@@ -59,7 +66,11 @@ public class ChoosePlayersController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	intializeChoiceBox();
+    	final ObservableList<Image> images = fetchImages();
+    	player1clr = fillComboBox(images);
+    	player2clr = fillComboBox(images);
+    	player3clr = fillComboBox(images);
+    	player4clr = fillComboBox(images);
 //    	Media mediaFile = new Media(this.getClass().getResource(MEDIA_URL).toExternalForm());
 //    	player = new MediaPlayer(mediaFile);
 //    	media.setMediaPlayer(player);
@@ -69,16 +80,47 @@ public class ChoosePlayersController implements Initializable{
 //    	player.play();
 	}
     
-    private void intializeChoiceBox() {
-    	player1clr.getItems().addAll(Color.values());
-    	player2clr.getItems().addAll(Color.values());
-    	player3clr.getItems().addAll(Color.values());
-    	player4clr.getItems().addAll(Color.values());
-    	player1clr.getSelectionModel().select(0);
-    	player2clr.getSelectionModel().select(1);
-    	player3clr.getSelectionModel().select(2);
-    	player4clr.getSelectionModel().select(3);
-	}
+    private ComboBox<Image> fillComboBox(ObservableList<Image> options) { // fill a combo box with the color images
+    	ComboBox<Image> combo = new ComboBox<>();
+        combo.getItems().addAll(options);
+        combo.setButtonCell(new ImageListCell());
+        combo.setCellFactory(listView -> new ImageListCell());
+        combo.getSelectionModel().select(0);
+        return combo;
+    }
+    class ImageListCell extends ListCell<Image> {
+        private final ImageView view;
+ 
+        ImageListCell() {
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            view = new ImageView();
+        }
+ 
+        @Override protected void updateItem(Image item, boolean empty) {
+            super.updateItem(item, empty);
+ 
+            if (item == null || empty) {
+                setGraphic(null);
+            } else {
+                view.setImage(item);
+                setGraphic(view);
+            }
+        }
+ 
+    }
+ 
+    private ObservableList<Image> fetchImages() { // get list of images of colors
+        Image green = new Image("file:/img/icons/green.png");
+    	Image blue = new Image("file:/img/icons/blue.png");
+    	Image pink = new Image("file:/img/icons/pink.png");
+    	Image red = new Image("file:/img/icons/red.png");
+    	Image purple = new Image("file:/img/icons/purple.png");
+    	Image yellow = new Image("file:/img/icons/yellow.png");
+    	ObservableList<Image> options = FXCollections.observableArrayList();
+    	options.addAll(green, blue, pink, red, purple, yellow);
+        
+        return options;
+    }
     
     @FXML
     void backToDifficulty(ActionEvent event) {
@@ -107,3 +149,5 @@ public class ChoosePlayersController implements Initializable{
 		}  	
     }
 }
+
+
