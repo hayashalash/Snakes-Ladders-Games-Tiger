@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 public class SysData {
 	   //singleton
-		private static SysData sysData = null;
+		private static Question sysData = null;
 	
 //	private ArrayList<Question> EasyQuestions; 
 //	private ArrayList<Question> MediumQuestions; 
