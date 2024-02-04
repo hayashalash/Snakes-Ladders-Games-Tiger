@@ -16,14 +16,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="595.0" minWidth="852.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ChoosePlayersController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/playersBack.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: clear;">
+      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
                <image>
@@ -122,7 +122,7 @@
                                     <Insets left="10.0" right="35.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="addFourth" mnemonicParsing="false" onAction="#addFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: clear;">
+                              <Button fx:id="addFourth" mnemonicParsing="false" onAction="#addFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
                                        <image>
@@ -145,7 +145,7 @@
                                     <Insets left="31.0" right="35.0" />
                                  </HBox.margin>
                               </ComboBox>
-                              <Button fx:id="removeFourth" mnemonicParsing="false" onAction="#removeFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: clear;">
+                              <Button fx:id="removeFourth" mnemonicParsing="false" onAction="#removeFourthP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
                                        <image>
@@ -199,7 +199,7 @@
          <bottom>
             <AnchorPane prefHeight="80.0" prefWidth="737.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: clear; -fx-background-radius: 50;">
+                  <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
                      <font>
                         <Font name="Californian FB Italic" size="18.0" />
                      </font>
@@ -211,7 +211,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: clear; -fx-background-radius: 50;">
+                  <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
                      <graphic>
                         <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
                            <image>
@@ -225,7 +225,7 @@
          <left>
             <AnchorPane prefHeight="176.0" prefWidth="81.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="addThird" layoutX="75.0" layoutY="98.0" mnemonicParsing="false" onAction="#addThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: clear;">
+                  <Button fx:id="addThird" layoutX="75.0" layoutY="98.0" mnemonicParsing="false" onAction="#addThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
                            <image>
@@ -234,7 +234,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="removeThird" disable="true" layoutX="75.0" layoutY="133.0" mnemonicParsing="false" onAction="#remvoveThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: clear;">
+                  <Button fx:id="removeThird" disable="true" layoutX="75.0" layoutY="133.0" mnemonicParsing="false" onAction="#remvoveThirdP" prefHeight="25.0" prefWidth="29.0" style="-fx-background-radius: 50; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fitHeight="21.0" fitWidth="23.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
                            <image>
