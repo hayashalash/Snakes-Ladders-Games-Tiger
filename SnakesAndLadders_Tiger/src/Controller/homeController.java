@@ -35,7 +35,7 @@ public class homeController implements Initializable{
     }
     @FXML
     void start(ActionEvent event) {
-    	newScreen("difficulty");
+    	newScreen("ChooseDifficulty");
     }
 
     @FXML

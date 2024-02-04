@@ -5,14 +5,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.infoController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.infoController">
    <children>
-      <ImageView fitHeight="595.0" fitWidth="859.0">
+      <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/infoBack.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="exitbutton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" prefHeight="11.0" prefWidth="3.0" style="-fx-background-color: transparent;">
+      <Button fx:id="closeButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeStage" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
@@ -21,7 +21,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="homeButton" layoutX="729.0" layoutY="66.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
+      <Button fx:id="homeButton" layoutX="731.0" layoutY="63.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0">
                <image>
@@ -30,7 +30,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="48.0" fitWidth="46.0" layoutX="115.0" layoutY="98.0">
+      <ImageView fitHeight="55.0" fitWidth="56.0" layoutX="107.0" layoutY="93.0">
          <image>
             <Image url="@../img/icons/info.png" />
          </image>

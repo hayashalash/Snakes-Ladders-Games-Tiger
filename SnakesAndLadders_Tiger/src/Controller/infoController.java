@@ -17,14 +17,13 @@ import javafx.stage.StageStyle;
 
 public class infoController implements Initializable {
 	@FXML
-    private Button exitButton;
-
+	 private Button closeButton;
 
     @FXML
     private Button homeButton;
 
     @FXML
-    private void exit() {
+    void closeStage(ActionEvent event) {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
