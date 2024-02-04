@@ -18,15 +18,12 @@ import Model.SysData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import org.json.simple.parser.ParseException;
 
-import com.sun.glass.ui.View;
 
 import Model.Difficulty;
-import Model.Game;
 import Model.Question;
 
 public class ManageQuestionsController implements Initializable {
@@ -57,7 +54,7 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     void addQuestion(ActionEvent event) {
-    	newScreen("addQuestion");
+    	newScreen("AddQuestion");
     }
 
 //    @FXML
@@ -72,7 +69,7 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     void editQuestion(ActionEvent event) {
-    	newScreen("editQuestion");
+    	newScreen("EditQuestion");
     }
 
     @FXML
@@ -97,7 +94,6 @@ public class ManageQuestionsController implements Initializable {
     }
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		try {
 			SysData.getInstance().importJson();
 		} catch (IOException | ParseException e) {
@@ -112,7 +108,7 @@ public class ManageQuestionsController implements Initializable {
     	
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
-		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("diffuclty"));
+		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("diffiuclty"));
   		ArrayList<Question> arr = new ArrayList<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);

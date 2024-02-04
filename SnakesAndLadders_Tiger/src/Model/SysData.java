@@ -90,46 +90,53 @@ public class SysData {
 	}
 		
 
-		public void writeJson(Question question) throws IOException, ParseException {
-			JSONParser parser = new JSONParser();
-			
-			FileInputStream file = new FileInputStream("JSON/quetions.json");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
-			Object obj = parser.parse(reader);
-			JSONObject jsonObject = (JSONObject) obj;
-			JSONArray qArray = (JSONArray) jsonObject.get("questions");
+	public void writeJson(Question question) throws IOException, ParseException {
+	    JSONParser parser = new JSONParser();
 
-			JSONObject json = new JSONObject();
-			//add new question about software engineering and QA
-			json.put("question", question.getQuestion()); //maps the name question to a specific question
-			
-			JSONArray newQuestion = new JSONArray();
-			
-			newQuestion.add(question.getAnswer1()); //adding answers to the array
-			newQuestion.add(question.getAnswer2());
-			newQuestion.add(question.getAnswer3());
-			newQuestion.add(question.getAnswer4());
-			json.put("difficulty", question.getDifficulty()); // choosing the difficulty for each question
-			json.put("correct_ans", Integer.toString(question.getCorrectAnswer())); // specified whoch answer is the correct answer
-			qArray.add(newQuestion); //addig 4 answers to each question 
-			
-			JSONObject Json2 = new JSONObject();
-			Json2.put("questions", qArray);
-				
-			try {
-				FileWriter file2 = new FileWriter("JSON/quetions.json");
-				file2.write(Json2.toJSONString());
-				file2.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally {
-				SysData.getInstance().importJson();
-			
-			}
-		
-		}						
+	    FileInputStream file = new FileInputStream("JSON/questions.json");
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+	    Object obj = parser.parse(reader);
+	    JSONObject jsonObject = (JSONObject) obj;
+	    JSONArray qArray = (JSONArray) jsonObject.get("questions");
+
+	    JSONObject json = new JSONObject();
+	    // add new question about software engineering and QA
+	    json.put("question", question.getQuestion()); // maps the name question to a specific question
+
+	    JSONArray newQuestion = new JSONArray();
+
+	    newQuestion.add(question.getAnswer1()); // adding answers to the array
+	    newQuestion.add(question.getAnswer2());
+	    newQuestion.add(question.getAnswer3());
+	    newQuestion.add(question.getAnswer4());
+	  //convert the question level from enum to int 
+	    Difficulty diff = question.getDifficulty();
+	    String str;
+	  		if (diff == Difficulty.Easy) {
+	  			str = "1";
+	  		} else if (diff == Difficulty.Medium) {	
+	  			str = "2";
+	  		} else {
+	  			str = "3";
+	  		}
+	  	json.put("difficulty", str); // choosing the difficulty for each question
+	    json.put("correct_ans", Integer.toString(question.getCorrectAnswer())); // specifying which answer is the correct answer
+	    qArray.add(newQuestion); // adding 4 answers to each question
+
+	    JSONObject Json2 = new JSONObject();
+	    Json2.put("questions", qArray);
+
+	    try {
+	        FileWriter file2 = new FileWriter("JSON/questions.json");
+	        file2.write(Json2.toJSONString());
+	        file2.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        SysData.getInstance().importJson();
+	    }
+	}
+						
 		
 }
 	
