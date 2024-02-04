@@ -55,7 +55,7 @@ public class Alerts {
 	public static int exit() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Exit");
-		alert.setHeaderText("You're about to exit!");
+		alert.setHeaderText("You're about to exit the game!");
 		alert.setContentText("Are you sure you want to exit?");
 		
 		Optional<ButtonType> option = alert.showAndWait();
