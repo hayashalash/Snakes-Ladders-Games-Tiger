@@ -21,7 +21,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="homeButton" layoutX="731.0" layoutY="63.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
+      <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0">
                <image>

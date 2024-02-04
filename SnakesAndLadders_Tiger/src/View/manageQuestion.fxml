@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -21,7 +21,7 @@
             <TableColumn fx:id="difficulty" prefWidth="119.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
       </TableView>
-      <Button fx:id="home" layoutX="730.0" layoutY="64.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
+      <Button fx:id="home" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0">
                <image>
@@ -30,9 +30,9 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="exit" layoutX="796.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: THEME;" textFill="#651d1d">
+      <Button fx:id="exit" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: THEME;" textFill="#651d1d">
          <graphic>
-            <ImageView fitHeight="40.0" fitWidth="40.0">
+            <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
                   <Image url="@../img/icons/X.png" />
                </image>

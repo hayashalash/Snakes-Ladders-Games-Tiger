@@ -59,7 +59,7 @@ public class homeController implements Initializable{
 
     @FXML
     void showHistory(ActionEvent event) throws IOException{
-    	newScreen("History");
+    	newScreen("GameHistory");
 
     }
 
