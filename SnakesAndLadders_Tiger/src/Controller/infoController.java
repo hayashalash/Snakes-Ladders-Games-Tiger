@@ -1,7 +1,5 @@
 package Controller;
-
 import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -38,7 +36,7 @@ public class infoController {
         stage.close();
 
         // Load and display the home.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/Home.fxml"));
         try {
             Pane root = loader.load();
             Stage homeStage = new Stage();
@@ -52,3 +50,5 @@ public class infoController {
     }
 
 }
+
+
