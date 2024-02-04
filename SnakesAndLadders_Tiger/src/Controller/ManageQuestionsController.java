@@ -57,14 +57,14 @@ public class ManageQuestionsController implements Initializable {
     	newScreen("AddQuestion");
     }
 
-//    @FXML
-//    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
-//    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-//    		Alerts.message("Error","Please select a question to delete");
-//    		return;
-//    }
-//    
-//    }
+    @FXML
+    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
+    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
+    		Alerts.message("Error","Please select a question to delete");
+    		return;
+    }
+    
+    }
     
     
     @FXML

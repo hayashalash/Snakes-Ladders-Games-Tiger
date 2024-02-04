@@ -1,14 +1,19 @@
 package Controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
-public class homeController {
+public class homeController implements Initializable{
 
     @FXML
     private Button history;
@@ -25,16 +30,13 @@ public class homeController {
     @FXML
     private Button editbutton;
 
+    public void initialize(URL location, ResourceBundle resources) {
+    	
+    }
     @FXML
     void editt(ActionEvent event) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/view/manageQuestion.fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}    }
+    	newScreen("manageQuestion");
+    }
 
     @FXML
     void exit(ActionEvent event) {
@@ -55,19 +57,19 @@ public class homeController {
     }
 
     @FXML
-    void showHistory(ActionEvent event) {
+    void showHistory(ActionEvent event) throws IOException{
     	newScreen("History");
 
     }
 
     @FXML
-    void showInfo(ActionEvent event) {
+    void showInfo(ActionEvent event) throws IOException{
     	newScreen("Info");
 
     }
 
     @FXML
-    void showQuestion(ActionEvent event) {
+    void showQuestion(ActionEvent event) throws IOException{
     	newScreen("manageQuestion");
     }
 

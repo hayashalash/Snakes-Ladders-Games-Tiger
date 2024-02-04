@@ -33,7 +33,7 @@ public class Main extends Application {
 		}
 	}
 
-	public static void Main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		launch(args);
 //		Model.SysData.initializeMyFileWriter();
 	}

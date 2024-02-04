@@ -54,7 +54,7 @@ public class SysData {
 		
 		JSONParser parser = new JSONParser();
 		
-		FileInputStream file = new FileInputStream("JSON/questions_schema.json");
+		FileInputStream file = new FileInputStream("JSON/questions_scheme.json");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
