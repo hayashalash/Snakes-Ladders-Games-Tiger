@@ -111,7 +111,7 @@ public class ManageQuestionsController implements Initializable {
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-		 HashSet<Question> arr = new  HashSet<>();
+		 HashSet<Question> arr = new HashSet<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);

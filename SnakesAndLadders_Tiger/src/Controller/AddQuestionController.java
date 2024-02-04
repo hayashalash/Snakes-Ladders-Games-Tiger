@@ -58,38 +58,38 @@ public class AddQuestionController  implements Initializable{
     private Button exitButton;
 
     @FXML
-    void addQuestion(ActionEvent event) throws IOException, ParseException {
-    	String question = null;
-		String first = null;
-		String second = null;
-		String third = null;
-		String fourth = null;
-		Difficulty diff = null;
-		int correct = 0;
-
-		try {
-						//reading the fields from the screen.
-			question = questionText.getText();
-			first = ans1Text.getText();
-			second = ans2Text.getText();
-			third = ans3Text.getText();
-			fourth = ans4Text.getText();
-
-			diff = difficulty.getSelectionModel().getSelectedItem();
-			correct = correctAnswer.getSelectionModel().getSelectedItem();
-
-		} catch (NullPointerException e) {
-			// TODO: handle exception
-			Alerts.warning("Plesae Fill All Fields!");
-		}
-	
-		//creating the new question object
-		Question newQuestion = new Question(first,second,third,fourth,question,diff,correct);
-		//write our question to json and add to question hashSet
-		SysData.getInstance().writeJson(newQuestion);
-		//clear fields
-		clearFields();
-		Alerts.message("Added", "Question has been added succesfully!");
+    void addQuestion(ActionEvent event) {
+//    	String question = null;
+//		String first = null;
+//		String second = null;
+//		String third = null;
+//		String fourth = null;
+//		Difficulty diff = null;
+//		int correct = 0;
+//
+//		try {
+//						//reading the fields from the screen.
+//			question = questionText.getText();
+//			first = ans1Text.getText();
+//			second = ans2Text.getText();
+//			third = ans3Text.getText();
+//			fourth = ans4Text.getText();
+//
+//			diff = difficulty.getSelectionModel().getSelectedItem();
+//			correct = correctAnswer.getSelectionModel().getSelectedItem();
+//
+//		} catch (NullPointerException e) {
+//			// TODO: handle exception
+//			Alerts.warning("Plesae Fill All Fields!");
+//		}
+//	
+//		//creating the new question object
+//		Question newQuestion = new Question(first,second,third,fourth,question,diff,correct);
+//		//write our question to json and add to question hashSet
+//		SysData.getInstance().writeJson(newQuestion);
+//		//clear fields
+//		clearFields();
+//		Alerts.message("Added", "Question has been added succesfully!");
 
     }
 
