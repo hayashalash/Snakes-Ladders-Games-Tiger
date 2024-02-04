@@ -1,79 +1,75 @@
 package Controller;
 
-import View.difficultyStage;
-import View.homeStage;
-import View.infoStage;
+import View.Alerts;
 import javafx.event.ActionEvent;
-import javafx.stage.Stage;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 public class homeController {
 
-    private homeStage view;
-    private static Stage mainWindow;
+    @FXML
+    private Button history;
 
-    public homeController(homeStage view) {
-        this.view = view;
+    @FXML
+    private Button question;
 
-        // Set up event handlers
-        view.getCloseButton().setOnAction(this::handleCloseButton);
-        view.getInfoButton().setOnAction(this::handleInfoButton);
-        view.getHistoryButton().setOnAction(this::handleHistoryButton);
-        view.getQaButton().setOnAction(this::handleQaButton);
-        view.getStartButton().setOnAction(this::handleStartButton);
+    @FXML
+    private Button exit;
+
+    @FXML
+    private Button info;
+    
+    @FXML
+    private Button editbutton;
+
+    @FXML
+    void editt(ActionEvent event) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/view/manageQuestion.fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}    }
+
+    @FXML
+    void exit(ActionEvent event) {
+    	if (Alerts.exit()==1)
+			Main.mainWindow.close();
+    }
+    void newScreen(String path) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+			Main.mainWindow.show();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	
     }
 
-    // Close the current stage when the close button is clicked
-    private void handleCloseButton(ActionEvent event) {
-        view.closeStage();
+    @FXML
+    void showHistory(ActionEvent event) {
+    	newScreen("History");
+
     }
 
-    // Handle the Info button click
-    private void handleInfoButton(ActionEvent event) {
-        view.closeStage();
-        // Create an instance of the difficulty stage
-        infoStage infoInstance = new infoStage();
+    @FXML
+    void showInfo(ActionEvent event) {
+    	newScreen("Info");
 
-        // Set the main window reference
-       // difficultyInstance.setMainWindow(getMainWindow());
-
-        // Call the start method to initialize the new window
-        try {
-            infoInstance.start(new Stage());
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Handle exceptions as needed
-        }
     }
 
-    // Handle the History button click
-    private void handleHistoryButton(ActionEvent event) {
-        view.closeStage();
-        // TODO: Add logic for handling the History stage
+    @FXML
+    void showQuestion(ActionEvent event) {
+    	newScreen("manageQuestion");
     }
 
-    // Handle the Q&A button click
-    private void handleQaButton(ActionEvent event) {
-        view.closeStage();
-        // TODO: Add logic for handling the Questions stage
-    }
-
-    // Handle the Start button click
-    private void handleStartButton(ActionEvent event) {
-        view.closeStage();
-        // TODO: Add logic for handling the Start button (possibly difficulty stage logic)
-    }
-
-    // Start the application by displaying the home stage
-    public void startApplication() {
-        view.start(new Stage());
-    }
-
-    // Setter method for the main window
-    public static void setMainWindow(Stage mainWindow) {
-        homeController.mainWindow = mainWindow;
-    }
-
-    // Getter method for the main window
-    public static Stage getMainWindow() {
-        return mainWindow;
-    }
+  
 }
