@@ -2,6 +2,7 @@ package Controller;
 
 import View.difficultyStage;
 import View.homeStage;
+import View.infoStage;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
@@ -30,14 +31,14 @@ public class homeController {
     private void handleInfoButton(ActionEvent event) {
         view.closeStage();
         // Create an instance of the difficulty stage
-        difficultyStage difficultyInstance = new difficultyStage();
+        infoStage infoInstance = new infoStage();
 
         // Set the main window reference
        // difficultyInstance.setMainWindow(getMainWindow());
 
         // Call the start method to initialize the new window
         try {
-            difficultyInstance.start(new Stage());
+            infoInstance.start(new Stage());
         } catch (Exception ex) {
             ex.printStackTrace(); // Handle exceptions as needed
         }

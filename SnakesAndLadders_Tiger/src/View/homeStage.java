@@ -22,9 +22,7 @@ public class homeStage extends Application {
     private static final int S_WIDTH = 852;
     private static final int S_HEIGHT = 595;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -79,11 +77,6 @@ public class homeStage extends Application {
         startIconImageView.setFitWidth(130);
         startIconImageView.setFitHeight(62);
 
-        // Create Close button with icon
-        closeButton = new Button();
-        closeButton.setGraphic(closeIconImageView);
-        closeButton.setOnAction(e -> stage.close());
-        closeButton.setStyle("-fx-background-color: transparent;"); // Make the button transparent
 
         // Create buttons with icons
         infoButton = createIconButton(infoIconImageView);
@@ -115,7 +108,7 @@ public class homeStage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        setButtonActions(); // Set button actions here
+
     }
 
     // Helper method to create icon button
@@ -126,38 +119,30 @@ public class homeStage extends Application {
         return button;
     }
 
-    // Set actions for buttons
-    private void setButtonActions() {
-        startButton.setOnAction(e -> {
-            // Close the current stage
-            stage.close();
 
-            // Create an instance of the difficulty class
-            difficultyStage difficultyInstance = new difficultyStage();
+	public void closeStage() {
+		stage.close();
+		
+	}
 
-            // Call the start method to initialize the new window
-            try {
-                difficultyInstance.start(new Stage());
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Handle exceptions as needed
-            }
-        });
-
-        infoButton.setOnAction(e -> {
-            // Close the current stage
-            stage.close();
-
-            // Create an instance of the info class
-            infoStage infoInstance = new infoStage();
-
-            // Call the start method to initialize the new window
-            try {
-                infoInstance.start(new Stage());
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Handle exceptions as needed
-            }
-        });
-
-        // Similarly, set actions for other buttons
+	public Button getCloseButton() {
+        return closeButton;
     }
+
+    public Button getInfoButton() {
+        return infoButton;
+    }
+
+    public Button getHistoryButton() {
+        return historyButton;
+    }
+
+    public Button getQaButton() {
+        return qaButton;
+    }
+
+    public Button getStartButton() {
+        return startButton;
+    }
+
 }
