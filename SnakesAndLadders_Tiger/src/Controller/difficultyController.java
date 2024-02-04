@@ -68,7 +68,7 @@ public class difficultyController {
 
     @FXML
     private void goHome() {
-        loadFXML("/View/home.fxml");
+        loadFXML("/View/Home.fxml");
     }
 
     @FXML
@@ -89,7 +89,6 @@ public class difficultyController {
     private void handleDifficultySelection(String difficulty) {
         this.selectedDifficulty = difficulty;
         System.out.println("Selected Difficulty: " + selectedDifficulty);
-
         // Open choosePlayers.fxml when a difficulty button is pressed
         loadFXML("/View/choosePlayers.fxml");
     }

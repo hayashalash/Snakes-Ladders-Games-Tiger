@@ -18,44 +18,43 @@ public class homeController {
     private Button question;
 
     @FXML
-    private Button exit;
+    private Button close;
 
     @FXML
     private Button info;
 
     @FXML
-    private Button editbutton;
+    private Button start;
 
     @FXML
     private void showHistory() {
-        openNewScene("/View/history.fxml");
+        openNewScene("/View/GameHistory.fxml");
     }
 
     @FXML
     private void showQuestion() {
-        openNewScene("/View/questions.fxml");
+        openNewScene("/View/manageQuestions.fxml");
     }
 
     @FXML
     private void exit() {
         // Handle the event when exit button is clicked
-        Stage stage = (Stage) exit.getScene().getWindow();
+        Stage stage = (Stage) close.getScene().getWindow();
         stage.close();
     }
 
     @FXML
     private void showInfo() {
-        openNewScene("/View/info.fxml");
+        openNewScene("/View/Info.fxml");
     }
 
     @FXML
-    private void editt() {
-        // Handle the event when edit button is clicked
-        // Your edit button logic here
+    private void start() {
+    	openNewScene("/View/difficulty.fxml");
     }
 
     private void openNewScene(String fxmlPath) {
-        Stage currentStage = (Stage) exit.getScene().getWindow();
+        Stage currentStage = (Stage) close.getScene().getWindow();
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
