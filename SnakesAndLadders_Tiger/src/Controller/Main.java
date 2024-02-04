@@ -18,7 +18,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			primaryStage.initStyle(StageStyle.DECORATED);
+			primaryStage.initStyle(StageStyle.UNDECORATED);
 			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
 			Scene scene = new Scene(root, 852, 525);
 			primaryStage.setScene(scene);

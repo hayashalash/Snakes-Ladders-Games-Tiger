@@ -31,12 +31,12 @@ import javafx.scene.layout.VBox;
 public class ChoosePlayersController implements Initializable{
 
 	// color images paths to be displayed in the combobox
-	private static final String GREEN = "file:/View/img/icons/green.png";
-	private static final String BLUE = "file:/View/img/icons/blue.png";
-	private static final String PINK = "file:/View/img/icons/pink.png";
-	private static final String RED = "file:/View/img/icons/red.png";
-	private static final String PURPLE = "file:/View/img/icons/purple.png";
-	private static final String YELLOW = "file:/View/img/icons/yellow.png";
+	private static final String GREEN = "file:/img/icons/green.png";
+	private static final String BLUE = "file:/img/icons/blue.png";
+	private static final String PINK = "file:/img/icons/pink.png";
+	private static final String RED = "file:/img/icons/red.png";
+	private static final String PURPLE = "file:/img/icons/purple.png";
+	private static final String YELLOW = "file:/img/icons/yellow.png";
 	private int playersNum = 2; //default value
 	@FXML
     private Button exitBtn;
@@ -231,9 +231,9 @@ public class ChoosePlayersController implements Initializable{
     		return ;
     	}
     	 	
-    	String p1color = player1clr.getSelectionModel().getSelectedItem().getUrl();
+    	String p1color = player1clr.getSelectionModel().getSelectedItem().toString();
     	String p1name = player1txt.getText();
-    	String p2color = player2clr.getSelectionModel().getSelectedItem().getUrl();
+    	String p2color = player2clr.getSelectionModel().getSelectedItem().toString();
     	String p2name = player2txt.getText();
     	Player firstP;
     	Player secondP;
