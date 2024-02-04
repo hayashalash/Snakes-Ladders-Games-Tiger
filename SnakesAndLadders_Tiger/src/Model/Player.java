@@ -13,7 +13,7 @@ public class Player {
 		this.playerID = idCounter++;
 		this.playerName = playerName;
 		this.playerColor = playerColor;
-		hasStarted=1;
+//		hasStarted=1;
 	}
 	
 	public void printPlayerAddedSuccess() {

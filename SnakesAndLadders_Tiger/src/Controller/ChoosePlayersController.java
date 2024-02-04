@@ -1,5 +1,6 @@
 package Controller;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Model.Color;
@@ -27,6 +28,13 @@ import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
 
+	// color images paths to be displayed in the combobox
+	private static final String GREEN = "file:/img/icons/green.png";
+	private static final String BLUE = "file:/img/icons/blue.png";
+	private static final String PINK = "file:/img/icons/pink.png";
+	private static final String RED = "file:/img/icons/red.png";
+	private static final String PURPLE = "file:/img/icons/purple.png";
+	private static final String YELLOW = "file:/img/icons/yellow.png";
 	private int playersNum = 2; //default value
 	@FXML
     private Button exitBtn;
@@ -67,6 +75,18 @@ public class ChoosePlayersController implements Initializable{
     @FXML
     private Button startGameBtn;
 
+    @FXML
+    private Button addThird;
+
+    @FXML
+    private Button removeThird;
+
+    @FXML
+    private Button addFourth;
+
+    @FXML
+    private Button removeFourth;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	final ObservableList<Image> images = fetchImages();
@@ -114,12 +134,12 @@ public class ChoosePlayersController implements Initializable{
     }
  
     private ObservableList<Image> fetchImages() { // get list of images of colors
-        Image green = new Image("file:/img/icons/green.png");
-    	Image blue = new Image("file:/img/icons/blue.png");
-    	Image pink = new Image("file:/img/icons/pink.png");
-    	Image red = new Image("file:/img/icons/red.png");
-    	Image purple = new Image("file:/img/icons/purple.png");
-    	Image yellow = new Image("file:/img/icons/yellow.png");
+        Image green = new Image(GREEN);
+    	Image blue = new Image(BLUE);
+    	Image pink = new Image(PINK);
+    	Image red = new Image(RED);
+    	Image purple = new Image(PURPLE);
+    	Image yellow = new Image(YELLOW);
     	ObservableList<Image> options = FXCollections.observableArrayList();
     	options.addAll(green, blue, pink, red, purple, yellow);
         
@@ -127,29 +147,49 @@ public class ChoosePlayersController implements Initializable{
     }
     
     @FXML
-    void fourthPlayer(MouseEvent event) {
-    	if (player3box.isDisable() && player4box.isDisable()) //cannot enable 4th player before 3rd
+    void addFourthP(ActionEvent event) {
+    	if (player3box.isDisable()) // cannot add 4th player before 3rd
     		return;
-    	if (player4box.isDisable()) { // add fourth player
-    		player4box.setDisable(false);
+    	if (player4box.isDisable()) {
+    		player3box.setDisable(false); // enable the box
+    		removeFourth.setDisable(false); // enable the option to remove 4th player
+    		addFourth.setDisable(true); // gray out the option to add
     		playersNum++;
-    	}
-    	else { // remove fourth player
-    		player4box.setDisable(true);
-    		playersNum--;
     	}
     }
 
     @FXML
-    void thirdPlayer(MouseEvent event) {
-    	if (!player3box.isDisable() && !player4box.isDisable()) // cannot disable 3rd player before 4th
-    		return;
+    void addThirdP(ActionEvent event) {
     	if (player3box.isDisable()) { // add third player
-    		player3box.setDisable(false);
+    		player3box.setDisable(false); // enable the box
+    		removeThird.setDisable(false); // enable the option to remove 3rd player
+    		addThird.setDisable(true); // gray out the option to add
     		playersNum++;
     	}
+    }
+
+    @FXML
+    void removeFourthP(ActionEvent event) {
+    	if (player4box.isDisable()) // this player is already grayed out
+    		return;
+    	player4txt.clear(); // clear the name
+		player4box.setDisable(true); // gray out the box
+		removeFourth.setDisable(true); // gray out the option to disable
+		addThird.setDisable(false); // enable the option to add
+		playersNum--;
+    }
+
+    @FXML
+    void remvoveThirdP(ActionEvent event) {
+    	if (!player4box.isDisable()) // cannot disable 3rd player before 4th
+    		return;
+    	if (player3box.isDisable()) // this player is already grayed out
+    		return;
     	else { // remove third player
-    		player3box.setDisable(true);
+    		player3txt.clear(); // clear the name
+    		player3box.setDisable(true); // gray out the box
+    		removeThird.setDisable(true); // gray out the option to disable
+    		addThird.setDisable(false); // enable the option to add
     		playersNum--;
     	}
     }
@@ -157,7 +197,7 @@ public class ChoosePlayersController implements Initializable{
     
     @FXML
     void backToDifficulty(ActionEvent event) {
-    	newScreen("Difficulty");
+    	newScreen("ChooseDifficulty");
     }
 
     @FXML
@@ -186,8 +226,64 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
     		return ;
     	}
-    	//if (player1clr.getSelectionModel().getSelectedItem() ==
-    	//Player p1 = new Player(player1txt.getText(), )
+    	 	
+    	String p1color = player1clr.getSelectionModel().getSelectedItem().getUrl();
+    	String p1name = player1txt.getText();
+    	String p2color = player2clr.getSelectionModel().getSelectedItem().getUrl();
+    	String p2name = player2txt.getText();
+    	Player firstP;
+    	Player secondP;
+    	
+    	//create first player
+    	if (p1color.equals(BLUE)){
+    		firstP = new Player(p1name, Color.Blue);
+    	}
+    	else if (p1color.equals(GREEN)){
+    		firstP = new Player(p1name, Color.Green);
+    	}
+    	else if (p1color.equals(PINK)){
+    		firstP = new Player(p1name, Color.Pink);
+    	}
+    	else if (p1color.equals(PURPLE)){
+    		firstP = new Player(p1name, Color.Purple);
+    	}
+    	else if (p1color.equals(RED)){
+    		firstP = new Player(p1name, Color.Red);
+    	}
+    	else if (p1color.equals(YELLOW)){
+    		firstP = new Player(p1name, Color.Yellow);
+    	}
+
+
+    	// create second player
+    	if (p2color.equals(BLUE)){
+    		secondP = new Player(p1name, Color.Blue);
+    	}
+    	else if (p2color.equals(GREEN)){
+    		secondP = new Player(p1name, Color.Green);
+    	}
+    	else if (p2color.equals(PINK)){
+    		secondP = new Player(p1name, Color.Pink);
+    	}
+    	else if (p2color.equals(PURPLE)){
+    		secondP = new Player(p1name, Color.Purple);
+    	}
+    	else if (p2color.equals(RED)){
+    		secondP = new Player(p1name, Color.Red);
+    	}
+    	else if (p2color.equals(YELLOW)){
+    		secondP = new Player(p1name, Color.Yellow);
+    	}
+    	
+    	if (playersNum == 3 || playersNum ==4) {
+    		// TODO create third player
+    	}
+    	
+    	if (playersNum ==4) {
+    		// TODO create fourth player
+    	}
+    	
+    	// TODO create game object and move to Game screen based on difficulty provided in previous screen
     }
     
     void newScreen(String path) {
