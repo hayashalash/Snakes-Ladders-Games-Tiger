@@ -3,6 +3,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Model.Color;
+import Model.Player;
 import View.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,10 +22,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
 
+	private int playersNum = 2; //default value
 	@FXML
     private Button exitBtn;
 
@@ -78,6 +81,7 @@ public class ChoosePlayersController implements Initializable{
 //    	media.setVisible(true);
 //    	player.setVolume(0.1);
 //    	player.play();
+    	
 	}
     
     private ComboBox<Image> fillComboBox(ObservableList<Image> options) { // fill a combo box with the color images
@@ -123,6 +127,35 @@ public class ChoosePlayersController implements Initializable{
     }
     
     @FXML
+    void fourthPlayer(MouseEvent event) {
+    	if (player3box.isDisable() && player4box.isDisable()) //cannot enable 4th player before 3rd
+    		return;
+    	if (player4box.isDisable()) { // add fourth player
+    		player4box.setDisable(false);
+    		playersNum++;
+    	}
+    	else { // remove fourth player
+    		player4box.setDisable(true);
+    		playersNum--;
+    	}
+    }
+
+    @FXML
+    void thirdPlayer(MouseEvent event) {
+    	if (!player3box.isDisable() && !player4box.isDisable()) // cannot disable 3rd player before 4th
+    		return;
+    	if (player3box.isDisable()) { // add third player
+    		player3box.setDisable(false);
+    		playersNum++;
+    	}
+    	else { // remove third player
+    		player3box.setDisable(true);
+    		playersNum--;
+    	}
+    }
+
+    
+    @FXML
     void backToDifficulty(ActionEvent event) {
     	newScreen("Difficulty");
     }
@@ -135,7 +168,26 @@ public class ChoosePlayersController implements Initializable{
 
     @FXML
     void startGame(ActionEvent event) {
-
+    	if ((playersNum == 2) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
+    			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty())) {
+    		Alerts.warning("Some of the information is missing. Please fill out all fields");
+    		return ;
+    	}
+    	if ((playersNum == 3) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
+    			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty() ||
+    			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty())) {
+    		Alerts.warning("Some of the information is missing. Please fill out all fields");
+    		return ;
+    	}
+    	if ((playersNum == 4) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
+    			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty()  ||
+    			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty() || 
+    			player4txt.getText().isEmpty() || player4clr.getSelectionModel().isEmpty())) {
+    		Alerts.warning("Some of the information is missing. Please fill out all fields");
+    		return ;
+    	}
+    	//if (player1clr.getSelectionModel().getSelectedItem() ==
+    	//Player p1 = new Player(player1txt.getText(), )
     }
     
     void newScreen(String path) {

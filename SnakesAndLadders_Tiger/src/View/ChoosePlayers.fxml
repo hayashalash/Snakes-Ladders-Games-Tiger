@@ -112,7 +112,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="player3box" disable="true" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                  <VBox fx:id="player3box" disable="true" onMouseClicked="#thirdPlayer" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -144,7 +144,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="player4box" disable="true" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <VBox fx:id="player4box" disable="true" onMouseClicked="#fourthPlayer" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
