@@ -13,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+
 import org.json.simple.parser.JSONParser;
 
 
@@ -24,6 +25,8 @@ public class SysData {
 //	private ArrayList<Question> MediumQuestions; 
 //	private ArrayList<Question> HardQuestions; 
 //	private Difficulty d;	
+	public ArrayList<Question> deleted = new ArrayList();
+//	public ArrayList<Question> edited = new ArrayList();
 	private HashSet<Game> games = new HashSet(); // we use HashSet to prevent duplication of question in the table
 	private HashSet<Question> questions = new HashSet();
 	
@@ -51,17 +54,17 @@ public class SysData {
 			return sysData;
 		}
 
-	public void importJson() throws IOException,  ParseException {
+	public void readFromJson() throws IOException,  ParseException {
 		
 		JSONParser parser = new JSONParser();
 		
-		FileInputStream file = new FileInputStream("JSON/questions_scheme.json");
+		FileInputStream file = new FileInputStream("JSON/demo.json");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
-		JSONArray qArray = (JSONArray) jsonObj.get("questions");
+		JSONArray questionArr = (JSONArray) jsonObj.get("questions");
 		
-		Iterator<JSONObject> QuestionIter = qArray.iterator();
+		Iterator<JSONObject> QuestionIter = questionArr.iterator();
 		while (QuestionIter.hasNext()) {
 
 			JSONObject que = QuestionIter.next();
@@ -89,58 +92,95 @@ public class SysData {
 			this.questions.add(newQues);
 		//	System.out.println(newQues.getDifficulty());
 		}
+		questions.removeAll(deleted);
 	}
 		
+	public void writeToJson(Question question) throws IOException, ParseException {
+		
+		JSONParser parser = new JSONParser();
+		
+		FileInputStream file = new FileInputStream("JSON/demo.json");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+		Object obj = parser.parse(reader);
+		JSONObject jsonObj = (JSONObject)obj;
+		JSONArray questionArr = (JSONArray) jsonObj.get("questions");
 
-//	public void writeJson(Question question) throws IOException, ParseException {
-//		
-//
-//		JSONParser parser = new JSONParser();
-//		FileInputStream fis = new FileInputStream("JSON/questions.json");
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-//		Object obje = parser.parse(reader);
-//		JSONObject jo = (JSONObject) obje;
-//		JSONArray quesArray = (JSONArray) jo.get("questions");
-//
-//
-//		JSONObject json = new JSONObject();
-//	    // add new question about software engineering and QA
-//	    json.put("question", question.getQuestion()); // maps the name question to a specific question
-//
-//	    JSONArray newQuestion = new JSONArray();
-//
-//	    newQuestion.add(question.getAnswer1()); // adding answers to the array
-//	    newQuestion.add(question.getAnswer2());
-//	    newQuestion.add(question.getAnswer3());
-//	    newQuestion.add(question.getAnswer4());
-//	  //convert the question level from enum to int 
-//	    Difficulty diff = question.getDifficulty();
-//	    String str;
-//	  		if (diff.equals(Difficulty.Easy)) {
-//	  			str = "1";
-//	  		} else if (diff.equals(Difficulty.Medium)) {	
-//	  			str = "2";
-//	  		} else {
-//	  			str = "3";
-//	  		}
-//	  	json.put("difficulty", str); // choosing the difficulty for each question
-//	    json.put("correct_ans", Integer.toString(question.getCorrectAnswer())); // specifying which answer is the correct answer
-//	    quesArray.add(newQuestion); // adding 4 answers to each question
-//
-//	    JSONObject Json2 = new JSONObject();
-//	    Json2.put("questions", quesArray);
-//
-//	    try {
-//	        FileWriter file2 = new FileWriter("JSON/questions.json");
-//	        file2.write(Json2.toJSONString());
-//	        file2.close();
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	    } finally {
-//	        SysData.getInstance().importJson();
-//	    }
-//	}
-						
+		JSONObject json = new JSONObject(); // new object type json
+	    // add new question about software engineering and QA
+	    JSONArray queAnswers = new JSONArray();
+
+	    queAnswers.add(question.getAnswer1()); // adding answers to the array
+	    queAnswers.add(question.getAnswer2());
+	    queAnswers.add(question.getAnswer3());
+	    queAnswers.add(question.getAnswer4());
+
+	    Difficulty diff = question.getDifficulty();
+	    String str; 	  //convert the question level from enum to int 
+
+	  		if (diff.equals(Difficulty.Easy)) {
+	  			str = "1";
+	  		} else if (diff.equals(Difficulty.Medium)) {	
+	  			str = "2";
+	  		} else {     //diff.equals(Difficulty.Hard)
+	  			str = "3"; 	
+	  		}
+	  	json.put("question", question.getQuestion()); // adding a question text to the json file
+		json.put("answers",queAnswers); //adding answers to the json file
+	  	json.put("difficulty", str); // adding difficulty for each question to the json file
+	    json.put("correct_ans", Integer.toString(question.getCorrectAnswer())); // specifying which answer is the correct answer
+	    questionArr.add(json); // adding the question to Json
+
+	    JSONObject Json2 = new JSONObject();
+	    Json2.put("questions", questionArr);
+
+	    try {
+	        FileWriter file2 = new FileWriter("JSON/demo.json");
+	        file2.write(Json2.toJSONString());
+	        file2.close();
+		} catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+        SysData.getInstance().readFromJson();
+	    }
+	}
+	
+	public void deleteFromJson(Question question) throws IOException, ParseException{
+		
+		JSONParser parser = new JSONParser();
+		
+		FileInputStream file = new FileInputStream("JSON/demo.json");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+		Object obj = parser.parse(reader);
+		JSONObject jsonObj = (JSONObject)obj;
+		JSONArray questionArr = (JSONArray) jsonObj.get("questions");
+		
+		Iterator<JSONObject> quesIterator = questionArr.iterator();
+		
+		while(quesIterator.hasNext()) {
+			JSONObject jsonObject = quesIterator.next();
+			String questionText = (String) jsonObject.get("question");
+			if(questionText.equals(question.getQuestion())) {
+				quesIterator.remove();
+			}
+			
+		}
+		JSONObject jsonObject2 = new JSONObject();
+		jsonObject2.put("questions", questionArr);
+		try {
+			FileWriter writeFile = new FileWriter("json/demo.json");
+			writeFile.write(jsonObject2.toJSONString());
+			writeFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			deleted.add(question);
+			SysData.getInstance().readFromJson();
+		}
+
+
+		}
+		
 		
 }
 	

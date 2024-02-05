@@ -17,7 +17,6 @@ import Model.SysData;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
@@ -53,6 +52,8 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button exit;
 
+	private static Question editSelection;
+
     @FXML
     void addQuestion(ActionEvent event) {
     	newScreen("AddQuestion");
@@ -61,17 +62,39 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     void deleteQuestion(ActionEvent event) throws IOException, ParseException {
     	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    		Alerts.message("Error","Please select a question to delete");
+    		Alerts.message("Error","Please select a question to delete.");
     		return;
-    }
-    
+    	}
+    	String deletedQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
+    	Difficulty deletedDifficulty = questionTable.getSelectionModel().getSelectedItem().getDifficulty();
+    	String deletedAnswer1 = questionTable.getSelectionModel().getSelectedItem().getAnswer1();
+    	String deletedAnswer2 = questionTable.getSelectionModel().getSelectedItem().getAnswer2();
+    	String deletedAnswer3 = questionTable.getSelectionModel().getSelectedItem().getAnswer3();
+    	String deletedAnswer4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
+    	Integer deletedCorrect = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
+
+    	Question deletedQuestions = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
+    			,deletedDifficulty,deletedCorrect);
+    	SysData.getInstance().deleteFromJson(deletedQuestions);
+    	Alerts.delete(deletedQuestion);
+		SysData.getInstance().getQuestions().removeAll(SysData.getInstance().deleted);
+		fill();
+    	questionTable.getItems().clear();
+		fill();
+		
     }
     
     
     @FXML
     void editQuestion(ActionEvent event) {
-    	newScreen("EditQuestion");
-    }
+ 
+    		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
+    			Alerts.message("Error", "Please choose question that you want to edit.");
+    		}
+    		//question to update is question selected
+    		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
+    		newScreen("EditQuestion");
+    	}
 
     @FXML
     void exitGame(ActionEvent event) {
@@ -97,7 +120,7 @@ public class ManageQuestionsController implements Initializable {
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			SysData.getInstance().importJson();
+			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,12 +134,14 @@ public class ManageQuestionsController implements Initializable {
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-		 HashSet<Question> arr = new HashSet<>();
+		HashSet<Question> arr = new HashSet<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
   		// System.out.println(arr);
 
   	}
+    
+
 
 }

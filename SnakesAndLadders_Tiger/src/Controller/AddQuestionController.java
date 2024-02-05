@@ -58,38 +58,41 @@ public class AddQuestionController  implements Initializable{
     private Button exitButton;
 
     @FXML
-    void addQuestion(ActionEvent event) {
-//    	String question = null;
-//		String first = null;
-//		String second = null;
-//		String third = null;
-//		String fourth = null;
-//		Difficulty diff = null;
-//		int correct = 0;
-//
-//		try {
-//						//reading the fields from the screen.
-//			question = questionText.getText();
-//			first = ans1Text.getText();
-//			second = ans2Text.getText();
-//			third = ans3Text.getText();
-//			fourth = ans4Text.getText();
-//
-//			diff = difficulty.getSelectionModel().getSelectedItem();
-//			correct = correctAnswer.getSelectionModel().getSelectedItem();
-//
-//		} catch (NullPointerException e) {
-//			// TODO: handle exception
-//			Alerts.warning("Plesae Fill All Fields!");
-//		}
-//	
-//		//creating the new question object
-//		Question newQuestion = new Question(first,second,third,fourth,question,diff,correct);
-//		//write our question to json and add to question hashSet
-//		SysData.getInstance().writeJson(newQuestion);
-//		//clear fields
-//		clearFields();
-//		Alerts.message("Added", "Question has been added succesfully!");
+    boolean addQuestion(ActionEvent event) throws IOException, ParseException {
+    	if(questionText.getText().length() == 0 || ans1Text.getText().length() == 0 ||
+    			ans2Text.getText().length() == 0 || ans3Text.getText().length() == 0 ||
+    			ans4Text.getText().length() == 0) {
+		     //if there's one field empty the user gets a note : add is not applied!
+			Alerts.message("Error", "Please fill all the fileds");
+			return false;
+		}
+		//check if the combo box selected (filled)
+		if(difficulty.getSelectionModel().getSelectedIndex() == -1 || correctAnswer.getSelectionModel().getSelectedIndex() == -1) {
+			Alerts.message("Error", "Please fill all the fileds");
+			return false;
+		}
+		String ques = questionText.getText();
+		String ans1 = ans1Text.getText();
+		String ans2 = ans2Text.getText();
+		String ans3 = ans3Text.getText();
+		String ans4 = ans4Text.getText();
+		Difficulty diff ;
+		int correct = 0 ;
+		diff = difficulty.getSelectionModel().getSelectedItem();
+		correct = correctAnswer.getSelectionModel().getSelectedItem();
+		System.out.println(diff);
+		System.out.println(correct);
+
+		//creating the new question object
+		Question question = new Question(ans1,ans2, ans3,ans4,ques,diff,correct);
+		System.out.println(question);
+		//write our question to json and add to question hashSet
+		SysData.getInstance().writeToJson(question);
+		//clear fields
+		clearFields();
+		Alerts.message("Added", "Question has been added succesfully!");
+		return true;
+
 
     }
 

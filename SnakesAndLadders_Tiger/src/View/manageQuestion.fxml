@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,11 +16,14 @@
             <Image url="@../img/screens/Q&amp;ABack.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="questionTable" layoutX="146.0" layoutY="147.0" prefHeight="256.0" prefWidth="584.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="questionTable" layoutX="146.0" layoutY="147.0" prefHeight="255.0" prefWidth="580.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="question" prefWidth="467.0" style="-fx-background-color: #FFDAB9;" text="Question" />
-            <TableColumn fx:id="difficulty" prefWidth="119.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
+            <TableColumn fx:id="question" prefWidth="460.0" style="-fx-background-color: #FFDAB9;" text="Question" />
+            <TableColumn fx:id="difficulty" prefWidth="120.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
+         <effect>
+            <Glow />
+         </effect>
       </TableView>
       <Button fx:id="home" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
          <graphic>
