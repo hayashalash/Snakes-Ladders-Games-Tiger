@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 
 public class difficultyController implements Initializable {
 
-	Difficulty dif;
     @FXML
     private Button easyButton;
 
@@ -44,21 +43,21 @@ public class difficultyController implements Initializable {
 
     @FXML
     void hard(ActionEvent event) {
-    	dif = Difficulty.Hard;
+    	ChoosePlayersController.diff = Difficulty.Hard;
     	// TODO pass difficulty to next screen
     	newScreen("ChoosePlayers");
     }
 
     @FXML
     void normal(ActionEvent event) {
-    	dif = Difficulty.Medium;
+    	ChoosePlayersController.diff = Difficulty.Medium;
     	// TODO pass difficulty to next screen
     	newScreen("ChoosePlayers");
     }
 
     @FXML
     void easy(ActionEvent event) {
-    	dif = Difficulty.Easy;
+    	ChoosePlayersController.diff = Difficulty.Easy;
     	// TODO pass difficulty to next screen
     	newScreen("ChoosePlayers");
     }

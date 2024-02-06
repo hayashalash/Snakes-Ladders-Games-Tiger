@@ -6,7 +6,7 @@ import java.util.Objects;
 public  class  Question implements Comparable<Question>{
 	
 	//private ArrayList<Answer> answers;
-	private static int idCounter = 1;
+	public static int idCounter = 1;
 	private String answer1;
 	private String answer2;
 	private String answer3;

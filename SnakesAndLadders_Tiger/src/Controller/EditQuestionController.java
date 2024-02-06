@@ -21,7 +21,7 @@ import Model.Question;
 import Model.SysData;
 
 public class EditQuestionController implements Initializable {
-    public static Question edited = null;
+    public static Question edited;
 
 
     @FXML
@@ -43,7 +43,7 @@ public class EditQuestionController implements Initializable {
     private ComboBox<Difficulty> difficulty;
 
     @FXML
-    private ComboBox<Integer> correctAnswer;
+    private ComboBox<String> correctAnswer;
 
     @FXML
     private Button edit;
@@ -63,19 +63,19 @@ public class EditQuestionController implements Initializable {
     			difficulty.getSelectionModel().getSelectedIndex() == -1){
     			Alerts.message("Error","Please fill all the fields");
     	}
-    	
-    	String quesEdit= questionText.getText();
-    	String ans1Edit= ans1Text.getText();
-    	String ans2Edit= ans2Text.getText();
-    	String ans3Edit= ans3Text.getText();
-    	String ans4Edit= ans4Text.getText();
-    	Difficulty di = difficulty.getSelectionModel().getSelectedItem();
-    	Integer corr = correctAnswer.getSelectionModel().getSelectedIndex();
-    			
-    	Question ques = new Question(ans1Edit,ans2Edit,ans3Edit,ans4Edit,quesEdit,di,corr); 	
-    	SysData.getInstance().deleteFromJson(edited);
-    	SysData.getInstance().writeToJson(ques);
-	//	Alerts.edit();
+    	if (Alerts.edit() == 1) {
+	    	String quesEdit= questionText.getText();
+	    	String ans1Edit= ans1Text.getText();
+	    	String ans2Edit= ans2Text.getText();
+	    	String ans3Edit= ans3Text.getText();
+	    	String ans4Edit= ans4Text.getText();
+	    	Difficulty di = difficulty.getSelectionModel().getSelectedItem();
+	    	Integer corr = correctAnswer.getSelectionModel().getSelectedIndex();
+	    			
+	    	Question ques = new Question(ans1Edit,ans2Edit,ans3Edit,ans4Edit,quesEdit,di,corr); 	
+	    	SysData.getInstance().deleteFromJson(edited);
+	    	SysData.getInstance().writeToJson(ques);
+    	}
     	return;
     }
 
@@ -107,18 +107,19 @@ public class EditQuestionController implements Initializable {
 	
 	public void fill() {
 		questionText.setText(edited.getQuestion());
-//		ans1Text.setText(edited.getAnswer1());
-//		ans1Text.setText(edited.getAnswer2());
-//		ans1Text.setText(edited.getAnswer3());
-//		ans1Text.setText(edited.getAnswer4());
-//		correctAnswer.getItems().addAll(1, 2, 3, 4);
+		ans1Text.setText(edited.getAnswer1());
+		ans2Text.setText(edited.getAnswer2());
+		ans3Text.setText(edited.getAnswer3());
+		ans4Text.setText(edited.getAnswer4());
+		correctAnswer.getItems().addAll("1", "2", "3", "4");
 		
 		for (Difficulty d : Difficulty.values()) {
 			difficulty.getItems().add(d);
 		}
 		
 		difficulty.getSelectionModel().select(edited.getDifficulty());
-//		correctAnswer.getSelectionModel().select(edited.getCorrectAnswer());
+		String correct = Integer.toString(edited.getCorrectAnswer());
+		correctAnswer.getSelectionModel().select(correct);
 	}
 	
 	

@@ -92,8 +92,6 @@ public class AddQuestionController  implements Initializable{
 		clearFields();
 		Alerts.message("Added", "Question has been added succesfully!");
 		return true;
-
-
     }
 
     @FXML

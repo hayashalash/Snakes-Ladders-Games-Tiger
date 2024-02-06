@@ -7,12 +7,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import Model.SysData;
 
 import java.io.IOException;
@@ -40,6 +46,9 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     private TableColumn<Question, Integer> questionNum;
+    
+    @FXML
+    private TableColumn<Question, Void> answers;
 
     @FXML
     private Button delete;
@@ -87,6 +96,7 @@ public class ManageQuestionsController implements Initializable {
     	SysData.getInstance().deleteFromJson(deletedQuestions);
     	Alerts.delete(deletedQuestion);
 		SysData.getInstance().getQuestions().removeAll(SysData.getInstance().deleted);
+//		Question.idCounter--;
 		fill();
     	questionTable.getItems().clear();
 		fill();
@@ -99,6 +109,7 @@ public class ManageQuestionsController implements Initializable {
  
     		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
     			Alerts.message("Error", "Please choose question that you want to edit.");
+    			return;
     		}
     		//the question that we want to update is selected
     		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
@@ -136,7 +147,6 @@ public class ManageQuestionsController implements Initializable {
 		}
 		fill();
 		questionTable.refresh();
-		
 	}
     public void fill() {
     	
@@ -144,6 +154,53 @@ public class ManageQuestionsController implements Initializable {
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
+		
+		// answers column
+		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory = new Callback<TableColumn<Question, Void>, TableCell<Question, Void>>() {
+			@Override
+			public TableCell<Question, Void> call(final TableColumn<Question, Void> param) {
+				final TableCell<Question, Void> cell = new TableCell<Question, Void>() {
+
+					private final ComboBox <String> cb = new ComboBox<>();
+
+					private final VBox pane = new VBox(1, cb);
+
+					{
+						pane.setAlignment(Pos.CENTER);
+						cb.setMaxWidth(150);
+						cb.setPrefWidth(150);
+						cb.addEventHandler(ComboBox.ON_SHOWING, event -> {
+							Question q = getTableView().getItems().get(getIndex());
+							ArrayList<String> answers = new ArrayList();
+							String a1 = q.getAnswer1();
+							String a2 = q.getAnswer2();
+							String a3 = q.getAnswer3();
+							String a4 = q.getAnswer4();
+							answers.add(a1);
+							answers.add(a2);
+							answers.add(a3);
+							answers.add(a4);
+							ObservableList<String> data;
+							data = FXCollections.observableArrayList(answers);
+
+							cb.setItems(data);
+						});
+					
+					}
+					@Override
+					protected void updateItem(Void item, boolean empty) {
+						super.updateItem(item, empty);
+
+						setGraphic(empty ? null : pane);
+						
+					}
+					
+				};
+				return cell;
+			}
+		};
+		answers.setCellFactory(cellFactory);
+		
 		HashSet<Question> arr = new HashSet<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
@@ -167,16 +224,16 @@ public class ManageQuestionsController implements Initializable {
     			sorted.add(q);
     		}
     	}
-    		for(Question q : sortDiff) {
-        		if(q.getDifficulty().equals(Difficulty.Hard)) {
-        			sorted.add(q);
-        		}
+		for(Question q : sortDiff) {
+    		if(q.getDifficulty().equals(Difficulty.Hard)) {
+    			sorted.add(q);
     		}
-    		ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
-    		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
-    		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-      		ObservableList<Question>temp =  FXCollections.observableArrayList(dataQuestion);
-      		questionTable.setItems(temp);
+		}
+		ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
+		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
+		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
+  		ObservableList<Question>temp =  FXCollections.observableArrayList(dataQuestion);
+  		questionTable.setItems(temp);
     }
 
     @FXML

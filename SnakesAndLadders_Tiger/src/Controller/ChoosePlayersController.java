@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Model.Color;
+import Model.Difficulty;
+import Model.Game;
 import Model.Player;
 import View.Alerts;
 import javafx.collections.FXCollections;
@@ -38,6 +40,8 @@ public class ChoosePlayersController implements Initializable{
 	private static final String PURPLE = "file:/img/icons/purple.png";
 	private static final String YELLOW = "file:/img/icons/yellow.png";
 	private int playersNum = 2; //default value
+	
+	public static Difficulty diff;
 	@FXML
     private Button exitBtn;
 
@@ -230,7 +234,7 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
     		return ;
     	}
-    	 	
+    	ArrayList<Player> players = new ArrayList();	
     	String p1color = player1clr.getSelectionModel().getSelectedItem().toString();
     	String p1name = player1txt.getText();
     	String p2color = player2clr.getSelectionModel().getSelectedItem().toString();
@@ -239,56 +243,79 @@ public class ChoosePlayersController implements Initializable{
     	Player secondP;
     	
     	//create first player
-    	if (p1color.equals(BLUE)){
+    	if (p1color.equals(BLUE))
     		firstP = new Player(p1name, Color.Blue);
-    	}
-    	else if (p1color.equals(GREEN)){
+    	else if (p1color.equals(GREEN))
     		firstP = new Player(p1name, Color.Green);
-    	}
-    	else if (p1color.equals(PINK)){
+    	else if (p1color.equals(PINK))
     		firstP = new Player(p1name, Color.Pink);
-    	}
-    	else if (p1color.equals(PURPLE)){
+    	else if (p1color.equals(PURPLE))
     		firstP = new Player(p1name, Color.Purple);
-    	}
-    	else if (p1color.equals(RED)){
+    	else if (p1color.equals(RED))
     		firstP = new Player(p1name, Color.Red);
-    	}
-    	else if (p1color.equals(YELLOW)){
+    	else // if (p1color.equals(YELLOW))
     		firstP = new Player(p1name, Color.Yellow);
-    	}
-
+    	
+    	players.add(firstP);
 
     	// create second player
-    	if (p2color.equals(BLUE)){
+    	if (p2color.equals(BLUE))
     		secondP = new Player(p1name, Color.Blue);
-    	}
-    	else if (p2color.equals(GREEN)){
+    	else if (p2color.equals(GREEN))
     		secondP = new Player(p1name, Color.Green);
-    	}
-    	else if (p2color.equals(PINK)){
+    	else if (p2color.equals(PINK))
     		secondP = new Player(p1name, Color.Pink);
-    	}
-    	else if (p2color.equals(PURPLE)){
+    	else if (p2color.equals(PURPLE))
     		secondP = new Player(p1name, Color.Purple);
-    	}
-    	else if (p2color.equals(RED)){
+    	else if (p2color.equals(RED))
     		secondP = new Player(p1name, Color.Red);
-    	}
-    	else if (p2color.equals(YELLOW)){
+    	else // if (p2color.equals(YELLOW)){
     		secondP = new Player(p1name, Color.Yellow);
-    	}
+    	
+    	players.add(secondP);
     	
     	if (playersNum == 3 || playersNum ==4) {
-    		// TODO create third player
+    		String p3color = player3clr.getSelectionModel().getSelectedItem().toString();
+        	String p3name = player3txt.getText();
+        	Player thirdP;
+    		if (p3color.equals(BLUE))
+    			thirdP = new Player(p3name, Color.Blue);
+        	else if (p3color.equals(GREEN))
+        		thirdP = new Player(p3name, Color.Green);
+        	else if (p3color.equals(PINK))
+        		thirdP = new Player(p3name, Color.Pink);
+        	else if (p3color.equals(PURPLE))
+        		thirdP = new Player(p3name, Color.Purple);
+        	else if (p3color.equals(RED))
+        		thirdP = new Player(p3name, Color.Red);
+        	else // if (p3color.equals(YELLOW))
+        		thirdP = new Player(p3name, Color.Yellow);
+    		
+    		players.add(thirdP);
     	}
     	
     	if (playersNum ==4) {
-    		// TODO create fourth player
+    		String p4color = player4clr.getSelectionModel().getSelectedItem().toString();
+        	String p4name = player4txt.getText();
+        	Player fourthP;
+    		if (p4color.equals(BLUE))
+    			fourthP = new Player(p4name, Color.Blue);
+        	else if (p4color.equals(GREEN))
+        		fourthP = new Player(p4name, Color.Green);
+        	else if (p4color.equals(PINK))
+        		fourthP = new Player(p4name, Color.Pink);
+        	else if (p4color.equals(PURPLE))
+        		fourthP = new Player(p4name, Color.Purple);
+        	else if (p4color.equals(RED))
+        		fourthP = new Player(p4name, Color.Red);
+        	else // if (p4color.equals(YELLOW))
+        		fourthP = new Player(p4name, Color.Yellow);
+    		
+    		players.add(fourthP);
     	}
-    	
-    	// TODO create game object and move to Game screen based on difficulty provided in previous screen
-    	
+    	Game g = new Game(diff, playersNum, players);
+    	// TODO go to Game screen based on difficulty provided in previous screen
+    	// have a field to save the game in each controller (easy game, normal game, hard game) and set it to g (game created earlier)
     }
     
     void newScreen(String path) {

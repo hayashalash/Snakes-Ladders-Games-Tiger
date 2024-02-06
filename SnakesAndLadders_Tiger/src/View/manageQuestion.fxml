@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -21,7 +21,7 @@
          <columns>
             <TableColumn fx:id="questionNum" prefWidth="61.0" style="-fx-background-color: #FFDAB9;" text="No." />
             <TableColumn fx:id="question" prefWidth="245.0" style="-fx-background-color: #FFDAB9;" text="Question" />
-            <TableColumn prefWidth="254.0" style="-fx-background-color: #FFDAB9;" text="Answers" />
+            <TableColumn fx:id="answers" prefWidth="254.0" style="-fx-background-color: #FFDAB9;" text="Answers" />
             <TableColumn fx:id="difficulty" prefWidth="76.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
          <effect>
