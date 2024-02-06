@@ -72,51 +72,87 @@ public class ManageQuestionsController implements Initializable {
     private CheckBox checkNumber;
     
     @FXML
-    private CheckBox checkOrder;
+    private CheckBox checkDifficulty;
 
-    private boolean isSorted = false;
-    private List<Question> originalOrder;
+    private boolean isSortedByNum = false;
+    private boolean isSortedByDifficulty = false;
+
+    private ArrayList<Question> originalOrderNum;
+    private ArrayList<Question> originalOrder;
 
     @FXML
-    void OrderDifficulty(ActionEvent event) {
-        if (!isSorted) {
-            // Save the original order before sorting
-            originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
-            
-            ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
-            ArrayList<Question> sorted = new ArrayList<>();
+    void OrderNumQuestion(ActionEvent event) {
+        if (checkNumber.isSelected()) {
+            isSortedByDifficulty = false;
+            checkDifficulty.setSelected(false);
 
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Easy)) {
-                    sorted.add(q);
-                }
-            }
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Medium)) {
-                    sorted.add(q);
-                }
-            }
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Hard)) {
-                    sorted.add(q);
-                }
-            }
-            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
-            question.setCellValueFactory(new PropertyValueFactory<>("question"));
-            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
-            ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
-            questionTable.setItems(temp);
+            if (!isSortedByNum) {
+                originalOrderNum = new ArrayList<>(SysData.getInstance().getQuestions());
+                ArrayList<Question> orderByNum = new ArrayList<>(originalOrderNum);
 
-            isSorted = true;
+                Collections.sort(orderByNum, Comparator.comparingInt(Question::getQuestionID));
+
+                ObservableList<Question> dataQuestion = FXCollections.observableArrayList(orderByNum);
+                question.setCellValueFactory(new PropertyValueFactory<>("question"));
+                difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+                questionTable.setItems(dataQuestion);
+
+                isSortedByNum = true;
+            } else {
+                ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
+                questionTable.setItems(temp);
+
+                isSortedByNum = false;
+            }
         } else {
-            // Restore the original order
-            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+            // If the checkbox is deselected, restore the original order
+            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
             questionTable.setItems(temp);
-            
-            isSorted = false;
+
+            isSortedByNum = false;
         }
     }
 
+    @FXML
+    void OrderDifficulty(ActionEvent event) {
+        if (checkDifficulty.isSelected()) {
+            isSortedByNum = false;
+            checkNumber.setSelected(false);
+
+            if (!isSortedByDifficulty) {
+                originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
+                ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
+                ArrayList<Question> sorted = new ArrayList<>();
+
+                for (Difficulty diff : Difficulty.values()) {
+                    for (Question q : sortDiff) {
+                        if (q.getDifficulty().equals(diff)) {
+                            sorted.add(q);
+                        }
+                    }
+                }
+
+                ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
+                question.setCellValueFactory(new PropertyValueFactory<>("question"));
+                difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+                ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
+                questionTable.setItems(temp);
+
+                isSortedByDifficulty = true;
+            } else {
+                ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+                questionTable.setItems(temp);
+
+                isSortedByDifficulty = false;
+            }
+        } else {
+            // If the checkbox is deselected, restore the original order
+            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+            questionTable.setItems(temp);
+
+            isSortedByDifficulty = false;
+        }
+    }
 
 
     @FXML
@@ -186,12 +222,12 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		try {
-//			SysData.getInstance().readFromJson();
-//		} catch (IOException | ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			SysData.getInstance().readFromJson();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		fill();
 		questionTable.refresh();
 	}
@@ -270,41 +306,6 @@ public class ManageQuestionsController implements Initializable {
   		// System.out.println(arr);
 
   	}
-    
-    private boolean isSortedByNum = false;
-    private List<Question> originalOrderNum;
-
-    @FXML
-    void OrderNumQuestion(ActionEvent event) {
-        if (!isSortedByNum) {
-            // Save the original order before sorting
-            originalOrderNum = new ArrayList<>(SysData.getInstance().getQuestions());
-
-            ArrayList<Question> orderByNum = new ArrayList<>(originalOrderNum);
-
-            Collections.sort(orderByNum, new Comparator<Question>() {
-                @Override
-                public int compare(Question q1, Question q2) {
-                    // Compare questionID as integers
-                    return Integer.compare(q1.getQuestionID(), q2.getQuestionID());
-                }
-            });
-
-            // View on table
-            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(orderByNum);
-            question.setCellValueFactory(new PropertyValueFactory<>("question"));
-            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
-            questionTable.setItems(dataQuestion);
-
-            isSortedByNum = true;
-        } else {
-            // Restore the original order
-            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
-            questionTable.setItems(temp);
-
-            isSortedByNum = false;
-        }
-    }
-    
+   
 
 }

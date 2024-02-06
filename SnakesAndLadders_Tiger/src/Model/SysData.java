@@ -2,9 +2,11 @@ package Model;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import Model.Game;
 
 import org.json.simple.parser.JSONParser;
 
@@ -27,8 +30,8 @@ public class SysData {
 //	private Difficulty d;	
 	public ArrayList<Question> deleted = new ArrayList();
 //	public ArrayList<Question> edited = new ArrayList();
-	private HashSet<Game> games = new HashSet(); // we use HashSet to prevent duplication of question in the table
-	private HashSet<Question> questions = new HashSet();
+	private HashSet<Game> games = new HashSet(); 
+	private HashSet<Question> questions = new HashSet(); // we use HashSet to prevent duplication of question in the table
 	
 
 	public HashSet<Game> getGames() {
@@ -115,7 +118,7 @@ public class SysData {
 	    queAnswers.add(question.getAnswer4());
 
 	    Difficulty diff = question.getDifficulty();
-	    String str; 	  //convert the question level from enum to int 
+	    String str; 	  //convert the question level from enum to string 
 
 	  		if (diff.equals(Difficulty.Easy)) {
 	  			str = "1";
@@ -176,11 +179,116 @@ public class SysData {
 		}finally {
 			deleted.add(question);
 			SysData.getInstance().readFromJson();
+				}
 		}
-
-
-		}
+	
+	public   boolean isJsonEmpty(BufferedReader reader) throws IOException {
 		
+	    String json = "";
+	    String line;
+	    while ((line = reader.readLine()) != null) {
+	      json += line;
+	    }
+	    reader.close();
+
+	    // Check if the JSON file is empty
+	    if (json.length() == 0) {
+	      System.out.println("The JSON file is empty");
+	      return true;
+	    } else {
+	    	return false;
+	    }
+		 
+	}
+	// this method to save the games history in json file  
+	public void writeToJsonGames(Game g) throws IOException, ParseException { 
+		JSONParser parser = new JSONParser();
+		FileInputStream fis = new FileInputStream("JSON/History.json");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+		Object obje = parser.parse(reader);
+		JSONObject jo = (JSONObject) obje;
+		JSONArray gamesArray = (JSONArray) jo.get("games");
+		
+		JSONObject jsonObject = new JSONObject();
+		
+//		jsonObject.put("GameNumber", g.getGameID());
+		jsonObject.put("Winner", g.getWinner().getPlayerName());
+		  Difficulty diff = g.getType();
+		    String str; 	  //convert the question level from enum to string 
+
+		  		if (diff.equals(Difficulty.Easy)) {
+		  			str = "1";
+		  		} else if (diff.equals(Difficulty.Medium)) {	
+		  			str = "1";
+		  		} else {     //diff.equals(Difficulty.Hard)
+		  			str = "1"; 	
+		  		}
+		jsonObject.put("Difficulty", str);
+		Double dur = g.getGameDuration();
+		jsonObject.put("Duration", dur.toString());
+		
+		gamesArray.add(jsonObject);
+		JSONObject jsonObject2 = new JSONObject();
+		jsonObject2.put("gamesHistory", gamesArray); 
+		try {
+			FileWriter file = new FileWriter("JSON/History.json");
+			file.write(jsonObject2.toJSONString());
+			file.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void ReadFromJsonGames() throws IOException, ParseException {
+		
+		try ( FileInputStream fis = new FileInputStream("JSON/History.json"))
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+	         if (isJsonEmpty(reader)==true)
+	         {
+	        	 return;
+	         }
+	         else {
+	 			JSONParser parser2 = new JSONParser();
+	 			FileInputStream fis2 = new FileInputStream("JSON/History.json");
+				BufferedReader reader2 = new BufferedReader(new InputStreamReader(fis2));
+				Object obje = parser2.parse(reader2);
+			
+				JSONObject jo = (JSONObject) obje;
+	
+				JSONArray quesArray = (JSONArray) jo.get("gamesHistory");
+
+				Iterator<JSONObject> QuestionIter = quesArray.iterator();
+				while (QuestionIter.hasNext()) {
+	
+					JSONObject que = QuestionIter.next();
+					Double durr = Double.valueOf(que.get("Duration").toString());
+					Player PlayerName = (Player)que.get("Winner");
+					String diff = (String) que.get("difficulty");
+					Difficulty d;
+					if (diff.equals("1")) 
+						d = Difficulty.Easy;		
+					else if (diff.equals("2"))
+						d = Difficulty.Medium;
+					else // if (diff == "3")
+						d = Difficulty.Hard;
+					
+	            	Game g = new Game(d,durr,PlayerName);
+	            	SysData.getInstance().getGames().add(g);
+				}}
+			}
+			catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			catch (IOException e) {
+					e.printStackTrace();
+				}	
+			catch (ParseException e) {
+					e.printStackTrace();
+					}	
+		
+	}
 		
 }
 	

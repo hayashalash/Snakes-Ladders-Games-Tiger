@@ -78,7 +78,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <CheckBox fx:id="checkOrder" layoutX="259.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
+      <CheckBox fx:id="checkDifficulty" layoutX="259.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>

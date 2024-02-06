@@ -47,21 +47,23 @@ public class homeController implements Initializable{
     
     @FXML
     void TurnOff(ActionEvent event) {
-    	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
-    			note.stop();
-    			turnOffIcon.setOpacity(1.0);
-    			turnOffIcon.setMouseTransparent(true);
-    		}
-    	else { // is music is off
-    		note.play();
-    		turnOffIcon.setOpacity(0.0);
-    	}
+//    	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
+//    			note.stop();
+//    			turnOffIcon.setOpacity(1.0);
+//    		}
+//    	else { // is music is off
+//    		note.play();
+//    		turnOffIcon.setOpacity(0.0);
+//    	}
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-    	note.play();
+//    	note.play();
+//		turnOffIcon.setMouseTransparent(true);
+
 
     }
+    
     @FXML
     void start(ActionEvent event) {
     	newScreen("ChooseDifficulty");

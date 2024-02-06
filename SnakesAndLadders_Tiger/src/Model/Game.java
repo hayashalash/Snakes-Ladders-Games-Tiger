@@ -10,7 +10,7 @@ public class Game {
 	private Difficulty type;
 	private Date date;
 	private int playersNum;
-	private int gameDuration = 0;
+	private Double gameDuration;
 	private ArrayList<Player> players;
 	private Player winner;
 	
@@ -21,6 +21,16 @@ public class Game {
 		this.playersNum = playersNum;
 		this.players = players;
 	}
+	
+
+	public Game(Difficulty type, Double gameDuration, Player winner) {
+		super();
+		GameID = idCounter++;
+		this.type = type;
+		this.gameDuration = gameDuration;
+		this.winner = winner;
+	}
+
 
 	public int getGameID() {
 		return GameID;
@@ -46,11 +56,11 @@ public class Game {
 		this.playersNum = playersNum;
 	}
 
-	public int getGameDuration() {
+	public Double getGameDuration() {
 		return gameDuration;
 	}
 
-	public void setGameDuration(int gameDuration) {
+	public void setGameDuration(Double gameDuration) {
 		this.gameDuration = gameDuration;
 	}
 
