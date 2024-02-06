@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.sound.sampled.AudioInputStream;
+
+
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class homeController implements Initializable{
 
@@ -30,8 +37,30 @@ public class homeController implements Initializable{
     @FXML
     private Button start;
 
+    @FXML
+    private ImageView turnOffIcon;
+
+    @FXML
+    private Button musicOff;
+    
+    AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/Music.wav").toString());
+    
+    @FXML
+    void TurnOff(ActionEvent event) {
+    	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
+    			note.stop();
+    			turnOffIcon.setOpacity(1.0);
+    			turnOffIcon.setMouseTransparent(true);
+    		}
+    	else { // is music is off
+    		note.play();
+    		turnOffIcon.setOpacity(0.0);
+    	}
+    }
+
     public void initialize(URL location, ResourceBundle resources) {
-    	
+    	note.play();
+
     }
     @FXML
     void start(ActionEvent event) {

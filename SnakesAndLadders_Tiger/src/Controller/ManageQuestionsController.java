@@ -186,12 +186,12 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			SysData.getInstance().readFromJson();
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			SysData.getInstance().readFromJson();
+//		} catch (IOException | ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		fill();
 		questionTable.refresh();
 	}
@@ -211,7 +211,7 @@ public class ManageQuestionsController implements Initializable {
 
 		                private final ComboBox<String> cb = new ComboBox<>();
 		                private final VBox pane = new VBox(1, cb);
-
+		           
 		                {
 		                    pane.setAlignment(Pos.CENTER);
 		                    cb.setMaxWidth(150);
@@ -232,6 +232,22 @@ public class ManageQuestionsController implements Initializable {
 		                        ObservableList<String> data = FXCollections.observableArrayList(answers);
 
 		                        cb.setItems(data);
+		                        
+//		                        if (item == null || empty) {
+//		                            setText(null);
+//		                            setStyle(null);
+//		                        } else {
+//		                            setText(item);
+//
+//		                            // Check if the item is the one you want to style differently
+//		                            if ("right answer".equals(item)) {
+//		                                // Apply the fixed style to this specific cell
+//		                                setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+//		                            } else {
+//		                                // Reset style for other cells
+//		                                setStyle(null);
+//		                            }
+//		                        }
 		                    });
 		                }
 
