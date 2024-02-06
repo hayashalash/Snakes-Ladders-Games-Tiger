@@ -80,8 +80,8 @@ public class AddQuestionController  implements Initializable{
 		int correct = 0 ;
 		diff = difficulty.getSelectionModel().getSelectedItem();
 		correct = correctAnswer.getSelectionModel().getSelectedItem();
-		System.out.println(diff);
-		System.out.println(correct);
+//		System.out.println(diff);
+//		System.out.println(correct);
 
 		//creating the new question object
 		Question question = new Question(ans1,ans2, ans3,ans4,ques,diff,correct);
@@ -91,6 +91,7 @@ public class AddQuestionController  implements Initializable{
 		//clear fields
 		clearFields();
 		Alerts.message("Added", "Question has been added succesfully!");
+//		Question.idCounter++;
 		return true;
     }
 

@@ -43,7 +43,7 @@ public class EditQuestionController implements Initializable {
     private ComboBox<Difficulty> difficulty;
 
     @FXML
-    private ComboBox<String> correctAnswer;
+    private ComboBox<Integer> correctAnswer;
 
     @FXML
     private Button edit;
@@ -111,15 +111,17 @@ public class EditQuestionController implements Initializable {
 		ans2Text.setText(edited.getAnswer2());
 		ans3Text.setText(edited.getAnswer3());
 		ans4Text.setText(edited.getAnswer4());
-		correctAnswer.getItems().addAll("1", "2", "3", "4");
-		
+
+		correctAnswer.getItems().addAll(1,2,3,4);
+		correctAnswer.getSelectionModel().select(edited.getCorrectAnswer());
+
 		for (Difficulty d : Difficulty.values()) {
 			difficulty.getItems().add(d);
 		}
 		
 		difficulty.getSelectionModel().select(edited.getDifficulty());
-		String correct = Integer.toString(edited.getCorrectAnswer());
-		correctAnswer.getSelectionModel().select(correct);
+		//String correct = Integer.toString(edited.getCorrectAnswer());
+	//	correctAnswer.getSelectionModel().select(correct);
 	}
 	
 	

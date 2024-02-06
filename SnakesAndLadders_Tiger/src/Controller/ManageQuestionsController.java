@@ -11,8 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,7 +24,10 @@ import Model.SysData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.json.simple.parser.ParseException;
@@ -66,10 +69,54 @@ public class ManageQuestionsController implements Initializable {
     private Button exit;
     
     @FXML
-    private Button sortDiffButton;
+    private CheckBox checkNumber;
+    
+    @FXML
+    private CheckBox checkOrder;
+
+    private boolean isSorted = false;
+    private List<Question> originalOrder;
 
     @FXML
-    private Button sortQuesButton;
+    void OrderDifficulty(ActionEvent event) {
+        if (!isSorted) {
+            // Save the original order before sorting
+            originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
+            
+            ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
+            ArrayList<Question> sorted = new ArrayList<>();
+
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Easy)) {
+                    sorted.add(q);
+                }
+            }
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Medium)) {
+                    sorted.add(q);
+                }
+            }
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Hard)) {
+                    sorted.add(q);
+                }
+            }
+            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
+            question.setCellValueFactory(new PropertyValueFactory<>("question"));
+            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+            ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
+            questionTable.setItems(temp);
+
+            isSorted = true;
+        } else {
+            // Restore the original order
+            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+            questionTable.setItems(temp);
+            
+            isSorted = false;
+        }
+    }
+
 
 
     @FXML
@@ -96,7 +143,7 @@ public class ManageQuestionsController implements Initializable {
     	SysData.getInstance().deleteFromJson(deletedQuestions);
     	Alerts.delete(deletedQuestion);
 		SysData.getInstance().getQuestions().removeAll(SysData.getInstance().deleted);
-//		Question.idCounter--;
+		Question.idCounter--;
 		fill();
     	questionTable.getItems().clear();
 		fill();
@@ -156,49 +203,48 @@ public class ManageQuestionsController implements Initializable {
 		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
 		
 		// answers column
-		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory = new Callback<TableColumn<Question, Void>, TableCell<Question, Void>>() {
-			@Override
-			public TableCell<Question, Void> call(final TableColumn<Question, Void> param) {
-				final TableCell<Question, Void> cell = new TableCell<Question, Void>() {
+		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory =
+		    new Callback<TableColumn<Question, Void>, TableCell<Question, Void>>() {
+		        @Override
+		        public TableCell<Question, Void> call(final TableColumn<Question, Void> param) {
+		            final TableCell<Question, Void> cell = new TableCell<Question, Void>() {
 
-					private final ComboBox <String> cb = new ComboBox<>();
+		                private final ComboBox<String> cb = new ComboBox<>();
+		                private final VBox pane = new VBox(1, cb);
 
-					private final VBox pane = new VBox(1, cb);
+		                {
+		                    pane.setAlignment(Pos.CENTER);
+		                    cb.setMaxWidth(150);
+		                    cb.setPrefWidth(150);
+		                    
 
-					{
-						pane.setAlignment(Pos.CENTER);
-						cb.setMaxWidth(150);
-						cb.setPrefWidth(150);
-						cb.addEventHandler(ComboBox.ON_SHOWING, event -> {
-							Question q = getTableView().getItems().get(getIndex());
-							ArrayList<String> answers = new ArrayList();
-							String a1 = q.getAnswer1();
-							String a2 = q.getAnswer2();
-							String a3 = q.getAnswer3();
-							String a4 = q.getAnswer4();
-							answers.add(a1);
-							answers.add(a2);
-							answers.add(a3);
-							answers.add(a4);
-							ObservableList<String> data;
-							data = FXCollections.observableArrayList(answers);
+		                    cb.addEventHandler(ComboBox.ON_SHOWING, event -> {
+		                        Question q = getTableView().getItems().get(getIndex());
+		                        ArrayList<String> answers = new ArrayList<>();
+		                        String a1 = q.getAnswer1();
+		                        String a2 = q.getAnswer2();
+		                        String a3 = q.getAnswer3();
+		                        String a4 = q.getAnswer4();
+		                        answers.add(a1);
+		                        answers.add(a2);
+		                        answers.add(a3);
+		                        answers.add(a4);
+		                        ObservableList<String> data = FXCollections.observableArrayList(answers);
 
-							cb.setItems(data);
-						});
-					
-					}
-					@Override
-					protected void updateItem(Void item, boolean empty) {
-						super.updateItem(item, empty);
+		                        cb.setItems(data);
+		                    });
+		                }
 
-						setGraphic(empty ? null : pane);
-						
-					}
-					
-				};
-				return cell;
-			}
-		};
+		                @Override
+		                protected void updateItem(Void item, boolean empty) {
+		                    super.updateItem(item, empty);
+		                    setGraphic(empty ? null : pane);
+		                }
+		            };
+		            return cell;
+		        }
+		    };
+
 		answers.setCellFactory(cellFactory);
 		
 		HashSet<Question> arr = new HashSet<>();
@@ -209,38 +255,40 @@ public class ManageQuestionsController implements Initializable {
 
   	}
     
-    @FXML
-    void sortDifficulty(ActionEvent event) {
-    	ArrayList<Question> sortDiff = new ArrayList<>(SysData.getInstance().getQuestions());
-    	ArrayList<Question> sorted = new ArrayList<>();
-
-    	for(Question q : sortDiff) {
-    		if(q.getDifficulty().equals(Difficulty.Easy)) {
-    			sorted.add(q);
-    		}
-    	}
-    	for(Question q : sortDiff) {
-    		if(q.getDifficulty().equals(Difficulty.Medium)){
-    			sorted.add(q);
-    		}
-    	}
-		for(Question q : sortDiff) {
-    		if(q.getDifficulty().equals(Difficulty.Hard)) {
-    			sorted.add(q);
-    		}
-		}
-		ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
-		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
-		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-  		ObservableList<Question>temp =  FXCollections.observableArrayList(dataQuestion);
-  		questionTable.setItems(temp);
-    }
+    private boolean isSortedByNum = false;
+    private List<Question> originalOrderNum;
 
     @FXML
-    void sortQuestion(ActionEvent event) {
+    void OrderNumQuestion(ActionEvent event) {
+        if (!isSortedByNum) {
+            // Save the original order before sorting
+            originalOrderNum = new ArrayList<>(SysData.getInstance().getQuestions());
 
+            ArrayList<Question> orderByNum = new ArrayList<>(originalOrderNum);
+
+            Collections.sort(orderByNum, new Comparator<Question>() {
+                @Override
+                public int compare(Question q1, Question q2) {
+                    // Compare questionID as integers
+                    return Integer.compare(q1.getQuestionID(), q2.getQuestionID());
+                }
+            });
+
+            // View on table
+            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(orderByNum);
+            question.setCellValueFactory(new PropertyValueFactory<>("question"));
+            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+            questionTable.setItems(dataQuestion);
+
+            isSortedByNum = true;
+        } else {
+            // Restore the original order
+            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
+            questionTable.setItems(temp);
+
+            isSortedByNum = false;
+        }
     }
     
-
 
 }

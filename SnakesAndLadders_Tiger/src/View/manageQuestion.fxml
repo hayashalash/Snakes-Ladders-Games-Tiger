@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Glow?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManageQuestionsController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -19,8 +20,8 @@
       </ImageView>
       <TableView fx:id="questionTable" layoutX="112.0" layoutY="170.0" prefHeight="255.0" prefWidth="637.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="questionNum" prefWidth="61.0" style="-fx-background-color: #FFDAB9;" text="No." />
-            <TableColumn fx:id="question" prefWidth="245.0" style="-fx-background-color: #FFDAB9;" text="Question" />
+            <TableColumn fx:id="questionNum" prefWidth="40.0" style="-fx-background-color: #FFDAB9;" text="No." />
+            <TableColumn fx:id="question" prefWidth="266.0" style="-fx-background-color: #FFDAB9;" text="Question" />
             <TableColumn fx:id="answers" prefWidth="254.0" style="-fx-background-color: #FFDAB9;" text="Answers" />
             <TableColumn fx:id="difficulty" prefWidth="76.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
@@ -77,15 +78,15 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="sortDiffButton" layoutX="282.0" layoutY="131.0" mnemonicParsing="false" onAction="#sortDifficulty" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #FAFAD2; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2, 0 );" text="Sort By Difficulty" textFill="#bf3333">
+      <CheckBox fx:id="checkOrder" layoutX="259.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
-            <Font name="Aharoni Bold" size="14.0" />
+            <Font name="Aharoni Bold" size="13.0" />
          </font>
-      </Button>
-      <Button fx:id="sortQuesButton" layoutX="436.0" layoutY="131.0" mnemonicParsing="false" onAction="#sortQuestion" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #FAFAD2; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2, 0 );" text="Sort By Question" textFill="#bf3333">
+      </CheckBox>
+      <CheckBox fx:id="checkNumber" layoutX="458.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderNumQuestion" text="Order By No.Question ">
          <font>
-            <Font name="Aharoni Bold" size="14.0" />
+            <Font name="Aharoni Bold" size="13.0" />
          </font>
-      </Button>
+      </CheckBox>
    </children>
 </AnchorPane>
