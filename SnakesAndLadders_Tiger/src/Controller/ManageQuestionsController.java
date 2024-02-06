@@ -17,6 +17,7 @@ import Model.SysData;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
@@ -36,6 +37,9 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     private TableColumn<Question, Difficulty> difficulty;
+    
+    @FXML
+    private TableColumn<Question, Integer> questionNum;
 
     @FXML
     private Button delete;
@@ -51,8 +55,13 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     private Button exit;
+    
+    @FXML
+    private Button sortDiffButton;
 
-	private static Question editSelection;
+    @FXML
+    private Button sortQuesButton;
+
 
     @FXML
     void addQuestion(ActionEvent event) {
@@ -91,7 +100,7 @@ public class ManageQuestionsController implements Initializable {
     		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
     			Alerts.message("Error", "Please choose question that you want to edit.");
     		}
-    		//question to update is question selected
+    		//the question that we want to update is selected
     		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
     		newScreen("EditQuestion");
     	}
@@ -134,6 +143,7 @@ public class ManageQuestionsController implements Initializable {
   		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
+		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
 		HashSet<Question> arr = new HashSet<>();
   		arr.addAll(dataQues);
   		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
@@ -141,6 +151,38 @@ public class ManageQuestionsController implements Initializable {
   		// System.out.println(arr);
 
   	}
+    
+    @FXML
+    void sortDifficulty(ActionEvent event) {
+    	ArrayList<Question> sortDiff = new ArrayList<>(SysData.getInstance().getQuestions());
+    	ArrayList<Question> sorted = new ArrayList<>();
+
+    	for(Question q : sortDiff) {
+    		if(q.getDifficulty().equals(Difficulty.Easy)) {
+    			sorted.add(q);
+    		}
+    	}
+    	for(Question q : sortDiff) {
+    		if(q.getDifficulty().equals(Difficulty.Medium)){
+    			sorted.add(q);
+    		}
+    	}
+    		for(Question q : sortDiff) {
+        		if(q.getDifficulty().equals(Difficulty.Hard)) {
+        			sorted.add(q);
+        		}
+    		}
+    		ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
+    		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
+    		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
+      		ObservableList<Question>temp =  FXCollections.observableArrayList(dataQuestion);
+      		questionTable.setItems(temp);
+    }
+
+    @FXML
+    void sortQuestion(ActionEvent event) {
+
+    }
     
 
 
