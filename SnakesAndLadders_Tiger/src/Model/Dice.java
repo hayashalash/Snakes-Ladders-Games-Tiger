@@ -24,7 +24,7 @@ public class Dice {
 	List<Integer> RollingDiceStartingGame(int n)
 	{
 	     List<Integer> playingOrder=null;
-	     if(n<=1 || n>4)
+	     if(n<=1 || n>4) 
 	        {
 	          playingOrder=Collections.emptyList(); // for not throwing the null pointer Exception
 	       }
