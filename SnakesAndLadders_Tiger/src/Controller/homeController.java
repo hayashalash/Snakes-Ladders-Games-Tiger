@@ -46,7 +46,6 @@ public class homeController implements Initializable{
     public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/Music.wav").toString());
     
     @FXML
-<<<<<<< Updated upstream
     void TurnOff(ActionEvent event) {
 //    	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
 //    			note.stop();
@@ -58,12 +57,7 @@ public class homeController implements Initializable{
 //    	}
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-//    	note.play();
-//		turnOffIcon.setMouseTransparent(true);
-
-
-=======
+    @FXML
     void TurnOffOn(ActionEvent event) {
     	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
 			note.stop();
@@ -86,7 +80,6 @@ public class homeController implements Initializable{
     		turnOffIcon.setOpacity(1.0);
         	note.stop();
     	}
->>>>>>> Stashed changes
     }
     
     @FXML
