@@ -1,11 +1,14 @@
 package Controller;
 import java.io.IOException;
 
+import org.json.simple.parser.ParseException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -13,7 +16,6 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
 	public static Stage mainWindow=null;
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -35,7 +37,11 @@ public class Main extends Application {
 
 	public static void main(String[] args) throws IOException {
 		launch(args);
-//		Model.SysData.initializeMyFileWriter();
+		try {
+			Model.SysData.getInstance().readFromJson();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
 }

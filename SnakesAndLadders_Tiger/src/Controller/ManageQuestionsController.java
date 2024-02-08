@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.util.Callback;
 import Model.SysData;
 
@@ -72,7 +73,13 @@ public class ManageQuestionsController implements Initializable {
     private CheckBox checkNumber;
     
     @FXML
+<<<<<<< Updated upstream
     private CheckBox checkDifficulty;
+=======
+    private CheckBox checkOrder;
+    
+    public AudioClip note;
+>>>>>>> Stashed changes
 
     private boolean isSortedByNum = false;
     private boolean isSortedByDifficulty = false;
@@ -180,7 +187,7 @@ public class ManageQuestionsController implements Initializable {
     	Alerts.delete(deletedQuestion);
 		SysData.getInstance().getQuestions().removeAll(SysData.getInstance().deleted);
 		Question.idCounter--;
-		fill();
+//		fill();
     	questionTable.getItems().clear();
 		fill();
 		
@@ -222,18 +229,29 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+<<<<<<< Updated upstream
 		try {
 			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+//		try {
+//			SysData.getInstance().readFromJson();
+//		} catch (IOException | ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+    	ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
+>>>>>>> Stashed changes
 		fill();
+		questionTable.setItems(dataQues);
 		questionTable.refresh();
 	}
     public void fill() {
     	
-  		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
+  		
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
@@ -299,10 +317,10 @@ public class ManageQuestionsController implements Initializable {
 
 		answers.setCellFactory(cellFactory);
 		
-		HashSet<Question> arr = new HashSet<>();
-  		arr.addAll(dataQues);
-  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
-  		questionTable.setItems(dataQues2);
+//		HashSet<Question> arr = new HashSet<>();
+//  		arr.addAll(dataQues);
+//  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
+//  		questionTable.setItems(dataQues2);
   		// System.out.println(arr);
 
   	}
