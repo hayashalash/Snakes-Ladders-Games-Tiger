@@ -3,6 +3,7 @@ package Controller;
 import View.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -75,10 +77,17 @@ public class ManageQuestionsController implements Initializable {
     @FXML
 <<<<<<< Updated upstream
     private CheckBox checkDifficulty;
+<<<<<<< Updated upstream
 =======
     private CheckBox checkOrder;
     
     public AudioClip note;
+>>>>>>> Stashed changes
+=======
+    
+    @FXML
+    private TextField searchField;
+
 >>>>>>> Stashed changes
 
     private boolean isSortedByNum = false;
@@ -317,13 +326,44 @@ public class ManageQuestionsController implements Initializable {
 
 		answers.setCellFactory(cellFactory);
 		
+<<<<<<< Updated upstream
 //		HashSet<Question> arr = new HashSet<>();
 //  		arr.addAll(dataQues);
 //  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
 //  		questionTable.setItems(dataQues2);
+=======
+		HashSet<Question> arr = new HashSet<>();
+  		arr.addAll(dataQues);
+  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
+  		questionTable.setItems(dataQues2);
+  		
+//  		FilteredList<Question> filteredData = new FilteredList<>(dataQues2, b -> ture);
+
+//  		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+//  		filteredData.setPredicate(Question -> {
+//  		if (newValue.isEmpty() || newValue == null) {
+//  			return true;
+//  			}
+//  		
+//  		String searchKeyword = newValue.toLowerCase();
+//  		if (Question.getQuestion().toLowerCase().indexOf(searchKeyword) != -1) {
+//  			return true; // Means we found a match in ProductName
+//  			} 
+//  			else
+//  				return false;
+//  		});
+//  		});
+//  		
+>>>>>>> Stashed changes
   		// System.out.println(arr);
+  		
 
   	}
+    
+    @FXML
+    void searchForAQuestion(ActionEvent event) {
+
+    }
    
 
 }
