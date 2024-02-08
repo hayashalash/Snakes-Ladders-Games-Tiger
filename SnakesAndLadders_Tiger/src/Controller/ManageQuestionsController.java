@@ -73,13 +73,13 @@ public class ManageQuestionsController implements Initializable {
     private CheckBox checkNumber;
     
     @FXML
-<<<<<<< Updated upstream
     private CheckBox checkDifficulty;
-=======
+
+    @FXML
     private CheckBox checkOrder;
     
     public AudioClip note;
->>>>>>> Stashed changes
+
 
     private boolean isSortedByNum = false;
     private boolean isSortedByDifficulty = false;
@@ -229,14 +229,12 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-<<<<<<< Updated upstream
 		try {
 			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-=======
 //		try {
 //			SysData.getInstance().readFromJson();
 //		} catch (IOException | ParseException e) {
@@ -244,13 +242,11 @@ public class ManageQuestionsController implements Initializable {
 //			e.printStackTrace();
 //		}
     	ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
->>>>>>> Stashed changes
 		fill();
 		questionTable.setItems(dataQues);
 		questionTable.refresh();
 	}
     public void fill() {
-    	
   		
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
