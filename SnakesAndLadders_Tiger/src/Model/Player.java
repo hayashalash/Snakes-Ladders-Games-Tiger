@@ -6,7 +6,7 @@ public class Player {
 	private String playerName;
 	private Color playerColor;
 	private int playerPlace=1;
-	private int hasStarted=0;
+	private int numberOrder=0;
 	
 	public Player(String playerName, Color playerColor) {
 		super();
@@ -52,17 +52,18 @@ public class Player {
 		this.playerPlace = playerPlace;
 	}
 
-	public int getHasStarted() {
-		return hasStarted;
+	public int getNumberOrder() {
+		return numberOrder;
 	}
 
-	public void setHasStarted(int hasStarted) {
-		this.hasStarted = hasStarted;
+	public void setNumberOrder(int numberOrder) {
+		this.numberOrder = numberOrder;
 	}
-
 	@Override
 	public String toString() {
 		return "Player [playerID=" + playerID + ", playerName=" + playerName + ", playerColor=" + playerColor
 				+ ", playerPlace=" + playerPlace + ", hasStarted=" + hasStarted + "]";
 	}
+
+	
 }

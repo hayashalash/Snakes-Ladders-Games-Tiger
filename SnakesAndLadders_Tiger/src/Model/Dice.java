@@ -21,32 +21,36 @@ public class Dice {
 	}
 
 
-	List<Integer> RollingDiceStartingGame(int n)
-	{
-	     List<Integer> playingOrder=null;
-	     if(n<=1 || n>4) 
-	        {
-	          playingOrder=Collections.emptyList(); // for not throwing the null pointer Exception
-	       }
-	     else
-	        {
-	           Random rand = new Random();
-	           playingOrder=new ArrayList<Integer>();
-	           for(int i=1 ; i<=n ; i++)
-	              {
-	        	   int rollResult = rand.nextInt(n);
+//	List<Integer> RollingDiceStartingGame(Player player)
+//	{
+	//     List<Integer> playingOrder=null;
+	  //   if(n<=1 || n>4) 
+	    //    {
+	      //    playingOrder=Collections.emptyList(); // for not throwing the null pointer Exception
+	       //}
+	     //else
+	       // {
+	         //  Random rand = new Random();
+	           //playingOrder=new ArrayList<Integer>();
+	    //       for(int i=1 ; i<=n ; i++)
+	      //        {
+	        //	   int rollResult = rand.nextInt(n);
 	        	   
-	        	   if (rollResult == 6) {
-	        		   playingOrder.add(i);
-	        	   }
-	        	   else {
-	        		   i--;
-	        	   }	             
-	             }     
-	         }
+	        	//   if (rollResult == 6) {
+	        		//   playingOrder.add(i);
+	        	   //}
+	        	   //else {
+	        		//   i--;
+	        	 // / }	             
+	         //    }     
+	         //}
 
-	   return  playingOrder;      
+	   //return  playingOrder;      
 
+	//}
+	public int RollingDiceStartingGame(Player p) {
+		Random random = new Random();
+		return random.nextInt(4);
 	}
 	
 	public static int RandomNumberGenerator(Difficulty type){
@@ -64,9 +68,4 @@ public class Dice {
 	}
 	
 	
-	public static void roll(Difficulty type,Player player){
-			
-	}
-
-
 }
