@@ -33,12 +33,12 @@ import javafx.scene.layout.VBox;
 public class ChoosePlayersController implements Initializable{
 
 	// color images paths to be displayed in the combobox
-	private static final String GREEN = "file:/img/icons/green.png";
-	private static final String BLUE = "file:/img/icons/blue.png";
-	private static final String PINK = "file:/img/icons/pink.png";
-	private static final String RED = "file:/img/icons/red.png";
-	private static final String PURPLE = "file:/img/icons/purple.png";
-	private static final String YELLOW = "file:/img/icons/yellow.png";
+	private static final String GREEN = "/img/icons/green.png";
+	private static final String BLUE = "/img/icons/blue.png";
+	private static final String PINK = "/img/icons/pink.png";
+	private static final String RED = "/img/icons/red.png";
+	private static final String PURPLE = "/img/icons/purple.png";
+	private static final String YELLOW = "/img/icons/yellow.png";
 	private int playersNum = 2; //default value
 	
 	public static Difficulty diff;
@@ -95,11 +95,11 @@ public class ChoosePlayersController implements Initializable{
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	final ObservableList<Image> images = fetchImages();
-    	player1clr = fillComboBox(images);
-    	player2clr = fillComboBox(images);
-    	player3clr = fillComboBox(images);
-    	player4clr = fillComboBox(images);
+        final ObservableList<Image> images = fetchImages();
+        fillComboBox(player1clr, images);
+        fillComboBox(player2clr, images);
+        fillComboBox(player3clr, images);
+        fillComboBox(player4clr, images);
 //    	player1clr.getItems().addAll(Color.values());
 //    	player1clr.getSelectionModel().select(0);
 //    	Media mediaFile = new Media(this.getClass().getResource(MEDIA_URL).toExternalForm());
@@ -112,20 +112,22 @@ public class ChoosePlayersController implements Initializable{
     	
 	}
     
-    private ComboBox<Image> fillComboBox(ObservableList<Image> options) { // fill a combo box with the color images
-    	ComboBox<Image> combo = new ComboBox<>();
+    private void fillComboBox(ComboBox<Image> combo, ObservableList<Image> options) {
         combo.getItems().addAll(options);
         combo.setButtonCell(new ImageListCell());
         combo.setCellFactory(listView -> new ImageListCell());
         combo.getSelectionModel().select(0);
-        return combo;
     }
+    
     class ImageListCell extends ListCell<Image> {
         private final ImageView view;
- 
+        private final double IMAGE_WIDTH = 110; // Adjust these values as needed
+        private final double IMAGE_HEIGHT = 17; // Adjust these values as needed
         ImageListCell() {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             view = new ImageView();
+            view.setFitWidth(IMAGE_WIDTH);
+            view.setFitHeight(IMAGE_HEIGHT);
         }
  
         @Override protected void updateItem(Image item, boolean empty) {
@@ -142,12 +144,12 @@ public class ChoosePlayersController implements Initializable{
     }
  
     private ObservableList<Image> fetchImages() { // get list of images of colors
-        Image green = new Image(GREEN);
-    	Image blue = new Image(BLUE);
-    	Image pink = new Image(PINK);
-    	Image red = new Image(RED);
-    	Image purple = new Image(PURPLE);
-    	Image yellow = new Image(YELLOW);
+        Image green = new Image(getClass().getResource(GREEN).toExternalForm());
+    	Image blue = new Image(getClass().getResource(BLUE).toExternalForm());
+    	Image pink = new Image(getClass().getResource(PINK).toExternalForm());
+    	Image red = new Image(getClass().getResource(RED).toExternalForm());
+    	Image purple = new Image(getClass().getResource(PURPLE).toExternalForm());
+    	Image yellow = new Image(getClass().getResource(YELLOW).toExternalForm());
     	ObservableList<Image> options = FXCollections.observableArrayList();
     	options.addAll(green, blue, pink, red, purple, yellow);
         

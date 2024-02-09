@@ -85,7 +85,7 @@ public class AddQuestionController  implements Initializable{
 
 		//creating the new question object
 		Question question = new Question(ans1,ans2, ans3,ans4,ques,diff,correct);
-		System.out.println(question);
+//		System.out.println(question);
 		//write our question to json and add to question hashSet
 		SysData.getInstance().writeToJson(question);
 		//clear fields
