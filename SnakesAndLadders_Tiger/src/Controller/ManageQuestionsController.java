@@ -92,6 +92,10 @@ public class ManageQuestionsController implements Initializable {
 
     private ArrayList<Question> originalOrderNum;
     private ArrayList<Question> originalOrder;
+    
+    private ObservableList<Question> dataQues;
+    private ObservableList<Question> dataQues2;
+    
 
     @FXML
     void OrderNumQuestion(ActionEvent event) {
@@ -197,6 +201,8 @@ public class ManageQuestionsController implements Initializable {
     	questionTable.getItems().clear();
 		fill();
 		
+		
+		
     }
     
     
@@ -246,7 +252,7 @@ public class ManageQuestionsController implements Initializable {
 	}
     public void fill() {
     	
-  		ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
+    	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
@@ -314,7 +320,7 @@ public class ManageQuestionsController implements Initializable {
 		
 		HashSet<Question> arr = new HashSet<>();
   		arr.addAll(dataQues);
-  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
+  		dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
   		
 //  		FilteredList<Question> filteredData = new FilteredList<>(dataQues2, b -> ture);
@@ -342,7 +348,18 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     void searchForAQuestion(ActionEvent event) {
 
+    	String lowerCaseFilter = searchField.getText().toLowerCase();
+    	if(lowerCaseFilter.length()!=0) {
+    		HashSet<Question> arr= new HashSet<>();
+    		for(Question q: SysData.getInstance().getQuestions()) {
+    			if(q.getQuestion().toLowerCase().contains(lowerCaseFilter))
+    				arr.add(q);
+    		}
+    		questionTable.setItems(FXCollections.observableArrayList(arr));
+    	}
+    	else 
+    		questionTable.setItems(dataQues2);
+    	}
+    	
     }
    
-
-}
