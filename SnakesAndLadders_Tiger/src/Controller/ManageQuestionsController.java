@@ -154,13 +154,13 @@ public class ManageQuestionsController implements Initializable {
     	String deletedAnswer4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
     	Integer deletedCorrect = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
 
-    	Question deletedQuestions = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
+    	Question deletedQ = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
     			,deletedDifficulty,deletedCorrect);
-    	SysData.getInstance().deleteFromJson(deletedQuestions);
-    	Alerts.delete(deletedQuestion);
-		SysData.getInstance().getQuestions().removeAll(SysData.getInstance().deleted);
-		Question.idCounter--;
-//		fill();
+    	
+    	if (Alerts.delete(deletedQuestion) == 1) {
+    		SysData.getInstance().deleteFromJson(deletedQ);
+    		SysData.getInstance().getQuestions().remove(deletedQ);
+    	}
     	questionTable.getItems().clear();
 		fill();
 		
