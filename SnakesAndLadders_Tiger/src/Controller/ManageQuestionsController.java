@@ -3,6 +3,7 @@ package Controller;
 import View.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -80,12 +82,18 @@ public class ManageQuestionsController implements Initializable {
     
     public AudioClip note;
 
+    @FXML
+    private TextField searchField;
 
     private boolean isSortedByNum = false;
     private boolean isSortedByDifficulty = false;
 
     private ArrayList<Question> originalOrderNum;
     private ArrayList<Question> originalOrder;
+    
+    private ObservableList<Question> dataQues;
+    private ObservableList<Question> dataQues2;
+    
 
     @FXML
     void OrderNumQuestion(ActionEvent event) {
@@ -191,6 +199,8 @@ public class ManageQuestionsController implements Initializable {
     	questionTable.getItems().clear();
 		fill();
 		
+		
+		
     }
     
     
@@ -235,19 +245,13 @@ public class ManageQuestionsController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		try {
-//			SysData.getInstance().readFromJson();
-//		} catch (IOException | ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
     	ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
 		fill();
-		questionTable.setItems(dataQues);
 		questionTable.refresh();
 	}
     public void fill() {
-  		
+
+    	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
@@ -313,13 +317,48 @@ public class ManageQuestionsController implements Initializable {
 
 		answers.setCellFactory(cellFactory);
 		
-//		HashSet<Question> arr = new HashSet<>();
-//  		arr.addAll(dataQues);
-//  		ObservableList<Question>dataQues2 =  FXCollections.observableArrayList(arr);
-//  		questionTable.setItems(dataQues2);
+		HashSet<Question> arr = new HashSet<>();
+  		arr.addAll(dataQues);
+  		dataQues2 =  FXCollections.observableArrayList(arr);
+  		questionTable.setItems(dataQues2);
+  		
+//  		FilteredList<Question> filteredData = new FilteredList<>(dataQues2, b -> ture);
+
+//  		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+//  		filteredData.setPredicate(Question -> {
+//  		if (newValue.isEmpty() || newValue == null) {
+//  			return true;
+//  			}
+//  		
+//  		String searchKeyword = newValue.toLowerCase();
+//  		if (Question.getQuestion().toLowerCase().indexOf(searchKeyword) != -1) {
+//  			return true; // Means we found a match in ProductName
+//  			} 
+//  			else
+//  				return false;
+//  		});
+//  		});
+//  		
   		// System.out.println(arr);
+  		
 
   	}
-   
+    
+    @FXML
+    void searchForAQuestion(ActionEvent event) {
 
-}
+    	String lowerCaseFilter = searchField.getText().toLowerCase();
+    	if(lowerCaseFilter.length()!=0) {
+    		HashSet<Question> arr= new HashSet<>();
+    		for(Question q: SysData.getInstance().getQuestions()) {
+    			if(q.getQuestion().toLowerCase().contains(lowerCaseFilter))
+    				arr.add(q);
+    		}
+    		questionTable.setItems(FXCollections.observableArrayList(arr));
+    	}
+    	else 
+    		questionTable.setItems(dataQues2);
+    	}
+    	
+    }
+   

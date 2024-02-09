@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,7 +19,7 @@
             <Image url="@../img/screens/Q&amp;ABack.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="questionTable" layoutX="112.0" layoutY="170.0" prefHeight="255.0" prefWidth="637.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="questionTable" layoutX="108.0" layoutY="176.0" prefHeight="255.0" prefWidth="637.0" style="-fx-background-color: #FFEFD5;">
          <columns>
             <TableColumn fx:id="questionNum" prefWidth="40.0" style="-fx-background-color: #FFDAB9;" text="No." />
             <TableColumn fx:id="question" prefWidth="266.0" style="-fx-background-color: #FFDAB9;" text="Question" />
@@ -47,7 +48,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <HBox layoutX="146.0" layoutY="429.0" prefHeight="43.0" prefWidth="113.0">
+      <HBox layoutX="146.0" layoutY="437.0" prefHeight="43.0" prefWidth="113.0">
          <children>
             <Button fx:id="edit" mnemonicParsing="false" onAction="#editQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
                <graphic>
@@ -69,7 +70,7 @@
             </Button>
          </children>
       </HBox>
-      <Button fx:id="add" layoutX="679.0" layoutY="430.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
+      <Button fx:id="add" layoutX="679.0" layoutY="438.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
          <graphic>
             <ImageView fitHeight="35.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
@@ -78,15 +79,16 @@
             </ImageView>
          </graphic>
       </Button>
-      <CheckBox fx:id="checkDifficulty" layoutX="259.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
+      <CheckBox fx:id="checkDifficulty" layoutX="357.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkNumber" layoutX="458.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderNumQuestion" text="Order By No.Question ">
+      <CheckBox fx:id="checkNumber" layoutX="554.0" layoutY="149.0" mnemonicParsing="false" onAction="#OrderNumQuestion" text="Order By No.Question ">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>
       </CheckBox>
+      <TextField fx:id="searchField" layoutX="120.0" layoutY="146.0" onAction="#searchForAQuestion" prefHeight="25.0" prefWidth="139.0" promptText="Search " style="-fx-background-color: #FFE#F5F5DCBCD;" />
    </children>
 </AnchorPane>
