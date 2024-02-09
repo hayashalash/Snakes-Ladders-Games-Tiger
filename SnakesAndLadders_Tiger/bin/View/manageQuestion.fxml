@@ -21,10 +21,9 @@
       </ImageView>
       <TableView fx:id="questionTable" layoutX="108.0" layoutY="176.0" prefHeight="255.0" prefWidth="637.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="questionNum" prefWidth="40.0" style="-fx-background-color: #FFDAB9;" text="No." />
-            <TableColumn fx:id="question" prefWidth="266.0" style="-fx-background-color: #FFDAB9;" text="Question" />
-            <TableColumn fx:id="answers" prefWidth="254.0" style="-fx-background-color: #FFDAB9;" text="Answers" />
-            <TableColumn fx:id="difficulty" prefWidth="76.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
+            <TableColumn fx:id="question" prefWidth="346.0" style="-fx-background-color: #FFDAB9;" text="Question" />
+            <TableColumn fx:id="answers" prefWidth="212.0" style="-fx-background-color: #FFDAB9;" text="Answers" />
+            <TableColumn fx:id="difficulty" prefWidth="78.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
          </columns>
          <effect>
             <Glow />
@@ -79,16 +78,20 @@
             </ImageView>
          </graphic>
       </Button>
-      <CheckBox fx:id="checkDifficulty" layoutX="357.0" layoutY="148.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
+      <CheckBox fx:id="checkDifficulty" layoutX="591.0" layoutY="150.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkNumber" layoutX="554.0" layoutY="149.0" mnemonicParsing="false" onAction="#OrderNumQuestion" text="Order By No.Question ">
-         <font>
-            <Font name="Aharoni Bold" size="13.0" />
-         </font>
-      </CheckBox>
-      <TextField fx:id="searchField" layoutX="120.0" layoutY="146.0" onAction="#searchForAQuestion" prefHeight="25.0" prefWidth="139.0" promptText="Search " style="-fx-background-color: #FFE#F5F5DCBCD;" />
+      <TextField fx:id="searchField" layoutX="108.0" layoutY="143.0" prefHeight="28.0" prefWidth="139.0" promptText="Search " style="-fx-background-color: #FFE#F5F5DCBCD;" />
+      <Button fx:id="searchbutton" layoutX="259.0" layoutY="143.0" mnemonicParsing="false" onAction="#SearchForAQuestion" onMousePressed="#pressed" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0">
+               <image>
+                  <Image url="@../img/icons/glass.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

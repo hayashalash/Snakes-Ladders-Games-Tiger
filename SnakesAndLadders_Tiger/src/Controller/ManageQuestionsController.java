@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.util.Callback;
@@ -71,8 +72,6 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button exit;
     
-    @FXML
-    private CheckBox checkNumber;
     
     @FXML
     private CheckBox checkDifficulty;
@@ -84,88 +83,54 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     private TextField searchField;
-
-    private boolean isSortedByNum = false;
-    private boolean isSortedByDifficulty = false;
-
-    private ArrayList<Question> originalOrderNum;
-    private ArrayList<Question> originalOrder;
+    
+    @FXML
+    private Button searchbutton;
     
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
     
 
-    @FXML
-    void OrderNumQuestion(ActionEvent event) {
-        if (checkNumber.isSelected()) {
-            isSortedByDifficulty = false;
-            checkDifficulty.setSelected(false);
-
-            if (!isSortedByNum) {
-                originalOrderNum = new ArrayList<>(SysData.getInstance().getQuestions());
-                ArrayList<Question> orderByNum = new ArrayList<>(originalOrderNum);
-
-                Collections.sort(orderByNum, Comparator.comparingInt(Question::getQuestionID));
-
-                ObservableList<Question> dataQuestion = FXCollections.observableArrayList(orderByNum);
-                question.setCellValueFactory(new PropertyValueFactory<>("question"));
-                difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
-                questionTable.setItems(dataQuestion);
-
-                isSortedByNum = true;
-            } else {
-                ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
-                questionTable.setItems(temp);
-
-                isSortedByNum = false;
-            }
-        } else {
-            // If the checkbox is deselected, restore the original order
-            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrderNum);
-            questionTable.setItems(temp);
-
-            isSortedByNum = false;
-        }
-    }
+    private boolean isSorted = false;
+    private List<Question> originalOrder;
 
     @FXML
     void OrderDifficulty(ActionEvent event) {
-        if (checkDifficulty.isSelected()) {
-            isSortedByNum = false;
-            checkNumber.setSelected(false);
+        if (!isSorted) {
+            // Save the original order before sorting
+            originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
+            
+            ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
+            ArrayList<Question> sorted = new ArrayList<>();
 
-            if (!isSortedByDifficulty) {
-                originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
-                ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
-                ArrayList<Question> sorted = new ArrayList<>();
-
-                for (Difficulty diff : Difficulty.values()) {
-                    for (Question q : sortDiff) {
-                        if (q.getDifficulty().equals(diff)) {
-                            sorted.add(q);
-                        }
-                    }
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Easy)) {
+                    sorted.add(q);
                 }
-
-                ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
-                question.setCellValueFactory(new PropertyValueFactory<>("question"));
-                difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
-                ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
-                questionTable.setItems(temp);
-
-                isSortedByDifficulty = true;
-            } else {
-                ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
-                questionTable.setItems(temp);
-
-                isSortedByDifficulty = false;
             }
-        } else {
-            // If the checkbox is deselected, restore the original order
-            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Medium)) {
+                    sorted.add(q);
+                }
+            }
+            for (Question q : sortDiff) {
+                if (q.getDifficulty().equals(Difficulty.Hard)) {
+                    sorted.add(q);
+                }
+            }
+            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
+            question.setCellValueFactory(new PropertyValueFactory<>("question"));
+            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+            ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
             questionTable.setItems(temp);
 
-            isSortedByDifficulty = false;
+            isSorted = true;
+        } else {
+            // Restore the original order
+            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
+            questionTable.setItems(temp);
+            
+            isSorted = false;
         }
     }
 
@@ -254,7 +219,6 @@ public class ManageQuestionsController implements Initializable {
     	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
-		questionNum.setCellValueFactory(new PropertyValueFactory<Question, Integer>("questionID"));
 		
 		// answers column
 		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory =
@@ -345,7 +309,7 @@ public class ManageQuestionsController implements Initializable {
   	}
     
     @FXML
-    void searchForAQuestion(ActionEvent event) {
+    void SearchForAQuestion(ActionEvent event) {
 
     	String lowerCaseFilter = searchField.getText().toLowerCase();
     	if(lowerCaseFilter.length()!=0) {
@@ -358,6 +322,12 @@ public class ManageQuestionsController implements Initializable {
     	}
     	else 
     		questionTable.setItems(dataQues2);
+    }
+    
+    @FXML
+    void pressed(MouseEvent event) {
+    	searchbutton.setStyle("fx-background-color: #FFF ; -fx-background-radius: 5 ; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 )");
+    	
     }
     	
 }
