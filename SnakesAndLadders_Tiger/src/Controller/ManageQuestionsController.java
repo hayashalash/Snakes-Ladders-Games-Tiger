@@ -358,7 +358,7 @@ public class ManageQuestionsController implements Initializable {
     	}
     	else 
     		questionTable.setItems(dataQues2);
-    	}
-    	
     }
+    	
+}
    
