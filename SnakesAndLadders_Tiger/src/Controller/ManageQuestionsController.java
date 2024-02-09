@@ -164,8 +164,6 @@ public class ManageQuestionsController implements Initializable {
     	questionTable.getItems().clear();
 		fill();
 		
-		
-		
     }
     
     
