@@ -116,8 +116,8 @@ public class ChoosePlayersController implements Initializable{
     
     class ImageListCell extends ListCell<Image> {
         private final ImageView view;
-        private final double IMAGE_WIDTH = 110; // Adjust these values as needed
-        private final double IMAGE_HEIGHT = 17; // Adjust these values as needed
+        private final double IMAGE_WIDTH = 110;
+        private final double IMAGE_HEIGHT = 17;
         ImageListCell() {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             view = new ImageView();
@@ -135,7 +135,6 @@ public class ChoosePlayersController implements Initializable{
                 setGraphic(view);
             }
         }
- 
     }
  
     private ObservableList<Image> fetchImages() { // get list of images of colors
@@ -329,9 +328,18 @@ public class ChoosePlayersController implements Initializable{
     		
     		players.add(fourthP);
     	}
-    	Game g = new Game(diff, players);
-    	// TODO go to Game screen based on difficulty
-    	// have a field to save the game in each controller (easy game, normal game, hard game) and set it to 'g' (game created earlier)
+    	if (diff == Difficulty.Easy) {
+    		EasyController.game = new Game(diff, players);
+    		newScreen("easyBoard");
+    	}
+    	else if (diff == Difficulty.Medium) {
+    		NormalController.game = new Game(diff, players);
+    		newScreen("normalBoard");
+    	}
+    	else if (diff == Difficulty.Hard) {
+    		HardController.game = new Game(diff, players);
+    		newScreen("hardBoard");
+    	}
     }
     
     void newScreen(String path) {

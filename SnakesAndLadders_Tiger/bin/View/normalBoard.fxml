@@ -15,7 +15,7 @@
             <Image url="@../img/screens/normalStageBack.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="closeButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeStage" style="-fx-background-color: transparent;">
+      <Button fx:id="exitButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="800.0" layoutY="10.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                <image>
@@ -33,7 +33,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <GridPane layoutX="219.0" layoutY="26.0" prefHeight="538.0" prefWidth="548.0">
+      <GridPane fx:id="grid" layoutX="219.0" layoutY="26.0" prefHeight="538.0" prefWidth="548.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
