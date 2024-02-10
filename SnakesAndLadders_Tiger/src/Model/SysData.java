@@ -23,7 +23,8 @@ import org.json.simple.parser.JSONParser;
 public class SysData {
 	   //singleton
 		private static SysData sysData = null;
-	
+		private static final String QJSON = "JSON/questions_scheme.json";
+		private static final String HJSON = "JSON/History.json";
 //	private ArrayList<Question> EasyQuestions; 
 //	private ArrayList<Question> MediumQuestions; 
 //	private ArrayList<Question> HardQuestions; 
@@ -61,7 +62,7 @@ public class SysData {
 		
 		JSONParser parser = new JSONParser();
 		
-		FileInputStream file = new FileInputStream("JSON/demo.json");
+		FileInputStream file = new FileInputStream(QJSON);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
@@ -102,7 +103,7 @@ public class SysData {
 		
 		JSONParser parser = new JSONParser();
 		
-		FileInputStream file = new FileInputStream("JSON/demo.json");
+		FileInputStream file = new FileInputStream(QJSON);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
@@ -137,7 +138,7 @@ public class SysData {
 	    Json2.put("questions", questionArr);
 
 	    try {
-	        FileWriter file2 = new FileWriter("JSON/demo.json");
+	        FileWriter file2 = new FileWriter(QJSON);
 	        file2.write(Json2.toJSONString());
 	        file2.close();
 		} catch (IOException e) {
@@ -151,7 +152,7 @@ public class SysData {
 		
 		JSONParser parser = new JSONParser();
 		
-		FileInputStream file = new FileInputStream("JSON/demo.json");
+		FileInputStream file = new FileInputStream(QJSON);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		Object obj = parser.parse(reader);
 		JSONObject jsonObj = (JSONObject)obj;
@@ -170,7 +171,7 @@ public class SysData {
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("questions", questionArr);
 		try {
-			FileWriter writeFile = new FileWriter("json/demo.json");
+			FileWriter writeFile = new FileWriter(QJSON);
 			writeFile.write(jsonObject2.toJSONString());
 			writeFile.close();
 		} catch (IOException e) {
@@ -203,7 +204,7 @@ public class SysData {
 	// this method to save the games history in json file  
 	public void writeToJsonGames(Game g) throws IOException, ParseException { 
 		JSONParser parser = new JSONParser();
-		FileInputStream fis = new FileInputStream("JSON/History.json");
+		FileInputStream fis = new FileInputStream(HJSON);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 		Object obje = parser.parse(reader);
 		JSONObject jo = (JSONObject) obje;
@@ -219,9 +220,9 @@ public class SysData {
 		  		if (diff.equals(Difficulty.Easy)) {
 		  			str = "1";
 		  		} else if (diff.equals(Difficulty.Medium)) {	
-		  			str = "1";
+		  			str = "2";
 		  		} else {     //diff.equals(Difficulty.Hard)
-		  			str = "1"; 	
+		  			str = "3"; 	
 		  		}
 		jsonObject.put("Difficulty", str);
 		Double dur = g.getGameDuration();
@@ -231,7 +232,7 @@ public class SysData {
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("gamesHistory", gamesArray); 
 		try {
-			FileWriter file = new FileWriter("JSON/History.json");
+			FileWriter file = new FileWriter(HJSON);
 			file.write(jsonObject2.toJSONString());
 			file.close();
 		} catch (IOException e) {
@@ -242,7 +243,7 @@ public class SysData {
 	
 	public void ReadFromJsonGames() throws IOException, ParseException {
 		
-		try ( FileInputStream fis = new FileInputStream("JSON/History.json"))
+		try ( FileInputStream fis = new FileInputStream(HJSON))
 		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 	         if (isJsonEmpty(reader)==true)
@@ -251,7 +252,7 @@ public class SysData {
 	         }
 	         else {
 	 			JSONParser parser2 = new JSONParser();
-	 			FileInputStream fis2 = new FileInputStream("JSON/History.json");
+	 			FileInputStream fis2 = new FileInputStream(HJSON);
 				BufferedReader reader2 = new BufferedReader(new InputStreamReader(fis2));
 				Object obje = parser2.parse(reader2);
 			
