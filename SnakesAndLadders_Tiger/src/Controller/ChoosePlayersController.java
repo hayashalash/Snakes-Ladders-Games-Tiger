@@ -221,22 +221,41 @@ public class ChoosePlayersController implements Initializable{
     	if ((playersNum == 2) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
-    		return ;
+    		return;
     	}
     	if ((playersNum == 3) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty() ||
     			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
-    		return ;
+    		return;
     	}
     	if ((playersNum == 4) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty()  ||
     			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty() || 
     			player4txt.getText().isEmpty() || player4clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
-    		return ;
+    		return;
     	}
-    	ArrayList<Player> players = new ArrayList();	
+    	if (playersNum == 2 && player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem())) {
+    		Alerts.warning("Please choose a unique color for each player");
+    		return;
+    	}
+    	if (playersNum == 3 && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
+    			player1clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) || 
+    			player2clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()))) {
+    		Alerts.warning("Please choose a unique color for each player");
+    		return;
+    	}
+    	if (playersNum == 4 && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
+    			player1clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) || 
+    			player1clr.getSelectionModel().getSelectedItem().equals(player4clr.getSelectionModel().getSelectedItem()) ||
+    			player2clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) ||
+    			player2clr.getSelectionModel().getSelectedItem().equals(player4clr.getSelectionModel().getSelectedItem()) ||
+    			player3clr.getSelectionModel().getSelectedItem().equals(player4clr.getSelectionModel().getSelectedItem()))) {
+    		Alerts.warning("Please choose a unique color for each player");
+    		return;
+    	}
+    	ArrayList<Player> players = new ArrayList();
     	String p1color = player1clr.getSelectionModel().getSelectedItem().toString();
     	String p1name = player1txt.getText();
     	String p2color = player2clr.getSelectionModel().getSelectedItem().toString();
@@ -262,17 +281,17 @@ public class ChoosePlayersController implements Initializable{
 
     	// create second player
     	if (p2color.equals(BLUE))
-    		secondP = new Player(p1name, Color.Blue);
+    		secondP = new Player(p2name, Color.Blue);
     	else if (p2color.equals(GREEN))
-    		secondP = new Player(p1name, Color.Green);
+    		secondP = new Player(p2name, Color.Green);
     	else if (p2color.equals(PINK))
-    		secondP = new Player(p1name, Color.Pink);
+    		secondP = new Player(p2name, Color.Pink);
     	else if (p2color.equals(PURPLE))
-    		secondP = new Player(p1name, Color.Purple);
+    		secondP = new Player(p2name, Color.Purple);
     	else if (p2color.equals(RED))
-    		secondP = new Player(p1name, Color.Red);
+    		secondP = new Player(p2name, Color.Red);
     	else // if (p2color.equals(YELLOW)){
-    		secondP = new Player(p1name, Color.Yellow);
+    		secondP = new Player(p2name, Color.Yellow);
     	
     	players.add(secondP);
     	

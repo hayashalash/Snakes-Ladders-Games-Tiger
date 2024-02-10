@@ -60,7 +60,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+            <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" onAction="#startGame" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
                <graphic>
                   <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
                      <image>
