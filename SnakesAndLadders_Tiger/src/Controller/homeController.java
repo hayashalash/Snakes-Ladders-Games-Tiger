@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -60,6 +61,13 @@ public class homeController implements Initializable{
 
     public void initialize(URL location, ResourceBundle resources) {
     	turnOffIcon.setMouseTransparent(true);
+        Tooltip h = new Tooltip("History");
+        Tooltip.install(history, h);
+        Tooltip q = new Tooltip("Questions");
+        Tooltip.install(question, q);
+        Tooltip r = new Tooltip("Game Rules");
+        Tooltip.install(info, r);
+
     	if (note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);
     		note.play();

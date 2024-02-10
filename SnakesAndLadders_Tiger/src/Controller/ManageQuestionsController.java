@@ -18,6 +18,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -202,13 +203,18 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	Tooltip a = new Tooltip("Add Question");
+        Tooltip.install(add, a);
+        Tooltip ed = new Tooltip("Edit");
+        Tooltip.install(edit, ed);
+        Tooltip d = new Tooltip("Delete");
+        Tooltip.install(delete, d);
 		try {
 			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	ObservableList<Question> dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
 		fill();
 		questionTable.refresh();
 	}

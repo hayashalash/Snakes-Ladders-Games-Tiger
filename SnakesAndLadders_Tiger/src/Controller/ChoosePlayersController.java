@@ -329,7 +329,7 @@ public class ChoosePlayersController implements Initializable{
     		
     		players.add(fourthP);
     	}
-    	Game g = new Game(diff, playersNum, players);
+    	Game g = new Game(diff, players);
     	// TODO go to Game screen based on difficulty
     	// have a field to save the game in each controller (easy game, normal game, hard game) and set it to 'g' (game created earlier)
     }

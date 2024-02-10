@@ -14,21 +14,12 @@ public class Game {
 	private ArrayList<Player> players;
 	private Player winner;
 	
-	public Game(Difficulty type, int playersNum, ArrayList<Player> players) {
+	public Game(Difficulty type, ArrayList<Player> players) {
 		super();
 		GameID = idCounter++;
 		this.type = type;
-		this.playersNum = playersNum;
+		this.playersNum = players.size();
 		this.players = players;
-	}
-	
-
-	public Game(Difficulty type, Double gameDuration, Player winner) {
-		super();
-		GameID = idCounter++;
-		this.type = type;
-		this.gameDuration = gameDuration;
-		this.winner = winner;
 	}
 
 

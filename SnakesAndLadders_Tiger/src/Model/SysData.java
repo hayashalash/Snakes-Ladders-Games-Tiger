@@ -275,8 +275,8 @@ public class SysData {
 					else // if (diff == "3")
 						d = Difficulty.Hard;
 					
-	            	Game g = new Game(d,durr,PlayerName);
-	            	SysData.getInstance().getGames().add(g);
+//	            	Game g = new Game(d,durr,PlayerName);
+//	            	SysData.getInstance().getGames().add(g);
 				}}
 			}
 			catch (FileNotFoundException e) {
