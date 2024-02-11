@@ -9,11 +9,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,8 +31,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import Model.SysData;
+import javafx.application.Application;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,6 +71,7 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     private TableColumn<Question, Integer> questionNum;
+
     
     @FXML
     private TableColumn<Question, Void> answers;
@@ -223,6 +241,14 @@ public class ManageQuestionsController implements Initializable {
     	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
+		 questionNum.setCellValueFactory(cellData -> {
+	            int rowIndex = questionTable.getItems().indexOf(cellData.getValue()) + 1;
+	            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
+	        });
+		 searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			 SearchForAQuestion(newValue);
+	        });
+
 		
 		// answers column
 		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory =
@@ -231,46 +257,86 @@ public class ManageQuestionsController implements Initializable {
 		        public TableCell<Question, Void> call(final TableColumn<Question, Void> param) {
 		            final TableCell<Question, Void> cell = new TableCell<Question, Void>() {
 
-		                private final ComboBox<String> cb = new ComboBox<>();
-		                private final VBox pane = new VBox(1, cb);
-		           
+		                private final Button btn= new Button("View Answers");
 		                {
-		                    pane.setAlignment(Pos.CENTER);
-		                    cb.setMaxWidth(150);
-		                    cb.setPrefWidth(150);
-		                    
+		                btn.setStyle(
+		                        "-fx-background-color: #FFFACD; " +  // Green background color
+		                        "-fx-text-fill: Black; " +           
+		                        "-fx-min-width: 80px; " +  // Set minimum width
+		                        "-fx-min-height: 10px;"             // Padding
+		                );
+		                btn.setOnMouseEntered(event -> {
+		                    ((Node) event.getSource()).setScaleX(1.1);
+		                    ((Node) event.getSource()).setScaleY(1.1);
+		                    ((Node) event.getSource()).setCursor(Cursor.HAND);
 
-		                    cb.addEventHandler(ComboBox.ON_SHOWING, event -> {
+		                });
+
+		                btn.setOnMouseExited(event -> {
+		                    ((Node) event.getSource()).setScaleX(1);
+		                    ((Node) event.getSource()).setScaleY(1);
+		                    ((Node) event.getSource()).setCursor(Cursor.DEFAULT);
+
+		                });}
+		                private final VBox pane = new VBox(1, btn);
+		                {
+		                	pane.setAlignment(Pos.CENTER);
+		                    btn.setMaxWidth(100);
+		                    btn.setPrefWidth(100);
+		                }
+		                {
+		                	btn.setOnAction(e -> {
 		                        Question q = getTableView().getItems().get(getIndex());
-		                        ArrayList<String> answers = new ArrayList<>();
-		                        String a1 = q.getAnswer1();
-		                        String a2 = q.getAnswer2();
-		                        String a3 = q.getAnswer3();
-		                        String a4 = q.getAnswer4();
-		                        answers.add(a1);
-		                        answers.add(a2);
-		                        answers.add(a3);
-		                        answers.add(a4);
-		                        ObservableList<String> data = FXCollections.observableArrayList(answers);
+		                        int correctAnswerIndex = q.getCorrectAnswer();
+		                        String correctAnswer = "";
 
-		                        cb.setItems(data);
-		                        
-//		                        if (item == null || empty) {
-//		                            setText(null);
-//		                            setStyle(null);
-//		                        } else {
-//		                            setText(item);
-//
-//		                            // Check if the item is the one you want to style differently
-//		                            if ("right answer".equals(item)) {
-//		                                // Apply the fixed style to this specific cell
-//		                                setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-//		                            } else {
-//		                                // Reset style for other cells
-//		                                setStyle(null);
-//		                            }
-//		                        }
+		                        switch (correctAnswerIndex) {
+		                            case 1:
+		                                correctAnswer = q.getAnswer1();
+		                                break;
+		                            case 2:
+		                                correctAnswer = q.getAnswer2();
+		                                break;
+		                            case 3:
+		                                correctAnswer = q.getAnswer3();
+		                                break;
+		                            case 4:
+		                                correctAnswer = q.getAnswer4();
+		                                break;
+		                        }
+
+		                        Dialog<Void> dialog = new Dialog<>();
+		                        dialog.setTitle("Question & Answers");
+		                        dialog.setHeaderText(q.getQuestion());
+
+		                        TextFlow contentText = new TextFlow();
+
+		                        Text answer1 = new Text("1. " + formatAnswer(1, q.getAnswer1(), correctAnswerIndex) + "\n\n");
+		                        Text answer2 = new Text("2. " + formatAnswer(2, q.getAnswer2(), correctAnswerIndex) + "\n\n");
+		                        Text answer3 = new Text("3. " + formatAnswer(3, q.getAnswer3(), correctAnswerIndex) + "\n\n");
+		                        Text answer4 = new Text("4. " + formatAnswer(4, q.getAnswer4(), correctAnswerIndex));
+
+		                        // Apply styling to the correct answer
+		                        if (correctAnswerIndex == 1) {
+		                            answer1.setStyle("-fx-font-weight: bold; -fx-fill: green;");
+		                        } else if (correctAnswerIndex == 2) {
+		                            answer2.setStyle("-fx-font-weight: bold; -fx-fill: green;");
+		                        } else if (correctAnswerIndex == 3) {
+		                            answer3.setStyle("-fx-font-weight: bold; -fx-fill: green;");
+		                        } else if (correctAnswerIndex == 4) {
+		                            answer4.setStyle("-fx-font-weight: bold; -fx-fill: green;");
+		                        }
+
+		                        contentText.getChildren().addAll(answer1, answer2, answer3, answer4);
+
+		                        dialog.getDialogPane().setContent(contentText);
+
+		                        ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
+		                        dialog.getDialogPane().getButtonTypes().add(closeButton);
+
+		                        dialog.showAndWait();
 		                    });
+
 		                }
 
 		                @Override
@@ -290,49 +356,49 @@ public class ManageQuestionsController implements Initializable {
   		dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
   		
-//  		FilteredList<Question> filteredData = new FilteredList<>(dataQues2, b -> ture);
-
-//  		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-//  		filteredData.setPredicate(Question -> {
-//  		if (newValue.isEmpty() || newValue == null) {
-//  			return true;
-//  			}
-//  		
-//  		String searchKeyword = newValue.toLowerCase();
-//  		if (Question.getQuestion().toLowerCase().indexOf(searchKeyword) != -1) {
-//  			return true; // Means we found a match in ProductName
-//  			} 
-//  			else
-//  				return false;
-//  		});
-//  		});
-//  		
-  		// System.out.println(arr);
-  		
 
   	}
     
-    @FXML
-    void SearchForAQuestion(ActionEvent event) {
+    
+        void SearchForAQuestion(String filter) {
+    	
+        	 String lowerCaseFilter = filter.toLowerCase();
 
-    	String lowerCaseFilter = searchField.getText().toLowerCase();
-    	if(lowerCaseFilter.length()!=0) {
-    		HashSet<Question> arr= new HashSet<>();
-    		for(Question q: SysData.getInstance().getQuestions()) {
-    			if(q.getQuestion().toLowerCase().contains(lowerCaseFilter))
-    				arr.add(q);
-    		}
-    		questionTable.setItems(FXCollections.observableArrayList(arr));
-    	}
-    	else 
-    		questionTable.setItems(dataQues2);
-    }
+             if (lowerCaseFilter.length() != 0) {
+                 ObservableList<Question> filteredList = FXCollections.observableArrayList();
+
+                 for (Question q : SysData.getInstance().getQuestions()) {
+                     if (q.getQuestion().toLowerCase().contains(lowerCaseFilter)) {
+                         filteredList.add(q);
+                     }
+                 }
+
+                 questionTable.setItems(filteredList);
+             } else {
+                 questionTable.setItems(dataQues2);
+             }
+         }
     
     @FXML
     void pressed(MouseEvent event) {
     	searchbutton.setStyle("fx-background-color: #FFF ; -fx-background-radius: 5 ; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 )");
     	
     }
-    	
+    
+    @FXML
+    void entered(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1.1);
+    	((Node)event.getSource()).setScaleY(1.1);
+    }
+    @FXML
+    void exited(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1);
+    	((Node)event.getSource()).setScaleY(1);
+    }
+    
+    private String formatAnswer(int answerIndex, String answer, int correctAnswerIndex) {
+        // Check if the answer is correct and apply styling
+    	  return "   " + answer;
+    }
 }
    
