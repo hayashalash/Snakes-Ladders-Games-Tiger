@@ -15,6 +15,9 @@ import Model.QuestionTile;
 import Model.Snake;
 import Model.Tile;
 import View.Alerts;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,6 +40,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class HardController implements Initializable{
 
@@ -94,6 +98,12 @@ public class HardController implements Initializable{
 
     @FXML
     private Button info;
+    
+    @FXML
+    private Label time;
+    
+    private Timeline timer;
+    private Duration gameDuration = Duration.ZERO;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -105,11 +115,29 @@ public class HardController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
+		startTimer();
 		showPlayers();
-		showSnakes();
+//		showSnakes();
 		showQuestions();
 		showSurprises();
 	}
+	
+	private void startTimer() {
+		// Create a timeline for the game duration
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            gameDuration = gameDuration.add(Duration.seconds(1));
+            long totalSeconds = (long) gameDuration.toSeconds();
+            long minutes = totalSeconds / 60;
+            long seconds = totalSeconds % 60;
+            // Convert long values to String with two digits
+            String minutesString = String.format("%02d", minutes);
+            String secondsString = String.format("%02d", seconds);
+            String gameDuration = minutesString + " : " + secondsString;
+            time.setText(gameDuration);
+        }));
+        timer.setCycleCount(Animation.INDEFINITE);
+        timer.play();
+    }
 
 	public void showPlayers() {
 		ObservableList<ImageView> playerIcons = FXCollections.observableArrayList();

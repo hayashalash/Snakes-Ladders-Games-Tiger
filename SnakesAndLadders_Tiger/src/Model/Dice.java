@@ -36,7 +36,7 @@ public class Dice {
 			else
 				if(type==Difficulty.Hard)
 				return random.nextInt(14);//7+8 for ease question, 9+10 normal , 10-14 hard question 
-	}
+		}
 		return 0;//will not got to here 
 	}
 	
