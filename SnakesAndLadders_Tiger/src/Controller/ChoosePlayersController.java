@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +25,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
@@ -341,6 +344,20 @@ public class ChoosePlayersController implements Initializable{
     		HardController.game = new Game(diff, players);
     		newScreen("hardBoard");
     	}
+    }
+    
+    @FXML
+    void entered(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1.1);
+    	((Node)event.getSource()).setScaleY(1.1);
+    	((Node) event.getSource()).setCursor(Cursor.HAND);
+    }
+	
+    @FXML
+    void exited(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1);
+    	((Node)event.getSource()).setScaleY(1);
+    	((Node) event.getSource()).setCursor(Cursor.DEFAULT);
     }
     
     void newScreen(String path) {

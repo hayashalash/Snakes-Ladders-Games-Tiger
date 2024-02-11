@@ -123,7 +123,6 @@ public class homeController implements Initializable{
     @FXML
     void showInfo(ActionEvent event) throws IOException{
     	newScreen("Info");
-
     }
 
     @FXML

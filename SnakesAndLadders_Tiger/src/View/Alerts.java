@@ -108,5 +108,18 @@ public class Alerts {
 		alert.show();
 
 	}
+	
+	public static int retunHome() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("End Game");
+		alert.setHeaderText("Go to homepage?");
+		alert.setContentText("Are you sure you want to go to the homepage?\nPlease note this will result in ending the game!");
+//		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+//		stage.getIcons().add(new Image("/img/icons/warning.png"));
+		Optional<ButtonType> option = alert.showAndWait();
+		if (option.get() == ButtonType.OK)
+			return 1;
+		return -1;
+    }
 
 }

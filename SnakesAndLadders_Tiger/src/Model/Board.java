@@ -21,9 +21,11 @@ public class Board {
 	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
 	private HashMap<Integer, Snake> snakes; // all the snakes and the tile with their head
 	private HashMap<Integer, Ladder> ladders; // all the ladder and the tile with their top
-	private HashMap<Integer, Question> easyQuestions; // tiles with easy questions on them
-	private HashMap<Integer, Question> mediumQuestions; // tiles with medium questions on them
-	private HashMap<Integer, Question> hardQuestions; // tiles with hard questions on them
+	private ArrayList<QuestionTile> questionTiles; // tiles with questions on them
+	private ArrayList<Tile> surpriseTiles; // tiles with questions on them
+	private HashMap<Integer, Question> easyQuestions; // all the easy questions in the game
+	private HashMap<Integer, Question> mediumQuestions; // all the medium questions in the game
+	private HashMap<Integer, Question> hardQuestions; // all the hard questions in the game
 	private HashMap<Integer, Player> playerOn; // where the player is placed on the board
 	
 	public Board(Difficulty bType) {
@@ -37,6 +39,8 @@ public class Board {
 		tiles = new HashMap<>();
 		snakes = new HashMap<>();
 		ladders = new HashMap<>();
+		questionTiles = new ArrayList<>();
+		surpriseTiles = new ArrayList<>();
 		easyQuestions = new HashMap<>();
 		mediumQuestions = new HashMap<>();
 		hardQuestions = new HashMap<>();
@@ -162,6 +166,22 @@ public class Board {
 		this.hardQuestions = hardQuestions;
 	}
 
+	public ArrayList<QuestionTile> getQuestionTiles() {
+		return questionTiles;
+	}
+
+	public void setQuestionTiles(ArrayList<QuestionTile> questionTiles) {
+		this.questionTiles = questionTiles;
+	}
+
+	public ArrayList<Tile> getSurpriseTiles() {
+		return surpriseTiles;
+	}
+
+	public void setSurpriseTiles(ArrayList<Tile> surpriseTiles) {
+		this.surpriseTiles = surpriseTiles;
+	}
+
 	public Tile getTile(int id) {
 		return getTiles().get(id);
 	}
@@ -238,6 +258,7 @@ public class Board {
 			QuestionTile qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), q);
 			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
 			tiles.put(qt.gettNum(), qt); // add the question tile to the tiles HashMap
+			questionTiles.add(qt);
 		}
 	}
 	
@@ -247,10 +268,12 @@ public class Board {
 		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard boards
 			int rand = chooseRandomTile(0);
 			getTile(rand).settType(TileType.Surprise);
+			surpriseTiles.add(getTile(rand));
 		}
 		if (this.bType == Difficulty.Hard) { // if board is hard, add another surprise tile
 			int random = chooseRandomTile(0);
 			getTile(random).settType(TileType.Surprise);
+			surpriseTiles.add(getTile(random));
 		}
 	}
 	
@@ -281,6 +304,9 @@ public class Board {
 	
 	public Integer chooseRandomInRow (int XrowNum) {
 		int random = (int) (Math.random() * (boardLen-1)) + ((XrowNum-1) * boardLen) + 1; // choose a tile  from given row X
+		System.out.println("boardLen is: "+boardLen);
+		System.out.println("XrowNum is: "+XrowNum);
+		System.out.println("random is: "+random);
 		while (getTile(random).gettType() != TileType.Classic) { // ensure we don't land on a non-classic tile
 			random = (int) (Math.random() * (boardLen-1)) + ((XrowNum-1) * boardLen) + 1;
 		}
