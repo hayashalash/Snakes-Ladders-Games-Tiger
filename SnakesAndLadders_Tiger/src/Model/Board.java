@@ -41,7 +41,6 @@ public class Board {
 		mediumQuestions = new HashMap<>();
 		hardQuestions = new HashMap<>();
 		playerOn = new HashMap<>();
-		createBoard();
 	}
 
 	public static int getIdCounter() {
@@ -187,44 +186,58 @@ public class Board {
 	public boolean createBoard() {
 		int boardCounter = 1;
 		int i = boardLen-1;
-		while (i>=0) {
-			for (int j = 0 ; j < boardLen ; j++) {
+		
+		while (i>0) {
+			for (int j = 0 ; j < boardLen ; j++) { // go over row from left to right
+				System.out.println("["+i+","+j+"]");
 				this.grid[i][j] = new Tile(boardCounter++, i, j);
 				getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
-				if (j==boardLen-1) {
-					i--;
-					for (j = boardLen-1 ; j >= 0 ; j--) {
+				if (j==boardLen-1 && i == 0 && (bType == Difficulty.Easy || bType == Difficulty.Hard)) { // in these two board, last tile is on the top right
+					j = boardLen; // exit loop as we've reached the last tile
+				}
+				else if (j==boardLen-1) { // reached end of row
+					i--; // go to the next row
+					for (j = boardLen-1 ; j >= 0 ; j--) { // go over row from right to left
+						System.out.println("["+i+","+j+"]");
 						this.grid[i][j] = new Tile(boardCounter++, i, j);
 						getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
-						if (j==0)
-							i--;
+						if (j==0 && i == 0 && (bType == Difficulty.Medium)) { // in the normal board, last tile is on the top left
+							j = boardLen; // exit loop as we've reached the last tile
+						}
+						else if (j==0) // reached end of row
+							i--; // go to the next row
 					}
 				}
 			}
 		}
+		addSnakeTiles();
 		addQuestionTiles(); // adds 3 question tiles to the board
 		addSurpriseTiles();
-		return (boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
+		System.out.println("boardCounter is "+boardCounter);
+		System.out.println("boardSize is "+boardSize);
+		return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
 	}
 	
 	public void addQuestionTiles() {
 		// boolean retVal = false; //value to return indicating of success 
 		for (int i=0 ; i < 3 ; i++) { // a board has 3 question tiles - one of each difficulty
-			int random = chooseRandomTile(0);
-			QuestionTile qt = (QuestionTile) getTile(random); // turn this randomly chosen tile from the board to a question tile
+			int random = chooseRandomTile(0); 
+			Question q;
 			if (i==0) { // in the first iteration add an easy question
 				int rand = (int) (Math.random() * (getEasyQuestions().size()));
-				qt.setQuestion(getEasyQuestions().get(rand));
+				q = getEasyQuestions().get(rand);
 			}
-			if (i==1) { // in the second iteration add a medium question
+			else if (i==1) { // in the second iteration add a medium question
 				int rand = (int) (Math.random() * (getMediumQuestions().size()));
-				qt.setQuestion(getMediumQuestions().get(rand));
+				q = getMediumQuestions().get(rand);
 			}
-			if (i==2) { // in the third iteration add a hard question
+			else { // if (i==2) - in the third iteration add a hard question
 				int rand = (int) (Math.random() * (getHardQuestions().size()));
-				qt.setQuestion(getHardQuestions().get(rand));
+				q = getHardQuestions().get(rand);
 			}
+			QuestionTile qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), q);
 			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
+			tiles.put(qt.gettNum(), qt); // add the question tile to the tiles HashMap
 		}
 	}
 	
@@ -296,10 +309,10 @@ public class Board {
 					s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
 				}
 			}
-			getTile(snakeHead).settType(TileType.Snake);
-			SnakeTile st = (SnakeTile) getTile(snakeHead); // turn this randomly chosen tile from the board to a snake tile
-			st.setSnakeID(s);
+			snakes.put(s.getSnakeID(), s);
+			SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
 			this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
+			tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 		}
 		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 green and 1 red snakes 
 			for (int i = 0 ; i < 2 ; i++) {
@@ -315,10 +328,10 @@ public class Board {
 					snakeTail = chooseRandomInRow (snakeBottomRow);
 					s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
 				}
-				getTile(snakeHead).settType(TileType.Snake);
-				SnakeTile st = (SnakeTile) getTile(snakeHead); // turn this randomly chosen tile from the board to a snake tile
-				st.setSnakeID(s);
+				snakes.put(s.getSnakeID(), s);
+				SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
 				this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
+				tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 			}
 		}
 		if (this.bType == Difficulty.Hard) { // add 1 yellow and 1 blue snakes 
@@ -334,10 +347,10 @@ public class Board {
 				else { // in the second iteration - add blue snake
 					s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
 				}
-				getTile(snakeHead).settType(TileType.Snake);
-				SnakeTile st = (SnakeTile) getTile(snakeHead); // turn this randomly chosen tile from the board to a snake tile
-				st.setSnakeID(s);
+				snakes.put(s.getSnakeID(), s);
+				SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
 				this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
+				tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 			}
 		}
 	}

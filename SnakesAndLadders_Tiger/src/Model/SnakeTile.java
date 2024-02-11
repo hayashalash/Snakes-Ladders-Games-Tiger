@@ -5,14 +5,15 @@ public class SnakeTile extends Tile {
 	
 	public SnakeTile(Integer tNum, Integer xCoord, Integer yCoord, Snake snake) {
 		super(tNum, TileType.Snake, xCoord, yCoord);
+		super.settType(TileType.Snake);
 		this.snake = snake;
 	}
 	
-	public Snake getSnakeID() {
+	public Snake getSnake() {
 		return snake;
 	}
 
-	public void setSnakeID(Snake snake) {
+	public void setSnake(Snake snake) {
 		this.snake = snake;
 	}
 	

@@ -250,80 +250,81 @@ public class ChoosePlayersController implements Initializable{
     		return;
     	}
     	ArrayList<Player> players = new ArrayList();
-    	String p1color = player1clr.getSelectionModel().getSelectedItem().toString();
     	String p1name = player1txt.getText();
-    	String p2color = player2clr.getSelectionModel().getSelectedItem().toString();
     	String p2name = player2txt.getText();
+    	int player1indx = player1clr.getSelectionModel().getSelectedIndex();
+    	int player2indx = player2clr.getSelectionModel().getSelectedIndex();
     	Player firstP;
     	Player secondP;
     	
+    	
     	//create first player
-    	if (p1color.equals(BLUE))
-    		firstP = new Player(p1name, Color.Blue);
-    	else if (p1color.equals(GREEN))
+    	if (player1indx == 0) //first color is green
     		firstP = new Player(p1name, Color.Green);
-    	else if (p1color.equals(PINK))
+    	else if (player1indx == 1) // second color is blue
+    		firstP = new Player(p1name, Color.Blue);
+    	else if (player1indx == 2) // third color is pink
     		firstP = new Player(p1name, Color.Pink);
-    	else if (p1color.equals(PURPLE))
-    		firstP = new Player(p1name, Color.Purple);
-    	else if (p1color.equals(RED))
+    	else if (player1indx == 3) // fourth color is red
     		firstP = new Player(p1name, Color.Red);
-    	else // if (p1color.equals(YELLOW))
+    	else if (player1indx == 4) // fifth color is purple
+    		firstP = new Player(p1name, Color.Purple);
+    	else // if (player1indx == 5) --> sixth color is yellow
     		firstP = new Player(p1name, Color.Yellow);
     	
     	players.add(firstP);
 
     	// create second player
-    	if (p2color.equals(BLUE))
-    		secondP = new Player(p2name, Color.Blue);
-    	else if (p2color.equals(GREEN))
+    	if (player2indx == 0) //first color is green
     		secondP = new Player(p2name, Color.Green);
-    	else if (p2color.equals(PINK))
+    	else if (player2indx == 1) // second color is blue
+    		secondP = new Player(p2name, Color.Blue);
+    	else if (player2indx == 2) // third color is pink
     		secondP = new Player(p2name, Color.Pink);
-    	else if (p2color.equals(PURPLE))
-    		secondP = new Player(p2name, Color.Purple);
-    	else if (p2color.equals(RED))
+    	else if (player2indx == 3) // fourth color is red
     		secondP = new Player(p2name, Color.Red);
-    	else // if (p2color.equals(YELLOW)){
+    	else if (player2indx == 4) // fifth color is purple
+    		secondP = new Player(p2name, Color.Purple);
+    	else // if (player2indx == 5) --> sixth color is yellow
     		secondP = new Player(p2name, Color.Yellow);
     	
     	players.add(secondP);
     	
     	if (playersNum == 3 || playersNum ==4) {
-    		String p3color = player3clr.getSelectionModel().getSelectedItem().toString();
         	String p3name = player3txt.getText();
+        	int player3indx = player3clr.getSelectionModel().getSelectedIndex();
         	Player thirdP;
-    		if (p3color.equals(BLUE))
-    			thirdP = new Player(p3name, Color.Blue);
-        	else if (p3color.equals(GREEN))
-        		thirdP = new Player(p3name, Color.Green);
-        	else if (p3color.equals(PINK))
+    		if (player3indx == 0)
+    			thirdP = new Player(p3name, Color.Green);
+        	else if (player3indx == 1)
+        		thirdP = new Player(p3name, Color.Blue);
+        	else if (player3indx == 2)
         		thirdP = new Player(p3name, Color.Pink);
-        	else if (p3color.equals(PURPLE))
-        		thirdP = new Player(p3name, Color.Purple);
-        	else if (p3color.equals(RED))
+        	else if (player3indx == 3)
         		thirdP = new Player(p3name, Color.Red);
-        	else // if (p3color.equals(YELLOW))
+        	else if (player3indx == 4)
+        		thirdP = new Player(p3name, Color.Purple);
+        	else // if (player3indx == 5)
         		thirdP = new Player(p3name, Color.Yellow);
     		
     		players.add(thirdP);
     	}
     	
     	if (playersNum ==4) {
-    		String p4color = player4clr.getSelectionModel().getSelectedItem().toString();
         	String p4name = player4txt.getText();
+        	int player4indx = player4clr.getSelectionModel().getSelectedIndex();
         	Player fourthP;
-    		if (p4color.equals(BLUE))
-    			fourthP = new Player(p4name, Color.Blue);
-        	else if (p4color.equals(GREEN))
-        		fourthP = new Player(p4name, Color.Green);
-        	else if (p4color.equals(PINK))
+    		if (player4indx == 0)
+    			fourthP = new Player(p4name, Color.Green);
+        	else if (player4indx == 1)
+        		fourthP = new Player(p4name, Color.Blue);
+        	else if (player4indx == 2)
         		fourthP = new Player(p4name, Color.Pink);
-        	else if (p4color.equals(PURPLE))
-        		fourthP = new Player(p4name, Color.Purple);
-        	else if (p4color.equals(RED))
+        	else if (player4indx == 3)
         		fourthP = new Player(p4name, Color.Red);
-        	else // if (p4color.equals(YELLOW))
+        	else if (player4indx == 4)
+        		fourthP = new Player(p4name, Color.Purple);
+        	else // if (player4indx == 5)
         		fourthP = new Player(p4name, Color.Yellow);
     		
     		players.add(fourthP);
