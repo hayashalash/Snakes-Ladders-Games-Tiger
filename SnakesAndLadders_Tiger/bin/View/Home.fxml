@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,7 +16,7 @@
       </ImageView>
       <HBox layoutX="620.0" layoutY="82.0" prefHeight="69.0" prefWidth="161.0">
          <children>
-            <Button fx:id="history" mnemonicParsing="false" onAction="#showHistory" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+            <Button fx:id="history" mnemonicParsing="false" onAction="#showHistory" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                      <image>
@@ -23,18 +24,24 @@
                      </image>
                   </ImageView>
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="question" mnemonicParsing="false" onAction="#showQuestion" prefHeight="60.0" prefWidth="76.0" style="-fx-background-color: transparent;">
+            <Button fx:id="question" mnemonicParsing="false" onAction="#showQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="60.0" prefWidth="76.0" style="-fx-background-color: transparent;">
                <graphic>
                   <ImageView fitHeight="57.0" fitWidth="60.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 4 , 0 );">
                      <image>
                         <Image url="@../img/icons/Q&amp;A.png" />
                      </image>
                   </ImageView>
-               </graphic></Button>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
          </children>
       </HBox>
-      <Button fx:id="close" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+      <Button fx:id="close" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
@@ -42,8 +49,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="info" layoutX="84.0" layoutY="85.0" mnemonicParsing="false" onAction="#showInfo" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+      <Button fx:id="info" layoutX="84.0" layoutY="85.0" mnemonicParsing="false" onAction="#showInfo" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="41.0" prefWidth="40.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="55.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -4 , 0 );">
                <image>
@@ -51,8 +61,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="start" layoutX="337.0" layoutY="369.0" mnemonicParsing="false" onAction="#start" prefHeight="69.0" prefWidth="178.0" style="-fx-background-color: transparent;">
+      <Button fx:id="start" layoutX="337.0" layoutY="369.0" mnemonicParsing="false" onAction="#start" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="69.0" prefWidth="178.0" style="-fx-background-color: transparent;">
                <graphic>
             <ImageView fitHeight="71.0" fitWidth="158.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
                <image>
@@ -60,8 +73,11 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
         </Button>
-      <Button fx:id="musicOff" layoutX="14.0" layoutY="525.0" mnemonicParsing="false" onAction="#TurnOffOn" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: transparent;">
+      <Button fx:id="musicOff" layoutX="14.0" layoutY="525.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="47.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
                <image>
@@ -69,6 +85,9 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <ImageView fx:id="turnOffIcon" fitHeight="38.0" fitWidth="82.0" layoutX="-1.0" layoutY="545.0" opacity="0.0" rotate="35.5">
          <image>

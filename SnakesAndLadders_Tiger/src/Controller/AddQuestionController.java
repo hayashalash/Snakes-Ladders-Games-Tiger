@@ -14,12 +14,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 
 public class AddQuestionController implements Initializable{
 
@@ -138,5 +140,17 @@ public class AddQuestionController implements Initializable{
 		correctAnswer.getItems().addAll(1, 2, 3, 4);
 		
 	}
+	 @FXML
+	 void entered(MouseEvent event){
+		 ((Node)event.getSource()).setScaleX(1.1);
+		 ((Node)event.getSource()).setScaleY(1.1);
+	 }
+	 
+	@FXML
+	 void exited(MouseEvent event){
+	    ((Node)event.getSource()).setScaleX(1);
+	    ((Node)event.getSource()).setScaleY(1);
+	 }	
+	
 
 }

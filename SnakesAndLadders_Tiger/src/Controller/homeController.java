@@ -12,11 +12,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -103,9 +105,19 @@ public class homeController implements Initializable{
     }
 
     @FXML
+    void entered(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1.1);
+    	((Node)event.getSource()).setScaleY(1.1);
+    }
+    @FXML
+    void exited(MouseEvent event){
+    	((Node)event.getSource()).setScaleX(1);
+    	((Node)event.getSource()).setScaleY(1);
+    }
+    
+    @FXML
     void showHistory(ActionEvent event) throws IOException{
     	newScreen("GameHistory");
-
     }
 
     @FXML

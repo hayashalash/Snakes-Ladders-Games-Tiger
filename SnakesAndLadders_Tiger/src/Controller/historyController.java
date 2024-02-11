@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import Model.SysData;
 import Model.Difficulty;
 import Model.Game;
@@ -133,6 +135,19 @@ public class historyController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		fillHistoryTable();	}
-
+		fillHistoryTable();	
+	}
+	
+	 @FXML
+	 void entered(MouseEvent event) {
+		 ((Node)event.getSource()).setScaleX(1.1);
+		 ((Node)event.getSource()).setScaleY(1.1);
+	 }
+	 
+	@FXML
+	 void exited(MouseEvent event) {
+	    ((Node)event.getSource()).setScaleX(1);
+	    ((Node)event.getSource()).setScaleY(1);
+	 }	
+	
 }
