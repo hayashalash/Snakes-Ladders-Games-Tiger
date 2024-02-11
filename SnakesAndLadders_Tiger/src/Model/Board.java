@@ -314,74 +314,76 @@ public class Board {
 	}
 	
 	public void addSnakeTiles() {
-		for (int i = 0 ; i <= 3 ; i++) { // all board types have at least 4 snakes - one of each color/length
-			int snakeHead = chooseRandomTile(i);
-			int snakeTail;
-			Snake s;
-			if (i == redSnakeLen) {
-				snakeTail = snakeHead; // in a red snake, head and tail are at the same tile
-				s = new Snake(SnakeColor.Red, snakeHead, snakeTail);
-			}
-			else {
-				int snakeBottomRow = getTile(snakeHead).getxCoord()+i; // i = snake length
-				snakeTail = chooseRandomInRow (snakeBottomRow);
-				if (i == yellowSnakeLen) { 
-					s = new Snake(SnakeColor.Yellow, snakeHead, snakeTail);
-				}
-				else if (i == greenSnakeLen) {
-					s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
-				}
-				else { //if (i == blueSnakeLen)
-					s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
-				}
-			}
-			snakes.put(s.getSnakeID(), s);
-			SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
-			this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
-			tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
-		}
+		// all board types have at least 4 snakes - one of each color/length
+		createSnake(SnakeColor.Red);			
+		createSnake(SnakeColor.Yellow);
+		createSnake(SnakeColor.Green);
+		createSnake(SnakeColor.Blue);
 		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 green and 1 red snakes 
-			for (int i = 0 ; i < 2 ; i++) {
-				int snakeHead = chooseRandomTile(i);
-				int snakeTail;
-				Snake s;
-				if (i == redSnakeLen) { // in the first iteration - add red snake
-					snakeTail = snakeHead; // in a red snake, head and tail are at the same tile
-					s = new Snake(SnakeColor.Red, snakeHead, snakeTail);
-				}
-				else { // in the second iteration - add green snake
-					int snakeBottomRow = getTile(snakeHead).getxCoord()+i;
-					snakeTail = chooseRandomInRow (snakeBottomRow);
-					s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
-				}
-				snakes.put(s.getSnakeID(), s);
-				SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
-				this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
-				tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
-			}
+			createSnake(SnakeColor.Red);
+			createSnake(SnakeColor.Green);
 		}
 		if (this.bType == Difficulty.Hard) { // add 1 yellow and 1 blue snakes 
-			for (int i = 0 ; i < 2 ; i++) {
-				int snakeHead = chooseRandomTile(i);
-				int snakeTail;
-				Snake s;
-				int snakeBottomRow = getTile(snakeHead).getxCoord()+i;
-				snakeTail = chooseRandomInRow (snakeBottomRow);
-				if (i == 0) { // in the first iteration - add yellow snake
-					s = new Snake(SnakeColor.Yellow, snakeHead, snakeTail);
-				}
-				else { // in the second iteration - add blue snake
-					s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
-				}
-				snakes.put(s.getSnakeID(), s);
-				SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
-				this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
-				tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
-			}
+			createSnake(SnakeColor.Yellow);
+			createSnake(SnakeColor.Blue);
 		}
 	}
 	
-	public void addLadderTiles (int len) {
-		
+	public void createSnake(SnakeColor color) {
+		int snakeHead;
+		int snakeTail;
+		Snake s;
+		if (color == SnakeColor.Red) {
+			snakeHead = chooseRandomTile(redSnakeLen);
+			snakeTail = snakeHead; // in a red snake, head and tail are at the same tile
+			s = new Snake(SnakeColor.Red, snakeHead, snakeTail);
+		}
+		else if (color == SnakeColor.Yellow) {
+			snakeHead = chooseRandomTile(yellowSnakeLen);
+			int snakeBottomRow = getTile(snakeHead).getxCoord()+yellowSnakeLen; 
+			snakeTail = chooseRandomInRow (snakeBottomRow);
+			s = new Snake(SnakeColor.Yellow, snakeHead, snakeTail);
+		}
+		else if (color == SnakeColor.Green) {
+			snakeHead = chooseRandomTile(greenSnakeLen);
+			int snakeBottomRow = getTile(snakeHead).getxCoord()+greenSnakeLen; 
+			snakeTail = chooseRandomInRow (snakeBottomRow);
+			s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
+		}
+		else { // if (color == SnakeColor.Blue)
+			snakeHead = chooseRandomTile(blueSnakeLen);
+			int snakeBottomRow = getTile(snakeHead).getxCoord()+blueSnakeLen; 
+			snakeTail = chooseRandomInRow (snakeBottomRow);
+			s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
+		}
+		snakes.put(s.getSnakeID(), s);
+		SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
+		this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
+		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
+	}
+	
+	public void addLadderTiles () {
+		for (int i = 1 ; i <= 4 ; i++) { // all board types have at least 4 ladders - one of each length: [1,2,3,4]
+			createLadder(i); // i = ladder length
+		}
+		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 2 additional ladders - lengths: [5,6] 
+			for (int i = 5 ; i <= 6 ; i++)
+				createLadder(i);
+		}
+		if (this.bType == Difficulty.Hard) { // add 2 additional ladders - lengths: [7,8]  
+			for (int i = 7 ; i <= 8 ; i++) 
+				createLadder(i);
+		}
+	}
+	
+	public void createLadder(int length) {
+		int laddertop = chooseRandomTile(length);
+		int ladderBottomRow = getTile(laddertop).getxCoord()+length;
+		int ladderbottom = chooseRandomInRow (ladderBottomRow);
+		Ladder l = new Ladder(length, laddertop, ladderbottom);
+		ladders.put(l.getLadderID(), l);
+		LadderTile lt = new LadderTile (ladderbottom, getTile(ladderbottom).getxCoord(), getTile(ladderbottom).getyCoord(), l); // create a ladder tile to replace the regular tile
+		this.grid[lt.xCoord][lt.yCoord] = lt; // put the ladder tile back in the board
+		tiles.put(lt.gettNum(), lt); // add the ladder tile to the tiles HashMap
 	}
 }

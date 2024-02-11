@@ -184,6 +184,7 @@ public class EasyController implements Initializable{
 		for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) { // get the board snakes
             snakes.add(s.getValue());
         }
+		System.out.println("number of snakes is: " + snakes.size());
 		for (Snake s : snakes) {
 			Image snakeImage = new Image(getClass().getResource(SNAKE_IMAGE_PATH).toExternalForm());
 			int headRow = board.getTile(s.getSnakeHead()).getxCoord();
