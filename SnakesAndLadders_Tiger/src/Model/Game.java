@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class Game {
 
@@ -11,8 +12,9 @@ public class Game {
 	private Date date;
 	private int playersNum;
 	private Double gameDuration;
-	private ArrayList<Player> players;
+	private ArrayList<Player> players;//should delete?
 	private Player winner;
+	private Queue<Player> playersOrder;
 	
 	public Game(Difficulty type, ArrayList<Player> players) {
 		super();
@@ -79,6 +81,27 @@ public class Game {
 		this.date = date;
 	}
 
+
+	public Queue<Player> getPlayersOrder() {
+		return playersOrder;
+	}
+
+
+	public void setPlayersOrder(Queue<Player> playersOrder) {
+		this.playersOrder = playersOrder;
+	}
+    public void changeplayersorder() {
+    	Player p=playersOrder.poll();
+    	playersOrder.add(p);
+    }
+	public void startGame() {
+		
+	}
+     public void Gamestarted() {
+		
+	}
+	
+	
 
 	
 }
