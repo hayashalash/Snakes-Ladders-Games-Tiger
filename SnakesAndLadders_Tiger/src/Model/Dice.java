@@ -1,11 +1,9 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Dice {
 	private int side; // current result of the dice
@@ -21,9 +19,16 @@ public class Dice {
 	}
 
 
-	public int RollingDiceStartingGame(Player p) {
-		Random random = new Random();
-		return random.nextInt(4);
+	public void RollingDiceStartingGame(Game game) {//set orders for the players
+		ArrayList<Player> players = game.getPlayers();
+		 Queue<Player> playersOrder = new LinkedList<>();	
+		while(!players.isEmpty()) {//check remain players without order 
+			Random random = new Random();
+			int r= random.nextInt(players.size());
+			playersOrder.add(players.get(r));    //add the player to the queue
+			players.remove(r);	
+		}
+		 game.setPlayersOrder(playersOrder);//change the original queue to the random order of play
 	}
 	
 	public static int RandomNumberGenerator(Difficulty type){
