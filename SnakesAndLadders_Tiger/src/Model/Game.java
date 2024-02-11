@@ -90,7 +90,18 @@ public class Game {
 	public void setPlayersOrder(Queue<Player> playersOrder) {
 		this.playersOrder = playersOrder;
 	}
-
+    public void changeplayersorder() {
+    	Player p=playersOrder.poll();
+    	playersOrder.add(p);
+    }
+	public void startGame() {
+		
+	}
+     public void Gamestarted() {
+		
+	}
+	
+	
 
 	
 }
