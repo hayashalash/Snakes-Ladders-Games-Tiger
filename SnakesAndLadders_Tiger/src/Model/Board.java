@@ -362,6 +362,14 @@ public class Board {
 		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 	}
 	
+	public int getRows() {
+	    return grid.length; // Number of rows is the length of the grid array
+	}
+
+	public int getColumns() {
+	    return grid.length > 0 ? grid[0].length : 0; // Number of columns is the length of the first row of the grid array
+	}
+	
 	public void addLadderTiles () {
 		for (int i = 1 ; i <= 4 ; i++) { // all board types have at least 4 ladders - one of each length: [1,2,3,4]
 			createLadder(i); // i = ladder length

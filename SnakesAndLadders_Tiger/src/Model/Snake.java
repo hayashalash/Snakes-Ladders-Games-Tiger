@@ -72,6 +72,8 @@ public class Snake {
 	public void setSnakeTail(Integer snakeTail) {
 		this.snakeTail = snakeTail;
 	}
+
+
 	
 	
 }
