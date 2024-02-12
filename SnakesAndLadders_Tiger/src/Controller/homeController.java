@@ -6,25 +6,40 @@ import java.util.ResourceBundle;
 
 import javax.sound.sampled.AudioInputStream;
 
-
+import Model.Admin;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
 public class homeController implements Initializable{
 
+	private static final String ADMIN = "/img/screens/admin.jpg";
+	
+	
+	
     @FXML
     private Button history;
 
@@ -127,7 +142,73 @@ public class homeController implements Initializable{
 
     @FXML
     void showQuestion(ActionEvent event) throws IOException{
-    	newScreen("manageQuestion");
+    	question.setOnAction(e -> openCustomDialog());
+    }
+    
+    private void openCustomDialog() {
+        // Create a custom dialog
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Admin Access Only");
+        ImageView imageView = new ImageView(new Image(ADMIN));
+        imageView.setFitWidth(350);
+        imageView.setFitHeight(300);
+
+        TextField textField = new TextField();
+        textField.setPrefHeight(20);
+        textField.setMaxWidth(150);
+        textField.setPromptText("Enter Password");
+        Button button = new Button("Log In");
+        button.setPadding(new Insets(5, 5, 5, 5));
+        // Apply CSS styles to the button
+        button.setStyle("-fx-background-color: #D2691E; " +  // Background color
+                "-fx-text-fill: white; " +           // Text color
+                "-fx-font-size: 14px; " +            // Font size
+                "-fx-font-family: Serif; " +         // Font family
+                "-fx-background-radius: 5px; " +     // Background radius
+                "-fx-border-radius: 5px; " +         // Border radius
+                "-fx-border-color: #DEB887;" +      // Border color
+        		"-fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );"); // Drop shadow effect
+        button.setOnMouseEntered(e -> entered(e));
+        button.setOnMouseExited(e -> exited(e));
+        Label errorLabel = new Label("Incorrect password");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setOpacity(0);
+        // Add the elements to an HBox layout
+        VBox vbox = new VBox(textField, errorLabel, button);
+
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(5); // Set spacing between the text field and button
+        vbox.setPadding(new Insets(140, 0, 0, 0)); // Set padding around the layout
+        
+        button.setOnAction(e -> {
+        	String p = textField.getText();
+        	if (Admin.getInstance().checkPassword(p)) {
+        		newScreen("manageQuestion");
+        		dialog.close();
+        	}
+        	else {
+        		textField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+        		// Show a label with red text underneath the text field to notify the user of a wrong password
+                errorLabel.setOpacity(1);
+        	}
+        });
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+        	// If the user starts typing, remove the error label if it exists
+            if (errorLabel.getOpacity() != 0) {
+                errorLabel.setOpacity(0);
+                // Reset the style of the text field to its default state
+                textField.setStyle("");
+            }
+	    });
+        // Add the background image and the elements to a layout
+        StackPane content = new StackPane();
+        content.getChildren().addAll(imageView, vbox);
+        // Set the layout as the content of the dialog
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        // Show the dialog
+        dialog.showAndWait();
     }
 
   
