@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EasyController">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EasyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -91,13 +91,12 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="diceButton" layoutX="40.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="88.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+      <Button fx:id="diceButton" layoutX="13.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
-            <ImageView fx:id="dice" fitHeight="74.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="diseView" fitHeight="88.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../img/icons/dice.png" />
-               </image>
-            </ImageView>
+                  <Image url="\@../img/icons/dice.png" />
+               </image></ImageView>
          </graphic></Button>
    </children>
 </AnchorPane>

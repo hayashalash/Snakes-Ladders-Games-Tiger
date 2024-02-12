@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import Model.Board;
 import Model.Color;
+import Model.Dice;
+import Model.Difficulty;
 import Model.Game;
 import Model.Player;
 import Model.Question;
@@ -123,7 +125,29 @@ public class EasyController implements Initializable{
     
     @FXML
     private Button diceButton;
+     
+    @FXML
+    private ImageView diceImage;
     
+    @FXML
+    private ImageView diceResult;
+    
+    private HashMap<Integer, String> diceImageMap;
+    
+    diseImage.
+
+    private void initialize() {
+        // Initialize the mapping between dice numbers and image paths of it 
+        diceImageMap = new HashMap<>();
+        diceImageMap.put(0, "/img/icons/diceroll0.jpg");
+        diceImageMap.put(1, "/img/icons/diceroll1.jpg");
+        diceImageMap.put(2, "/img/icons/diceroll2.jpg");
+        diceImageMap.put(3, "/img/icons/diceroll3.jpg");
+        diceImageMap.put(4, "/img/icons/diceroll4.jpg");
+        diceImageMap.put(5, "/img/icons/dicerollQuestion.jpg");
+        diceImageMap.put(6, "/img/icons/dicerollQuestion.jpg");
+        diceImageMap.put(7, "/img/icons/dicerollQuestion.jpg");
+    }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -425,6 +449,16 @@ public class EasyController implements Initializable{
         dialog.showAndWait();
     }
     
+    @FXML
+    void handleDiceClick(ActionEvent event) throws InterruptedException {	
+    	 initialize();
+		 int result = Dice.RandomNumberGenerator(Difficulty.Easy);
+    	 String imagePath = diceImageMap.get(result);
+    	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+         diceResult.setImage(image); 
+         diceResult.wait(1);
+    }
+    
     void newScreen(String path) {
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
@@ -436,9 +470,5 @@ public class EasyController implements Initializable{
 		}  	
     }
     
-    @FXML
-    void handleDiceClick(ActionEvent event) {
-    	
-    	
-    }
+    
 }
