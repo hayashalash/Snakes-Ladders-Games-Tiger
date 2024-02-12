@@ -21,12 +21,8 @@ public class Alerts {
 	public static int delete(String content){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Delete");
-		Character ch = content.charAt(0);
-		if (ch.equals('a')||ch.equals('e')||ch.equals('o')||ch.equals('u')||ch.equals('i'))
-			alert.setHeaderText("You're about to delete an "+content);
-		else
-			alert.setHeaderText("You're about to delete a "+content);
-		alert.setContentText("Are you sure you want to delete the selected "+content+"?");
+		alert.setHeaderText("You're about to delete the question: "+ "\"" + content +"\"");
+		alert.setContentText("Are you sure you want to delete the selected question?");
 		
 		if (alert.showAndWait().get() == ButtonType.OK)
 			return 1;
@@ -40,7 +36,7 @@ public class Alerts {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Edit");
-		alert.setHeaderText("Are you sure want to edit?");
+		alert.setHeaderText("Are you sure you want to edit the question?");
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 //		stage.getIcons().add(new Image("img/logo.png"));
 

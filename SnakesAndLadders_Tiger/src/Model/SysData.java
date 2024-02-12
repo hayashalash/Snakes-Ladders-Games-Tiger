@@ -141,12 +141,30 @@ public class SysData {
 	        FileWriter file2 = new FileWriter(QJSON);
 	        file2.write(Json2.toJSONString());
 	        file2.close();
-		} catch (IOException e) {
+		} 
+	    catch (IOException e) {
 	        e.printStackTrace();
-	    } finally {
+	    } 
+	    finally {
         SysData.getInstance().readFromJson();
 	    }
 	}
+	
+	public void updateInJson(Question oldQuestion, Question newQuestion) throws IOException, ParseException {
+		  Iterator<Question> iterator = questions.iterator();
+		    while (iterator.hasNext()) {
+		        Question question = iterator.next();
+		        if (question.equals(oldQuestion)) {
+		            iterator.remove(); // Remove the old question using iterator
+		            break;
+		        }
+		    }
+	    questions.add(newQuestion);     // Add the new question
+	    for (Question q : questions) 
+	       writeToJson(q); // Write the updated set back to JSON
+	
+	}
+
 	
 	public void deleteFromJson(Question question) throws IOException, ParseException{
 		
@@ -174,33 +192,36 @@ public class SysData {
 			FileWriter writeFile = new FileWriter(QJSON);
 			writeFile.write(jsonObject2.toJSONString());
 			writeFile.close();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		}
+		finally {
 			deleted.add(question);
 			SysData.getInstance().readFromJson();
-				}
 		}
+	}
 	
-	public   boolean isJsonEmpty(BufferedReader reader) throws IOException {
-		
-	    String json = "";
+	public boolean isJsonEmpty(BufferedReader reader) throws IOException {
+	    StringBuilder json = new StringBuilder();
 	    String line;
+	    
 	    while ((line = reader.readLine()) != null) {
-	      json += line;
+	        json.append(line);
 	    }
+	    
 	    reader.close();
 
 	    // Check if the JSON file is empty
-	    if (json.length() == 0) {
-	      System.out.println("The JSON file is empty");
-	      return true;
+	    if (json.toString().trim().isEmpty()) {
+	        System.out.println("The JSON file is empty");
+	        return true;
 	    } else {
-	    	return false;
+	        return false;
 	    }
-		 
 	}
+	
 	// this method to save the games history in json file  
 	public void writeToJsonGames(Game g) throws IOException, ParseException { 
 		JSONParser parser = new JSONParser();

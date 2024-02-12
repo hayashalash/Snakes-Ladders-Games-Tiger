@@ -93,6 +93,7 @@ public class AddQuestionController implements Initializable{
 		//clear fields
 		clearFields();
 		Alerts.message("Added", "Question has been added succesfully!");
+		
 //		Question.idCounter++;
 		return true;
     }
