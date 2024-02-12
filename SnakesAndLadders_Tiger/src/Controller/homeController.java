@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -153,7 +154,7 @@ public class homeController implements Initializable{
         imageView.setFitWidth(350);
         imageView.setFitHeight(300);
 
-        TextField textField = new TextField();
+        PasswordField textField = new PasswordField();
         textField.setPrefHeight(20);
         textField.setMaxWidth(150);
         textField.setPromptText("Enter Password");
