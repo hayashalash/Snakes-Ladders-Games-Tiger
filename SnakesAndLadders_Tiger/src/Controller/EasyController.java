@@ -135,7 +135,7 @@ public class EasyController implements Initializable{
     private HashMap<Integer, String> diceImageMap;
     
 
-    private void initialize() {
+    public void initialize() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
         diceImageMap.put(0, "/img/icons/diceroll0.jpg");
@@ -456,6 +456,7 @@ public class EasyController implements Initializable{
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
          diceResult.setImage(image); 
          diceResult.wait(1);
+         diceResult.setImage(image);
     }
     
     void newScreen(String path) {
