@@ -151,7 +151,7 @@ public class homeController implements Initializable{
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Admin Access Only");
         ImageView imageView = new ImageView(new Image(ADMIN));
-        imageView.setFitWidth(350);
+        imageView.setFitWidth(400);
         imageView.setFitHeight(300);
 
         PasswordField textField = new PasswordField();
