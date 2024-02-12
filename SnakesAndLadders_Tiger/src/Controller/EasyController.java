@@ -134,7 +134,6 @@ public class EasyController implements Initializable{
     
     private HashMap<Integer, String> diceImageMap;
     
-    diseImage.
 
     private void initialize() {
         // Initialize the mapping between dice numbers and image paths of it 

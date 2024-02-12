@@ -93,10 +93,6 @@
       </Label>
       <Button fx:id="diceButton" layoutX="13.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
-            <ImageView fx:id="diseView" fitHeight="88.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="\@../img/icons/dice.png" />
-               </image></ImageView>
          </graphic></Button>
    </children>
 </AnchorPane>

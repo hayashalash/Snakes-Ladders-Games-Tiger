@@ -58,9 +58,6 @@
             <RowConstraints maxHeight="85.33334350585938" minHeight="10.0" prefHeight="76.66665649414062" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="79.33331298828125" minHeight="10.0" prefHeight="79.33331298828125" vgrow="SOMETIMES" />
          </rowConstraints>
-         <children>
-            <ImageView fx:id="diceResult" fitHeight="163.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-         </children>
       </GridPane>
       <Button fx:id="home" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-border-radius: 50;" textFill="#651d1d">
          <graphic>
@@ -94,13 +91,8 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="diceButton" layoutX="51.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+      <Button fx:id="diceButton" layoutX="13.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
-            <ImageView fx:id="diceImage" fitHeight="91.0" fitWidth="184.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/icons/dice.png" />
-               </image>
-            </ImageView>
          </graphic></Button>
    </children>
 </AnchorPane>
