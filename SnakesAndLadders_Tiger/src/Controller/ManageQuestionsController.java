@@ -24,6 +24,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -227,6 +228,7 @@ public class ManageQuestionsController implements Initializable {
         Tooltip.install(edit, ed);
         Tooltip d = new Tooltip("Delete");
         Tooltip.install(delete, d);
+      
 		try {
 			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
@@ -379,11 +381,11 @@ public class ManageQuestionsController implements Initializable {
              }
          }
     
-    @FXML
-    void pressed(MouseEvent event) {
-    	searchbutton.setStyle("fx-background-color: #FFF ; -fx-background-radius: 5 ; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 )");
-    	
-    }
+//    @FXML
+//    void pressed(MouseEvent event) {
+//    	searchbutton.setStyle("fx-background-color: #FFF ; -fx-background-radius: 5 ; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 )");
+//    	
+//    }
     
     @FXML
     void entered(MouseEvent event){
