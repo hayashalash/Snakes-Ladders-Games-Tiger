@@ -83,7 +83,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-<<<<<<< Updated upstream
       <Label fx:id="time" layoutX="50.0" layoutY="90.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: olive; -fx-border-radius: 10;" text="00 : 00">
          <font>
             <Font name="Baskerville Old Face" size="22.0" />
@@ -92,7 +91,6 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-=======
       <Button fx:id="diceButton" layoutX="39.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="107.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-border-width: 0;" />
       <ImageView fx:id="dice" fitHeight="107.0" fitWidth="122.0" layoutX="38.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
          <image>
