@@ -91,12 +91,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="diceButton" layoutX="39.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="107.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-border-width: 0;" />
-      <ImageView fx:id="dice" fitHeight="107.0" fitWidth="122.0" layoutX="38.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/icons/dice.png" />
-         </image>
-      </ImageView>
->>>>>>> Stashed changes
+      <Button fx:id="diceButton" layoutX="40.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="88.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+         <graphic>
+            <ImageView fx:id="dice" fitHeight="74.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/icons/dice.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>

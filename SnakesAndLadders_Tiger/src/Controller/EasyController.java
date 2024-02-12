@@ -227,58 +227,7 @@ public class EasyController implements Initializable{
 		
 	}
 	
-	/*
-	 * 
-	 *
-	 * public void showSnakes() {
-		ArrayList<Snake> snakes = new ArrayList();
-		for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) { // get the board snakes
-            snakes.add(s.getValue());
-        }
-		System.out.println("number of snakes is: " + snakes.size());
-		for (Snake s : snakes) {
-			Image redSnakeImage = new Image(getClass().getResource(RED_SNAKE_IMAGE_PATH).toExternalForm());
-			Image yellowSnakeImage = new Image(getClass().getResource(YELLOW_SNAKE_IMAGE_PATH).toExternalForm());
-			Image greenSnakeImage = new Image(getClass().getResource(GREEN_SNAKE_IMAGE_PATH).toExternalForm());
-			Image blueSnakeImage = new Image(getClass().getResource(BLUE_SNAKE_IMAGE_PATH).toExternalForm());
-			int headRow = board.getTile(s.getSnakeHead()).getxCoord();
-	        int headColumn = board.getTile(s.getSnakeHead()).getyCoord();
-	        int tailRow = board.getTile(s.getSnakeTail()).getxCoord();
-	        int tailColumn = board.getTile(s.getSnakeTail()).getyCoord();
-	        
-	        // Create ImageView for red snake
-	        ImageView redSnake = new ImageView(redSnakeImage);
-	        redSnake.setFitHeight(RED_SNAKE_HEIGHT);
-	        redSnake.setFitWidth(RED_SNAKE_WIDTH);
-	        redSnake.setVisible(true);
-	        GridPane.setRowIndex(redSnake, headRow);
-	        GridPane.setColumnIndex(redSnake, headColumn);
-	        
-	        // Create ImageView for yellow snake head
-	        ImageView yellowSnakeHead = new ImageView(yellowSnakeImage);
-	        yellowSnakeHead.setFitHeight(YELLOW_SNAKE_HEIGHT);
-	        yellowSnakeHead.setFitWidth(YELLOW_SNAKE_WIDTH);
-	        yellowSnakeHead.setVisible(true);
-	        GridPane.setRowIndex(yellowSnakeHead, headRow);
-	        GridPane.setColumnIndex(yellowSnakeHead, headColumn);
 
-	        /* Create ImageView for yellow snake tail
-	        ImageView yellowSnakeTail = new ImageView(yellowSnakeImage);
-	        yellowSnakeTail.setFitHeight(YELLOW_SNAKE_HEIGHT);
-	        yellowSnakeTail.setFitWidth(YELLOW_SNAKE_WIDTH);
-	        yellowSnakeTail.setVisible(true);
-	        GridPane.setRowIndex(yellowSnakeTail, tailRow);
-	        GridPane.setColumnIndex(yellowSnakeTail, tailColumn);
-	        
-	        
-	        
-	        // Add snake head and tail to GridPane
-	        grid.getChildren().addAll(redSnake, yellowSnakeHead);
-		}
-	}
-	 */
-	
-	
 	
 	public void showSnakes() {
 	    HashMap<SnakeColor, Snake> snakesByColor = new HashMap<>();
@@ -286,8 +235,6 @@ public class EasyController implements Initializable{
 	        Snake snake = s.getValue();
 	        snakesByColor.putIfAbsent(snake.getColor(), snake);
 	    }
-
-	    Random random = new Random();
 
 	    for (Snake snake : snakesByColor.values()) {
 	        switch (snake.getColor()) {
@@ -412,11 +359,6 @@ public class EasyController implements Initializable{
 	    grid.getChildren().add(snakeHead);
 	}
 
-
-
-
-
-
 	
 	public void showQuestions() {
 		for (QuestionTile qt : board.getQuestionTiles()) {
@@ -493,6 +435,8 @@ public class EasyController implements Initializable{
 			e.printStackTrace();
 		}  	
     }
+    
+    @FXML
     void handleDiceClick(ActionEvent event) {
     	
     	
