@@ -72,13 +72,15 @@ public class EditQuestionController implements Initializable {
 	    	String ans3Edit= ans3Text.getText();
 	    	String ans4Edit= ans4Text.getText();
 	    	Difficulty di = difficulty.getSelectionModel().getSelectedItem();
-	    	Integer corr = correctAnswer.getSelectionModel().getSelectedIndex();
+	    	Integer corr = correctAnswer.getSelectionModel().getSelectedIndex()+1;
 	    			
 	    	Question ques = new Question(ans1Edit,ans2Edit,ans3Edit,ans4Edit,quesEdit,di,corr); 	
-	    	SysData.getInstance().deleteFromJson(edited);
-	    	SysData.getInstance().writeToJson(ques);
+//	    	SysData.getInstance().deleteFromJson(edited);
+//	    	SysData.getInstance().writeToJson(ques);
+	    	SysData.getInstance().updateInJson(edited, ques);
+	    	return;
+
     	}
-    	return;
     }
 
 
@@ -115,7 +117,7 @@ public class EditQuestionController implements Initializable {
 		ans4Text.setText(edited.getAnswer4());
 
 		correctAnswer.getItems().addAll(1,2,3,4);
-		correctAnswer.getSelectionModel().select(edited.getCorrectAnswer());
+		correctAnswer.getSelectionModel().select(edited.getCorrectAnswer()-1);
 
 		for (Difficulty d : Difficulty.values()) {
 			difficulty.getItems().add(d);
@@ -123,7 +125,7 @@ public class EditQuestionController implements Initializable {
 		
 		difficulty.getSelectionModel().select(edited.getDifficulty());
 		//String correct = Integer.toString(edited.getCorrectAnswer());
-	//	correctAnswer.getSelectionModel().select(correct);
+//		correctAnswer.getSelectionModel().select(correct);
 	}
 	
 	 @FXML

@@ -15,6 +15,9 @@ import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
 import View.Alerts;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,6 +44,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 public class EasyController implements Initializable{
 
@@ -107,7 +111,19 @@ public class EasyController implements Initializable{
 
     @FXML
     private Button info;
-	
+    
+    @FXML
+    private Label time;
+    
+    @FXML
+    private Timeline timer;
+    
+    @FXML
+    private Duration gameDuration = Duration.ZERO;
+    
+    @FXML
+    private Button diceButton;
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -118,10 +134,27 @@ public class EasyController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
+        startTimer();
 		showPlayers();
-		showSnakes();
+//		showSnakes();
 		showQuestions();
 	}
+	private void startTimer() {
+		// Create a timeline for the game duration
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            gameDuration = gameDuration.add(Duration.seconds(1));
+            long totalSeconds = (long) gameDuration.toSeconds();
+            long minutes = totalSeconds / 60;
+            long seconds = totalSeconds % 60;
+            // Convert long values to String with two digits
+            String minutesString = String.format("%02d", minutes);
+            String secondsString = String.format("%02d", seconds);
+            String gameDuration = minutesString + " : " + secondsString;
+            time.setText(gameDuration);
+        }));
+        timer.setCycleCount(Animation.INDEFINITE);
+        timer.play();
+    }
 
 	public void showPlayers() {
 		ObservableList<ImageView> playerIcons = FXCollections.observableArrayList();
@@ -459,5 +492,9 @@ public class EasyController implements Initializable{
 			// TODO: handle exception
 			e.printStackTrace();
 		}  	
+    }
+    void handleDiceClick(ActionEvent event) {
+    	
+    	
     }
 }

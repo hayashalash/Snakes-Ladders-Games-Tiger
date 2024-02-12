@@ -13,7 +13,6 @@ public class Player {
 		this.playerID = idCounter++;
 		this.playerName = playerName;
 		this.playerColor = playerColor;
-//		hasStarted=1;
 	}
 	
 	public void printPlayerAddedSuccess() {
@@ -62,7 +61,7 @@ public class Player {
 	@Override
 	public String toString() {
 		return "Player [playerID=" + playerID + ", playerName=" + playerName + ", playerColor=" + playerColor
-				+ ", playerPlace=" + playerPlace + ", hasStarted=" + hasStarted + "]";
+				+ ", playerPlace=" + playerPlace + "]";
 	}
 
 	
