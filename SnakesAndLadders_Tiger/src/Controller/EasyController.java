@@ -98,15 +98,17 @@ public class EasyController implements Initializable{
     private Button info;
     
     @FXML
-<<<<<<< Updated upstream
     private Label time;
     
+    @FXML
     private Timeline timer;
+    
+    @FXML
     private Duration gameDuration = Duration.ZERO;
-=======
+    
+    @FXML
     private Button diceButton;
-	
->>>>>>> Stashed changes
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -318,7 +320,7 @@ public class EasyController implements Initializable{
 		}  	
     }
     void handleDiceClick(ActionEvent event) {
-    	if (Alerts.exit()==1)
+    	
     	
     }
 }
