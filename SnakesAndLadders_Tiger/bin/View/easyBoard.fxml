@@ -94,14 +94,9 @@
       </Label>
       <Button fx:id="diceButton" layoutX="13.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
+         </graphic>
+         <graphic>
+            <ImageView fx:id="diceResult" fitHeight="74.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
          </graphic></Button>
-      <ImageView fx:id="diceImage" fitHeight="65.0" fitWidth="71.0" layoutX="30.0" layoutY="423.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="\@../img/icons/dice.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="diceResult" fitHeight="92.0" fitWidth="78.0" layoutX="134.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
-
-    
