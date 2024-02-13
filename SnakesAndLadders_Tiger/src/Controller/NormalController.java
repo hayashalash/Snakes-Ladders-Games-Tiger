@@ -67,14 +67,6 @@ public class NormalController implements Initializable{
     private final double QUESTION_HEIGHT = 30;
     private final double SURPRISE_WIDTH = 25; // surprise icon size
     private final double SURPRISE_HEIGHT = 25;
-    //private final double RED_SNAKE_WIDTH = 45; // question icon size
-    //private final double RED_SNAKE_HEIGHT = 45;
-    //private final double YELLOW_SNAKE_WIDTH = 90; // question icon size
-    //private final double YELLOW_SNAKE_HEIGHT = 90;
-    //private final double BLUE_SNAKE_WIDTH = 120; // question icon size
-    //private final double BLUE_SNAKE_HEIGHT = 210;
-    //private final double GREEN_SNAKE_WIDTH = 130; // question icon size
-    //private final double GREEN_SNAKE_HEIGHT = 130;
     private final double TILE_SIZE  = 53.8;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
@@ -243,41 +235,6 @@ public class NormalController implements Initializable{
 		
 	}
 	
-
-	/*
-	public void showSnakes() {
-	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
-	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
-	        Snake snake = s.getValue();
-	        if (!snakesByColor.containsKey(snake.getColor())) {
-	            snakesByColor.put(snake.getColor(), new ArrayList<>());
-	        }
-	        snakesByColor.get(snake.getColor()).add(snake);
-	    }
-
-	    for (Entry<SnakeColor, List<Snake>> entry : snakesByColor.entrySet()) {
-	        SnakeColor color = entry.getKey();
-	        List<Snake> snakes = entry.getValue();
-	        for (Snake snake : snakes) {
-	            switch (color) {
-	                case Red:
-	                    displayRedSnake(snake, RED_SNAKE_IMAGE_PATH, RED_SNAKE_HEIGHT, RED_SNAKE_WIDTH);	            
-	                    break;
-	                case Yellow:
-	                    displayYellowSnake(snake, YELLOW_SNAKE_IMAGE_PATH, YELLOW_SNAKE_HEIGHT, YELLOW_SNAKE_WIDTH);
-	                    break;
-	                case Green:
-	                    displayGreenSnake(snake, GREEN_SNAKE_IMAGE_PATH, GREEN_SNAKE_HEIGHT, GREEN_SNAKE_WIDTH);	            
-	                    break;
-	                case Blue:
-	                    displayBlueSnake(snake, BLUE_SNAKE_IMAGE_PATH, BLUE_SNAKE_HEIGHT, BLUE_SNAKE_WIDTH);
-	                    break;
-	            }
-	        }
-	    }
-	}
-	*/
-	
 	
 	public void showSnakes() {
 	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
@@ -314,54 +271,6 @@ public class NormalController implements Initializable{
 	}
 
 
-/*
-	private void displaySnake(Snake snake, String imagePath) {
-	    // Get the head and tail coordinates of the snake
-	    int headTile = snake.getSnakeHead();
-	    int tailTile = snake.getSnakeTail();
-
-	    // Convert tile indices to row and column indices for the head
-	    int headRow = (headTile - 1) / board.getBoardLen();
-	    int headColumn = (headTile - 1) % board.getBoardLen();
-
-	    // Convert tile indices to row and column indices for the tail
-	    int tailRow = (tailTile - 1) / board.getBoardLen();
-	    int tailColumn = (tailTile - 1) % board.getBoardLen();
-
-	    // Calculate the number of rows the snake occupies from head to tail
-	    int snakeLength = snake.getSnakeLen();
-
-	    // Load snake image
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate position of the snake's head
-	    double xPosition = headColumn * TILE_SIZE;
-	    double yPosition = headRow * TILE_SIZE;
-
-	    // Display the snake image
-	    ImageView snakeImageView = new ImageView(snakeImage);
-
-	    if (snake.getColor() == SnakeColor.Red) {
-	        // Set fixed size for red snake
-	        double width = TILE_SIZE-((20/100)*TILE_SIZE);
-	        double height = TILE_SIZE-((20/100)*TILE_SIZE);
-	        snakeImageView.setFitWidth(width);
-	        snakeImageView.setFitHeight(height);
-	    } else {
-	        // Adjust width and height for other colors based on snake length
-	        double width = TILE_SIZE;
-	        double height = TILE_SIZE * snakeLength + TILE_SIZE; // Adjusted height based on snake length
-	        snakeImageView.setFitWidth(width);
-	        snakeImageView.setFitHeight(height);
-	    }
-
-	    snakeImageView.setVisible(true);
-	    GridPane.setMargin(snakeImageView, new Insets(yPosition, 0, 0, xPosition));
-	    grid.getChildren().add(snakeImageView);
-	}*/
-
-
-
 	private void displaySnake(Snake snake, String imagePath) {
 	    // Get the head and tail coordinates of the snake
 	    int headTile = snake.getSnakeHead();
@@ -393,130 +302,28 @@ public class NormalController implements Initializable{
 	        // Add the red snake image to the grid
 	        grid.getChildren().add(redSnakeImageView);
 	    } else {
-	        // Calculate the angle between head and tail tiles
-	        double angle = Math.toDegrees(Math.atan2(tailRow - headRow, tailColumn - headColumn));
+	    // Calculate the angle between head and tail tiles
+	    double angle = Math.toDegrees(Math.atan2(tailRow - headRow, tailColumn - headColumn));
 
-	        // Calculate the length of the snake image
-	        double snakeLength = Math.sqrt(Math.pow(tailRow - headRow, 2) + Math.pow(tailColumn - headColumn, 2)) * TILE_SIZE;
-
-	        // Create ImageView for the snake image
-	        ImageView snakeImageView = new ImageView(snakeImage);
-	        snakeImageView.setFitWidth(TILE_SIZE- (0.2 * TILE_SIZE));
-	        snakeImageView.setFitHeight(snakeLength);
-	        snakeImageView.setRotate(angle); // Rotate the image to match the angle between head and tail
-	        snakeImageView.setTranslateX(headColumn * TILE_SIZE); // Position the image at the head tile
-	        snakeImageView.setTranslateY(headRow * TILE_SIZE);
-
-	        // Add the snake image to the grid
-	        grid.getChildren().add(snakeImageView);
+	    // Adjust the rotation angle to ensure the head is always oriented upwards
+	    if (angle < -90 || angle > 90) {
+	        angle += 180; // Rotate by 180 degrees if the angle is in the lower half-plane
 	    }
+
+	    // Calculate the length of the snake image
+	    double snakeLength = Math.sqrt(Math.pow(tailRow - headRow, 2) + Math.pow(tailColumn - headColumn, 2)) * TILE_SIZE;
+
+	    // Create ImageView for the snake image
+	    ImageView snakeImageView = new ImageView(snakeImage);
+	    snakeImageView.setFitWidth(TILE_SIZE - (0.2 * TILE_SIZE));
+	    snakeImageView.setFitHeight(snakeLength);
+	    snakeImageView.setRotate(angle); // Rotate the image to match the angle between head and tail
+	    snakeImageView.setTranslateX(headColumn * TILE_SIZE); // Position the image at the head tile
+	    snakeImageView.setTranslateY(headRow * TILE_SIZE);
+
+	    // Add the snake image to the grid
+	    grid.getChildren().add(snakeImageView);
 	}
-
-
-
-	private void displayRedSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The red snake occupies one tile
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Calculate the position within the grid to place the snake
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-
-	
-	
-	private void displayYellowSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The yellow snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is at the first row or first column, adjust if necessary
-	    if (headRow == 0) headRow++; // Ensure head is not in the first row
-	    if (headColumn == 0) headColumn++; // Ensure head is not in the first column
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE + (TILE_SIZE - width); 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-	
-	private void displayBlueSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The blue snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is at the bottom three rows, adjust if necessary
-	    if (headRow >= 4) headRow = 3; // Ensure head is not in the bottom three rows
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-
-	private void displayGreenSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The green snake occupies one tile for its head
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is in the first two rows or columns, adjust if necessary
-	    if (headRow <= 1) headRow = 2; // Ensure head is not in the first two rows
-	    if (headColumn <= 1) headColumn = 2; // Ensure head is not in the first two columns
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
 	}
 
 	
