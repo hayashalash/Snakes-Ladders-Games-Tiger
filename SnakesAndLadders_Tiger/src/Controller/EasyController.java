@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
+
 import Model.Board;
 import Model.Color;
 import Model.Game;
@@ -136,7 +139,7 @@ public class EasyController implements Initializable{
     	}
         startTimer();
 		showPlayers();
-//		showSnakes();
+		showSnakes();
 		showQuestions();
 	}
 	private void startTimer() {
@@ -230,30 +233,36 @@ public class EasyController implements Initializable{
 
 	
 	public void showSnakes() {
-	    HashMap<SnakeColor, Snake> snakesByColor = new HashMap<>();
+	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
 	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
 	        Snake snake = s.getValue();
-	        snakesByColor.putIfAbsent(snake.getColor(), snake);
+	        if (!snakesByColor.containsKey(snake.getColor())) {
+	            snakesByColor.put(snake.getColor(), new ArrayList<>());
+	        }
+	        snakesByColor.get(snake.getColor()).add(snake);
 	    }
 
-	    for (Snake snake : snakesByColor.values()) {
-	        switch (snake.getColor()) {
-	            case Red:
-	                displayRedSnake(snake, RED_SNAKE_IMAGE_PATH, RED_SNAKE_HEIGHT, RED_SNAKE_WIDTH);
-	                break;
-	            case Yellow:
-	                displayYellowSnake(snake, YELLOW_SNAKE_IMAGE_PATH, YELLOW_SNAKE_HEIGHT, YELLOW_SNAKE_WIDTH);
-	                break;
-	            case Green:
-	                displayGreenSnake(snake, GREEN_SNAKE_IMAGE_PATH, GREEN_SNAKE_HEIGHT, GREEN_SNAKE_WIDTH);
-	                break;
-	            case Blue:
-	                displayBlueSnake(snake, BLUE_SNAKE_IMAGE_PATH, BLUE_SNAKE_HEIGHT, BLUE_SNAKE_WIDTH);
-	                break;
+	    for (Entry<SnakeColor, List<Snake>> entry : snakesByColor.entrySet()) {
+	        SnakeColor color = entry.getKey();
+	        List<Snake> snakes = entry.getValue();
+	        for (Snake snake : snakes) {
+	            switch (color) {
+	                case Red:
+	                    displayRedSnake(snake, RED_SNAKE_IMAGE_PATH, RED_SNAKE_HEIGHT, RED_SNAKE_WIDTH);	            
+	                    break;
+	                case Yellow:
+	                    displayYellowSnake(snake, YELLOW_SNAKE_IMAGE_PATH, YELLOW_SNAKE_HEIGHT, YELLOW_SNAKE_WIDTH);
+	                    break;
+	                case Green:
+	                    displayGreenSnake(snake, GREEN_SNAKE_IMAGE_PATH, GREEN_SNAKE_HEIGHT, GREEN_SNAKE_WIDTH);	            
+	                    break;
+	                case Blue:
+	                    displayBlueSnake(snake, BLUE_SNAKE_IMAGE_PATH, BLUE_SNAKE_HEIGHT, BLUE_SNAKE_WIDTH);
+	                    break;
+	            }
 	        }
 	    }
 	}
-
 	private void displayRedSnake(Snake snake, String imagePath, double height, double width) {
 	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
 
