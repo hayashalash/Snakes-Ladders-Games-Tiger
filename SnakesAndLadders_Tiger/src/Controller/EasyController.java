@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 
 import Model.Board;
 import Model.Color;
+import Model.Dice;
+import Model.Difficulty;
 import Model.Game;
 import Model.Player;
 import Model.Question;
@@ -20,6 +22,7 @@ import Model.SnakeColor;
 import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,6 +50,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 public class EasyController implements Initializable{
@@ -84,7 +88,8 @@ public class EasyController implements Initializable{
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
-	
+	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+
 	@FXML
     private GridPane grid;
 
@@ -126,10 +131,33 @@ public class EasyController implements Initializable{
     
     @FXML
     private Button diceButton;
+     
+    @FXML
+    private ImageView diceImage;
     
+    @FXML
+    private ImageView diceResult;
+    
+    private HashMap<Integer, String> diceImageMap;
+    
+
+    public void initializeMap() {
+        // Initialize the mapping between dice numbers and image paths of it 
+        diceImageMap = new HashMap<>();
+        diceImageMap.put(0, "/img/icons/diceroll0.jpg");
+        diceImageMap.put(1, "/img/icons/diceroll1.jpg");
+        diceImageMap.put(2, "/img/icons/diceroll2.jpg");
+        diceImageMap.put(3, "/img/icons/diceroll3.jpg");
+        diceImageMap.put(4, "/img/icons/diceroll4.jpg");
+        diceImageMap.put(5, "/img/icons/dicerollQuestion.jpg");
+        diceImageMap.put(6, "/img/icons/dicerollQuestion.jpg");
+        diceImageMap.put(7, "/img/icons/dicerollQuestion.jpg");
+    }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
+	    diceResult.setImage(defaultImage);
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
 		if(!board.createBoard())
@@ -434,7 +462,63 @@ public class EasyController implements Initializable{
         dialog.showAndWait();
     }
     
-    void newScreen(String path) {
+    @FXML
+    void handleDiceClick(ActionEvent event) throws InterruptedException {	
+    	 initializeMap();
+    	 int lastDiceResult=0;
+    	 Duration duration = Duration.millis(1000);
+    	 int numFrames = 20;
+    	 Duration frameInterval = duration.divide(numFrames);
+    	 Timeline timeline = new Timeline();
+    	 // Add keyframes to the timeline
+    	    for (int i = 0; i < numFrames; i++) {
+    	        int result = Dice.RandomNumberGenerator(Difficulty.Easy);
+    	        lastDiceResult = result; // Save the result
+    	        String imagePath = diceImageMap.get(result);
+
+    	        // Create a keyframe for each image of the dice
+    	        KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
+    	                e -> updateDiceImage(imagePath));
+
+    	        timeline.getKeyFrames().add(keyFrame);
+    	    }
+    	    
+    	  timeline.setCycleCount(1); // Set the time line to  one
+    	  timeline.setOnFinished(e -> {
+    	    	 // After 10 seconds, reset the dice image to the default
+    	   PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
+    	    pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
+    	    pauseTransition.play();    	   
+    	  });
+		viewResultDise(lastDiceResult);
+    	  timeline.play();//animation
+    	}
+
+    
+    
+    private void viewResultDise(int diceResult) {//this for easy  difficulty only
+    	if(diceResult<4) {
+    		// function to move the player 
+		}
+    	if(diceResult==5) {//display easy question
+    		
+    	}
+    	else { if(diceResult==6) {//display normal question 
+    		
+    	}
+    	  else if(diceResult==7) {//display hard question 
+    		
+    	  }
+    	}
+		
+	}
+
+	private void updateDiceImage(String imagePath) {//update the dice image 
+    	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+    	    diceResult.setImage(image);
+    	    }
+    
+	void newScreen(String path) {
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
 			Scene scene = new Scene(root);
@@ -445,9 +529,5 @@ public class EasyController implements Initializable{
 		}  	
     }
     
-    @FXML
-    void handleDiceClick(ActionEvent event) {
-    	
-    	
-    }
+    
 }
