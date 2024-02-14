@@ -222,31 +222,30 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
     		return;
     	}
-    	if ((playersNum == 3) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
+    	else if ((playersNum == 3) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty() ||
     			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
     		return;
     	}
-    	if ((playersNum == 4) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
+    	else if ((playersNum == 4) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty()  ||
     			player3txt.getText().isEmpty() || player3clr.getSelectionModel().isEmpty() || 
     			player4txt.getText().isEmpty() || player4clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
     		return;
     	}
-    	if (playersNum == 2 && player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem())) {
-    		System.out.println("playersNum is: "+playersNum);
+    	if ((playersNum == 2) && player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem())) {
     		Alerts.warning("Please choose a unique color for each player");
     		return;
     	}
-    	if (playersNum == 3 && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
+    	else if ((playersNum == 3) && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
     			player1clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) || 
     			player2clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()))) {
     		Alerts.warning("Please choose a unique color for each player");
     		return;
     	}
-    	if (playersNum == 4 && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
+    	else if ((playersNum == 4) && (player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem()) || 
     			player1clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) || 
     			player1clr.getSelectionModel().getSelectedItem().equals(player4clr.getSelectionModel().getSelectedItem()) ||
     			player2clr.getSelectionModel().getSelectedItem().equals(player3clr.getSelectionModel().getSelectedItem()) ||
@@ -255,24 +254,22 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Please choose a unique color for each player");
     		return;
     	}
-    	System.out.println("playersNum is: "+playersNum);
-    	if (playersNum == 2 && player1txt.getText().equals(player2txt.getText())) {
-    		System.out.println("text is equal");
+    	if ((playersNum == 2) && player1txt.getText().equals(player2txt.getText())) {
     		Alerts.warning("Please choose a unique name for each player");
     		return;
     	}
-    	else if (playersNum == 3 && (player1txt.getText().equals(player2txt.getText())) || 
+    	else if ((playersNum == 3) && (player1txt.getText().equals(player2txt.getText()) || 
     			player1txt.getText().equals(player3txt.getText()) || 
-    			player2txt.getText().equals(player3txt.getText())) {
+    			player2txt.getText().equals(player3txt.getText()))) {
     		Alerts.warning("Please choose a unique name for each player");
     		return;
     	}
-    	else if (playersNum == 4 && (player1txt.getText().equals(player2txt.getText())) || 
+    	else if ((playersNum == 4) && (player1txt.getText().equals(player2txt.getText()) || 
     			player1txt.getText().equals(player3txt.getText()) || 
     			player1txt.getText().equals(player4txt.getText()) ||
     			player2txt.getText().equals(player3txt.getText()) ||
     			player2txt.getText().equals(player4txt.getText()) ||
-    			player3txt.getText().equals(player4txt.getText())) {
+    			player3txt.getText().equals(player4txt.getText()))) {
     		Alerts.warning("Please choose a unique name for each player");
     		return;
     	}
@@ -284,25 +281,25 @@ public class ChoosePlayersController implements Initializable{
         Matcher matcher2 = pattern.matcher(player2txt.getText());
                 
         if (!matcher1.matches()) {
-        	Alerts.warning("Your name cannot contain numbers or special characters.");
+        	Alerts.warning("Players names cannot contain numbers or special characters.");
     		return;
         }
         if (!matcher2.matches()) {
-        	Alerts.warning("Your name cannot contain numbers or special characters.");
+        	Alerts.warning("Players names cannot contain numbers or special characters.");
     		return;
         }
         
         if (playersNum > 2) {
         	Matcher matcher3 = pattern.matcher(player3txt.getText());
         	if (!matcher3.matches()) {
-            	Alerts.warning("Your name cannot contain numbers or special characters.");
+            	Alerts.warning("Players names cannot contain numbers or special characters.");
         		return;
             }
         }
         if (playersNum == 4) {
         	Matcher matcher4 = pattern.matcher(player4txt.getText());
         	if (!matcher4.matches()) {
-            	Alerts.warning("Your name cannot contain numbers or special characters.");
+            	Alerts.warning("Players names cannot contain numbers or special characters.");
         		return;
             }
         }
