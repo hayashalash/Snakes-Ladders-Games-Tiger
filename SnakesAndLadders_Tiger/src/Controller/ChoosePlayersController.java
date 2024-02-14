@@ -2,6 +2,8 @@ package Controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Model.Color;
 import Model.Difficulty;
@@ -234,6 +236,7 @@ public class ChoosePlayersController implements Initializable{
     		return;
     	}
     	if (playersNum == 2 && player1clr.getSelectionModel().getSelectedItem().equals(player2clr.getSelectionModel().getSelectedItem())) {
+    		System.out.println("playersNum is: "+playersNum);
     		Alerts.warning("Please choose a unique color for each player");
     		return;
     	}
@@ -252,6 +255,58 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Please choose a unique color for each player");
     		return;
     	}
+    	System.out.println("playersNum is: "+playersNum);
+    	if (playersNum == 2 && player1txt.getText().equals(player2txt.getText())) {
+    		System.out.println("text is equal");
+    		Alerts.warning("Please choose a unique name for each player");
+    		return;
+    	}
+    	else if (playersNum == 3 && (player1txt.getText().equals(player2txt.getText())) || 
+    			player1txt.getText().equals(player3txt.getText()) || 
+    			player2txt.getText().equals(player3txt.getText())) {
+    		Alerts.warning("Please choose a unique name for each player");
+    		return;
+    	}
+    	else if (playersNum == 4 && (player1txt.getText().equals(player2txt.getText())) || 
+    			player1txt.getText().equals(player3txt.getText()) || 
+    			player1txt.getText().equals(player4txt.getText()) ||
+    			player2txt.getText().equals(player3txt.getText()) ||
+    			player2txt.getText().equals(player4txt.getText()) ||
+    			player3txt.getText().equals(player4txt.getText())) {
+    		Alerts.warning("Please choose a unique name for each player");
+    		return;
+    	}
+    	// Regular expression to match letters only
+        Pattern pattern = Pattern.compile("[a-zA-Z]+");
+
+        // Matcher to match the pattern against the input
+        Matcher matcher1 = pattern.matcher(player1txt.getText());
+        Matcher matcher2 = pattern.matcher(player2txt.getText());
+                
+        if (!matcher1.matches()) {
+        	Alerts.warning("Your name cannot contain numbers or special characters.");
+    		return;
+        }
+        if (!matcher2.matches()) {
+        	Alerts.warning("Your name cannot contain numbers or special characters.");
+    		return;
+        }
+        
+        if (playersNum > 2) {
+        	Matcher matcher3 = pattern.matcher(player3txt.getText());
+        	if (!matcher3.matches()) {
+            	Alerts.warning("Your name cannot contain numbers or special characters.");
+        		return;
+            }
+        }
+        if (playersNum == 4) {
+        	Matcher matcher4 = pattern.matcher(player4txt.getText());
+        	if (!matcher4.matches()) {
+            	Alerts.warning("Your name cannot contain numbers or special characters.");
+        		return;
+            }
+        }
+    	
     	ArrayList<Player> players = new ArrayList();
     	String p1name = player1txt.getText();
     	String p2name = player2txt.getText();

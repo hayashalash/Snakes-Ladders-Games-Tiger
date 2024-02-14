@@ -4,8 +4,8 @@ public class SnakeTile extends Tile {
 	private Snake snake;
 	
 	public SnakeTile(Integer tNum, Integer xCoord, Integer yCoord, Snake snake) {
-		super(tNum, TileType.Snake, xCoord, yCoord);
-		super.settType(TileType.Snake);
+		super(tNum, xCoord, yCoord);
+		super.settType(TileType.SnakeHead);
 		this.snake = snake;
 	}
 	

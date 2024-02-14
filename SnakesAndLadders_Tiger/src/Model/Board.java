@@ -15,7 +15,8 @@ public class Board {
 	private Difficulty bType;
 	private Integer boardLen; // equals width, based on board type - 7 / 10 / 13
 	private int boardSize; //based on board type - 49 / 100 / 169
-
+	private int lastTile;
+	
 	private ArrayList<Integer> surprises; // tiles with surprises [+10/-10]
 	private Tile[][] grid;
 	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
@@ -34,6 +35,7 @@ public class Board {
 		this.bType = bType;
 		setBoardLen(bType);
 		setBoardSize(boardLen);
+		setLastTile();
 		this.grid = new Tile[boardLen][boardLen];
 		surprises = new ArrayList<>();
 		tiles = new HashMap<>();
@@ -45,6 +47,14 @@ public class Board {
 		mediumQuestions = new HashMap<>();
 		hardQuestions = new HashMap<>();
 		playerOn = new HashMap<>();
+	}
+
+	public int getLastTile() {
+		return lastTile;
+	}
+
+	public void setLastTile() {
+		this.lastTile = boardLen * boardLen;
 	}
 
 	public static int getIdCounter() {
@@ -258,7 +268,7 @@ public class Board {
 	            i--; // Decrement i again after each row iteration
 	        }
 	    }
-
+	    getTile(lastTile).settType(TileType.LastTile);
 	    addSnakeTiles();
 	    addQuestionTiles(); // adds 3 question tiles to the board
 	    addSurpriseTiles();
@@ -392,6 +402,7 @@ public class Board {
 		}
 		snakes.put(s.getSnakeID(), s);
 		SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
+		getTile(snakeTail).settType(TileType.SnakeTail);
 		this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
 		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 	}
@@ -425,6 +436,7 @@ public class Board {
 		Ladder l = new Ladder(length, laddertop, ladderbottom);
 		ladders.put(l.getLadderID(), l);
 		LadderTile lt = new LadderTile (ladderbottom, getTile(ladderbottom).getxCoord(), getTile(ladderbottom).getyCoord(), l); // create a ladder tile to replace the regular tile
+		getTile(laddertop).settType(TileType.LadderTop);
 		this.grid[lt.xCoord][lt.yCoord] = lt; // put the ladder tile back in the board
 		tiles.put(lt.gettNum(), lt); // add the ladder tile to the tiles HashMap
 	}

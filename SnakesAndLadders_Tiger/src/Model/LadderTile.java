@@ -5,7 +5,7 @@ public class LadderTile extends Tile {
 
 	public LadderTile(Integer tNum, Integer xCoord, Integer yCoord, Ladder ladder) {
 		super(tNum, xCoord, yCoord);
-		super.settType(TileType.Ladder);
+		super.settType(TileType.LadderBottom);
 		this.ladder = ladder;
 	}
 
