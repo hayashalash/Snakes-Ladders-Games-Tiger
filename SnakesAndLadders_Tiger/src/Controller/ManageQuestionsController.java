@@ -24,6 +24,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -221,12 +222,23 @@ public class ManageQuestionsController implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+//    	  questionTable.setRowFactory(tv -> {
+//              TableRow<Question> row = new TableRow<>();
+//              row.setOnMouseClicked(event -> {
+//            	    if (!row.isEmpty()) {
+//            	        // Change text color to blue when the row is selected
+//            	        row.setStyle("-fx-text-fill: blue;");
+//            	    }
+//            	});	
+//              return row;
+//          });
     	Tooltip a = new Tooltip("Add Question");
         Tooltip.install(add, a);
         Tooltip ed = new Tooltip("Edit");
         Tooltip.install(edit, ed);
         Tooltip d = new Tooltip("Delete");
         Tooltip.install(delete, d);
+      
 		try {
 			SysData.getInstance().readFromJson();
 		} catch (IOException | ParseException e) {
@@ -378,12 +390,6 @@ public class ManageQuestionsController implements Initializable {
                  questionTable.setItems(dataQues2);
              }
          }
-    
-    @FXML
-    void pressed(MouseEvent event) {
-    	searchbutton.setStyle("fx-background-color: #FFF ; -fx-background-radius: 5 ; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 )");
-    	
-    }
     
     @FXML
     void entered(MouseEvent event){

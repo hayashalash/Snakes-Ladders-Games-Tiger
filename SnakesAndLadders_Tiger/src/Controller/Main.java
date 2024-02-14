@@ -3,6 +3,7 @@ import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
 
+import Model.Difficulty;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,5 +44,10 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void showQustion(Difficulty d) {
+		//bring Hashmap from question difficulty and Arraylist of question for each difficulty 
+		//choose the diificulty and bring random question from the arraylist 
 	}
 }

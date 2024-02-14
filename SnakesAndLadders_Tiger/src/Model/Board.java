@@ -1,4 +1,4 @@
-package Model;
+ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -203,7 +203,7 @@ public class Board {
 			return getHardQuestions().put(q.getQuestionID(), q) == null;
 	}
 
-	public boolean createBoard() {
+/*	public boolean createBoard() {
 		int boardCounter = 1;
 		int i = boardLen-1;
 		
@@ -236,7 +236,37 @@ public class Board {
 		System.out.println("boardCounter is "+boardCounter);
 		System.out.println("boardSize is "+boardSize);
 		return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
+	}*/
+	
+	public boolean createBoard() {
+	    int boardCounter = 1;
+	    int i = boardLen - 1;
+
+	    while (i >= 0) { // Changed loop condition to i >= 0
+	        for (int j = 0; j < boardLen; j++) { // go over row from left to right
+	            System.out.println("[" + i + "," + j + "]");
+	            this.grid[i][j] = new Tile(boardCounter++, i, j);
+	            getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
+	        }
+	        i--; // Decrement i after each row iteration
+	        if (i >= 0) { // Check if i is still valid before entering the loop again
+	            for (int j = boardLen - 1; j >= 0; j--) { // go over row from right to left
+	                System.out.println("[" + i + "," + j + "]");
+	                this.grid[i][j] = new Tile(boardCounter++, i, j);
+	                getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
+	            }
+	            i--; // Decrement i again after each row iteration
+	        }
+	    }
+
+	    addSnakeTiles();
+	    addQuestionTiles(); // adds 3 question tiles to the board
+	    addSurpriseTiles();
+	    System.out.println("boardCounter is " + boardCounter);
+	    System.out.println("boardSize is " + boardSize);
+	    return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
 	}
+
 	
 	public void addQuestionTiles() {
 		// boolean retVal = false; //value to return indicating of success 
@@ -336,24 +366,28 @@ public class Board {
 		if (color == SnakeColor.Red) {
 			snakeHead = chooseRandomTile(redSnakeLen);
 			snakeTail = snakeHead; // in a red snake, head and tail are at the same tile
+			System.out.println("Red snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Red, snakeHead, snakeTail);
 		}
 		else if (color == SnakeColor.Yellow) {
 			snakeHead = chooseRandomTile(yellowSnakeLen);
 			int snakeBottomRow = getTile(snakeHead).getxCoord()+yellowSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
+			System.out.println("yellow snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Yellow, snakeHead, snakeTail);
 		}
 		else if (color == SnakeColor.Green) {
 			snakeHead = chooseRandomTile(greenSnakeLen);
 			int snakeBottomRow = getTile(snakeHead).getxCoord()+greenSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
+			System.out.println("green snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
 		}
 		else { // if (color == SnakeColor.Blue)
 			snakeHead = chooseRandomTile(blueSnakeLen);
 			int snakeBottomRow = getTile(snakeHead).getxCoord()+blueSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
+			System.out.println("Blue snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
 		}
 		snakes.put(s.getSnakeID(), s);

@@ -21,16 +21,12 @@ import org.json.simple.parser.JSONParser;
 
 
 public class SysData {
-	   //singleton
-		private static SysData sysData = null;
-		private static final String QJSON = "JSON/questions_scheme.json";
-		private static final String HJSON = "JSON/History.json";
-//	private ArrayList<Question> EasyQuestions; 
-//	private ArrayList<Question> MediumQuestions; 
-//	private ArrayList<Question> HardQuestions; 
-//	private Difficulty d;	
+   //singleton
+	private static SysData sysData = null;
+	private static final String QJSON = "JSON/questions_scheme.json";
+	private static final String HJSON = "JSON/History.json";
+	
 	public ArrayList<Question> deleted = new ArrayList();
-//	public ArrayList<Question> edited = new ArrayList();
 	private HashSet<Game> games = new HashSet(); 
 	private HashSet<Question> questions = new HashSet(); // we use HashSet to prevent duplication of question in the table
 	
@@ -57,6 +53,7 @@ public class SysData {
 			}
 			return sysData;
 		}
+	
 
 	public void readFromJson() throws IOException,  ParseException {
 		
@@ -110,8 +107,8 @@ public class SysData {
 		JSONArray questionArr = (JSONArray) jsonObj.get("questions");
 
 		JSONObject json = new JSONObject(); // new object type json
-	    // add new question about software engineering and QA
-	    JSONArray queAnswers = new JSONArray();
+	    JSONArray queAnswers = new JSONArray(); 	    // add new question about software engineering and QA
+
 
 	    queAnswers.add(question.getAnswer1()); // adding answers to the array
 	    queAnswers.add(question.getAnswer2());
@@ -151,78 +148,55 @@ public class SysData {
 	}
 	
 	public void updateInJson(Question oldQuestion, Question newQuestion) throws IOException, ParseException {
-		  Iterator<Question> iterator = questions.iterator();
-		    while (iterator.hasNext()) {
-		        Question question = iterator.next();
-		        if (question.equals(oldQuestion)) {
-		            iterator.remove(); // Remove the old question using iterator
-		            break;
-		        }
-		    }
-	    questions.add(newQuestion);     // Add the new question
-	    for (Question q : questions) 
-	       writeToJson(q); // Write the updated set back to JSON
+	    questions.remove(oldQuestion); 		  // Remove the old question from the HashSet
+
+	    questions.add(newQuestion);	    // Add the new question to the HashSet
+
+	    deleteFromJson(oldQuestion);
+	    writeToJson(newQuestion);
 	
 	}
 
 	
-	public void deleteFromJson(Question question) throws IOException, ParseException{
-		
-		JSONParser parser = new JSONParser();
-		
-		FileInputStream file = new FileInputStream(QJSON);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
-		Object obj = parser.parse(reader);
-		JSONObject jsonObj = (JSONObject)obj;
-		JSONArray questionArr = (JSONArray) jsonObj.get("questions");
-		
-		Iterator<JSONObject> quesIterator = questionArr.iterator();
-		
-		while(quesIterator.hasNext()) {
-			JSONObject jsonObject = quesIterator.next();
-			String questionText = (String) jsonObject.get("question");
-			if(questionText.equals(question.getQuestion())) {
-				quesIterator.remove();
-			}
-			
-		}
-		JSONObject jsonObject2 = new JSONObject();
-		jsonObject2.put("questions", questionArr);
-		try {
-			FileWriter writeFile = new FileWriter(QJSON);
-			writeFile.write(jsonObject2.toJSONString());
-			writeFile.close();
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {
-			deleted.add(question);
-			SysData.getInstance().readFromJson();
-		}
-	}
-	
-	public boolean isJsonEmpty(BufferedReader reader) throws IOException {
-	    StringBuilder json = new StringBuilder();
-	    String line;
-	    
-	    while ((line = reader.readLine()) != null) {
-	        json.append(line);
-	    }
-	    
-	    reader.close();
+	public void deleteFromJson(Question question) throws IOException, ParseException {
+	    JSONParser parser = new JSONParser();
 
-	    // Check if the JSON file is empty
-	    if (json.toString().trim().isEmpty()) {
-	        System.out.println("The JSON file is empty");
-	        return true;
-	    } else {
-	        return false;
+	    FileInputStream file = new FileInputStream(QJSON);
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+	    Object obj = parser.parse(reader);
+	    JSONObject jsonObj = (JSONObject) obj;
+	    JSONArray questionArr = (JSONArray) jsonObj.get("questions");
+
+	    // Remove from JSONArray
+	    Iterator<JSONObject> quesIterator = questionArr.iterator();
+	    while (quesIterator.hasNext()) {
+	        JSONObject jsonObject = quesIterator.next();
+	        String questionText = (String) jsonObject.get("question");
+	        if (questionText.equals(question.getQuestion())) {
+	            quesIterator.remove();
+	        }
+	    }
+
+	    // Update HashSet
+	    questions.remove(question);
+
+	    // Write back to JSON file
+	    JSONObject jsonObject2 = new JSONObject();
+	    jsonObject2.put("questions", questionArr);
+
+	    try {
+	        FileWriter writeFile = new FileWriter(QJSON);
+	        writeFile.write(jsonObject2.toJSONString());
+	        writeFile.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        SysData.getInstance().readFromJson();
 	    }
 	}
+
 	
-	// this method to save the games history in json file  
+	// Saving the Games history in json file, Not checked yet! 
 	public void writeToJsonGames(Game g) throws IOException, ParseException { 
 		JSONParser parser = new JSONParser();
 		FileInputStream fis = new FileInputStream(HJSON);
@@ -267,7 +241,7 @@ public class SysData {
 		try ( FileInputStream fis = new FileInputStream(HJSON))
 		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-	         if (isJsonEmpty(reader)==true)
+	         if (isJsonNull(reader)==true)
 	         {
 	        	 return;
 	         }
@@ -310,6 +284,25 @@ public class SysData {
 					e.printStackTrace();
 					}	
 		
+	}
+	
+	public boolean isJsonNull(BufferedReader reader) throws IOException {
+	    StringBuilder json = new StringBuilder();
+	    String line;
+	    
+	    while ((line = reader.readLine()) != null) {
+	        json.append(line);
+	    }
+	    
+	    reader.close();
+
+	    // Check if the JSON file is empty
+	    if (json.toString().trim().isEmpty()) {
+	        System.out.println("The JSON file is empty");
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 		
 }

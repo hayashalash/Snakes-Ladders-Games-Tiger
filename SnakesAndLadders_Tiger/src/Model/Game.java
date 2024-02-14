@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Game {
@@ -14,7 +15,7 @@ public class Game {
 	private Double gameDuration;
 	private ArrayList<Player> players;//should delete?
 	private Player winner;
-	private Queue<Player> playersOrder;
+	private Queue<Player> playersOrder = new LinkedList<Player>();
 	
 	public Game(Difficulty type, ArrayList<Player> players) {
 		super();
@@ -94,12 +95,7 @@ public class Game {
     	Player p=playersOrder.poll();
     	playersOrder.add(p);
     }
-	public void startGame() {
-		
-	}
-     public void Gamestarted() {
-		
-	}
+	
 	
 	
 
