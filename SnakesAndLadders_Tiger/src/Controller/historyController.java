@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import View.Alerts;
 import javafx.collections.FXCollections;
@@ -19,10 +22,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import Model.SysData;
 import Model.Difficulty;
 import Model.Game;
@@ -31,7 +38,7 @@ import Model.Question;
 
 public class historyController implements Initializable{
 
-
+    private HashMap<Player, Integer> playersWinningGames;//the value represent the number of games the player wins  
     @FXML
     private TableView<Game> History;
 
@@ -97,9 +104,21 @@ public class historyController implements Initializable{
 
     @FXML
     void ShowTopThree(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/topThree.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+			Main.mainWindow.show();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error loading FXML: " + e.getMessage());
+        }
     }
 
+    
+   
     @FXML
     void exit(ActionEvent event) {
     	if (Alerts.exit()==1)
