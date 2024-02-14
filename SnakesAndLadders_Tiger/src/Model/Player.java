@@ -5,7 +5,7 @@ public class Player {
 	private int playerID;
 	private String playerName;
 	private Color playerColor;
-	private int playerPlace=1;
+	private int playerPlace=0;
 	private int numberOrder=0;
 	
 	public Player(String playerName, Color playerColor) {

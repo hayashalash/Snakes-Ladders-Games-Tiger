@@ -496,7 +496,7 @@ public class EasyController implements Initializable{
 
     
     
-    private void viewResultDise(int diceResult) {//this for easy  difficulty only
+    private void viewResultDise(int diceResult) {//this for easy difficulty only
     	if(diceResult<4) {
     		// function to move the player 
 		}
@@ -515,8 +515,8 @@ public class EasyController implements Initializable{
 
 	private void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
-    	    diceResult.setImage(image);
-    	    }
+    	 diceResult.setImage(image);
+    }
     
 	void newScreen(String path) {
     	try {

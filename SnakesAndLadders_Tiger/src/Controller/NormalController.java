@@ -275,14 +275,17 @@ public class NormalController implements Initializable{
 	    // Get the head and tail coordinates of the snake
 	    int headTile = snake.getSnakeHead();
 	    int tailTile = snake.getSnakeTail();
-
+	    int xHead = board.getTile(headTile).getxCoord();
+	    int yHead = board.getTile(headTile).getyCoord();
+	    int xTail = board.getTile(tailTile).getxCoord();
+	    int yTail = board.getTile(tailTile).getyCoord();
 	    // Convert tile indices to row and column indices for the head
-	    int headRow = (headTile - 1) / board.getBoardLen();
-	    int headColumn = (headTile - 1) % board.getBoardLen();
-
-	    // Convert tile indices to row and column indices for the tail
-	    int tailRow = (tailTile - 1) / board.getBoardLen();
-	    int tailColumn = (tailTile - 1) % board.getBoardLen();
+//	    int headRow = (headTile - 1) / board.getBoardLen();
+//	    int headColumn = (headTile - 1) % board.getBoardLen();
+//
+//	    // Convert tile indices to row and column indices for the tail
+//	    int tailRow = (tailTile - 1) / board.getBoardLen();
+//	    int tailColumn = (tailTile - 1) % board.getBoardLen();
 
 	    // Load snake image
 	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
@@ -296,14 +299,14 @@ public class NormalController implements Initializable{
 	        ImageView redSnakeImageView = new ImageView(snakeImage);
 	        redSnakeImageView.setFitWidth(width);
 	        redSnakeImageView.setFitHeight(height);
-	        redSnakeImageView.setTranslateX(headColumn * TILE_SIZE); // Position the image at the head tile
-	        redSnakeImageView.setTranslateY(headRow * TILE_SIZE);
+	        redSnakeImageView.setTranslateX(yHead * TILE_SIZE); // Position the image at the head tile
+	        redSnakeImageView.setTranslateY(xHead * TILE_SIZE);
 
 	        // Add the red snake image to the grid
 	        grid.getChildren().add(redSnakeImageView);
 	    } else {
 	    // Calculate the angle between head and tail tiles
-	    double angle = Math.toDegrees(Math.atan2(tailRow - headRow, tailColumn - headColumn));
+	    double angle = Math.toDegrees(Math.atan2(xTail - xHead, yTail - yHead));
 
 	    // Adjust the rotation angle to ensure the head is always oriented upwards
 	    if (angle < -90 || angle > 90) {
@@ -311,15 +314,15 @@ public class NormalController implements Initializable{
 	    }
 
 	    // Calculate the length of the snake image
-	    double snakeLength = Math.sqrt(Math.pow(tailRow - headRow, 2) + Math.pow(tailColumn - headColumn, 2)) * TILE_SIZE;
+	    double snakeLength = Math.sqrt(Math.pow(xTail - xHead, 2) + Math.pow(yTail - yHead, 2)) * TILE_SIZE;
 
 	    // Create ImageView for the snake image
 	    ImageView snakeImageView = new ImageView(snakeImage);
 	    snakeImageView.setFitWidth(TILE_SIZE - (0.2 * TILE_SIZE));
 	    snakeImageView.setFitHeight(snakeLength);
 	    snakeImageView.setRotate(angle); // Rotate the image to match the angle between head and tail
-	    snakeImageView.setTranslateX(headColumn * TILE_SIZE); // Position the image at the head tile
-	    snakeImageView.setTranslateY(headRow * TILE_SIZE);
+	    snakeImageView.setTranslateX(yHead * TILE_SIZE); // Position the image at the head tile
+	    snakeImageView.setTranslateY(xHead * TILE_SIZE);
 
 	    // Add the snake image to the grid
 	    grid.getChildren().add(snakeImageView);

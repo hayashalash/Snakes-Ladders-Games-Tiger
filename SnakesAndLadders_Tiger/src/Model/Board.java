@@ -16,7 +16,6 @@ public class Board {
 	private Integer boardLen; // equals width, based on board type - 7 / 10 / 13
 	private int boardSize; //based on board type - 49 / 100 / 169
 	private int lastTile;
-	
 	private ArrayList<Integer> surprises; // tiles with surprises [+10/-10]
 	private Tile[][] grid;
 	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
@@ -254,14 +253,12 @@ public class Board {
 
 	    while (i >= 0) { // Changed loop condition to i >= 0
 	        for (int j = 0; j < boardLen; j++) { // go over row from left to right
-	            System.out.println("[" + i + "," + j + "]");
 	            this.grid[i][j] = new Tile(boardCounter++, i, j);
 	            getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
 	        }
 	        i--; // Decrement i after each row iteration
 	        if (i >= 0) { // Check if i is still valid before entering the loop again
 	            for (int j = boardLen - 1; j >= 0; j--) { // go over row from right to left
-	                System.out.println("[" + i + "," + j + "]");
 	                this.grid[i][j] = new Tile(boardCounter++, i, j);
 	                getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
 	            }
@@ -272,8 +269,7 @@ public class Board {
 	    addSnakeTiles();
 	    addQuestionTiles(); // adds 3 question tiles to the board
 	    addSurpriseTiles();
-	    System.out.println("boardCounter is " + boardCounter);
-	    System.out.println("boardSize is " + boardSize);
+	    addLadderTiles();
 	    return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
 	}
 
@@ -330,7 +326,7 @@ public class Board {
 		int eliminatedRowsSize = 0; // the part of the board that will be eliminated
 		if (itemLen < minItemLen || itemLen > maxItemLen)
 			return 0;
-		if (itemLen > minItemLen) { // [snake head]/[ladder top] cannot be at a tile lower than 'length' number of rows
+		else if (itemLen > minItemLen) { // [snake head]/[ladder top] cannot be at a tile lower than 'length' number of rows
 			eliminatedRowsSize = itemLen * boardLen;
 			partialSize = boardSize - eliminatedRowsSize;
 		}
@@ -343,12 +339,11 @@ public class Board {
 	}
 	
 	public Integer chooseRandomInRow (int XrowNum) {
-		int random = (int) (Math.random() * (boardLen-1)) + ((XrowNum-1) * boardLen) + 1; // choose a tile  from given row X
-		System.out.println("boardLen is: "+boardLen);
+		int random = (int) (Math.random() * (boardLen-1)) + ((boardLen-1 - XrowNum) * boardLen) + 1; // choose a tile  from given row X
 		System.out.println("XrowNum is: "+XrowNum);
 		System.out.println("random is: "+random);
 		while (getTile(random).gettType() != TileType.Classic) { // ensure we don't land on a non-classic tile
-			random = (int) (Math.random() * (boardLen-1)) + ((XrowNum-1) * boardLen) + 1;
+			random = (int) (Math.random() * (boardLen-1)) + ((boardLen-1 - XrowNum) * boardLen) + 1;
 		}
 		return random;
 	}
@@ -407,14 +402,6 @@ public class Board {
 		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 	}
 	
-	public int getRows() {
-	    return grid.length; // Number of rows is the length of the grid array
-	}
-
-	public int getColumns() {
-	    return grid.length > 0 ? grid[0].length : 0; // Number of columns is the length of the first row of the grid array
-	}
-	
 	public void addLadderTiles () {
 		for (int i = 1 ; i <= 4 ; i++) { // all board types have at least 4 ladders - one of each length: [1,2,3,4]
 			createLadder(i); // i = ladder length
@@ -439,5 +426,7 @@ public class Board {
 		getTile(laddertop).settType(TileType.LadderTop);
 		this.grid[lt.xCoord][lt.yCoord] = lt; // put the ladder tile back in the board
 		tiles.put(lt.gettNum(), lt); // add the ladder tile to the tiles HashMap
+		System.out.println("ladder length: " + length);
+		System.out.println("Ladder top is on: " + laddertop + " and ladder bottopn is on: " +ladderbottom);
 	}
 }

@@ -95,7 +95,7 @@
          <graphic>
          </graphic>
          <graphic>
-            <ImageView fx:id="diceResult" fitHeight="74.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="diceResult" fitHeight="74.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-radius: 10; -fx-border-radius: 10;" />
          </graphic></Button>
    </children>
 </AnchorPane>
