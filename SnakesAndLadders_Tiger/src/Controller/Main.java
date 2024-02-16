@@ -1,9 +1,13 @@
 package Controller;
 import java.io.IOException;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import org.json.simple.parser.ParseException;
 
 import Model.Difficulty;
+import Model.Question;
+import Model.SysData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,9 +16,12 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import java.util.*; 
 
 
 public class Main extends Application {
+	 
+
 
 	public static Stage mainWindow=null;
 	@Override
@@ -46,8 +53,11 @@ public class Main extends Application {
 		}
 	}
 	
-	public static void showQustion(Difficulty d) {
-		//bring Hashmap from question difficulty and Arraylist of question for each difficulty 
-		//choose the diificulty and bring random question from the arraylist 
-	}
+	
+	
+	
+	
+	
+		 
 }
+
