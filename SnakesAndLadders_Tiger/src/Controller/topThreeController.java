@@ -10,7 +10,6 @@ import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
-import Model.Difficulty;
 import Model.Game;
 import Model.Player;
 import Model.SysData;
@@ -46,7 +45,7 @@ public class  topThreeController implements Initializable{
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
-			}
+			}  	
 	    }
 
 	    

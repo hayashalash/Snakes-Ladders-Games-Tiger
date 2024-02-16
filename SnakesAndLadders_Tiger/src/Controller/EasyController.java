@@ -496,8 +496,7 @@ public class EasyController implements Initializable{
 
     
     
-
-    private static void viewResultDise(int diceResult){//this for easy  difficulty only
+    private void viewResultDise(int diceResult) {//this for easy difficulty only
     	if(diceResult<4) {
     		// function to move the player 
 		}
@@ -511,6 +510,7 @@ public class EasyController implements Initializable{
     		
     	  }
     	}
+		
 	}
 
 	private void updateDiceImage(String imagePath) {//update the dice image 
@@ -528,8 +528,6 @@ public class EasyController implements Initializable{
 			e.printStackTrace();
 		}  	
     }
-	
     
- 
+    
 }
-
