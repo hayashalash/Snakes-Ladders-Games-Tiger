@@ -340,8 +340,6 @@ public class Board {
 	
 	public Integer chooseRandomInRow (int XrowNum) {
 		int random = (int) (Math.random() * (boardLen-1)) + ((boardLen-1 - XrowNum) * boardLen) + 1; // choose a tile  from given row X
-		System.out.println("XrowNum is: "+XrowNum);
-		System.out.println("random is: "+random);
 		while (getTile(random).gettType() != TileType.Classic) { // ensure we don't land on a non-classic tile
 			random = (int) (Math.random() * (boardLen-1)) + ((boardLen-1 - XrowNum) * boardLen) + 1;
 		}
