@@ -90,6 +90,8 @@ public class NormalController implements Initializable{
 	private static final String GREEN_SNAKE_IMAGE_PATH = "/img/icons/greenSnake.png";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
+	private static final String LADDER_IMAGE_PATH = "/img/icons/ladder.png";
+	private static final String LONGLADDER_IMAGE_PATH = "/img/icons/longLadder.png";
 	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
 	public static Game game;
 	Board board = new Board(game.getType());
@@ -153,6 +155,7 @@ public class NormalController implements Initializable{
         startTimer();
 		showPlayers();
 		showSnakes();
+		showLadders();
 		showQuestions();
 		showSurprises();
 
@@ -267,8 +270,6 @@ public class NormalController implements Initializable{
 	}
 
 	private String getSnakeImagePath(Snake snake) {
-	    // Add logic to determine the image path based on snake properties
-	    // For example:
 	    switch (snake.getColor()) {
 	        case Red:
 	            return RED_SNAKE_IMAGE_PATH;
@@ -345,9 +346,70 @@ public class NormalController implements Initializable{
 //	        stackPane.setStyle("-fx-border-color: black;");	        
 	    }
 	}
-	
-	public void displayLadder(Ladder ladder, String imagePath) {
-		
+	public void showLadders() {
+		for (HashMap.Entry<Integer, Ladder> l : board.getLadders().entrySet())
+			displayLadder(l.getValue());
+	}
+	public void displayLadder(Ladder ladder) {
+		// Get the top and bottom cells of the ladder
+	    int topTile = ladder.getLadderTop();
+	    int bottomTile = ladder.getLadderBottom();
+	    // Convert tile indices to row and column indices for the top and bottom
+	    int rowHead = board.getTile(topTile).getxCoord();
+	    int colHead = board.getTile(topTile).getyCoord();
+	    int rowTail = board.getTile(bottomTile).getxCoord();
+	    int colTail = board.getTile(bottomTile).getyCoord();
+
+    	// Calculate the ladder length using Euclidean distance formula
+    	double width = TILE_WIDTH * (Math.abs(colHead-colTail)); // base of the triangle
+    	double height = TILE_HEIGHT * (Math.abs(rowHead-rowTail)); // height of the triangle
+        double diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)); // length of the ladder
+        Image ladderImage;
+        if ((Math.abs(colHead-colTail) >= 5) || (Math.abs(rowHead-rowTail) >= 5)) {
+        	ladderImage = new Image(getClass().getResource(LONGLADDER_IMAGE_PATH).toExternalForm());
+        }
+        else {
+    	    ladderImage = new Image(getClass().getResource(LADDER_IMAGE_PATH).toExternalForm());
+        } 
+        // Load ladder image
+        ImageView ladderImageView = new ImageView(ladderImage);
+        
+        // for proportional sizes - adjust a larger width to a longer ladder
+        if ((Math.abs(colHead-colTail) >= 5)) // if ladder is very long
+        	ladderImageView.setFitWidth(2*TILE_WIDTH); // set large width
+        else // if ladder is not very long
+        	ladderImageView.setFitWidth(1.5 * TILE_WIDTH); // set smaller width
+        
+        ladderImageView.setFitHeight(diagonal);
+        
+        double angleRadians = Math.atan(width / height); // calculate the angle between the diagonal and the base in radians
+
+        double angleDegrees = Math.toDegrees(angleRadians);	// convert the angle from radians to degrees
+
+        if (colHead < colTail)  // means the image should rotate to the left
+        	angleDegrees = (-1) * angleDegrees; // Flip the image horizontally
+        
+        ladderImageView.setRotate(angleDegrees); // Rotate the image to match the angle
+
+        StackPane stackPane = new StackPane();
+//	        stackPane.setAlignment(Pos.CENTER);
+
+        // Add the ImageView to the StackPane
+        stackPane.getChildren().add(ladderImageView);
+        stackPane.setPrefSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+        stackPane.setMaxSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+        stackPane.setMinSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+
+        double xLayout;
+        if (colHead < colTail) { // set position on the board based on the left side
+        	xLayout = BOARD_LEFT_OFFSET + (colHead*TILE_WIDTH);
+        }
+        else
+        	xLayout = BOARD_LEFT_OFFSET + (colTail*TILE_WIDTH);
+        double yLayout = BOARD_TOP_OFFSET + (rowHead*TILE_HEIGHT);
+        screen.getChildren().add(stackPane);
+        stackPane.setLayoutX(xLayout);
+        stackPane.setLayoutY(yLayout);
 	}
 	
 	public double getCellHeight(int rowIndex) {
