@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Player {
 	private static int idCounter = 1;
 	private int playerID;
@@ -58,6 +60,26 @@ public class Player {
 	public void setNumberOrder(int numberOrder) {
 		this.numberOrder = numberOrder;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(numberOrder, playerColor, playerID, playerName, playerPlace);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Player other = (Player) obj;
+		return numberOrder == other.numberOrder && playerColor == other.playerColor && playerID == other.playerID
+				&& Objects.equals(playerName, other.playerName) && playerPlace == other.playerPlace;
+	}
+
 	@Override
 	public String toString() {
 		return "Player [playerID=" + playerID + ", playerName=" + playerName + ", playerColor=" + playerColor

@@ -5,44 +5,58 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class GameHistory { 
-
-//	private Player players;
-	private Duration date;
+	
+	private int gameID;
+	private Player winner;
 	private Difficulty diff;
-	private HashMap <Player, Integer> winner ;
-
+	private String duration;
+	
 	public GameHistory() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public GameHistory( Duration date, Difficulty diff, HashMap<Player, Integer> win) {
+	public GameHistory(int gameID, Player winner, Difficulty diff, String duration) {
 		super();
-		this.date = date;
+		this.gameID = gameID;
+		this.winner = winner;
 		this.diff = diff;
-		winner = new HashMap<>();
+		this.duration = duration;
 	}
 
 
-	public HashMap<Player, Integer> getWinner() {
+
+	public int getGameID() {
+		return gameID;
+	}
+
+
+
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+
+
+	public Player getWinner() {
 		return winner;
 	}
 
 
 
-	public void setWinner(HashMap<Player, Integer> winner) {
+	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
 
 
-	public Duration getDate() {
-		return date;
+
+	public String getDuration() {
+		return duration;
 	}
 
 
-	public void setDate(Duration date) {
-		this.date = date;
+	public void setDuration(String duration) {
+		this.duration = duration;
 	}
 
 
@@ -56,11 +70,11 @@ public class GameHistory {
 	}
 
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, diff, winner);
+		return Objects.hash(duration, diff, gameID, winner);
 	}
-
 
 
 
@@ -73,8 +87,11 @@ public class GameHistory {
 		if (getClass() != obj.getClass())
 			return false;
 		GameHistory other = (GameHistory) obj;
-		return Objects.equals(date, other.date) && diff == other.diff && Objects.equals(winner, other.winner);
+		return Objects.equals(duration, other.duration) && diff == other.diff && gameID == other.gameID
+				&& Objects.equals(winner, other.winner);
 	}
+
+
 
 
 }

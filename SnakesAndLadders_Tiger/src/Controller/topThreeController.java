@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
-import Model.Game;
+import Model.GameHistory;
 import Model.Player;
 import Model.SysData;
 import javafx.event.ActionEvent;
@@ -52,8 +52,8 @@ public class  topThreeController implements Initializable{
 	    private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
 	        HashMap<Player, Integer> playersWinningGames = new HashMap<>();
             //save
-	        ArrayList<Game> games = new ArrayList<>(SysData.getInstance().getGames());
-	        for (Game game : games) {
+	    	List<GameHistory> games = new ArrayList<>(SysData.getInstance().getGames());
+	        for (GameHistory game : games) {
 	            Player winner = game.getWinner();
 	            playersWinningGames.put(winner, playersWinningGames.getOrDefault(winner, 0) + 1);
 	        }

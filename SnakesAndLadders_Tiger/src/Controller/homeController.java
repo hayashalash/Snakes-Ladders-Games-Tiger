@@ -62,7 +62,7 @@ public class homeController implements Initializable{
     @FXML
     private Button musicOff;
     
-    public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/game.wav").toString());
+    public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.wav").toString());
 
     @FXML
     void TurnOffOn(ActionEvent event) {
@@ -72,7 +72,7 @@ public class homeController implements Initializable{
 		}
     	else { // is music is off
     		note.play();
-			note.setVolume(0.5);
+			note.setVolume(0.2);
     		turnOffIcon.setOpacity(0.0);
     	}
     }
