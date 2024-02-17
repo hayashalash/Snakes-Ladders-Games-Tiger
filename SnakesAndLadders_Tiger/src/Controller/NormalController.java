@@ -75,12 +75,9 @@ public class NormalController implements Initializable{
     private final double ICON_HEIGHT = 35;
     private final double IMAGE_WIDTH = 45; // the icons next to the names
     private final double IMAGE_HEIGHT = 45;
-    private final double QUESTION_WIDTH = 30; // question icon size
-    private final double QUESTION_HEIGHT = 30;
-    private final double SURPRISE_WIDTH = 35; // surprise icon size
-    private final double SURPRISE_HEIGHT = 35;
-    private final double RED_SNAKE_WIDTH = 40; 
-    private final double RED_SNAKE_HEIGHT = 40;
+    private final double QUESTION_SIZE = 30; // question icon size
+    private final double SURPRISE_SIZE = 35; // surprise icon size
+    private final double RED_SNAKE_SIZE = 40; 
     private final double TILE_SIZE  = 53.8;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
@@ -360,8 +357,8 @@ public class NormalController implements Initializable{
 	    if (snake.getColor() == SnakeColor.Red) {
 	        // Create ImageView for the question
 	        ImageView redSnakeImageView = new ImageView(snakeImage);
-	        redSnakeImageView.setFitHeight(RED_SNAKE_WIDTH);
-	        redSnakeImageView.setFitWidth(RED_SNAKE_HEIGHT);
+	        redSnakeImageView.setFitHeight(RED_SNAKE_SIZE);
+	        redSnakeImageView.setFitWidth(RED_SNAKE_SIZE);
 	        redSnakeImageView.setVisible(true);
 	        GridPane.setRowIndex(redSnakeImageView, xHead);
 	        GridPane.setColumnIndex(redSnakeImageView, yHead);
@@ -520,25 +517,39 @@ public class NormalController implements Initializable{
         GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	}
 
-
+	public double getCellHeight(int rowIndex) {
+        double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
+        
+        System.out.println("Cell height: " + cellHeight);
+        return cellHeight;
+	}
+	public double getCellWidth(int colIndex) {
+        double cellWidth = grid.getColumnConstraints().get(colIndex).getPrefWidth();
+        
+        System.out.println("Cell width: " + cellWidth);
+        return cellWidth;
+	}
+	
+	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
+		// Create ImageView for the icon
+        ImageView iv = new ImageView(img);
+        iv.setFitHeight(imgSize);
+        iv.setFitWidth(imgSize);
+        iv.setVisible(true);
+        GridPane.setRowIndex(iv, row);
+        GridPane.setColumnIndex(iv, col);
+        // Add the icon to GridPane
+        grid.getChildren().addAll(iv);
+        GridPane.setHalignment(iv, javafx.geometry.HPos.CENTER); // Center horizontally
+        GridPane.setValignment(iv, javafx.geometry.VPos.CENTER); // Center vertically
+	}
 	
 	public void showQuestions() {
 		for (QuestionTile qt : board.getQuestionTiles()) {
 			Image questionImage = new Image(getClass().getResource(QUESTION_IMAGE_PATH).toExternalForm());
 			int row = qt.getxCoord();
 	        int column = qt.getyCoord();
-
-	        // Create ImageView for the question
-	        ImageView question = new ImageView(questionImage);
-	        question.setFitHeight(QUESTION_WIDTH);
-	        question.setFitWidth(QUESTION_HEIGHT);
-	        question.setVisible(true);
-	        GridPane.setRowIndex(question, row);
-	        GridPane.setColumnIndex(question, column);
-	        // Add the question to GridPane
-	        grid.getChildren().addAll(question);
-	        GridPane.setHalignment(question, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(question, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(questionImage, row, column, QUESTION_SIZE);
 		}
 	}
 	
@@ -548,18 +559,7 @@ public class NormalController implements Initializable{
 			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
 			int row = st.getxCoord();
 	        int column = st.getyCoord();
-
-	        // Create ImageView the surprise
-	        ImageView surprise = new ImageView(surpriseImage);
-	        surprise.setFitHeight(SURPRISE_WIDTH);
-	        surprise.setFitWidth(SURPRISE_HEIGHT);
-	        surprise.setVisible(true);
-	        GridPane.setRowIndex(surprise, row);
-	        GridPane.setColumnIndex(surprise, column);
-	        // Add the surprise to GridPane
-	        grid.getChildren().add(surprise);
-	        GridPane.setHalignment(surprise, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(surprise, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(surpriseImage, row, column, SURPRISE_SIZE);
 		}
 	}
 	
