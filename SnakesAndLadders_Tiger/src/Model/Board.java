@@ -15,7 +15,6 @@ public class Board {
 	private Difficulty bType;
 	private Integer boardLen; // equals width, based on board type - 7 / 10 / 13
 	private int boardSize; //based on board type - 49 / 100 / 169
-	private int lastTile;
 	private ArrayList<Integer> surprises; // tiles with surprises [+10/-10]
 	private Tile[][] grid;
 	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
@@ -34,7 +33,6 @@ public class Board {
 		this.bType = bType;
 		setBoardLen(bType);
 		setBoardSize(boardLen);
-		setLastTile();
 		this.grid = new Tile[boardLen][boardLen];
 		surprises = new ArrayList<>();
 		tiles = new HashMap<>();
@@ -46,14 +44,6 @@ public class Board {
 		mediumQuestions = new HashMap<>();
 		hardQuestions = new HashMap<>();
 		playerOn = new HashMap<>();
-	}
-
-	public int getLastTile() {
-		return lastTile;
-	}
-
-	public void setLastTile() {
-		this.lastTile = boardLen * boardLen;
 	}
 
 	public static int getIdCounter() {
@@ -265,7 +255,8 @@ public class Board {
 	            i--; // Decrement i again after each row iteration
 	        }
 	    }
-	    getTile(lastTile).settType(TileType.LastTile);
+	    getTile(boardLen * boardLen).settType(TileType.LastTile);
+	    getTile(1).settType(TileType.FirstTile);
 	    addSnakeTiles();
 	    addQuestionTiles(); // adds 3 question tiles to the board
 	    addSurpriseTiles();

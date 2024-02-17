@@ -102,7 +102,8 @@ class Tests {
    }
    
    /*
-    * Check that when a board is created, it has the needed items questions, snakes and ladders
+    * Check that when a board is created, it has the needed items: questions, snakes and ladders
+    * This test does not check for surprises as easy boards don't have surprise tiles
     * */
    
    @Test
