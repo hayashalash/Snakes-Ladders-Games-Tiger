@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import Controller.ChoosePlayersController.ImageListCell;
 import Model.Board;
 import Model.Color;
+import Model.Difficulty;
 import Model.Game;
 import Model.Ladder;
 import Model.Player;
@@ -81,6 +82,9 @@ public class HardController implements Initializable{
 	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
 	public static Game game;
 	Board board = new Board(game.getType());
+	@FXML
+    private Button temp;
+	
 	public Player currentTurn;
     @FXML
     private AnchorPane screen;
@@ -162,6 +166,11 @@ public class HardController implements Initializable{
         timer.play();
     }
 
+	@FXML
+    void win(ActionEvent event) {
+		newScreen("Winner");
+    }
+
 	public void showPlayers() {
 		ObservableList<ImageView> playerIcons = FXCollections.observableArrayList();
 		for (Player p : game.getPlayers()) {
@@ -218,6 +227,7 @@ public class HardController implements Initializable{
 		for (Player p : game.getPlayers()) {
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
+			name.setPadding(new Insets(10, 5, 10, 5));
 			ImageView icon = new ImageView(icons.get(p));
 			icon.setFitHeight(IMAGE_SIZE);
 			icon.setFitWidth(IMAGE_SIZE);
