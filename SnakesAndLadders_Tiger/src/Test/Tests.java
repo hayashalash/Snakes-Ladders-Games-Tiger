@@ -5,13 +5,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import Model.Board;
 import Model.Difficulty;
+import Model.Ladder;
 import Model.Question;
+import Model.QuestionTile;
+import Model.Snake;
 import Model.SysData;
 
 
@@ -32,7 +38,7 @@ class Tests {
 	 */
     
 	@Test
-	  public void writeToJsonTest() throws IOException, ParseException {
+	public void writeToJsonTest() throws IOException, ParseException {
 	
 	    SysData.getInstance().writeToJson(question);
 	    assertTrue(SysData.getInstance().getQuestions().contains(question));
@@ -40,7 +46,7 @@ class Tests {
 	}
 	
 	// Delete a question from question_scheme.json expects not to find the deleted question in the Question HashSet and SysData
-   @Test
+	@Test
     public void deleteFromJsonTest() throws IOException, ParseException {
 	   
         SysData.getInstance().deleteFromJson(question);
@@ -71,7 +77,56 @@ class Tests {
        assertTrue(SysData.getInstance().getQuestions().contains(newQuestion));  // New question should be present
    }
 
+   /*
+    * Check that random tiles are created within the board limits
+    * */
+   @Test
+   public void testChooseRandomTile() {
+	   Board board = new Board(Difficulty.Medium);
+       board.createBoard();
+       int randomTile = board.chooseRandomTile(0);
+       assertTrue(randomTile > 0 && randomTile <= board.getBoardSize());
+   }
    
+   /*
+    * Check that the method choosing a random tile from a row, returns a tile in the given row.
+    * */
+   
+   @Test
+   public void testChooseRandomInRow() {
+	   Board board = new Board(Difficulty.Hard);
+	   board.createBoard();
+       int randomInRow = board.chooseRandomInRow(board.getBoardLen()-1); // choose a random tile from the first (bottom) row
+       assertTrue(randomInRow > 0 && randomInRow <= board.getBoardLen()); // the board length is the number of the last tile in the first row
+   }
+   
+   /*
+    * Check that when a board is created, it has questions, snakes and ladders
+    * */
+   
+   @Test
+   public void testSpecialTiles() {
+	   Board board = new Board(Difficulty.Easy);
+       board.createBoard();
+       
+       ArrayList<QuestionTile> questionTiles = board.getQuestionTiles();
+       assertFalse(questionTiles.isEmpty());
+       for (QuestionTile questionTile : questionTiles) {
+           assertNotNull(questionTile);
+       }
+       
+       HashMap<Integer, Snake> snakes = board.getSnakes();
+       assertFalse(snakes.isEmpty());
+       for (Snake snake : snakes.values()) {
+           assertNotNull(snake);
+       }
+       
+       HashMap<Integer, Ladder> ladders = board.getLadders();
+       assertFalse(ladders.isEmpty());
+       for (Ladder ladder : ladders.values()) {
+           assertNotNull(ladder);
+       }
+   }
 	/*
 	 * After check I have to keep the originJson file, without any changes. 
 	 * so we clean up the SysData from the changes that happen in the JUnit test
