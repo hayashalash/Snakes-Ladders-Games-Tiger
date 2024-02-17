@@ -504,7 +504,7 @@ public class EasyController implements Initializable{
     		// function to move the player 
 		}
     	if(diceResult==5) {//display easy question
-    		
+    	//	GameController.showQuestionPopup(Difficulty.Easy);
     	}
     	else { if(diceResult==6) {//display normal question 
     		
@@ -531,6 +531,15 @@ public class EasyController implements Initializable{
 			e.printStackTrace();
 		}  	
     }
+<<<<<<< Updated upstream
     
     
+=======
+	
+public static void movePlayer(int n) {
+ //   ImageView playerIcon = iconsOnBoard.get(player);
+
+    }
+ 
+>>>>>>> Stashed changes
 }

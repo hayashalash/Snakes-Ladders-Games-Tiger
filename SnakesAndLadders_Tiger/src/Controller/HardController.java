@@ -12,6 +12,7 @@ import Controller.ChoosePlayersController.ImageListCell;
 import Model.Board;
 import Model.Color;
 import Model.Game;
+import Model.Ladder;
 import Model.Player;
 import Model.QuestionTile;
 import Model.Snake;
@@ -41,30 +42,24 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class HardController implements Initializable{
 
-	private final double ICON_WIDTH = 35; // the moving icons on the board
-    private final double ICON_HEIGHT = 35;
-    private final double IMAGE_WIDTH = 45; // the icons next to the names
-    private final double IMAGE_HEIGHT = 45;
-    private final double QUESTION_WIDTH = 30; // question icon size
-    private final double QUESTION_HEIGHT = 30;
-    private final double SURPRISE_WIDTH = 25; // surprise icon size
-    private final double SURPRISE_HEIGHT = 25;
-    private final double RED_SNAKE_WIDTH = 45; // question icon size
-    private final double RED_SNAKE_HEIGHT = 45;
-    private final double YELLOW_SNAKE_WIDTH = 90; // question icon size
-    private final double YELLOW_SNAKE_HEIGHT = 90;
-    private final double BLUE_SNAKE_WIDTH = 120; // question icon size
-    private final double BLUE_SNAKE_HEIGHT = 210;
-    private final double GREEN_SNAKE_WIDTH = 130; // question icon size
-    private final double GREEN_SNAKE_HEIGHT = 130;
-    private final double TILE_SIZE  = 53.8;
+	private final double ICON_SIZE = 35; // the moving icons on the board
+    private final double IMAGE_SIZE = 45; // the icons next to the names
+    private final double QUESTION_SIZE = 30; // question icon size
+    private final double SURPRISE_SIZE = 25; // surprise icon size
+    private final double RED_SNAKE_SIZE = 35; // question icon size
+    private final double TILE_HEIGHT  = 41;
+    private final double TILE_WIDTH  = 42;
+    private final double BOARD_LEFT_OFFSET  = 220;
+    private final double BOARD_TOP_OFFSET  = 27;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
 	private static final String GREEN = "/img/icons/greenPlayer.png";
@@ -81,10 +76,14 @@ public class HardController implements Initializable{
 	private static final String GREEN_SNAKE_IMAGE_PATH = "/img/icons/greenSnake.png";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
-	
+	private static final String LADDER_IMAGE_PATH = "/img/icons/ladder.png";
+	private static final String LONGLADDER_IMAGE_PATH = "/img/icons/longLadder.png";
+	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
+    @FXML
+    private AnchorPane screen;
 	
 	@FXML
     private GridPane grid;
@@ -119,7 +118,10 @@ public class HardController implements Initializable{
     @FXML
     private Label time;
     
+    @FXML
     private Timeline timer;
+    
+    @FXML
     private Duration gameDuration = Duration.ZERO;
 	
 	@Override
@@ -132,11 +134,15 @@ public class HardController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
-		startTimer();
-		showPlayers();
-		showSnakes();
-		showQuestions();
-		showSurprises();
+	     startTimer();
+			showPlayers();
+			showSnakes();
+			showLadders();
+			showQuestions();
+			showSurprises();
+
+			getCellWidth(4);
+			getCellHeight(4);
 	}
 	
 	private void startTimer() {
@@ -204,17 +210,17 @@ public class HardController implements Initializable{
 
 		}
 		for (ImageView iv : playerIcons) {
-			iv.setFitHeight(ICON_HEIGHT);
-			iv.setFitWidth(ICON_WIDTH);
+			iv.setFitHeight(ICON_SIZE);
+			iv.setFitWidth(ICON_SIZE);
 			playersStart.getChildren().add(iv);
 		}
 		
 		for (Player p : game.getPlayers()) {
 			Label name = new Label(p.getPlayerName());
-			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px; -fx-font-weight: bold");
+			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
 			ImageView icon = new ImageView(icons.get(p));
-			icon.setFitHeight(IMAGE_HEIGHT);
-			icon.setFitWidth(IMAGE_WIDTH);
+			icon.setFitHeight(IMAGE_SIZE);
+			icon.setFitWidth(IMAGE_SIZE);
 			if (player1.getChildren().isEmpty())
 				player1.getChildren().addAll(icon, name);
 			else if (player2.getChildren().isEmpty())
@@ -227,6 +233,7 @@ public class HardController implements Initializable{
 		
 	}
 	
+	
 	public void showSnakes() {
 	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
 	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
@@ -237,171 +244,200 @@ public class HardController implements Initializable{
 	        snakesByColor.get(snake.getColor()).add(snake);
 	    }
 
-	    for (Entry<SnakeColor, List<Snake>> entry : snakesByColor.entrySet()) {
-	        SnakeColor color = entry.getKey();
-	        List<Snake> snakes = entry.getValue();
+	    for (List<Snake> snakes : snakesByColor.values()) {
 	        for (Snake snake : snakes) {
-	            switch (color) {
-	                case Red:
-	                    displayRedSnake(snake, RED_SNAKE_IMAGE_PATH, RED_SNAKE_HEIGHT, RED_SNAKE_WIDTH);	            
-	                    break;
-	                case Yellow:
-	                    displayYellowSnake(snake, YELLOW_SNAKE_IMAGE_PATH, YELLOW_SNAKE_HEIGHT, YELLOW_SNAKE_WIDTH);
-	                    break;
-	                case Green:
-	                    displayGreenSnake(snake, GREEN_SNAKE_IMAGE_PATH, GREEN_SNAKE_HEIGHT, GREEN_SNAKE_WIDTH);	            
-	                    break;
-	                case Blue:
-	                    displayBlueSnake(snake, BLUE_SNAKE_IMAGE_PATH, BLUE_SNAKE_HEIGHT, BLUE_SNAKE_WIDTH);
-	                    break;
-	            }
+	            displaySnake(snake, getSnakeImagePath(snake));
 	        }
 	    }
 	}
 
-
-	private void displayRedSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The red snake occupies one tile
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Calculate the position within the grid to place the snake
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
+	private String getSnakeImagePath(Snake snake) {
+	    switch (snake.getColor()) {
+	        case Red:
+	            return RED_SNAKE_IMAGE_PATH;
+	        case Yellow:
+	            return YELLOW_SNAKE_IMAGE_PATH;
+	        case Green:
+	            return GREEN_SNAKE_IMAGE_PATH;
+	        case Blue:
+	            return BLUE_SNAKE_IMAGE_PATH;
+	        default:
+	            return DEFAULT_SNAKE_IMAGE_PATH; 
+	    }
 	}
 
+
+	private void displaySnake(Snake snake, String imagePath) {
+	    // Get the head and tail cells of the snake
+	    int headTile = snake.getSnakeHead();
+	    int tailTile = snake.getSnakeTail();
+	    // Convert tile indices to row and column indices for the head and tail
+	    int rowHead = board.getTile(headTile).getxCoord();
+	    int colHead = board.getTile(headTile).getyCoord();
+	    int rowTail = board.getTile(tailTile).getxCoord();
+	    int colTail = board.getTile(tailTile).getyCoord();
+	    // Load snake image
+	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
+
+	    if (snake.getColor() == SnakeColor.Red) {
+	    	showOneCellIcon(snakeImage, rowHead, colHead, RED_SNAKE_SIZE);
+	    } else {
+	    	// Calculate the snake length using Euclidean distance formula
+	    	double width = TILE_WIDTH * (Math.abs(colHead-colTail)); // base of the triangle
+	    	double height = TILE_HEIGHT * (Math.abs(rowHead-rowTail)); // height of the triangle
+	        double diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)); // length of the snake
+	        
+	        ImageView snakeImageView = new ImageView(snakeImage);
+	        
+	        // for proportional sizes - adjust a larger width to a longer snake
+	        if ((Math.abs(colHead-colTail) >= 4)) // if snake is very long
+	        		snakeImageView.setFitWidth(TILE_WIDTH); // set large width
+	        else // if snake is not very long
+	        	snakeImageView.setFitWidth(0.7 * TILE_WIDTH); // set smaller width
+	        
+	        snakeImageView.setFitHeight(diagonal);
+	        
+	        double angleRadians = Math.atan(width / height); // calculate the angle between the diagonal and the base in radians
+
+	        double angleDegrees = Math.toDegrees(angleRadians);	// convert the angle from radians to degrees
+
+	        if (colHead < colTail)  // means the image should rotate to the left
+	        	angleDegrees = (-1) * angleDegrees; // Flip the image horizontally
+	        
+	        snakeImageView.setRotate(angleDegrees); // Rotate the image to match the angle
+
+	        StackPane stackPane = new StackPane();
+//	        stackPane.setAlignment(Pos.CENTER);
+
+	        // Add the ImageView to the StackPane
+	        stackPane.getChildren().add(snakeImageView);
+	        stackPane.setPrefSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+	        stackPane.setMaxSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+	        stackPane.setMinSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+
+	        double xLayout;
+	        if (colHead < colTail) { // set position on the board based on the left side
+	        	xLayout = BOARD_LEFT_OFFSET + (colHead*TILE_WIDTH);
+	        }
+	        else
+	        	xLayout = BOARD_LEFT_OFFSET + (colTail*TILE_WIDTH);
+	        double yLayout = BOARD_TOP_OFFSET + (rowHead*TILE_HEIGHT);
+	        screen.getChildren().add(stackPane);
+	        stackPane.setLayoutX(xLayout);
+	        stackPane.setLayoutY(yLayout);
+//	        stackPane.setStyle("-fx-border-color: black;");	        
+	    }
+	}
+	public void showLadders() {
+		for (HashMap.Entry<Integer, Ladder> l : board.getLadders().entrySet())
+			displayLadder(l.getValue());
+	}
+	public void displayLadder(Ladder ladder) {
+		// Get the top and bottom cells of the ladder
+	    int topTile = ladder.getLadderTop();
+	    int bottomTile = ladder.getLadderBottom();
+	    // Convert tile indices to row and column indices for the top and bottom
+	    int rowHead = board.getTile(topTile).getxCoord();
+	    int colHead = board.getTile(topTile).getyCoord();
+	    int rowTail = board.getTile(bottomTile).getxCoord();
+	    int colTail = board.getTile(bottomTile).getyCoord();
+
+    	// Calculate the ladder length using Euclidean distance formula
+    	double width = TILE_WIDTH * (Math.abs(colHead-colTail)); // base of the triangle
+    	double height = TILE_HEIGHT * (Math.abs(rowHead-rowTail)); // height of the triangle
+        double diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)); // length of the ladder
+        Image ladderImage;
+        if ((Math.abs(colHead-colTail) >= 5) || (Math.abs(rowHead-rowTail) >= 5)) {
+        	ladderImage = new Image(getClass().getResource(LONGLADDER_IMAGE_PATH).toExternalForm());
+        }
+        else {
+    	    ladderImage = new Image(getClass().getResource(LADDER_IMAGE_PATH).toExternalForm());
+        } 
+        // Load ladder image
+        ImageView ladderImageView = new ImageView(ladderImage);
+        
+        // for proportional sizes - adjust a larger width to a longer ladder
+        if ((Math.abs(colHead-colTail) >= 5)) // if ladder is very long
+        	ladderImageView.setFitWidth(2*TILE_WIDTH); // set large width
+        else // if ladder is not very long
+        	ladderImageView.setFitWidth(1.5 * TILE_WIDTH); // set smaller width
+        
+        ladderImageView.setFitHeight(diagonal);
+        
+        double angleRadians = Math.atan(width / height); // calculate the angle between the diagonal and the base in radians
+
+        double angleDegrees = Math.toDegrees(angleRadians);	// convert the angle from radians to degrees
+
+        if (colHead < colTail)  // means the image should rotate to the left
+        	angleDegrees = (-1) * angleDegrees; // Flip the image horizontally
+        
+        ladderImageView.setRotate(angleDegrees); // Rotate the image to match the angle
+
+        StackPane stackPane = new StackPane();
+//	        stackPane.setAlignment(Pos.CENTER);
+
+        // Add the ImageView to the StackPane
+        stackPane.getChildren().add(ladderImageView);
+        stackPane.setPrefSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+        stackPane.setMaxSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+        stackPane.setMinSize(width+TILE_WIDTH, height+TILE_HEIGHT);
+
+        double xLayout;
+        if (colHead < colTail) { // set position on the board based on the left side
+        	xLayout = BOARD_LEFT_OFFSET + (colHead*TILE_WIDTH);
+        }
+        else
+        	xLayout = BOARD_LEFT_OFFSET + (colTail*TILE_WIDTH);
+        double yLayout = BOARD_TOP_OFFSET + (rowHead*TILE_HEIGHT);
+        screen.getChildren().add(stackPane);
+        stackPane.setLayoutX(xLayout);
+        stackPane.setLayoutY(yLayout);
+	}
 	
-	
-	private void displayYellowSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The yellow snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is at the first row or first column, adjust if necessary
-	    if (headRow == 0) headRow++; // Ensure head is not in the first row
-	    if (headColumn == 0) headColumn++; // Ensure head is not in the first column
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE + (TILE_SIZE - width); 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
+	public double getCellHeight(int rowIndex) {
+        double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
+        
+        System.out.println("Cell height: " + cellHeight);
+        return cellHeight;
+	}
+	public double getCellWidth(int colIndex) {
+        double cellWidth = grid.getColumnConstraints().get(colIndex).getPrefWidth();
+        
+        System.out.println("Cell width: " + cellWidth);
+        return cellWidth;
 	}
 	
-	private void displayBlueSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The blue snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is at the bottom three rows, adjust if necessary
-	    if (headRow >= 4) headRow = 3; // Ensure head is not in the bottom three rows
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
+	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
+		// Create ImageView for the icon
+        ImageView iv = new ImageView(img);
+        iv.setFitHeight(imgSize);
+        iv.setFitWidth(imgSize);
+        iv.setVisible(true);
+        GridPane.setRowIndex(iv, row);
+        GridPane.setColumnIndex(iv, col);
+        // Add the icon to GridPane
+        grid.getChildren().addAll(iv);
+        GridPane.setHalignment(iv, javafx.geometry.HPos.CENTER); // Center horizontally
+        GridPane.setValignment(iv, javafx.geometry.VPos.CENTER); // Center vertically
 	}
 
-	private void displayGreenSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The green snake occupies one tile for its head
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 10; 
-	    int headColumn = (headTile - 1) % 10;
-
-	    // Check if head is in the first two rows or columns, adjust if necessary
-	    if (headRow <= 1) headRow = 2; // Ensure head is not in the first two rows
-	    if (headColumn <= 1) headColumn = 2; // Ensure head is not in the first two columns
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
 	
 	public void showQuestions() {
 		for (QuestionTile qt : board.getQuestionTiles()) {
 			Image questionImage = new Image(getClass().getResource(QUESTION_IMAGE_PATH).toExternalForm());
 			int row = qt.getxCoord();
 	        int column = qt.getyCoord();
-
-	        // Create ImageView for the question
-	        ImageView question = new ImageView(questionImage);
-	        question.setFitHeight(QUESTION_WIDTH);
-	        question.setFitWidth(QUESTION_HEIGHT);
-	        question.setVisible(true);
-	        GridPane.setRowIndex(question, row);
-	        GridPane.setColumnIndex(question, column);
-	        // Add the question to GridPane
-	        grid.getChildren().add(question);
-	        GridPane.setHalignment(question, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(question, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(questionImage, row, column, QUESTION_SIZE);
 		}
 	}
 	
+
 	public void showSurprises() {
 		for (Tile st : board.getSurpriseTiles()) {
 			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
 			int row = st.getxCoord();
 	        int column = st.getyCoord();
-
-	        // Create ImageView the surprise
-	        ImageView surprise = new ImageView(surpriseImage);
-	        surprise.setFitHeight(SURPRISE_WIDTH);
-	        surprise.setFitWidth(SURPRISE_HEIGHT);
-	        surprise.setVisible(true);
-	        GridPane.setRowIndex(surprise, row);
-	        GridPane.setColumnIndex(surprise, column);
-	        // Add the surprise to GridPane
-	        grid.getChildren().add(surprise);
-	        GridPane.setHalignment(surprise, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(surprise, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(surpriseImage, row, column, SURPRISE_SIZE);
 		}
 	}
 	

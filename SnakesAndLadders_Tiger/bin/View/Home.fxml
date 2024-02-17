@@ -89,7 +89,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ImageView fx:id="turnOffIcon" fitHeight="38.0" fitWidth="82.0" layoutX="-1.0" layoutY="545.0" opacity="0.0" rotate="35.5">
+      <ImageView fx:id="turnOffIcon" fitHeight="38.0" fitWidth="71.0" layoutX="-1.0" layoutY="545.0" opacity="0.0" rotate="35.5">
          <image>
             <Image url="@../img/icons/turnOff.png" />
          </image>

@@ -27,16 +27,17 @@ public class SysData {
 	private static final String HJSON = "JSON/History.json";
 	
 	public ArrayList<Question> deleted = new ArrayList();
-	private HashSet<Game> games = new HashSet(); 
+	private HashSet<GameHistory> games = new HashSet(); 
 	private HashSet<Question> questions = new HashSet(); // we use HashSet to prevent duplication of question in the table
 	
+	
 
-	public HashSet<Game> getGames() {
-			return games;
-		}
-		public void setGames( HashSet<Game> games) {
-			this.games = games;
-		}
+		public HashSet<GameHistory> getGames() {
+		return games;
+	}
+	public void setGames(HashSet<GameHistory> games) {
+		this.games = games;
+	}
 		public  HashSet<Question> getQuestions() {
 			return questions;
 		}
@@ -197,19 +198,19 @@ public class SysData {
 
 	
 	// Saving the Games history in json file, Not checked yet! 
-	public void writeToJsonGames(Game g) throws IOException, ParseException { 
+	public void writeToJsonGames(GameHistory g) throws IOException, ParseException { 
 		JSONParser parser = new JSONParser();
 		FileInputStream fis = new FileInputStream(HJSON);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 		Object obje = parser.parse(reader);
 		JSONObject jo = (JSONObject) obje;
-		JSONArray gamesArray = (JSONArray) jo.get("games");
+		JSONArray gamesArray = (JSONArray) jo.get("gamesHistory");
 		
 		JSONObject jsonObject = new JSONObject();
 		
-//		jsonObject.put("GameNumber", g.getGameID());
+		jsonObject.put("GameNumber", g.getGameID());
 		jsonObject.put("Winner", g.getWinner().getPlayerName());
-		  Difficulty diff = g.getType();
+		  Difficulty diff = g.getDiff();
 		    String str; 	  //convert the question level from enum to string 
 
 		  		if (diff.equals(Difficulty.Easy)) {
@@ -220,9 +221,8 @@ public class SysData {
 		  			str = "3"; 	
 		  		}
 		jsonObject.put("Difficulty", str);
-		Double dur = g.getGameDuration();
-		jsonObject.put("Duration", dur.toString());
-		
+		String dur = g.getDuration();
+		jsonObject.put("Duration", dur);
 		gamesArray.add(jsonObject);
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("gamesHistory", gamesArray); 
@@ -259,7 +259,8 @@ public class SysData {
 				while (QuestionIter.hasNext()) {
 	
 					JSONObject que = QuestionIter.next();
-					Double durr = Double.valueOf(que.get("Duration").toString());
+					Integer gID = (Integer) que.get("gameID");
+					String durr = (String)que.get("Duration");
 					Player PlayerName = (Player)que.get("Winner");
 					String diff = (String) que.get("difficulty");
 					Difficulty d;
@@ -270,8 +271,8 @@ public class SysData {
 					else // if (diff == "3")
 						d = Difficulty.Hard;
 					
-//	            	Game g = new Game(d,durr,PlayerName);
-//	            	SysData.getInstance().getGames().add(g);
+	            	GameHistory gh = new GameHistory(gID,PlayerName,d,durr);
+	            	SysData.getInstance().getGames().add(gh);
 				}}
 			}
 			catch (FileNotFoundException e) {
