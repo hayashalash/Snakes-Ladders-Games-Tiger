@@ -26,7 +26,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.scene.control.ButtonType;
@@ -127,7 +129,7 @@ import java.util.Optional;
     
     
 
-    private static void viewResultDise(int diceResult){//this for easy  difficulty only
+    public  static void viewResultDise(int diceResult){//this for easy  difficulty only
     	if(diceResult<4) {
     		// function to move the player 
 		}
@@ -158,5 +160,33 @@ import java.util.Optional;
 		}  	
     }
 	
+	public static void viewSurpriseTile() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Surprise");
+
+        StackPane stackPane = new StackPane();
+        Image backgroundImage = new Image("/img/screens/surpriseBackground.jpg");//set  the background
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+
+        // Add the background image to the StackPane
+        stackPane.getChildren().add(backgroundImageView);
+
+        // Create a label for displaying random text
+        Label randomTextLabel = new Label();
+        randomTextLabel.setStyle("-fx-font-size: 18; -fx-text-fill: Black;");
+
+        String[] possibleTexts = {"10 steps forward !", "10 steps back!"};
+        Random random = new Random();
+        int surpriseResult=random.nextInt(possibleTexts.length);
+        String randomText = possibleTexts[surpriseResult];
+        randomTextLabel.setText(randomText);
+
+        stackPane.getChildren().add(randomTextLabel);
+        dialog.getDialogPane().setContent(stackPane);
+
+        // buttons, labels, or other components to the StackPane as needed
+
+        dialog.showAndWait();
+    }
  
 }
