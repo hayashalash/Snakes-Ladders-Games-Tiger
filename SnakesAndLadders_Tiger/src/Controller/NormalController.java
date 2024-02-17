@@ -70,59 +70,28 @@ import javafx.event.EventHandler;
 
 
 public class NormalController implements Initializable{
-
-	private final double ICON_WIDTH = 35; // the moving icons on the board
-    private final double ICON_HEIGHT = 35;
+    //Sizes
+	private final double ICON_SIZE = 35; // the moving icons on the board
     private final double IMAGE_WIDTH = 45; // the icons next to the names
     private final double IMAGE_HEIGHT = 45;
     private final double QUESTION_SIZE = 30; // question icon size
     private final double SURPRISE_SIZE = 35; // surprise icon size
-    private final double RED_SNAKE_SIZE = 40; 
-    private final double TILE_SIZE  = 53.8;
+	private final double TOKEN_SIZE = 35;
+    //Lists
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
-    private HashMap<Player, Integer> currentPosition;
-	private static final String GREEN = "/img/icons/greenPlayer.png";
-	private static final String BLUE = "/img/icons/bluePlayer.png";
-	private static final String PINK = "/img/icons/pinkPlayer.png";
-	private static final String RED = "/img/icons/redPlayer.png";
-	private static final String PURPLE = "/img/icons/purplePlayer.png";
-	private static final String YELLOW = "/img/icons/yellowPlayer.png";
-	
+    //Path
+	private static final String GREEN = "/img/icons/greenPlayer.png"; //Player Token path
+	private static final String BLUE = "/img/icons/bluePlayer.png"; //Player Token path
+	private static final String PINK = "/img/icons/pinkPlayer.png"; //Player Token path
+	private static final String RED = "/img/icons/redPlayer.png"; //Player Token path
+	private static final String PURPLE = "/img/icons/purplePlayer.png"; //Player Token path
+	private static final String YELLOW = "/img/icons/yellowPlayer.png";	//Player Token path
 	private static final String INFO_IMAGE_PATH = "/img/screens/infoBack.jpg";
-	private static final String RED_SNAKE_IMAGE_PATH = "/img/icons/redSnake.png";
-	private static final String YELLOW_SNAKE_IMAGE_PATH = "/img/icons/yellowSnake.png";
-	private static final String BLUE_SNAKE_IMAGE_PATH = "/img/icons/blueSnake.png";
-	private static final String GREEN_SNAKE_IMAGE_PATH = "/img/icons/greenSnake.png";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
-	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
-	private static final String LADDER_1_IMAGE_PATH = "/img/icons/ladder1.png";
-	private static final String LADDER_2_IMAGE_PATH = "/img/icons/ladder2.png";
-	private static final String LADDER_3_IMAGE_PATH = "/img/icons/ladder3.png";
-	private static final String LADDER_4_IMAGE_PATH = "/img/icons/ladder4.png";
-	private static final String LADDER_5_IMAGE_PATH = "/img/icons/ladder5.png";
-	private static final String LADDER_6_IMAGE_PATH = "/img/icons/ladder6.png";
-	private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
-	private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
-	private static final String LADDER_1B_IMAGE_PATH = "/img/icons/ladder1B.png";// Big ladder
-	private static final String LADDER_2B_IMAGE_PATH = "/img/icons/ladder2B.png";// Big ladder
-	private static final String LADDER_3B_IMAGE_PATH = "/img/icons/ladder3B.png";// Big ladder
-	private static final String LADDER_4B_IMAGE_PATH = "/img/icons/ladder4B.png";// Big ladder
-	private static final String LADDER_5B_IMAGE_PATH = "/img/icons/ladder5B.png";// Big ladder
-	private static final String LADDER_6B_IMAGE_PATH = "/img/icons/ladder6B.png";// Big ladder
-	private static final String LADDER_7B_IMAGE_PATH = "/img/icons/ladder7B.png";// Big ladder
-	private static final String LADDER_8B_IMAGE_PATH = "/img/icons/ladder8B.png";// Big ladder
-	private static final String DEFAULT_LADDER_IMAGE_PATH = null;
-	//private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
-	//private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
-	private static final String TOKEN_IMAGE_PATH = "/img/icons/greenPlayer.png";
-	private static final double TOKEN_WIDTH = 35;
-	private static final double TOKEN_HEIGHT = 35;
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
-	
-	private int iterationCount = 0;
-	private Timeline timeline = null;
+	private GameController gameController;
 	
 	public static Game game;
 	Board board = new Board(game.getType());
@@ -131,7 +100,6 @@ public class NormalController implements Initializable{
 	@FXML
 	private AnchorPane rootAnchorPane;
 
-	
 	@FXML
     private GridPane grid;
 
@@ -181,7 +149,6 @@ public class NormalController implements Initializable{
     private ImageView diceResult;
     
     private HashMap<Integer, String> diceImageMap;
-    
 
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
@@ -212,12 +179,14 @@ public class NormalController implements Initializable{
     	}
         startTimer();
 		showPlayers();
-		showLadders();
-		showSnakes();
+	    gameController = new GameController(board, grid);
+	    gameController.showSnakes();
+	    gameController.showLadders();
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
 	}
+	
 	private void startTimer() {
 		// Create a timeline for the game duration
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -283,8 +252,8 @@ public class NormalController implements Initializable{
 
 		}
 		for (ImageView iv : playerIcons) {
-			iv.setFitHeight(ICON_HEIGHT);
-			iv.setFitWidth(ICON_WIDTH);
+			iv.setFitHeight(ICON_SIZE);
+			iv.setFitWidth(ICON_SIZE);
 			playersStart.getChildren().add(iv);
 		}
 		
@@ -306,8 +275,8 @@ public class NormalController implements Initializable{
 		
 	}
 	
-	
-	public void showSnakes() {
+/*	
+    public void showSnakes() {
 	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
 	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
 	        Snake snake = s.getValue();
@@ -395,8 +364,6 @@ public class NormalController implements Initializable{
 	        GridPane.setValignment(snakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	    }
 	}
-
-
 
 	public void showLadders() {
 	    HashMap<Integer, List<Ladder>> laddersBySize = new HashMap<>();
@@ -516,7 +483,8 @@ public class NormalController implements Initializable{
         GridPane.setHalignment(ladderImageView, javafx.geometry.HPos.CENTER); // Center horizontally
         GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	}
-
+*/
+	
 	public double getCellHeight(int rowIndex) {
         double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
         
@@ -553,7 +521,6 @@ public class NormalController implements Initializable{
 		}
 	}
 	
-
 	public void showSurprises() {
 		for (Tile st : board.getSurpriseTiles()) {
 			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
@@ -640,8 +607,6 @@ public class NormalController implements Initializable{
     	  timeline.play();//animation
     	}
 
-    
-    
     private void viewResultDice(int diceResult) {//this for easy difficulty only
     	if(diceResult <= 6) {
     		move(diceResult); 
@@ -705,7 +670,7 @@ public class NormalController implements Initializable{
 	        }
 	    }
 	   
-		private String getTokenImagePath(Player player) {
+	private String getTokenImagePath(Player player) {
 		    switch (player.getPlayerColor()) {
 		        case Red:
 		            return RED;
@@ -723,7 +688,6 @@ public class NormalController implements Initializable{
 		            return null;
 		    }
 		}
-
 	
 	private void displayPlayerToken(Player player, int newPosition) {
 	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
@@ -732,8 +696,8 @@ public class NormalController implements Initializable{
 	        token = new ImageView(tokenImage);
 	        iconsOnBoard.put(player, token);
 	    }
-	    token.setFitHeight(TOKEN_WIDTH);
-	    token.setFitWidth(TOKEN_HEIGHT);
+	    token.setFitHeight(TOKEN_SIZE);
+	    token.setFitWidth(TOKEN_SIZE);
 	    token.setVisible(true);
 	    
 	    Tile pos = board.getTile(newPosition);

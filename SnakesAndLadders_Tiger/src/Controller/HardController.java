@@ -55,11 +55,6 @@ public class HardController implements Initializable{
     private final double IMAGE_SIZE = 45; // the icons next to the names
     private final double QUESTION_SIZE = 30; // question icon size
     private final double SURPRISE_SIZE = 25; // surprise icon size
-    private final double RED_SNAKE_SIZE = 35; // question icon size
-    private final double TILE_HEIGHT  = 41;
-    private final double TILE_WIDTH  = 42;
-    private final double BOARD_LEFT_OFFSET  = 220;
-    private final double BOARD_TOP_OFFSET  = 27;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
 	private static final String GREEN = "/img/icons/greenPlayer.png";
@@ -67,21 +62,19 @@ public class HardController implements Initializable{
 	private static final String PINK = "/img/icons/pinkPlayer.png";
 	private static final String RED = "/img/icons/redPlayer.png";
 	private static final String PURPLE = "/img/icons/purplePlayer.png";
-	private static final String YELLOW = "/img/icons/yellowPlayer.png";
-	
+	private static final String YELLOW = "/img/icons/yellowPlayer.png";	
 	private static final String INFO_IMAGE_PATH = "/img/screens/infoBack.jpg";
-	private static final String RED_SNAKE_IMAGE_PATH = "/img/icons/redSnake.png";
-	private static final String YELLOW_SNAKE_IMAGE_PATH = "/img/icons/yellowSnake.png";
-	private static final String BLUE_SNAKE_IMAGE_PATH = "/img/icons/blueSnake.png";
-	private static final String GREEN_SNAKE_IMAGE_PATH = "/img/icons/greenSnake.png";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
-	private static final String LADDER_IMAGE_PATH = "/img/icons/ladder.png";
-	private static final String LONGLADDER_IMAGE_PATH = "/img/icons/longLadder.png";
-	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
+	
+	private GameController gameController;
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
+	
+	@FXML
+	private AnchorPane rootAnchorPane;
+	
     @FXML
     private AnchorPane screen;
 	
@@ -136,11 +129,11 @@ public class HardController implements Initializable{
     	}
 	     startTimer();
 			showPlayers();
-			showSnakes();
-			showLadders();
+		    gameController = new GameController(board, grid);
+		    gameController.showSnakes();
+		    gameController.showLadders();
 			showQuestions();
 			showSurprises();
-
 			getCellWidth(4);
 			getCellHeight(4);
 	}
@@ -233,167 +226,7 @@ public class HardController implements Initializable{
 		
 	}
 	
-	
-	public void showSnakes() {
-	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
-	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
-	        Snake snake = s.getValue();
-	        if (!snakesByColor.containsKey(snake.getColor())) {
-	            snakesByColor.put(snake.getColor(), new ArrayList<>());
-	        }
-	        snakesByColor.get(snake.getColor()).add(snake);
-	    }
 
-	    for (List<Snake> snakes : snakesByColor.values()) {
-	        for (Snake snake : snakes) {
-	            displaySnake(snake, getSnakeImagePath(snake));
-	        }
-	    }
-	}
-
-	private String getSnakeImagePath(Snake snake) {
-	    switch (snake.getColor()) {
-	        case Red:
-	            return RED_SNAKE_IMAGE_PATH;
-	        case Yellow:
-	            return YELLOW_SNAKE_IMAGE_PATH;
-	        case Green:
-	            return GREEN_SNAKE_IMAGE_PATH;
-	        case Blue:
-	            return BLUE_SNAKE_IMAGE_PATH;
-	        default:
-	            return DEFAULT_SNAKE_IMAGE_PATH; 
-	    }
-	}
-
-
-	private void displaySnake(Snake snake, String imagePath) {
-	    // Get the head and tail cells of the snake
-	    int headTile = snake.getSnakeHead();
-	    int tailTile = snake.getSnakeTail();
-	    // Convert tile indices to row and column indices for the head and tail
-	    int rowHead = board.getTile(headTile).getxCoord();
-	    int colHead = board.getTile(headTile).getyCoord();
-	    int rowTail = board.getTile(tailTile).getxCoord();
-	    int colTail = board.getTile(tailTile).getyCoord();
-	    // Load snake image
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    if (snake.getColor() == SnakeColor.Red) {
-	    	showOneCellIcon(snakeImage, rowHead, colHead, RED_SNAKE_SIZE);
-	    } else {
-	    	// Calculate the snake length using Euclidean distance formula
-	    	double width = TILE_WIDTH * (Math.abs(colHead-colTail)); // base of the triangle
-	    	double height = TILE_HEIGHT * (Math.abs(rowHead-rowTail)); // height of the triangle
-	        double diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)); // length of the snake
-	        
-	        ImageView snakeImageView = new ImageView(snakeImage);
-	        
-	        // for proportional sizes - adjust a larger width to a longer snake
-	        if ((Math.abs(colHead-colTail) >= 4)) // if snake is very long
-	        		snakeImageView.setFitWidth(TILE_WIDTH); // set large width
-	        else // if snake is not very long
-	        	snakeImageView.setFitWidth(0.7 * TILE_WIDTH); // set smaller width
-	        
-	        snakeImageView.setFitHeight(diagonal);
-	        
-	        double angleRadians = Math.atan(width / height); // calculate the angle between the diagonal and the base in radians
-
-	        double angleDegrees = Math.toDegrees(angleRadians);	// convert the angle from radians to degrees
-
-	        if (colHead < colTail)  // means the image should rotate to the left
-	        	angleDegrees = (-1) * angleDegrees; // Flip the image horizontally
-	        
-	        snakeImageView.setRotate(angleDegrees); // Rotate the image to match the angle
-
-	        StackPane stackPane = new StackPane();
-//	        stackPane.setAlignment(Pos.CENTER);
-
-	        // Add the ImageView to the StackPane
-	        stackPane.getChildren().add(snakeImageView);
-	        stackPane.setPrefSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-	        stackPane.setMaxSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-	        stackPane.setMinSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-
-	        double xLayout;
-	        if (colHead < colTail) { // set position on the board based on the left side
-	        	xLayout = BOARD_LEFT_OFFSET + (colHead*TILE_WIDTH);
-	        }
-	        else
-	        	xLayout = BOARD_LEFT_OFFSET + (colTail*TILE_WIDTH);
-	        double yLayout = BOARD_TOP_OFFSET + (rowHead*TILE_HEIGHT);
-	        screen.getChildren().add(stackPane);
-	        stackPane.setLayoutX(xLayout);
-	        stackPane.setLayoutY(yLayout);
-//	        stackPane.setStyle("-fx-border-color: black;");	        
-	    }
-	}
-	public void showLadders() {
-		for (HashMap.Entry<Integer, Ladder> l : board.getLadders().entrySet())
-			displayLadder(l.getValue());
-	}
-	public void displayLadder(Ladder ladder) {
-		// Get the top and bottom cells of the ladder
-	    int topTile = ladder.getLadderTop();
-	    int bottomTile = ladder.getLadderBottom();
-	    // Convert tile indices to row and column indices for the top and bottom
-	    int rowHead = board.getTile(topTile).getxCoord();
-	    int colHead = board.getTile(topTile).getyCoord();
-	    int rowTail = board.getTile(bottomTile).getxCoord();
-	    int colTail = board.getTile(bottomTile).getyCoord();
-
-    	// Calculate the ladder length using Euclidean distance formula
-    	double width = TILE_WIDTH * (Math.abs(colHead-colTail)); // base of the triangle
-    	double height = TILE_HEIGHT * (Math.abs(rowHead-rowTail)); // height of the triangle
-        double diagonal = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)); // length of the ladder
-        Image ladderImage;
-        if ((Math.abs(colHead-colTail) >= 5) || (Math.abs(rowHead-rowTail) >= 5)) {
-        	ladderImage = new Image(getClass().getResource(LONGLADDER_IMAGE_PATH).toExternalForm());
-        }
-        else {
-    	    ladderImage = new Image(getClass().getResource(LADDER_IMAGE_PATH).toExternalForm());
-        } 
-        // Load ladder image
-        ImageView ladderImageView = new ImageView(ladderImage);
-        
-        // for proportional sizes - adjust a larger width to a longer ladder
-        if ((Math.abs(colHead-colTail) >= 5)) // if ladder is very long
-        	ladderImageView.setFitWidth(2*TILE_WIDTH); // set large width
-        else // if ladder is not very long
-        	ladderImageView.setFitWidth(1.5 * TILE_WIDTH); // set smaller width
-        
-        ladderImageView.setFitHeight(diagonal);
-        
-        double angleRadians = Math.atan(width / height); // calculate the angle between the diagonal and the base in radians
-
-        double angleDegrees = Math.toDegrees(angleRadians);	// convert the angle from radians to degrees
-
-        if (colHead < colTail)  // means the image should rotate to the left
-        	angleDegrees = (-1) * angleDegrees; // Flip the image horizontally
-        
-        ladderImageView.setRotate(angleDegrees); // Rotate the image to match the angle
-
-        StackPane stackPane = new StackPane();
-//	        stackPane.setAlignment(Pos.CENTER);
-
-        // Add the ImageView to the StackPane
-        stackPane.getChildren().add(ladderImageView);
-        stackPane.setPrefSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-        stackPane.setMaxSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-        stackPane.setMinSize(width+TILE_WIDTH, height+TILE_HEIGHT);
-
-        double xLayout;
-        if (colHead < colTail) { // set position on the board based on the left side
-        	xLayout = BOARD_LEFT_OFFSET + (colHead*TILE_WIDTH);
-        }
-        else
-        	xLayout = BOARD_LEFT_OFFSET + (colTail*TILE_WIDTH);
-        double yLayout = BOARD_TOP_OFFSET + (rowHead*TILE_HEIGHT);
-        screen.getChildren().add(stackPane);
-        stackPane.setLayoutX(xLayout);
-        stackPane.setLayoutY(yLayout);
-	}
-	
 	public double getCellHeight(int rowIndex) {
         double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
         
@@ -496,4 +329,11 @@ public class HardController implements Initializable{
 			e.printStackTrace();
 		}  	
     }
+	
+	
+	private void ensureExitButtonOnTop() {
+	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
+	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
+	}
+
 }

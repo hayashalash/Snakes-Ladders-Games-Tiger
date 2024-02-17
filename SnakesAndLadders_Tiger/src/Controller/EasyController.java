@@ -46,6 +46,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -62,15 +63,6 @@ public class EasyController implements Initializable{
     private final double IMAGE_HEIGHT = 45;
     private final double QUESTION_WIDTH = 50; // question icon size
     private final double QUESTION_HEIGHT = 50;
-    private final double RED_SNAKE_WIDTH = 50; // question icon size
-    private final double RED_SNAKE_HEIGHT = 50;
-    private final double YELLOW_SNAKE_WIDTH = 130; // question icon size
-    private final double YELLOW_SNAKE_HEIGHT = 130;
-    private final double BLUE_SNAKE_WIDTH = 200; // question icon size
-    private final double BLUE_SNAKE_HEIGHT = 300;
-    private final double GREEN_SNAKE_WIDTH = 200; // question icon size
-    private final double GREEN_SNAKE_HEIGHT = 200;
-    private final double TILE_SIZE  = 76;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
 	private static final String GREEN = "/img/icons/greenPlayer.png";
@@ -78,20 +70,17 @@ public class EasyController implements Initializable{
 	private static final String PINK = "/img/icons/pinkPlayer.png";
 	private static final String RED = "/img/icons/redPlayer.png";
 	private static final String PURPLE = "/img/icons/purplePlayer.png";
-	private static final String YELLOW = "/img/icons/yellowPlayer.png";
-	
+	private static final String YELLOW = "/img/icons/yellowPlayer.png";	
 	private static final String INFO_IMAGE_PATH = "/img/screens/infoBack.jpg";
-	private static final String RED_SNAKE_IMAGE_PATH = "/img/icons/redSnake.png";
-	private static final String YELLOW_SNAKE_IMAGE_PATH = "/img/icons/yellowSnake.png";
-	private static final String BLUE_SNAKE_IMAGE_PATH = "/img/icons/blueSnake.png";
-	private static final String GREEN_SNAKE_IMAGE_PATH = "/img/icons/greenSnake.png";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	public static Game game;
+	private GameController gameController;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
 	
-	
+	@FXML
+	private AnchorPane rootAnchorPane;
 
 	@FXML
     private GridPane grid;
@@ -170,7 +159,9 @@ public class EasyController implements Initializable{
     	}
         startTimer();
 		showPlayers();
-		showSnakes();
+	    gameController = new GameController(board, grid);
+	    gameController.showSnakes();
+	    gameController.showLadders();
 		showQuestions();
 	}
 	private void startTimer() {
@@ -260,145 +251,6 @@ public class EasyController implements Initializable{
 		}
 		
 	}
-	
-
-	
-	public void showSnakes() {
-	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
-	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
-	        Snake snake = s.getValue();
-	        if (!snakesByColor.containsKey(snake.getColor())) {
-	            snakesByColor.put(snake.getColor(), new ArrayList<>());
-	        }
-	        snakesByColor.get(snake.getColor()).add(snake);
-	    }
-
-	    for (Entry<SnakeColor, List<Snake>> entry : snakesByColor.entrySet()) {
-	        SnakeColor color = entry.getKey();
-	        List<Snake> snakes = entry.getValue();
-	        for (Snake snake : snakes) {
-	            switch (color) {
-	                case Red:
-	                    displayRedSnake(snake, RED_SNAKE_IMAGE_PATH, RED_SNAKE_HEIGHT, RED_SNAKE_WIDTH);	            
-	                    break;
-	                case Yellow:
-	                    displayYellowSnake(snake, YELLOW_SNAKE_IMAGE_PATH, YELLOW_SNAKE_HEIGHT, YELLOW_SNAKE_WIDTH);
-	                    break;
-	                case Green:
-	                    displayGreenSnake(snake, GREEN_SNAKE_IMAGE_PATH, GREEN_SNAKE_HEIGHT, GREEN_SNAKE_WIDTH);	            
-	                    break;
-	                case Blue:
-	                    displayBlueSnake(snake, BLUE_SNAKE_IMAGE_PATH, BLUE_SNAKE_HEIGHT, BLUE_SNAKE_WIDTH);
-	                    break;
-	            }
-	        }
-	    }
-	}
-	private void displayRedSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The red snake occupies one tile
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 7; // Assuming each row has 7 tiles
-	    int headColumn = (headTile - 1) % 7;
-
-	    // Calculate the position within the grid to place the snake
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-
-	
-	
-	private void displayYellowSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The yellow snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 7; // Assuming each row has 7 tiles
-	    int headColumn = (headTile - 1) % 7;
-
-	    // Check if head is at the first row or first column, adjust if necessary
-	    if (headRow == 0) headRow++; // Ensure head is not in the first row
-	    if (headColumn == 0) headColumn++; // Ensure head is not in the first column
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE + (TILE_SIZE - width); // 76 is the width of each tile
-	    double yPosition = headRow * TILE_SIZE; // 76 is the height of each tile
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-	
-	private void displayBlueSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(4); // The blue snake occupies four tiles
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 7; // Assuming each row has 7 tiles
-	    int headColumn = (headTile - 1) % 7;
-
-	    // Check if head is at the bottom three rows, adjust if necessary
-	    if (headRow >= 4) headRow = 3; // Ensure head is not in the bottom three rows
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-
-	private void displayGreenSnake(Snake snake, String imagePath, double height, double width) {
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // Calculate the position of the snake's head using chooseRandomTile
-	    int headTile = board.chooseRandomTile(1); // The green snake occupies one tile for its head
-
-	    // Convert tile index to row and column indices
-	    int headRow = (headTile - 1) / 7; // Assuming each row has 7 tiles
-	    int headColumn = (headTile - 1) % 7;
-
-	    // Check if head is in the first two rows or columns, adjust if necessary
-	    if (headRow <= 1) headRow = 2; // Ensure head is not in the first two rows
-	    if (headColumn <= 1) headColumn = 2; // Ensure head is not in the first two columns
-
-	    // Calculate the position within the grid to place the snake's head
-	    double xPosition = headColumn * TILE_SIZE; 
-	    double yPosition = headRow * TILE_SIZE; 
-
-	    // Display the snake's head
-	    ImageView snakeHead = new ImageView(snakeImage);
-	    snakeHead.setFitHeight(height);
-	    snakeHead.setFitWidth(width);
-	    snakeHead.setVisible(true);
-	    GridPane.setMargin(snakeHead, new Insets(yPosition, 0, 0, xPosition)); // Set margin to adjust position
-	    grid.getChildren().add(snakeHead);
-	}
-
 	
 	public void showQuestions() {
 		for (QuestionTile qt : board.getQuestionTiles()) {
@@ -497,9 +349,6 @@ public class EasyController implements Initializable{
     	  timeline.play();//animation
     	}
 
-    
-    
-
     private static void viewResultDise(int diceResult){//this for easy  difficulty only
     	if(diceResult<4) {
     		// function to move the player 
@@ -532,9 +381,13 @@ public class EasyController implements Initializable{
 		}  	
     }
 	
-public static void movePlayer(int n) {
+    public static void movePlayer(int n) {
      
     }
  
+	private void ensureExitButtonOnTop() {
+	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
+	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
+	}
 }
 
