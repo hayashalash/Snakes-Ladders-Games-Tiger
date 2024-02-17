@@ -26,7 +26,7 @@ public class Board {
 	private HashMap<Integer, Question> easyQuestions; // all the easy questions in the game
 	private HashMap<Integer, Question> mediumQuestions; // all the medium questions in the game
 	private HashMap<Integer, Question> hardQuestions; // all the hard questions in the game
-	private HashMap<Integer, Player> playerOn; // where the player is placed on the board
+	public HashMap<Integer, Player> playerOn; // where the player is placed on the board
 	
 	public Board(Difficulty bType) {
 		super();
@@ -429,4 +429,5 @@ public class Board {
 		System.out.println("ladder length: " + length);
 		System.out.println("Ladder top is on: " + laddertop + " and ladder bottopn is on: " +ladderbottom);
 	}
+	
 }

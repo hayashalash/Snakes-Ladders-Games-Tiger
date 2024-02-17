@@ -1,5 +1,4 @@
 package Controller;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,9 +7,18 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.TimerTask;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import Model.Board;
 import Model.Color;
+import Model.Dice;
+import Model.Difficulty;
 import Model.Game;
+import Model.Ladder;
 import Model.Player;
 import Model.Question;
 import Model.QuestionTile;
@@ -20,6 +28,7 @@ import Model.Tile;
 import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,14 +57,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-
-
-
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 import javafx.scene.shape.Line;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
 
 public class NormalController implements Initializable{
 
@@ -67,9 +78,12 @@ public class NormalController implements Initializable{
     private final double QUESTION_HEIGHT = 30;
     private final double SURPRISE_WIDTH = 25; // surprise icon size
     private final double SURPRISE_HEIGHT = 25;
+    private final double RED_SNAKE_WIDTH = 40; 
+    private final double RED_SNAKE_HEIGHT = 40;
     private final double TILE_SIZE  = 53.8;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
+    private HashMap<Player, Integer> currentPosition;
 	private static final String GREEN = "/img/icons/greenPlayer.png";
 	private static final String BLUE = "/img/icons/bluePlayer.png";
 	private static final String PINK = "/img/icons/pinkPlayer.png";
@@ -85,9 +99,30 @@ public class NormalController implements Initializable{
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_SNAKE_IMAGE_PATH = null;
+	private static final String LADDER_1_IMAGE_PATH = "/img/icons/ladder1.png";
+	private static final String LADDER_2_IMAGE_PATH = "/img/icons/ladder2.png";
+	private static final String LADDER_3_IMAGE_PATH = "/img/icons/ladder3.png";
+	private static final String LADDER_4_IMAGE_PATH = "/img/icons/ladder4.png";
+	private static final String LADDER_5_IMAGE_PATH = "/img/icons/ladder5.png";
+	private static final String LADDER_6_IMAGE_PATH = "/img/icons/ladder6.png";
+	private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
+	private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
+	private static final String DEFAULT_LADDER_IMAGE_PATH = null;
+	//private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
+	//private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
+	private static final String TOKEN_IMAGE_PATH = "/img/icons/greenPlayer.png";
+	private static final double TOKEN_WIDTH = 35;
+	private static final double TOKEN_HEIGHT = 35;
+	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	
+	private int iterationCount = 0;
+	private Timeline timeline = null;
+	
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
+	
+
 	
 	@FXML
     private GridPane grid;
@@ -131,9 +166,35 @@ public class NormalController implements Initializable{
     @FXML
     private Button diceButton;
     
+    @FXML
+    private ImageView diceImage;
+    
+    @FXML
+    private ImageView diceResult;
+    
+    private HashMap<Integer, String> diceImageMap;
+    
+
+    public void initializeMap() {
+        // Initialize the mapping between dice numbers and image paths of it 
+        diceImageMap = new HashMap<>();
+        diceImageMap.put(0, "/img/icons/dice0.png");
+        diceImageMap.put(1, "/img/icons/dice1.png");
+        diceImageMap.put(2, "/img/icons/dice2.png");
+        diceImageMap.put(3, "/img/icons/dice3.png");
+        diceImageMap.put(4, "/img/icons/dice4.png");
+        diceImageMap.put(5, "/img/icons/dice5.png");
+        diceImageMap.put(6, "/img/icons/dice6.png");
+        diceImageMap.put(7, "/img/icons/diceQ.png");
+        diceImageMap.put(8, "/img/icons/diceQ.png");
+        diceImageMap.put(9, "/img/icons/diceQ.png");
+    }
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
+	    diceResult.setImage(defaultImage);
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
 		if(!board.createBoard())
@@ -143,6 +204,7 @@ public class NormalController implements Initializable{
     	}
         startTimer();
 		showPlayers();
+		showLadders();
 		showSnakes();
 		showQuestions();
 		showSurprises();
@@ -270,7 +332,6 @@ public class NormalController implements Initializable{
 	    }
 	}
 
-
 	private void displaySnake(Snake snake, String imagePath) {
 	    // Get the head and tail coordinates of the snake
 	    int headTile = snake.getSnakeHead();
@@ -279,55 +340,142 @@ public class NormalController implements Initializable{
 	    int yHead = board.getTile(headTile).getyCoord();
 	    int xTail = board.getTile(tailTile).getxCoord();
 	    int yTail = board.getTile(tailTile).getyCoord();
-	    // Convert tile indices to row and column indices for the head
-//	    int headRow = (headTile - 1) / board.getBoardLen();
-//	    int headColumn = (headTile - 1) % board.getBoardLen();
-//
-//	    // Convert tile indices to row and column indices for the tail
-//	    int tailRow = (tailTile - 1) / board.getBoardLen();
-//	    int tailColumn = (tailTile - 1) % board.getBoardLen();
 
 	    // Load snake image
 	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
 
 	    // If the snake color is red, set a fixed size for the image
 	    if (snake.getColor() == SnakeColor.Red) {
-	        double width = TILE_SIZE - (0.2 * TILE_SIZE); // 20% reduction in width
-	        double height = TILE_SIZE - (0.2 * TILE_SIZE); // 20% reduction in height
-
-	        // Create ImageView for the red snake image
+	        // Create ImageView for the question
 	        ImageView redSnakeImageView = new ImageView(snakeImage);
-	        redSnakeImageView.setFitWidth(width);
-	        redSnakeImageView.setFitHeight(height);
-	        redSnakeImageView.setTranslateX(yHead * TILE_SIZE); // Position the image at the head tile
-	        redSnakeImageView.setTranslateY(xHead * TILE_SIZE);
-
-	        // Add the red snake image to the grid
-	        grid.getChildren().add(redSnakeImageView);
+	        redSnakeImageView.setFitHeight(RED_SNAKE_WIDTH);
+	        redSnakeImageView.setFitWidth(RED_SNAKE_HEIGHT);
+	        redSnakeImageView.setVisible(true);
+	        GridPane.setRowIndex(redSnakeImageView, xHead);
+	        GridPane.setColumnIndex(redSnakeImageView, yHead);
+	        grid.getChildren().addAll(redSnakeImageView);
+	        GridPane.setHalignment(redSnakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
+	        GridPane.setValignment(redSnakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	    } else {
-		    // Calculate the angle between head and tail tiles
-		    double angle = Math.toDegrees(Math.atan2(xHead - xTail, yHead - yTail));
-	
-		    // Adjust the rotation angle to ensure the head is always oriented upwards
-		    if (angle < -90 || angle > 90) {
-		        angle += 180; // Rotate by 180 degrees if the angle is in the lower half-plane
-		    }
-	
-		    // Calculate the length of the snake image
-		    double snakeLength = Math.sqrt(Math.pow(xHead - xTail, 2) + Math.pow(yHead - yTail, 2)) * TILE_SIZE;
-	
-		    // Create ImageView for the snake image
-		    ImageView snakeImageView = new ImageView(snakeImage);
-		    snakeImageView.setFitWidth(TILE_SIZE - (0.2 * TILE_SIZE));
-		    snakeImageView.setFitHeight(snakeLength);
-		    snakeImageView.setRotate(angle); // Rotate the image to match the angle between head and tail
-		    snakeImageView.setTranslateX(yTail * TILE_SIZE); // Position the image at the head tile
-		    snakeImageView.setTranslateY(xTail * TILE_SIZE);
-	
-		    // Add the snake image to the grid
-		    grid.getChildren().add(snakeImageView);
+	        
+	        double slope = (double) (yTail - yHead) / (xTail - xHead);
+	        double angle = Math.toDegrees(Math.atan(slope));
+
+	        // Calculate the length of the snake
+	        double snakeLength = Math.sqrt(Math.pow(xTail - xHead, 2) + Math.pow(yTail - yHead, 2)) * TILE_SIZE;
+
+	        // Calculate the position of the snake
+	        int xPos = (xTail + xHead) / 2;
+	        int yPos = (yTail + yHead) / 2;
+
+	        // Create ImageView for the snake image
+	        ImageView snakeImageView = new ImageView(snakeImage);
+	        snakeImageView.setFitWidth(2*TILE_SIZE); // Width remains TILE_SIZE
+	        snakeImageView.setFitHeight(2*snakeLength+0.1*TILE_SIZE); // Set the height to match the calculated length
+	        snakeImageView.setRotate(-angle); // Rotate the image to match the angle between head and tail
+
+	    	if(xHead-xTail>0) {
+		       snakeImageView.setScaleX(-1);
+		       snakeImageView.setScaleY(-1);
+	    	}
+	        snakeImageView.setVisible(true);
+	        GridPane.setRowIndex(snakeImageView, xHead);
+	        GridPane.setColumnIndex(snakeImageView, yHead);
+	        grid.getChildren().addAll(snakeImageView);
+	        GridPane.setHalignment(snakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
+	        GridPane.setValignment(snakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	    }
 	}
+
+
+
+	public void showLadders() {
+	    HashMap<Integer, List<Ladder>> laddersBySize = new HashMap<>();
+	    for (HashMap.Entry<Integer, Ladder> l : board.getLadders().entrySet()) {
+	        Ladder ladder = l.getValue();
+	        int ladderSize = ladder.getLadderLen();
+	        if (!laddersBySize.containsKey(ladderSize)) {
+	            laddersBySize.put(ladderSize, new ArrayList<>());
+	        }
+	        laddersBySize.get(ladderSize).add(ladder);
+	    }
+
+	    for (List<Ladder> ladders : laddersBySize.values()) {
+	        for (Ladder ladder : ladders) {
+	            displayLadder(ladder, getLadderImagePath(ladder));
+	        }
+	    }
+	}
+
+	private String getLadderImagePath(Ladder ladder) {
+	    switch (ladder.getLadderLen()) {
+	        case 1:
+	            return LADDER_1_IMAGE_PATH;
+	        case 2:
+	            return LADDER_2_IMAGE_PATH;
+	        case 3:
+	            return LADDER_3_IMAGE_PATH;
+	        case 4:
+	            return LADDER_4_IMAGE_PATH;
+	        case 5:
+	            return LADDER_5_IMAGE_PATH;
+	        case 6:
+	            return LADDER_6_IMAGE_PATH;
+	       // case 7:
+	        //    return LADDER_7_IMAGE_PATH;
+	       // case 8:
+	       //     return LADDER_8_IMAGE_PATH;
+	        default:
+	            return DEFAULT_LADDER_IMAGE_PATH;
+	    }
+	}
+
+	
+	private void displayLadder(Ladder ladder, String imagePath) {
+	    // Get the head and tail coordinates of the ladder
+	    int upperTile = ladder.getLadderTop();
+	    int bottomTile = ladder.getLadderBottom();
+	    int xTop = board.getTile(upperTile).getxCoord();
+	    int yTop = board.getTile(upperTile).getyCoord();
+	    int xBottom = board.getTile(bottomTile).getxCoord();
+	    int yBottom = board.getTile(bottomTile).getyCoord();
+	    
+	    Image ladderImage = new Image(getClass().getResource(imagePath).toExternalForm());
+
+        double slope = (double) (yBottom - yTop) / (xBottom - xTop);
+        double angle = Math.toDegrees(Math.atan(slope));
+
+        // Calculate the length of the snake
+        double ladderLength = Math.sqrt(Math.pow(xBottom - xTop, 2) + Math.pow(yBottom - yTop, 2)) * TILE_SIZE;
+
+        // Calculate the position of the snake
+        int xPos = (int) (xBottom + xTop) / 2;
+        int yPos = (int) (yBottom + yTop) / 2;
+        
+
+
+        // Create ImageView for the snake image
+        ImageView ladderImageView = new ImageView(ladderImage);
+        ladderImageView.setFitWidth(TILE_SIZE); // Width remains TILE_SIZE
+        ladderImageView.setFitHeight(2*ladderLength+0.1*TILE_SIZE); // Set the height to match the calculated length
+        ladderImageView.setRotate(-angle); // Rotate the image to match the angle between head and tail
+
+    	if(xTop-xBottom>0) {
+    		ladderImageView.setScaleX(-1);
+    		ladderImageView.setScaleY(-1);
+    	}else {
+	     // snakeImageView.setScaleY(-1);
+    	}
+        //snakeImageView.setScaleY(-1);
+       // snakeImageView.setScaleX(-1);
+    	ladderImageView.setVisible(true);
+        GridPane.setRowIndex(ladderImageView, xTop);
+        GridPane.setColumnIndex(ladderImageView, yTop);
+        grid.getChildren().addAll(ladderImageView);
+        GridPane.setHalignment(ladderImageView, javafx.geometry.HPos.CENTER); // Center horizontally
+        GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
+	}
+
 
 	
 	public void showQuestions() {
@@ -416,7 +564,63 @@ public class NormalController implements Initializable{
         dialog.showAndWait();
     }
     
-    void newScreen(String path) {
+    @FXML
+    void handleDiceClick(ActionEvent event) throws InterruptedException {	
+    	 initializeMap();
+    	 int lastDiceResult=0;
+    	 Duration duration = Duration.millis(1000);
+    	 int numFrames = 20;
+    	 Duration frameInterval = duration.divide(numFrames);
+    	 Timeline timeline = new Timeline();
+    	 // Add keyframes to the timeline
+    	    for (int i = 0; i < numFrames; i++) {
+    	        int result = Dice.RandomNumberGenerator(Difficulty.Easy);
+    	        lastDiceResult = result; // Save the result
+    	        String imagePath = diceImageMap.get(result);
+
+    	        // Create a keyframe for each image of the dice
+    	        KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
+    	                e -> updateDiceImage(imagePath));
+
+    	        timeline.getKeyFrames().add(keyFrame);
+    	    }
+    	    
+    	  timeline.setCycleCount(1); // Set the time line to  one
+    	  timeline.setOnFinished(e -> {
+    	    	 // After 10 seconds, reset the dice image to the default
+    	   PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
+    	    pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
+    	    pauseTransition.play();    	   
+    	  });
+		viewResultDice(lastDiceResult);
+    	  timeline.play();//animation
+    	}
+
+    
+    
+    private void viewResultDice(int diceResult) {//this for easy difficulty only
+    	if(diceResult <= 6) {
+    		move(diceResult); 
+		}
+    	if(diceResult == 7) {//display easy question
+    		
+    	}
+    	else { if(diceResult == 8) {//display normal question 
+    		
+    	}
+    	  else if(diceResult == 9) {//display hard question 
+    		
+    	  }
+    	}
+		
+	}
+
+	private void updateDiceImage(String imagePath) {//update the dice image 
+    	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+    	 diceResult.setImage(image);
+    }
+    
+	void newScreen(String path) {
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
 			Scene scene = new Scene(root);
@@ -426,11 +630,87 @@ public class NormalController implements Initializable{
 			e.printStackTrace();
 		}  	
     }
+
     
-    @FXML
-    void handleDiceClick(ActionEvent event) {
-    	
-    	
-    }
+	void move(int steps) {
+
+	        // Now you can use this HashMap for further processing
+	        
+	        for (Player p : game.getPlayers()) {
+	        	System.out.println(p.toString());
+	            int currentPosition = p.getPlayerPlace();
+	            p.setPlayerPrevPlace(currentPosition);
+	            hidePlayerToken(p);
+	            int newPosition = currentPosition + steps;
+	            // Check if newPosition exceeds 100
+	            if (newPosition > 100) {
+	                continue; // Skip this player
+	            }
+	            
+	            // Set player's new position
+	            p.setPlayerPlace(newPosition);
+	            displayPlayerToken(p,newPosition);
+	            
+	            // Check if player reaches 100
+	            if (newPosition == 100) {
+		            p.setPlayerPlace(newPosition);
+		            displayPlayerToken(p,newPosition);
+	            	game.setWinner(p);
+	                System.out.println(p.getPlayerName() + " is the WINNER!");
+	            }
+	        }
+	    }
+	   
+		private String getTokenImagePath(Player player) {
+		    switch (player.getPlayerColor()) {
+		        case Red:
+		            return RED;
+		        case Green:
+		            return GREEN;
+		        case Yellow:
+		            return YELLOW;
+		        case Blue:
+		            return BLUE;
+		        case Pink:
+		            return PINK;
+		        case Purple:
+		            return PURPLE;
+		        default:
+		            return null;
+		    }
+		}
+
+	
+	private void displayPlayerToken(Player player, int newPosition) {
+	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
+	    ImageView token = iconsOnBoard.get(player);
+	    if (token == null) {
+	        token = new ImageView(tokenImage);
+	        iconsOnBoard.put(player, token);
+	    }
+	    token.setFitHeight(TOKEN_WIDTH);
+	    token.setFitWidth(TOKEN_HEIGHT);
+	    token.setVisible(true);
+	    
+	    Tile pos = board.getTile(newPosition);
+	    int row = pos.getxCoord();
+	    int column = pos.getyCoord();
+	    
+	    GridPane.setRowIndex(token, row);
+	    GridPane.setColumnIndex(token, column);
+	    
+	    // If the token is not already in the grid, add it
+	    if (!grid.getChildren().contains(token)) {
+	        grid.getChildren().add(token);
+	    }
+	}
+
+	private void hidePlayerToken(Player p) {
+	    ImageView token = iconsOnBoard.get(p);
+	    if (token != null) {
+	        grid.getChildren().remove(token);
+	    }
+	}
+
     
 }

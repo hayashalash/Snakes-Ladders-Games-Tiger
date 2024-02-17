@@ -8,6 +8,7 @@ public class Player {
 	private String playerName;
 	private Color playerColor;
 	private int playerPlace=0;
+	private int playerPrevPlace=0; //player previous position
 	private int numberOrder=0;
 	
 	public Player(String playerName, Color playerColor) {
@@ -47,6 +48,14 @@ public class Player {
 
 	public int getPlayerPlace() {
 		return playerPlace;
+	}
+
+	public void setPlayerPrevPlace(int playerPrevPlace) {
+		this.playerPrevPlace = playerPrevPlace;
+	}
+	
+	public int getPlayerPrevPlace() {
+		return playerPrevPlace;
 	}
 
 	public void setPlayerPlace(int playerPlace) {

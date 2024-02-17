@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
-
+import java.util.Map.Entry;
 import Model.Board;
 import Model.Color;
 import Model.Dice;
@@ -29,6 +29,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.util.Duration;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -89,6 +90,8 @@ public class EasyController implements Initializable{
 	Board board = new Board(game.getType());
 	public Player currentTurn;
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	
+	
 
 	@FXML
     private GridPane grid;
@@ -144,14 +147,14 @@ public class EasyController implements Initializable{
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
-        diceImageMap.put(0, "/img/icons/diceroll0.jpg");
-        diceImageMap.put(1, "/img/icons/diceroll1.jpg");
-        diceImageMap.put(2, "/img/icons/diceroll2.jpg");
-        diceImageMap.put(3, "/img/icons/diceroll3.jpg");
-        diceImageMap.put(4, "/img/icons/diceroll4.jpg");
-        diceImageMap.put(5, "/img/icons/dicerollQuestion.jpg");
-        diceImageMap.put(6, "/img/icons/dicerollQuestion.jpg");
-        diceImageMap.put(7, "/img/icons/dicerollQuestion.jpg");
+        diceImageMap.put(0, "/img/icons/dice0.png");
+        diceImageMap.put(1, "/img/icons/dice1.png");
+        diceImageMap.put(2, "/img/icons/dice2.png");
+        diceImageMap.put(3, "/img/icons/dice3.png");
+        diceImageMap.put(4, "/img/icons/dice4.png");
+        diceImageMap.put(5, "/img/icons/diceQ.png");
+        diceImageMap.put(6, "/img/icons/diceQ.png");
+        diceImageMap.put(7, "/img/icons/diceQ.png");
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
