@@ -97,14 +97,11 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </Label>
-        <Button fx:id="diceButton" layoutX="40.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="88.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
-            <graphic>
-                <ImageView fx:id="dice" fitHeight="74.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../img/icons/dice.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-    </children>
+      <Button fx:id="diceButton" layoutX="13.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDiceClick" prefHeight="59.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+         <graphic>
+         </graphic>
+         <graphic>
+            <ImageView fx:id="diceResult" fitHeight="74.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-radius: 10; -fx-border-radius: 10;" />
+         </graphic></Button>
+   </children>
 </AnchorPane>
