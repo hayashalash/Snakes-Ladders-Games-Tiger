@@ -70,16 +70,11 @@ import javafx.event.EventHandler;
 
 public class NormalController implements Initializable{
 
-	private final double ICON_WIDTH = 35; // the moving icons on the board
-    private final double ICON_HEIGHT = 35;
-    private final double IMAGE_WIDTH = 45; // the icons next to the names
-    private final double IMAGE_HEIGHT = 45;
-    private final double QUESTION_WIDTH = 30; // question icon size
-    private final double QUESTION_HEIGHT = 30;
-    private final double SURPRISE_WIDTH = 25; // surprise icon size
-    private final double SURPRISE_HEIGHT = 25;
-    private final double RED_SNAKE_WIDTH = 40; 
-    private final double RED_SNAKE_HEIGHT = 40;
+	private final double ICON_SIZE = 35; // the moving icons on the board
+    private final double IMAGE_SIZE = 45; // the icons next to the names
+    private final double QUESTION_SIZE = 35; // question icon size
+    private final double SURPRISE_SIZE = 30; // surprise icon size
+    private final double RED_SNAKE_SIZE = 40; // red snake icon size
     private final double TILE_SIZE  = 53.8;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
@@ -274,8 +269,8 @@ public class NormalController implements Initializable{
 
 		}
 		for (ImageView iv : playerIcons) {
-			iv.setFitHeight(ICON_HEIGHT);
-			iv.setFitWidth(ICON_WIDTH);
+			iv.setFitHeight(ICON_SIZE);
+			iv.setFitWidth(ICON_SIZE);
 			playersStart.getChildren().add(iv);
 		}
 		
@@ -283,8 +278,8 @@ public class NormalController implements Initializable{
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
 			ImageView icon = new ImageView(icons.get(p));
-			icon.setFitHeight(IMAGE_HEIGHT);
-			icon.setFitWidth(IMAGE_WIDTH);
+			icon.setFitHeight(IMAGE_SIZE);
+			icon.setFitWidth(IMAGE_SIZE);
 			if (player1.getChildren().isEmpty())
 				player1.getChildren().addAll(icon, name);
 			else if (player2.getChildren().isEmpty())
@@ -346,16 +341,7 @@ public class NormalController implements Initializable{
 
 	    // If the snake color is red, set a fixed size for the image
 	    if (snake.getColor() == SnakeColor.Red) {
-	        // Create ImageView for the question
-	        ImageView redSnakeImageView = new ImageView(snakeImage);
-	        redSnakeImageView.setFitHeight(RED_SNAKE_WIDTH);
-	        redSnakeImageView.setFitWidth(RED_SNAKE_HEIGHT);
-	        redSnakeImageView.setVisible(true);
-	        GridPane.setRowIndex(redSnakeImageView, xHead);
-	        GridPane.setColumnIndex(redSnakeImageView, yHead);
-	        grid.getChildren().addAll(redSnakeImageView);
-	        GridPane.setHalignment(redSnakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(redSnakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
+	    	showOneCellIcon(snakeImage, xHead, yHead, RED_SNAKE_SIZE);
 	    } else {
 	        
 	        double slope = (double) (yTail - yHead) / (xTail - xHead);
@@ -483,18 +469,7 @@ public class NormalController implements Initializable{
 			Image questionImage = new Image(getClass().getResource(QUESTION_IMAGE_PATH).toExternalForm());
 			int row = qt.getxCoord();
 	        int column = qt.getyCoord();
-
-	        // Create ImageView for the question
-	        ImageView question = new ImageView(questionImage);
-	        question.setFitHeight(QUESTION_WIDTH);
-	        question.setFitWidth(QUESTION_HEIGHT);
-	        question.setVisible(true);
-	        GridPane.setRowIndex(question, row);
-	        GridPane.setColumnIndex(question, column);
-	        // Add the question to GridPane
-	        grid.getChildren().addAll(question);
-	        GridPane.setHalignment(question, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(question, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(questionImage, row, column, QUESTION_SIZE);
 		}
 	}
 	
@@ -504,18 +479,7 @@ public class NormalController implements Initializable{
 			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
 			int row = st.getxCoord();
 	        int column = st.getyCoord();
-
-	        // Create ImageView the surprise
-	        ImageView surprise = new ImageView(surpriseImage);
-	        surprise.setFitHeight(SURPRISE_WIDTH);
-	        surprise.setFitWidth(SURPRISE_HEIGHT);
-	        surprise.setVisible(true);
-	        GridPane.setRowIndex(surprise, row);
-	        GridPane.setColumnIndex(surprise, column);
-	        // Add the surprise to GridPane
-	        grid.getChildren().add(surprise);
-	        GridPane.setHalignment(surprise, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(surprise, javafx.geometry.VPos.CENTER); // Center vertically
+	        showOneCellIcon(surpriseImage, row, column, SURPRISE_SIZE);
 		}
 	}
 	
@@ -620,17 +584,19 @@ public class NormalController implements Initializable{
     	 diceResult.setImage(image);
     }
     
-	void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
-
+	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
+		// Create ImageView for the icon
+        ImageView iv = new ImageView(img);
+        iv.setFitHeight(imgSize);
+        iv.setFitWidth(imgSize);
+        iv.setVisible(true);
+        GridPane.setRowIndex(iv, row);
+        GridPane.setColumnIndex(iv, col);
+        // Add the icon to GridPane
+        grid.getChildren().addAll(iv);
+        GridPane.setHalignment(iv, javafx.geometry.HPos.CENTER); // Center horizontally
+        GridPane.setValignment(iv, javafx.geometry.VPos.CENTER); // Center vertically
+	}
     
 	void move(int steps) {
 
@@ -712,5 +678,14 @@ public class NormalController implements Initializable{
 	    }
 	}
 
-    
+	void newScreen(String path) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	
+    }
 }
