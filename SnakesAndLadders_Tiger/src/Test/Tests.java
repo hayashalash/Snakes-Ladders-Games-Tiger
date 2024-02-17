@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.AfterEach;
@@ -82,7 +83,7 @@ class Tests {
     * */
    @Test
    public void testChooseRandomTile() {
-	   Board board = new Board(Difficulty.Medium);
+	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
        board.createBoard();
        int randomTile = board.chooseRandomTile(0);
        assertTrue(randomTile > 0 && randomTile <= board.getBoardSize());
@@ -94,19 +95,19 @@ class Tests {
    
    @Test
    public void testChooseRandomInRow() {
-	   Board board = new Board(Difficulty.Hard);
+	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
 	   board.createBoard();
        int randomInRow = board.chooseRandomInRow(board.getBoardLen()-1); // choose a random tile from the first (bottom) row
        assertTrue(randomInRow > 0 && randomInRow <= board.getBoardLen()); // the board length is the number of the last tile in the first row
    }
    
    /*
-    * Check that when a board is created, it has questions, snakes and ladders
+    * Check that when a board is created, it has the needed items questions, snakes and ladders
     * */
    
    @Test
    public void testSpecialTiles() {
-	   Board board = new Board(Difficulty.Easy);
+	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
        board.createBoard();
        
        ArrayList<QuestionTile> questionTiles = board.getQuestionTiles();
