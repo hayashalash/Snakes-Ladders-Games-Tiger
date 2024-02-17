@@ -51,6 +51,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -70,11 +71,16 @@ import javafx.event.EventHandler;
 
 public class NormalController implements Initializable{
 
-	private final double ICON_SIZE = 35; // the moving icons on the board
-    private final double IMAGE_SIZE = 45; // the icons next to the names
-    private final double QUESTION_SIZE = 35; // question icon size
-    private final double SURPRISE_SIZE = 30; // surprise icon size
-    private final double RED_SNAKE_SIZE = 40; // red snake icon size
+	private final double ICON_WIDTH = 35; // the moving icons on the board
+    private final double ICON_HEIGHT = 35;
+    private final double IMAGE_WIDTH = 45; // the icons next to the names
+    private final double IMAGE_HEIGHT = 45;
+    private final double QUESTION_WIDTH = 30; // question icon size
+    private final double QUESTION_HEIGHT = 30;
+    private final double SURPRISE_WIDTH = 35; // surprise icon size
+    private final double SURPRISE_HEIGHT = 35;
+    private final double RED_SNAKE_WIDTH = 40; 
+    private final double RED_SNAKE_HEIGHT = 40;
     private final double TILE_SIZE  = 53.8;
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
@@ -102,6 +108,14 @@ public class NormalController implements Initializable{
 	private static final String LADDER_6_IMAGE_PATH = "/img/icons/ladder6.png";
 	private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
 	private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
+	private static final String LADDER_1B_IMAGE_PATH = "/img/icons/ladder1B.png";// Big ladder
+	private static final String LADDER_2B_IMAGE_PATH = "/img/icons/ladder2B.png";// Big ladder
+	private static final String LADDER_3B_IMAGE_PATH = "/img/icons/ladder3B.png";// Big ladder
+	private static final String LADDER_4B_IMAGE_PATH = "/img/icons/ladder4B.png";// Big ladder
+	private static final String LADDER_5B_IMAGE_PATH = "/img/icons/ladder5B.png";// Big ladder
+	private static final String LADDER_6B_IMAGE_PATH = "/img/icons/ladder6B.png";// Big ladder
+	private static final String LADDER_7B_IMAGE_PATH = "/img/icons/ladder7B.png";// Big ladder
+	private static final String LADDER_8B_IMAGE_PATH = "/img/icons/ladder8B.png";// Big ladder
 	private static final String DEFAULT_LADDER_IMAGE_PATH = null;
 	//private static final String LADDER_7_IMAGE_PATH = "/img/icons/ladder7.png";
 	//private static final String LADDER_8_IMAGE_PATH = "/img/icons/ladder8.png";
@@ -117,6 +131,8 @@ public class NormalController implements Initializable{
 	Board board = new Board(game.getType());
 	public Player currentTurn;
 	
+	@FXML
+	private AnchorPane rootAnchorPane;
 
 	
 	@FXML
@@ -203,6 +219,7 @@ public class NormalController implements Initializable{
 		showSnakes();
 		showQuestions();
 		showSurprises();
+		ensureExitButtonOnTop();
 	}
 	private void startTimer() {
 		// Create a timeline for the game duration
@@ -269,8 +286,8 @@ public class NormalController implements Initializable{
 
 		}
 		for (ImageView iv : playerIcons) {
-			iv.setFitHeight(ICON_SIZE);
-			iv.setFitWidth(ICON_SIZE);
+			iv.setFitHeight(ICON_HEIGHT);
+			iv.setFitWidth(ICON_WIDTH);
 			playersStart.getChildren().add(iv);
 		}
 		
@@ -278,8 +295,8 @@ public class NormalController implements Initializable{
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
 			ImageView icon = new ImageView(icons.get(p));
-			icon.setFitHeight(IMAGE_SIZE);
-			icon.setFitWidth(IMAGE_SIZE);
+			icon.setFitHeight(IMAGE_HEIGHT);
+			icon.setFitWidth(IMAGE_WIDTH);
 			if (player1.getChildren().isEmpty())
 				player1.getChildren().addAll(icon, name);
 			else if (player2.getChildren().isEmpty())
@@ -341,7 +358,16 @@ public class NormalController implements Initializable{
 
 	    // If the snake color is red, set a fixed size for the image
 	    if (snake.getColor() == SnakeColor.Red) {
-	    	showOneCellIcon(snakeImage, xHead, yHead, RED_SNAKE_SIZE);
+	        // Create ImageView for the question
+	        ImageView redSnakeImageView = new ImageView(snakeImage);
+	        redSnakeImageView.setFitHeight(RED_SNAKE_WIDTH);
+	        redSnakeImageView.setFitWidth(RED_SNAKE_HEIGHT);
+	        redSnakeImageView.setVisible(true);
+	        GridPane.setRowIndex(redSnakeImageView, xHead);
+	        GridPane.setColumnIndex(redSnakeImageView, yHead);
+	        grid.getChildren().addAll(redSnakeImageView);
+	        GridPane.setHalignment(redSnakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
+	        GridPane.setValignment(redSnakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
 	    } else {
 	        
 	        double slope = (double) (yTail - yHead) / (xTail - xHead);
@@ -388,7 +414,7 @@ public class NormalController implements Initializable{
 
 	    for (List<Ladder> ladders : laddersBySize.values()) {
 	        for (Ladder ladder : ladders) {
-	            displayLadder(ladder, getLadderImagePath(ladder));
+	            displayLadder(ladder, getLadderImagePath(ladder),getBigLadderImagePath(ladder));
 	        }
 	    }
 	}
@@ -415,9 +441,31 @@ public class NormalController implements Initializable{
 	            return DEFAULT_LADDER_IMAGE_PATH;
 	    }
 	}
-
 	
-	private void displayLadder(Ladder ladder, String imagePath) {
+	private String getBigLadderImagePath(Ladder ladder) {
+	    switch (ladder.getLadderLen()) {
+	        case 1:
+	            return LADDER_1B_IMAGE_PATH;
+	        case 2:
+	            return LADDER_2B_IMAGE_PATH;
+	        case 3:
+	            return LADDER_3B_IMAGE_PATH;
+	        case 4:
+	            return LADDER_4B_IMAGE_PATH;
+	        case 5:
+	            return LADDER_5B_IMAGE_PATH;
+	        case 6:
+	            return LADDER_6B_IMAGE_PATH;
+	       // case 7:
+	        //    return LADDER_7B_IMAGE_PATH;
+	       // case 8:
+	       //     return LADDER_8B_IMAGE_PATH;
+	        default:
+	            return DEFAULT_LADDER_IMAGE_PATH;
+	    }
+	}
+	
+	private void displayLadder(Ladder ladder, String imagePath, String BigimagePath) {
 	    // Get the head and tail coordinates of the ladder
 	    int upperTile = ladder.getLadderTop();
 	    int bottomTile = ladder.getLadderBottom();
@@ -425,9 +473,15 @@ public class NormalController implements Initializable{
 	    int yTop = board.getTile(upperTile).getyCoord();
 	    int xBottom = board.getTile(bottomTile).getxCoord();
 	    int yBottom = board.getTile(bottomTile).getyCoord();
-	    
+	    boolean bigLadder = false;
 	    Image ladderImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
+	    
+	    if(Math.abs(xTop-xBottom)>= (board.getBoardLen()/2) || 
+	    		Math.abs(yTop-yBottom)>= (board.getBoardLen()/2)) {
+		    ladderImage = new Image(getClass().getResource(BigimagePath).toExternalForm());
+		    bigLadder = true;
+	    }
+	    
         double slope = (double) (yBottom - yTop) / (xBottom - xTop);
         double angle = Math.toDegrees(Math.atan(slope));
 
@@ -442,7 +496,11 @@ public class NormalController implements Initializable{
 
         // Create ImageView for the snake image
         ImageView ladderImageView = new ImageView(ladderImage);
-        ladderImageView.setFitWidth(TILE_SIZE); // Width remains TILE_SIZE
+        if(bigLadder) {
+            ladderImageView.setFitWidth(2.2*TILE_SIZE); // Width remains TILE_SIZE
+        } else {
+            ladderImageView.setFitWidth(1.2*TILE_SIZE); // Width remains TILE_SIZE
+        }
         ladderImageView.setFitHeight(2*ladderLength+0.1*TILE_SIZE); // Set the height to match the calculated length
         ladderImageView.setRotate(-angle); // Rotate the image to match the angle between head and tail
 
@@ -469,7 +527,18 @@ public class NormalController implements Initializable{
 			Image questionImage = new Image(getClass().getResource(QUESTION_IMAGE_PATH).toExternalForm());
 			int row = qt.getxCoord();
 	        int column = qt.getyCoord();
-	        showOneCellIcon(questionImage, row, column, QUESTION_SIZE);
+
+	        // Create ImageView for the question
+	        ImageView question = new ImageView(questionImage);
+	        question.setFitHeight(QUESTION_WIDTH);
+	        question.setFitWidth(QUESTION_HEIGHT);
+	        question.setVisible(true);
+	        GridPane.setRowIndex(question, row);
+	        GridPane.setColumnIndex(question, column);
+	        // Add the question to GridPane
+	        grid.getChildren().addAll(question);
+	        GridPane.setHalignment(question, javafx.geometry.HPos.CENTER); // Center horizontally
+	        GridPane.setValignment(question, javafx.geometry.VPos.CENTER); // Center vertically
 		}
 	}
 	
@@ -479,7 +548,18 @@ public class NormalController implements Initializable{
 			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
 			int row = st.getxCoord();
 	        int column = st.getyCoord();
-	        showOneCellIcon(surpriseImage, row, column, SURPRISE_SIZE);
+
+	        // Create ImageView the surprise
+	        ImageView surprise = new ImageView(surpriseImage);
+	        surprise.setFitHeight(SURPRISE_WIDTH);
+	        surprise.setFitWidth(SURPRISE_HEIGHT);
+	        surprise.setVisible(true);
+	        GridPane.setRowIndex(surprise, row);
+	        GridPane.setColumnIndex(surprise, column);
+	        // Add the surprise to GridPane
+	        grid.getChildren().add(surprise);
+	        GridPane.setHalignment(surprise, javafx.geometry.HPos.CENTER); // Center horizontally
+	        GridPane.setValignment(surprise, javafx.geometry.VPos.CENTER); // Center vertically
 		}
 	}
 	
@@ -584,19 +664,17 @@ public class NormalController implements Initializable{
     	 diceResult.setImage(image);
     }
     
-	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
-		// Create ImageView for the icon
-        ImageView iv = new ImageView(img);
-        iv.setFitHeight(imgSize);
-        iv.setFitWidth(imgSize);
-        iv.setVisible(true);
-        GridPane.setRowIndex(iv, row);
-        GridPane.setColumnIndex(iv, col);
-        // Add the icon to GridPane
-        grid.getChildren().addAll(iv);
-        GridPane.setHalignment(iv, javafx.geometry.HPos.CENTER); // Center horizontally
-        GridPane.setValignment(iv, javafx.geometry.VPos.CENTER); // Center vertically
-	}
+	void newScreen(String path) {
+    	try {
+			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
+			Scene scene = new Scene(root);
+			Main.mainWindow.setScene(scene);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	
+    }
+
     
 	void move(int steps) {
 
@@ -677,15 +755,12 @@ public class NormalController implements Initializable{
 	        grid.getChildren().remove(token);
 	    }
 	}
+	
+	private void ensureExitButtonOnTop() {
+	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
+	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
+	}
 
-	void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
+    
 }
+
