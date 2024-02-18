@@ -90,8 +90,8 @@ public class  topThreeController implements Initializable{
 		    } else {
 		        //display default values just for test
 		        player1.setText("Ruba");
-		        player2.setText("haya");
-		        player3.setText("bisan");
+		        player2.setText("Haya");
+		        player3.setText("Bisan");
 
 
 		    }
