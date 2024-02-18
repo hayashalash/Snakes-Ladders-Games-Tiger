@@ -30,6 +30,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -64,7 +65,7 @@ public class HardController implements Initializable{
 	private static final String RED = "/img/icons/redPlayer.png";
 	private static final String PURPLE = "/img/icons/purplePlayer.png";
 	private static final String YELLOW = "/img/icons/yellowPlayer.png";	
-	private static final String INFO_IMAGE_PATH = "/img/screens/infoBack.jpg";
+	private static final String INFO_IMAGE_PATH = "/img/screens/blank.jpg";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	
@@ -292,16 +293,72 @@ public class HardController implements Initializable{
 	
 	@FXML
     void showInfo(ActionEvent event) throws IOException{
-    	Dialog<Void> dialog = new Dialog<>();
+		Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Game Rules");
         dialog.setHeaderText("");
-
+        dialog.setWidth(800);
+        dialog.setHeight(500);
         Image info = new Image(getClass().getResource(INFO_IMAGE_PATH).toExternalForm());
-		ImageView infoImageView = new ImageView(info);
-		infoImageView.setFitHeight(500);
-		infoImageView.setFitWidth(700);
-		infoImageView.setVisible(true);
-        dialog.getDialogPane().setContent(infoImageView);
+		ImageView background = new ImageView(info);
+		background.setFitHeight(dialog.getHeight());
+		background.setFitWidth(dialog.getWidth());
+		background.setVisible(true);
+		ArrayList<Label> labels = new ArrayList<>();
+		Label diceL = new Label("Roll the dice to determine your fate");
+		labels.add(diceL);
+		Label turnL = new Label("The green border indicates your turn");
+		labels.add(turnL);
+		Label snakeL = new Label("Encounter snakes and slide down");
+		labels.add(snakeL);
+		Label ladderL = new Label("Find ladders and climb up");
+		labels.add(ladderL);
+		Label questionL = new Label("Land on a question mark or get one on the dice roll and answer questions for your destiny");
+		labels.add(questionL);
+		Label surpriseL = new Label("Surprises can move you forward or backward");
+		labels.add(surpriseL);
+		Label winL = new Label("Be the first to reach the last tile to claim victory!");
+		for (Label l :labels) {
+			l.setStyle("-fx-font-family: Serif; -fx-font-size: 17px;");
+			l.setPadding(new Insets(10,0,5,10)); // top right bottom left
+		}
+		winL.setStyle("-fx-font-family: Serif; -fx-font-size: 22px;");
+		ArrayList<ImageView> imgs = new ArrayList<>();
+		Image dice = new Image(getClass().getResource("/img/icons/dice.png").toExternalForm());
+		ImageView diceIV = new ImageView(dice);
+		imgs.add(diceIV);
+		Image pawn = new Image(getClass().getResource("/img/icons/pawn.png").toExternalForm());
+		ImageView pawnIV = new ImageView(pawn);
+		Label name = new Label ("yourName");
+		name.setPadding(new Insets(7,5,5,0));
+		name.setStyle("-fx-font-size: 10px;");
+
+		HBox pawnTurn = new HBox(pawnIV, name);
+		pawnTurn.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
+		imgs.add(pawnIV);
+		Image snake = new Image(getClass().getResource("/img/icons/redSnake.png").toExternalForm());
+		ImageView snakeIV = new ImageView(snake);
+		imgs.add(snakeIV);
+		Image ladder = new Image(getClass().getResource("/img/icons/ladderIcon.png").toExternalForm());
+		ImageView ladderIV = new ImageView(ladder);
+		imgs.add(ladderIV);
+		Image q = new Image(getClass().getResource("/img/icons/question.png").toExternalForm());
+		ImageView qIV = new ImageView(q);
+		imgs.add(qIV);
+		Image s = new Image(getClass().getResource("/img/icons/surprise.png").toExternalForm());
+		ImageView sIV = new ImageView(s);
+		imgs.add(sIV);
+		
+		for(ImageView iv : imgs) {
+			iv.setFitHeight(ICON_SIZE);
+			iv.setFitWidth(ICON_SIZE);
+		}
+		VBox vbox = new VBox(new HBox(diceIV, diceL), new HBox(pawnTurn, turnL), new HBox(snakeIV, snakeL), 
+				new HBox(ladderIV, ladderL), new HBox(qIV, questionL), new HBox(sIV, surpriseL), winL);
+		vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10); // Set spacing between the lines
+        vbox.setPadding(new Insets(0, 20, 50, 80)); // top right bottom left
+        StackPane content = new StackPane(background, vbox);
+        dialog.getDialogPane().setContent(content);
 
         ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(closeButton);

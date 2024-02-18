@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.swing.SwingUtilities;
 
 import Model.Admin;
 import View.Alerts;
@@ -143,7 +144,7 @@ public class homeController implements Initializable{
 
     @FXML
     void showQuestion(ActionEvent event) throws IOException{
-    	question.setOnAction(e -> openCustomDialog());
+    	openCustomDialog();
     }
     
     private void openCustomDialog() {
@@ -158,10 +159,10 @@ public class homeController implements Initializable{
         textField.setPrefHeight(20);
         textField.setMaxWidth(150);
         textField.setPromptText("Enter Password");
-        Button button = new Button("Log In");
-        button.setPadding(new Insets(5, 5, 5, 5));
+        Button logInButton = new Button("Log In");
+        logInButton.setPadding(new Insets(5, 5, 5, 5));
         // Apply CSS styles to the button
-        button.setStyle("-fx-background-color: #D2691E; " +  // Background color
+        logInButton.setStyle("-fx-background-color: #D2691E; " +  // Background color
                 "-fx-text-fill: white; " +           // Text color
                 "-fx-font-size: 14px; " +            // Font size
                 "-fx-font-family: Serif; " +         // Font family
@@ -169,19 +170,19 @@ public class homeController implements Initializable{
                 "-fx-border-radius: 5px; " +         // Border radius
                 "-fx-border-color: #DEB887;" +      // Border color
         		"-fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );"); // Drop shadow effect
-        button.setOnMouseEntered(e -> entered(e));
-        button.setOnMouseExited(e -> exited(e));
+        logInButton.setOnMouseEntered(e -> entered(e));
+        logInButton.setOnMouseExited(e -> exited(e));
         Label errorLabel = new Label("Incorrect password");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setOpacity(0);
         // Add the elements to an HBox layout
-        VBox vbox = new VBox(textField, errorLabel, button);
+        VBox vbox = new VBox(textField, errorLabel, logInButton);
 
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(5); // Set spacing between the text field and button
         vbox.setPadding(new Insets(140, 0, 0, 0)); // Set padding around the layout
         
-        button.setOnAction(e -> {
+        logInButton.setOnAction(e -> {
         	String p = textField.getText();
         	if (Admin.getInstance().checkPassword(p)) {
         		newScreen("manageQuestion");
@@ -193,6 +194,7 @@ public class homeController implements Initializable{
                 errorLabel.setOpacity(1);
         	}
         });
+        logInButton.setDefaultButton(true);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
         	// If the user starts typing, remove the error label if it exists
             if (errorLabel.getOpacity() != 0) {
