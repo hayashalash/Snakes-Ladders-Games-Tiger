@@ -608,6 +608,9 @@ import javafx.scene.layout.VBox;
 	        GridPane.setHalignment(ladderImageView, javafx.geometry.HPos.CENTER); // Center horizontally
 	        GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
 		}
+		
+		
+		
 
 		
 	

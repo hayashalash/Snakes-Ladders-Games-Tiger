@@ -92,7 +92,7 @@ public class NormalController implements Initializable{
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
 	private GameController gameController;
-	
+	private int currentPlayerIndex = 0;
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
@@ -163,7 +163,11 @@ public class NormalController implements Initializable{
         diceImageMap.put(7, "/img/icons/diceQ.png");
         diceImageMap.put(8, "/img/icons/diceQ.png");
         diceImageMap.put(9, "/img/icons/diceQ.png");
+        diceImageMap.put(10, "/img/icons/diceQ.png");
+        diceImageMap.put(11, "/img/icons/diceQ.png");
+        diceImageMap.put(12, "/img/icons/diceQ.png");
     }
+       
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -275,216 +279,7 @@ public class NormalController implements Initializable{
 		
 	}
 	
-/*	
-    public void showSnakes() {
-	    HashMap<SnakeColor, List<Snake>> snakesByColor = new HashMap<>();
-	    for (HashMap.Entry<Integer, Snake> s : board.getSnakes().entrySet()) {
-	        Snake snake = s.getValue();
-	        if (!snakesByColor.containsKey(snake.getColor())) {
-	            snakesByColor.put(snake.getColor(), new ArrayList<>());
-	        }
-	        snakesByColor.get(snake.getColor()).add(snake);
-	    }
 
-	    for (List<Snake> snakes : snakesByColor.values()) {
-	        for (Snake snake : snakes) {
-	            displaySnake(snake, getSnakeImagePath(snake));
-	        }
-	    }
-	}
-
-	private String getSnakeImagePath(Snake snake) {
-	    // Add logic to determine the image path based on snake properties
-	    // For example:
-	    switch (snake.getColor()) {
-	        case Red:
-	            return RED_SNAKE_IMAGE_PATH;
-	        case Yellow:
-	            return YELLOW_SNAKE_IMAGE_PATH;
-	        case Green:
-	            return GREEN_SNAKE_IMAGE_PATH;
-	        case Blue:
-	            return BLUE_SNAKE_IMAGE_PATH;
-	        default:
-	            return DEFAULT_SNAKE_IMAGE_PATH; 
-	    }
-	}
-
-	private void displaySnake(Snake snake, String imagePath) {
-	    // Get the head and tail coordinates of the snake
-	    int headTile = snake.getSnakeHead();
-	    int tailTile = snake.getSnakeTail();
-	    int xHead = board.getTile(headTile).getxCoord();
-	    int yHead = board.getTile(headTile).getyCoord();
-	    int xTail = board.getTile(tailTile).getxCoord();
-	    int yTail = board.getTile(tailTile).getyCoord();
-
-	    // Load snake image
-	    Image snakeImage = new Image(getClass().getResource(imagePath).toExternalForm());
-
-	    // If the snake color is red, set a fixed size for the image
-	    if (snake.getColor() == SnakeColor.Red) {
-	        // Create ImageView for the question
-	        ImageView redSnakeImageView = new ImageView(snakeImage);
-	        redSnakeImageView.setFitHeight(RED_SNAKE_SIZE);
-	        redSnakeImageView.setFitWidth(RED_SNAKE_SIZE);
-	        redSnakeImageView.setVisible(true);
-	        GridPane.setRowIndex(redSnakeImageView, xHead);
-	        GridPane.setColumnIndex(redSnakeImageView, yHead);
-	        grid.getChildren().addAll(redSnakeImageView);
-	        GridPane.setHalignment(redSnakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(redSnakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
-	    } else {
-	        
-	        double slope = (double) (yTail - yHead) / (xTail - xHead);
-	        double angle = Math.toDegrees(Math.atan(slope));
-
-	        // Calculate the length of the snake
-	        double snakeLength = Math.sqrt(Math.pow(xTail - xHead, 2) + Math.pow(yTail - yHead, 2)) * TILE_SIZE;
-
-	        // Calculate the position of the snake
-	        int xPos = (xTail + xHead) / 2;
-	        int yPos = (yTail + yHead) / 2;
-
-	        // Create ImageView for the snake image
-	        ImageView snakeImageView = new ImageView(snakeImage);
-	        snakeImageView.setFitWidth(2*TILE_SIZE); // Width remains TILE_SIZE
-	        snakeImageView.setFitHeight(2*snakeLength+0.1*TILE_SIZE); // Set the height to match the calculated length
-	        snakeImageView.setRotate(-angle); // Rotate the image to match the angle between head and tail
-
-	    	if(xHead-xTail>0) {
-		       snakeImageView.setScaleX(-1);
-		       snakeImageView.setScaleY(-1);
-	    	}
-	        snakeImageView.setVisible(true);
-	        GridPane.setRowIndex(snakeImageView, xHead);
-	        GridPane.setColumnIndex(snakeImageView, yHead);
-	        grid.getChildren().addAll(snakeImageView);
-	        GridPane.setHalignment(snakeImageView, javafx.geometry.HPos.CENTER); // Center horizontally
-	        GridPane.setValignment(snakeImageView, javafx.geometry.VPos.CENTER); // Center vertically
-	    }
-	}
-
-	public void showLadders() {
-	    HashMap<Integer, List<Ladder>> laddersBySize = new HashMap<>();
-	    for (HashMap.Entry<Integer, Ladder> l : board.getLadders().entrySet()) {
-	        Ladder ladder = l.getValue();
-	        int ladderSize = ladder.getLadderLen();
-	        if (!laddersBySize.containsKey(ladderSize)) {
-	            laddersBySize.put(ladderSize, new ArrayList<>());
-	        }
-	        laddersBySize.get(ladderSize).add(ladder);
-	    }
-
-	    for (List<Ladder> ladders : laddersBySize.values()) {
-	        for (Ladder ladder : ladders) {
-	            displayLadder(ladder, getLadderImagePath(ladder),getBigLadderImagePath(ladder));
-	        }
-	    }
-	}
-
-	private String getLadderImagePath(Ladder ladder) {
-	    switch (ladder.getLadderLen()) {
-	        case 1:
-	            return LADDER_1_IMAGE_PATH;
-	        case 2:
-	            return LADDER_2_IMAGE_PATH;
-	        case 3:
-	            return LADDER_3_IMAGE_PATH;
-	        case 4:
-	            return LADDER_4_IMAGE_PATH;
-	        case 5:
-	            return LADDER_5_IMAGE_PATH;
-	        case 6:
-	            return LADDER_6_IMAGE_PATH;
-	       // case 7:
-	        //    return LADDER_7_IMAGE_PATH;
-	       // case 8:
-	       //     return LADDER_8_IMAGE_PATH;
-	        default:
-	            return DEFAULT_LADDER_IMAGE_PATH;
-	    }
-	}
-	
-	private String getBigLadderImagePath(Ladder ladder) {
-	    switch (ladder.getLadderLen()) {
-	        case 1:
-	            return LADDER_1B_IMAGE_PATH;
-	        case 2:
-	            return LADDER_2B_IMAGE_PATH;
-	        case 3:
-	            return LADDER_3B_IMAGE_PATH;
-	        case 4:
-	            return LADDER_4B_IMAGE_PATH;
-	        case 5:
-	            return LADDER_5B_IMAGE_PATH;
-	        case 6:
-	            return LADDER_6B_IMAGE_PATH;
-	       // case 7:
-	        //    return LADDER_7B_IMAGE_PATH;
-	       // case 8:
-	       //     return LADDER_8B_IMAGE_PATH;
-	        default:
-	            return DEFAULT_LADDER_IMAGE_PATH;
-	    }
-	}
-	
-	private void displayLadder(Ladder ladder, String imagePath, String BigimagePath) {
-	    // Get the head and tail coordinates of the ladder
-	    int upperTile = ladder.getLadderTop();
-	    int bottomTile = ladder.getLadderBottom();
-	    int xTop = board.getTile(upperTile).getxCoord();
-	    int yTop = board.getTile(upperTile).getyCoord();
-	    int xBottom = board.getTile(bottomTile).getxCoord();
-	    int yBottom = board.getTile(bottomTile).getyCoord();
-	    boolean bigLadder = false;
-	    Image ladderImage = new Image(getClass().getResource(imagePath).toExternalForm());
-	    
-	    if(Math.abs(xTop-xBottom)>= (board.getBoardLen()/2) || 
-	    		Math.abs(yTop-yBottom)>= (board.getBoardLen()/2)) {
-		    ladderImage = new Image(getClass().getResource(BigimagePath).toExternalForm());
-		    bigLadder = true;
-	    }
-	    
-        double slope = (double) (yBottom - yTop) / (xBottom - xTop);
-        double angle = Math.toDegrees(Math.atan(slope));
-
-        // Calculate the length of the snake
-        double ladderLength = Math.sqrt(Math.pow(xBottom - xTop, 2) + Math.pow(yBottom - yTop, 2)) * TILE_SIZE;
-
-        // Calculate the position of the snake
-        int xPos = (int) (xBottom + xTop) / 2;
-        int yPos = (int) (yBottom + yTop) / 2;
-        
-
-
-        // Create ImageView for the snake image
-        ImageView ladderImageView = new ImageView(ladderImage);
-        if(bigLadder) {
-            ladderImageView.setFitWidth(2.2*TILE_SIZE); // Width remains TILE_SIZE
-        } else {
-            ladderImageView.setFitWidth(1.2*TILE_SIZE); // Width remains TILE_SIZE
-        }
-        ladderImageView.setFitHeight(2*ladderLength+0.1*TILE_SIZE); // Set the height to match the calculated length
-        ladderImageView.setRotate(-angle); // Rotate the image to match the angle between head and tail
-
-    	if(xTop-xBottom>0) {
-    		ladderImageView.setScaleX(-1);
-    		ladderImageView.setScaleY(-1);
-    	}else {
-	     // snakeImageView.setScaleY(-1);
-    	}
-        //snakeImageView.setScaleY(-1);
-       // snakeImageView.setScaleX(-1);
-    	ladderImageView.setVisible(true);
-        GridPane.setRowIndex(ladderImageView, xTop);
-        GridPane.setColumnIndex(ladderImageView, yTop);
-        grid.getChildren().addAll(ladderImageView);
-        GridPane.setHalignment(ladderImageView, javafx.geometry.HPos.CENTER); // Center horizontally
-        GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
-	}
-*/
-	
 	public double getCellHeight(int rowIndex) {
         double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
         
@@ -576,52 +371,77 @@ public class NormalController implements Initializable{
     }
     
     @FXML
-    void handleDiceClick(ActionEvent event) throws InterruptedException {	
-    	 initializeMap();
-    	 int lastDiceResult=0;
-    	 Duration duration = Duration.millis(1000);
-    	 int numFrames = 20;
-    	 Duration frameInterval = duration.divide(numFrames);
-    	 Timeline timeline = new Timeline();
-    	 // Add keyframes to the timeline
-    	    for (int i = 0; i < numFrames; i++) {
-    	        int result = Dice.RandomNumberGenerator(Difficulty.Easy);
-    	        lastDiceResult = result; // Save the result
-    	        String imagePath = diceImageMap.get(result);
+    void handleDiceClick(ActionEvent event) throws InterruptedException {
+        initializeMap();
+        int lastDiceResult=0;
+        Duration duration = Duration.millis(1000);
+        int numFrames = 20;
+        Duration frameInterval = duration.divide(numFrames);
+        Timeline timeline = new Timeline();
+        // Add keyframes to the timeline
+        for (int i = 0; i < numFrames; i++) {
+            int result = Dice.RandomNumberGenerator(Difficulty.Medium);
+            lastDiceResult = result; // Save the result
+            String imagePath = diceImageMap.get(result);
 
-    	        // Create a keyframe for each image of the dice
-    	        KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
-    	                e -> updateDiceImage(imagePath));
+            // Create a keyframe for each image of the dice
+            KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
+                    e -> updateDiceImage(imagePath));
 
-    	        timeline.getKeyFrames().add(keyFrame);
-    	    }
-    	    
-    	  timeline.setCycleCount(1); // Set the time line to  one
-    	  timeline.setOnFinished(e -> {
-    	    	 // After 10 seconds, reset the dice image to the default
-    	   PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
-    	    pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
-    	    pauseTransition.play();    	   
-    	  });
-		viewResultDice(lastDiceResult);
-    	  timeline.play();//animation
-    	}
+            timeline.getKeyFrames().add(keyFrame);
+        }
+
+        timeline.setCycleCount(1); // Set the timeline to one cycle
+        timeline.setOnFinished(e -> {
+            // After 10 seconds, reset the dice image to the default
+            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
+            pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
+            pauseTransition.play();
+        });
+
+        // Roll the dice once to get the result
+        int diceResult = Dice.RandomNumberGenerator(Difficulty.Medium);
+        System.out.println("Dice resuly: "+diceResult);
+        // Display the dice result
+        viewResultDice(diceResult);
+
+        // Move the current player based on the dice result
+        Player currentPlayer = getNextPlayerToMove();
+        move(currentPlayer, diceResult);
+
+        timeline.play(); // Start the animation
+    }
+
+    
+    private Player getNextPlayerToMove() {
+        // If there are no players in the game or currentPlayerIndex is out of bounds, return null
+        if (game == null || game.getPlayers() == null || game.getPlayers().isEmpty() || currentPlayerIndex < 0 || currentPlayerIndex >= game.getPlayers().size()) {
+            return null;
+        }
+        
+        // Get the next player to move
+        Player nextPlayer = game.getPlayers().get(currentPlayerIndex);
+        // Increment currentPlayerIndex for the next turn
+        currentPlayerIndex = (currentPlayerIndex + 1) % game.getPlayers().size();
+        
+        System.out.println("current player: "+nextPlayer.getPlayerName());
+        return nextPlayer;
+    }
+
 
     private void viewResultDice(int diceResult) {//this for easy difficulty only
     	if(diceResult <= 6) {
-    		move(diceResult); 
+    		
 		}
-    	if(diceResult == 7) {//display easy question
-    		
+    	if(diceResult == 7 || diceResult == 8) {
+    		//display easy question    		
     	}
-    	else { if(diceResult == 8) {//display normal question 
-    		
+    	else if(diceResult == 9 || diceResult == 10) {
+    		//display normal question 
     	}
-    	  else if(diceResult == 9) {//display hard question 
-    		
-    	  }
-    	}
-		
+    	else if(diceResult == 11 || diceResult == 12) {
+    		//display hard question 	
+        }	
 	}
 
 	private void updateDiceImage(String imagePath) {//update the dice image 
@@ -641,34 +461,32 @@ public class NormalController implements Initializable{
     }
 
     
-	void move(int steps) {
-
-	        // Now you can use this HashMap for further processing
-	        
-	        for (Player p : game.getPlayers()) {
-	        	System.out.println(p.toString());
-	            int currentPosition = p.getPlayerPlace();
-	            p.setPlayerPrevPlace(currentPosition);
-	            hidePlayerToken(p);
-	            int newPosition = currentPosition + steps;
-	            // Check if newPosition exceeds 100
-	            if (newPosition > 100) {
-	                continue; // Skip this player
-	            }
-	            
-	            // Set player's new position
-	            p.setPlayerPlace(newPosition);
-	            displayPlayerToken(p,newPosition);
-	            
-	            // Check if player reaches 100
-	            if (newPosition == 100) {
-		            p.setPlayerPlace(newPosition);
-		            displayPlayerToken(p,newPosition);
-	            	game.setWinner(p);
-	                System.out.println(p.getPlayerName() + " is the WINNER!");
-	            }
-	        }
+	void move(Player player, int steps) {	    
+	    System.out.println(player.toString());
+	    int currentPosition = player.getPlayerPlace();
+	    player.setPlayerPrevPlace(currentPosition);
+	    hidePlayerToken(player);
+	    int newPosition = currentPosition + steps;
+	    
+	    // Check if newPosition exceeds 100
+	    if (newPosition > 100) {
+	    	newPosition = currentPosition - steps;
+	        //Player cannot move beyond the board
 	    }
+	    
+	    // Set player's new position
+	    player.setPlayerPlace(newPosition);
+	    displayPlayerToken(player, newPosition);
+	    
+	    // Check if player reaches 100
+	    if (newPosition == 100) {
+	        player.setPlayerPlace(newPosition);
+	        displayPlayerToken(player, newPosition);
+	        game.setWinner(player);
+	        System.out.println(player.getPlayerName() + " is the WINNER!");
+	    }
+	}
+
 	   
 	private String getTokenImagePath(Player player) {
 		    switch (player.getPlayerColor()) {
