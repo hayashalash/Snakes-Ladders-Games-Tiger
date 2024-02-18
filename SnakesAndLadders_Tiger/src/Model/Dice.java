@@ -20,17 +20,20 @@ public class Dice {
 
 
 	public static void RollingDiceStartingGame(Game game) {//set orders for the players
-		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Player> gamePlayers = new ArrayList<>();
+		for (Player p : game.getPlayers()) {
+			gamePlayers.add(p);
+		}
 		 Queue<Player> playersOrder = new LinkedList<>();	
 		int order =1;//to change the player order in the player class
-		while(!players.isEmpty()) {//check remain players without order 
+		while(!gamePlayers.isEmpty()) {//check remain players without order 
 			Random random = new Random();
-			int r= random.nextInt(players.size());
+			int r= random.nextInt(gamePlayers.size());
 			if(r>0) 
 				r=r-1;
-			playersOrder.add(players.get(r));    //add the player to the queue
-			players.get(r).setNumberOrder(order);
-			players.remove(r);	
+			playersOrder.add(gamePlayers.get(r));    //add the player to the queue
+			gamePlayers.get(r).setNumberOrder(order);
+			gamePlayers.remove(r);	
             order++;//for the player order
 		}
 		 game.setPlayersOrder(playersOrder);//change the original queue to the random order of play

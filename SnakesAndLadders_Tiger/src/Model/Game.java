@@ -13,7 +13,7 @@ public class Game {
 	private Date date;
 	private int playersNum;
 	private Double gameDuration;
-	private ArrayList<Player> players;//should delete?
+	private ArrayList<Player> players = new ArrayList<>();//should delete?
 	private Player winner;
 	private Queue<Player> playersOrder = new LinkedList<Player>();
 	

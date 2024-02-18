@@ -86,7 +86,7 @@ public class Player {
 			return false;
 		Player other = (Player) obj;
 		return numberOrder == other.numberOrder && playerColor == other.playerColor && playerID == other.playerID
-				&& Objects.equals(playerName, other.playerName) && playerPlace == other.playerPlace;
+				&& Objects.equals(playerName, other.playerName);
 	}
 
 

@@ -100,6 +100,8 @@ public class NormalController implements Initializable{
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
+	
 	private GameController gameController;
 	private int currentPlayerIndex = 0;
 	public static Game game;
@@ -198,7 +200,8 @@ public class NormalController implements Initializable{
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
-		Dice.RollingDiceStartingGame(game);
+		Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
+
 	}
 	
 	private void startTimer() {
@@ -263,7 +266,7 @@ public class NormalController implements Initializable{
 				iconsOnBoard.put(p, yellowImageView); // save players icons to control during the game
 				icons.put(p, yellowPlayer); // associate created icon with the player
 			}
-
+			playersOutsideBoard.add(p);
 		}
 		for (ImageView iv : playerIcons) {
 			iv.setFitHeight(ICON_SIZE);
@@ -278,6 +281,7 @@ public class NormalController implements Initializable{
 			ImageView icon = new ImageView(icons.get(p));
 			icon.setFitHeight(IMAGE_HEIGHT);
 			icon.setFitWidth(IMAGE_WIDTH);
+			icon.setVisible(true);
 			if (player1.getChildren().isEmpty())
 				player1.getChildren().addAll(icon, name);
 			else if (player2.getChildren().isEmpty())
@@ -286,22 +290,7 @@ public class NormalController implements Initializable{
 				player3.getChildren().addAll(icon, name);
 			else // player4 is empty
 				player4.getChildren().addAll(icon, name);
-		}
-		
-	}
-	
-
-	public double getCellHeight(int rowIndex) {
-        double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
-        
-        System.out.println("Cell height: " + cellHeight);
-        return cellHeight;
-	}
-	public double getCellWidth(int colIndex) {
-        double cellWidth = grid.getColumnConstraints().get(colIndex).getPrefWidth();
-        
-        System.out.println("Cell width: " + cellWidth);
-        return cellWidth;
+		}			
 	}
 	
 	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
@@ -482,7 +471,11 @@ public class NormalController implements Initializable{
         Player nextPlayer = game.getPlayersOrder().poll();
         // Increment currentPlayerIndex for the next turn
         System.out.println("current player: "+nextPlayer.getPlayerName());
-        game.getPlayersOrder().add(nextPlayer);
+        boolean added = game.getPlayersOrder().offer(nextPlayer);
+        if(added)
+        	System.out.println("player "+nextPlayer.getPlayerName()+" was added back to the queue");
+        else
+        	System.out.println("player "+nextPlayer.getPlayerName()+" was NOT added back to the queue");
         return nextPlayer;
     }
 
@@ -493,20 +486,20 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-    		//showQuestionPopup(Difficulty.Easy);
+    		showQuestionPopup(Difficulty.Easy);
     		move(currentPlayer, 0);
 
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-    		//showQuestionPopup(Difficulty.Medium);
+    		showQuestionPopup(Difficulty.Medium);
     		move(currentPlayer, 0);
 
 
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-    		//showQuestionPopup(Difficulty.Hard);
+    		showQuestionPopup(Difficulty.Hard);
     		move(currentPlayer, 0);
 
 
@@ -531,19 +524,21 @@ public class NormalController implements Initializable{
 
     
 	void move(Player player, int steps) {	    
-	    System.out.println(player.toString());
+//	    System.out.println(player.toString());
 	    int currentPosition = player.getPlayerPlace();
+	    System.out.println("current player position: "+currentPosition);
+
 	    player.setPlayerPrevPlace(currentPosition);
 	    hidePlayerToken(player);
 	    
 	    int newPosition = NextMove(currentPosition,steps);	    
-	    System.out.println("current player position: "+newPosition);
+	    System.out.println("new player position: "+newPosition);
 	    // Set player's new position
 	    player.setPlayerPlace(newPosition);
 	    displayPlayerToken(player, newPosition);
 	    
 	    // Check if player reaches 100
-	    if (newPosition == 100) {
+	    if (newPosition == board.getBoardSize()) {
 	        player.setPlayerPlace(newPosition);
 	        displayPlayerToken(player, newPosition);
 	        game.setWinner(player);
@@ -581,19 +576,38 @@ public class NormalController implements Initializable{
 	    token.setFitHeight(TOKEN_SIZE);
 	    token.setFitWidth(TOKEN_SIZE);
 	    token.setVisible(true);
+	    System.out.println("player to be displayed now: "+player.getPlayerName());
 	    if(newPosition!=0) {
-	    Tile pos = board.getTile(newPosition);
-	    System.out.println(pos);
-	    int row = pos.getxCoord();
-	    int column = pos.getyCoord();
-	    GridPane.setRowIndex(token, row);
-	    GridPane.setColumnIndex(token, column);
-	    // If the token is not already in the grid, add it
-	    if (!grid.getChildren().contains(token)) {
-	        grid.getChildren().add(token);
+	    	// If the token is not already in the grid, add it
+		    if (!grid.getChildren().contains(iconsOnBoard.get(player))) {
+		        grid.getChildren().add(iconsOnBoard.get(player));
+		        if (playersOutsideBoard.size() > 0) { // if there are still players outside the board
+		        	if (player.equals(playersOutsideBoard.get(0))) {
+			        	playersStart.getChildren().remove(0);
+			        	playersOutsideBoard.remove(0);
+			        }
+			        else if (player.equals(playersOutsideBoard.get(1))) {
+			        	playersStart.getChildren().remove(1);
+			        	playersOutsideBoard.remove(1);
+			        }
+			        else if (game.getPlayersNum()>2 && player.equals(playersOutsideBoard.get(2))) {
+			        	playersStart.getChildren().remove(2);
+			        	playersOutsideBoard.remove(2);
+			        }
+			        else if (game.getPlayersNum()>3 && player.equals(playersOutsideBoard.get(3))) {
+			        	playersStart.getChildren().remove(3);
+			        	playersOutsideBoard.remove(3);
+			        }
+		        }
+		    }
+		    Tile pos = board.getTile(newPosition);
+//		    System.out.println(pos);
+		    int row = pos.getxCoord();
+		    int column = pos.getyCoord();
+		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
+		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
+		    
 	    }
-	    }
-	   
 	}
 
 	private void hidePlayerToken(Player p) {
@@ -642,26 +656,26 @@ public class NormalController implements Initializable{
 	                resultTextField.setText("Your answer is right!");
 	                selectedAnswer.setStyle("-fx-text-fill: green;");
 	            }
-	         else {
-                resultTextField.setText("Wrong answer.");
-                selectedAnswer.setStyle("-fx-text-fill: red;");
-                switch (q.getCorrectAnswer()) {//mark the right answer in green
-                case 1:
-                    answer1.setStyle("-fx-text-fill: green;");
-                    break;
-                case 2:
-                    answer2.setStyle("-fx-text-fill: green;");
-                    break;
-                case 3:
-                    answer3.setStyle("-fx-text-fill: green;");
-                    break;
-                case 4:
-                    answer4.setStyle("-fx-text-fill: green;");
-                    break;
-            }
-	        }
-	        }
-	    }
+	            else {
+	                resultTextField.setText("Wrong answer.");
+	                selectedAnswer.setStyle("-fx-text-fill: red;");
+	                switch (q.getCorrectAnswer()) {//mark the right answer in green
+	                case 1:
+	                    answer1.setStyle("-fx-text-fill: green;");
+	                    break;
+	                case 2:
+	                    answer2.setStyle("-fx-text-fill: green;");
+	                    break;
+	                case 3:
+	                    answer3.setStyle("-fx-text-fill: green;");
+	                    break;
+	                case 4:
+	                    answer4.setStyle("-fx-text-fill: green;");
+	                    break;
+	                }
+	            }
+	       }
+	   }
 	}
 	
     public Question returnQuestion(Difficulty difficulty) {
@@ -688,14 +702,17 @@ public class NormalController implements Initializable{
     }
     
     int NextMove(int currPosition, int steps) {
+    	System.out.println("steps to move in NextMove are: " + steps);
 	    int nextPos = currPosition + steps;
 
-	    if (nextPos > board.getBoardSize()) {
+	    if (nextPos > board.getBoardSize() || nextPos < 1) {
+	    	System.out.println("next position is "+ nextPos +" and is larger than the board size os smaller than 1.");
 	        return currPosition; // Ensure next position is within the board boundaries
 	    }
 
 	    Tile nextTile = board.getTile(nextPos);
 	    if (nextTile == null) {
+	    	System.out.println("next position is "+ nextPos +" and that tile is null.");
 	        return currPosition; // Handle case where tile is null
 	    }
 
@@ -717,7 +734,7 @@ public class NormalController implements Initializable{
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
 	            System.out.println("Next step will be: " + ladder.getLadderTop());
-	            return ladder.getLadderBottom();
+	            return ladder.getLadderTop();
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
 	            break; // Handle surprise tiles appropriately
@@ -726,14 +743,12 @@ public class NormalController implements Initializable{
 	            break; // Handle question tiles appropriately
 	        default:
 	            // Handle unknown tile types or other cases
-	            break;
+	        	System.out.println("Next step will be: " + nextPos);
+	            return nextPos;
 	    }
 
 	    return 0;
 	}
 
-
-	
-    
 }
 
