@@ -197,8 +197,7 @@ public class NormalController implements Initializable{
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
-		Dice dice = new Dice();
-		dice.RollingDiceStartingGame(game);
+		Dice.RollingDiceStartingGame(game);
 	}
 	
 	private void startTimer() {
@@ -436,16 +435,22 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-    		showQuestionPopup(Difficulty.Easy);
+    		//showQuestionPopup(Difficulty.Easy);
+    		move(currentPlayer, 0);
+
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-    		showQuestionPopup(Difficulty.Medium);
+    		//showQuestionPopup(Difficulty.Medium);
+    		move(currentPlayer, 0);
+
 
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-    		showQuestionPopup(Difficulty.Hard);
+    		//showQuestionPopup(Difficulty.Hard);
+    		move(currentPlayer, 0);
+
 
         }	
 	}
@@ -472,33 +477,6 @@ public class NormalController implements Initializable{
 	    int currentPosition = player.getPlayerPlace();
 	    player.setPlayerPrevPlace(currentPosition);
 	    hidePlayerToken(player);
-	    int newPosition = currentPosition + steps;
-	    
-	    // Check if newPosition exceeds 100
-	    if (newPosition > 100) {
-	    	newPosition = currentPosition - steps;
-	        //Player cannot move beyond the board
-	    }
-	    System.out.println("current player position: "+newPosition);
-	    // Set player's new position
-	    player.setPlayerPlace(newPosition);
-	    displayPlayerToken(player, newPosition);
-	    
-	    // Check if player reaches 100
-	    if (newPosition == 100) {
-	        player.setPlayerPlace(newPosition);
-	        displayPlayerToken(player, newPosition);
-	        game.setWinner(player);
-	        System.out.println(player.getPlayerName() + " is the WINNER!");
-	    }
-	}
-	
-	/*
-	 	void move(Player player, int steps) {	    
-	    System.out.println(player.toString());
-	    int currentPosition = player.getPlayerPlace();
-	    player.setPlayerPrevPlace(currentPosition);
-	    hidePlayerToken(player);
 	    
 	    int newPosition = NextMove(currentPosition,steps);	    
 	    System.out.println("current player position: "+newPosition);
@@ -514,52 +492,6 @@ public class NormalController implements Initializable{
 	        System.out.println(player.getPlayerName() + " is the WINNER!");
 	    }
 	}
-	*/
-	
-	 int NextMove(int currPosition, int steps) {
-		    int nextPos = currPosition + steps;
-
-		    if (nextPos > board.getBoardSize()) {
-		        return currPosition; // Ensure next position is within the board boundaries
-		    }
-
-		    Tile nextTile = board.getTile(nextPos);
-		    if (nextTile == null) {
-		        return currPosition; // Handle case where tile is null
-		    }
-
-		    switch (nextTile.gettType()) {
-		        case Classic:
-		            System.out.println("Next step will be: " + nextPos);
-		            return nextPos;
-		        case SnakeHead:
-		            SnakeTile snakeT = (SnakeTile) nextTile;
-		            Snake snake = snakeT.getSnake();
-		            if (snake.getColor() == SnakeColor.Red) {
-		                System.out.println("Next step will be: 1");
-		                return 1;
-		            } else {
-		                System.out.println("Next step will be: " + snake.getSnakeTail());
-		                return snake.getSnakeTail();
-		            }
-		        case LadderBottom:
-		            LadderTile ladderT = (LadderTile) nextTile;
-		            Ladder ladder = ladderT.getLadder();
-		            System.out.println("Next step will be: " + ladder.getLadderTop());
-		            return ladder.getLadderBottom();
-		        case Surprise:
-		            System.out.println("Yaaaay you got a gift!");
-		            break; // Handle surprise tiles appropriately
-		        case Question:
-		            System.out.println("I have a question for you");
-		            break; // Handle question tiles appropriately
-		        default:
-		            // Handle unknown tile types or other cases
-		            break;
-		    }
-
-		    return 0;
-		}
 
 	   
 	private String getTokenImagePath(Player player) {
@@ -591,19 +523,19 @@ public class NormalController implements Initializable{
 	    token.setFitHeight(TOKEN_SIZE);
 	    token.setFitWidth(TOKEN_SIZE);
 	    token.setVisible(true);
-	    
+	    if(newPosition!=0) {
 	    Tile pos = board.getTile(newPosition);
 	    System.out.println(pos);
 	    int row = pos.getxCoord();
 	    int column = pos.getyCoord();
-	    
 	    GridPane.setRowIndex(token, row);
 	    GridPane.setColumnIndex(token, column);
-	    
 	    // If the token is not already in the grid, add it
 	    if (!grid.getChildren().contains(token)) {
 	        grid.getChildren().add(token);
 	    }
+	    }
+	   
 	}
 
 	private void hidePlayerToken(Player p) {
@@ -626,6 +558,7 @@ public class NormalController implements Initializable{
 	    dialog.setTitle("Question");
 		
 			Question q = returnQuestion(difficulty);
+			System.out.println(q);
 		
 	    // Create  elements for the question and answer:
 	    VBox vbox = new VBox();
@@ -648,11 +581,11 @@ public class NormalController implements Initializable{
 	            int selectedAnswerNumber = (int) selectedAnswer.getUserData();//get the number of seelcted answer
 	            int correctAnswerNumber=q.getCorrectAnswer();
 	            if(selectedAnswerNumber == correctAnswerNumber) {
-	           //     resultTextField.setText("Your answer is right!");
+	                resultTextField.setText("Your answer is right!");
 	                selectedAnswer.setStyle("-fx-text-fill: green;");
 	            }
 	         else {
-               // resultTextField.setText("Wrong answer.");
+                resultTextField.setText("Wrong answer.");
                 selectedAnswer.setStyle("-fx-text-fill: red;");
                 switch (q.getCorrectAnswer()) {//mark the right answer in green
                 case 1:
@@ -689,12 +622,60 @@ public class NormalController implements Initializable{
         int r = random.nextInt(10);
 
         // Ensure that the ArrayList for the specified difficulty is not null and contains questions
-        while (questionMap.get(difficulty) == null || questionMap.get(difficulty).isEmpty() || questionMap.get(difficulty).get(r) == null) {
+        while (questionMap.get(difficulty) == null || !questionMap.get(difficulty).isEmpty() || questionMap.get(difficulty).get(r) == null) {
             r = random.nextInt(10);
         }
 
         return questionMap.get(difficulty).get(r);
     }
+    
+    int NextMove(int currPosition, int steps) {
+	    int nextPos = currPosition + steps;
+
+	    if (nextPos > board.getBoardSize()) {
+	        return currPosition; // Ensure next position is within the board boundaries
+	    }
+
+	    Tile nextTile = board.getTile(nextPos);
+	    if (nextTile == null) {
+	        return currPosition; // Handle case where tile is null
+	    }
+
+	    switch (nextTile.gettType()) {
+	        case Classic:
+	            System.out.println("Next step will be: " + nextPos);
+	            return nextPos;
+	        case SnakeHead:
+	            SnakeTile snakeT = (SnakeTile) nextTile;
+	            Snake snake = snakeT.getSnake();
+	            if (snake.getColor() == SnakeColor.Red) {
+	                System.out.println("Next step will be: 1");
+	                return 1;
+	            } else {
+	                System.out.println("Next step will be: " + snake.getSnakeTail());
+	                return snake.getSnakeTail();
+	            }
+	        case LadderBottom:
+	            LadderTile ladderT = (LadderTile) nextTile;
+	            Ladder ladder = ladderT.getLadder();
+	            System.out.println("Next step will be: " + ladder.getLadderTop());
+	            return ladder.getLadderBottom();
+	        case Surprise:
+	            System.out.println("Yaaaay you got a gift!");
+	            break; // Handle surprise tiles appropriately
+	        case Question:
+	            System.out.println("I have a question for you");
+	            break; // Handle question tiles appropriately
+	        default:
+	            // Handle unknown tile types or other cases
+	            break;
+	    }
+
+	    return 0;
+	}
+
+
+	
     
 }
 

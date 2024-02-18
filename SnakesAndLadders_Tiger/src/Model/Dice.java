@@ -19,7 +19,7 @@ public class Dice {
 	}
 
 
-	public void RollingDiceStartingGame(Game game) {//set orders for the players
+	public static void RollingDiceStartingGame(Game game) {//set orders for the players
 		ArrayList<Player> players = game.getPlayers();
 		 Queue<Player> playersOrder = new LinkedList<>();	
 		int order =1;//to change the player order in the player class
