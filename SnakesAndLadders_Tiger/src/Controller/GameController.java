@@ -27,6 +27,7 @@ import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
 import Model.Tile;
+import Model.TileType;
 import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -610,6 +611,12 @@ import javafx.scene.layout.VBox;
 		}
 		
 		
+		//private int GameOn(int currPosition, int steps) {
+		//	int nextPos=
+		//	if(board.getTile(currPosition+nextPos).gettType()== TileType.Classic && board.) {
+		//		return 
+		//	}				
+		//}
 		
 
 		

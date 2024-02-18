@@ -400,14 +400,12 @@ public class NormalController implements Initializable{
         });
 
         // Roll the dice once to get the result
-        int diceResult = Dice.RandomNumberGenerator(Difficulty.Medium);
-        System.out.println("Dice resuly: "+diceResult);
+        System.out.println("Dice result: "+lastDiceResult);
         // Display the dice result
-        viewResultDice(diceResult);
 
         // Move the current player based on the dice result
         Player currentPlayer = getNextPlayerToMove();
-        move(currentPlayer, diceResult);
+        viewResultDice(currentPlayer, lastDiceResult);
 
         timeline.play(); // Start the animation
     }
@@ -417,23 +415,21 @@ public class NormalController implements Initializable{
         // If there are no players in the game or currentPlayerIndex is out of bounds, return null
         if (game == null || game.getPlayers() == null || game.getPlayers().isEmpty() || currentPlayerIndex < 0 || currentPlayerIndex >= game.getPlayers().size()) {
             return null;
-        }
-        
+        }        
         // Get the next player to move
         Player nextPlayer = game.getPlayers().get(currentPlayerIndex);
         // Increment currentPlayerIndex for the next turn
-        currentPlayerIndex = (currentPlayerIndex + 1) % game.getPlayers().size();
-        
+        currentPlayerIndex = (currentPlayerIndex + 1) % game.getPlayers().size();       
         System.out.println("current player: "+nextPlayer.getPlayerName());
         return nextPlayer;
     }
 
 
-    private void viewResultDice(int diceResult) {//this for easy difficulty only
+    private void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
     	if(diceResult <= 6) {
-    		
+    		move(currentPlayer, diceResult);
 		}
-    	if(diceResult == 7 || diceResult == 8) {
+    	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question    		
     	}
     	else if(diceResult == 9 || diceResult == 10) {
@@ -473,7 +469,7 @@ public class NormalController implements Initializable{
 	    	newPosition = currentPosition - steps;
 	        //Player cannot move beyond the board
 	    }
-	    
+	    System.out.println("current player position: "+newPosition);
 	    // Set player's new position
 	    player.setPlayerPlace(newPosition);
 	    displayPlayerToken(player, newPosition);
