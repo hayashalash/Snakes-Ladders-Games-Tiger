@@ -89,11 +89,7 @@ public class Player {
 				&& Objects.equals(playerName, other.playerName) && playerPlace == other.playerPlace;
 	}
 
-	@Override
-	public String toString() {
-		return "Player [playerID=" + playerID + ", playerName=" + playerName + ", playerColor=" + playerColor
-				+ ", playerPlace=" + playerPlace + "]";
-	}
+
 
 	
 }

@@ -22,13 +22,19 @@ public class Dice {
 	public void RollingDiceStartingGame(Game game) {//set orders for the players
 		ArrayList<Player> players = game.getPlayers();
 		 Queue<Player> playersOrder = new LinkedList<>();	
+		int order =1;//to change the player order in the player class
 		while(!players.isEmpty()) {//check remain players without order 
 			Random random = new Random();
-			int r= random.nextInt(players.size()-1);
+			int r= random.nextInt(players.size());
+			if(r>0) 
+				r=r-1;
 			playersOrder.add(players.get(r));    //add the player to the queue
+			players.get(r).setNumberOrder(order);
 			players.remove(r);	
+            order++;//for the player order
 		}
 		 game.setPlayersOrder(playersOrder);//change the original queue to the random order of play
+		 System.out.println(playersOrder);
 	}
 	
 	public static  int RandomNumberGenerator(Difficulty type){

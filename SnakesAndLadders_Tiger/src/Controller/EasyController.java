@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
@@ -19,6 +21,8 @@ import Model.Question;
 import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
+import Model.SysData;
+import Model.Tile;
 import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -41,6 +45,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
@@ -73,6 +80,11 @@ public class EasyController implements Initializable{
 	private static final String YELLOW = "/img/icons/yellowPlayer.png";	
 	private static final String INFO_IMAGE_PATH = "/img/screens/infoBack.jpg";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
+	private double QUESTION_SIZE = 0;
+	private double SURPRISE_SIZE = 0;
+	private double RED_SNAKE_SIZE = 0;
+	private double TILE_SIZE = 0;
+	private double TOKEN_SIZE = 0;
 	public static Game game;
 	private GameController gameController;
 	Board board = new Board(game.getType());
@@ -163,6 +175,8 @@ public class EasyController implements Initializable{
 	    gameController.showSnakes();
 	    gameController.showLadders();
 		showQuestions();
+		Dice dice = new Dice();
+		dice.RollingDiceStartingGame(game);
 	}
 	private void startTimer() {
 		// Create a timeline for the game duration
@@ -349,21 +363,175 @@ public class EasyController implements Initializable{
     	  timeline.play();//animation
     	}
 
-    private static void viewResultDise(int diceResult){//this for easy  difficulty only
-    	if(diceResult<4) {
-    		// function to move the player 
+    private  void viewResultDise(int diceResult){//this for easy  difficulty only
+    	if(diceResult<5) {//move the player
+    		movePlayer(diceResult);
 		}
     	if(diceResult==5) {//display easy question
-    	//	GameController.showQuestionPopup(Difficulty.Easy);
+    		showQuestionPopup(Difficulty.Easy);
     	}
     	else { if(diceResult==6) {//display normal question 
-    		
+    		showQuestionPopup(Difficulty.Medium);
+
     	}
-    	  else if(diceResult==7) {//display hard question 
-    		
+    	  else if(diceResult==7) {//display hard question 	
     	  }
+		showQuestionPopup(Difficulty.Hard);
+
     	}
+
+    }
+    public  void showQuestionPopup(Difficulty difficulty) {//view the question  dialog 
+	    Dialog<ButtonType> dialog = new Dialog<>();
+	    dialog.setTitle("Question");
+		
+			Question q = returnQuestion(difficulty);
+		
+	    // Create  elements for the question and answer:
+	    VBox vbox = new VBox();
+	    Label questionLabel = new Label(q.getQuestion());
+	    ToggleGroup answerGroup = new ToggleGroup();
+	    RadioButton answer1 = new RadioButton(q.getAnswer1());
+	    RadioButton answer2 = new RadioButton(q.getAnswer2());
+	    RadioButton answer3 = new RadioButton(q.getAnswer3());
+	    RadioButton answer4 = new RadioButton(q.getAnswer4());
+	   // TextField resultTextField = new TextField();
+	    //resultTextField.setEditable(false);
+	    vbox.getChildren().addAll(questionLabel, answer1, answer2, answer3, answer4);
+	    dialog.getDialogPane().setContent(vbox);	 // Set the content of the dialog
+	    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+	    Optional<ButtonType> result = dialog.showAndWait(); // Show the dialog and wait for a button click
+
+	    if (result.isPresent() && result.get() == ButtonType.OK) {  // Handle  button click
+	        RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle();	 // Check the selected answer
+	        if (selectedAnswer != null) {
+	            int selectedAnswerNumber = (int) selectedAnswer.getUserData();//get the number of seelcted answer
+	            int correctAnswerNumber=q.getCorrectAnswer();
+	            if(selectedAnswerNumber == correctAnswerNumber) {
+	           //     resultTextField.setText("Your answer is right!");
+	                selectedAnswer.setStyle("-fx-text-fill: green;");
+	            }
+	         else {
+               // resultTextField.setText("Wrong answer.");
+                selectedAnswer.setStyle("-fx-text-fill: red;");
+                switch (q.getCorrectAnswer()) {//mark the right answer in green
+                case 1:
+                    answer1.setStyle("-fx-text-fill: green;");
+                    break;
+                case 2:
+                    answer2.setStyle("-fx-text-fill: green;");
+                    break;
+                case 3:
+                    answer3.setStyle("-fx-text-fill: green;");
+                    break;
+                case 4:
+                    answer4.setStyle("-fx-text-fill: green;");
+                    break;
+            }
+	        }
+	        }
+	    }
 	}
+	
+    public Question returnQuestion(Difficulty difficulty) {
+        HashSet<Question> questions = SysData.getInstance().getQuestions();
+        HashMap<Difficulty, ArrayList<Question>> questionMap = new HashMap<>();
+
+        // Initialize ArrayList for each difficulty
+        for (Question question : questions) {
+            Difficulty diff = question.getDifficulty();
+            ArrayList<Question> q = questionMap.getOrDefault(diff, new ArrayList<>());
+            q.add(question);
+            questionMap.put(diff, q);
+        }
+
+        Random random = new Random();
+        int r = random.nextInt(10);
+
+        // Ensure that the ArrayList for the specified difficulty is not null and contains questions
+        while (questionMap.get(difficulty) == null || questionMap.get(difficulty).isEmpty() || questionMap.get(difficulty).get(r) == null) {
+            r = random.nextInt(10);
+        }
+
+        return questionMap.get(difficulty).get(r);
+    }
+
+
+public  void movePlayer(int steps) {
+	Player p =game.getPlayersOrder().poll();
+    int currentPosition = p.getPlayerPlace();
+	int newPosition = currentPosition + steps;
+    if (newPosition > 49) {//check if the player reaches last tile
+        return; // Skip this player
+    }
+    hidePlayerToken(p);
+    // Set player's new position
+    p.setPlayerPlace(newPosition);
+    displayPlayerToken(p,newPosition);
+    
+  //check if the player reaches last tile
+    if (newPosition == 49) {
+        p.setPlayerPlace(newPosition);
+        displayPlayerToken(p,newPosition);
+    	game.setWinner(p);
+        System.out.println(p.getPlayerName() + " is the WINNER!");
+    }
+}
+private  void displayPlayerToken(Player player, int newPosition) {
+    Image tokenImage = new Image(player.getClass().getResource(getTokenImagePath(player)).toExternalForm());
+    ImageView token = iconsOnBoard.get(player);
+    if (token == null) {
+        token = new ImageView(tokenImage);
+        iconsOnBoard.put(player, token);
+    }
+    token.setFitHeight(TOKEN_SIZE);
+    token.setFitWidth(TOKEN_SIZE);
+    token.setVisible(true);
+    
+    Tile pos = board.getTile(newPosition);
+    int row = pos.getxCoord();
+    int column = pos.getyCoord();
+    
+    GridPane.setRowIndex(token, row);
+    GridPane.setColumnIndex(token, column);
+    
+    // If the token is not already in the grid, add it
+    if (!grid.getChildren().contains(token)) {
+        grid.getChildren().add(token);
+    }
+}
+
+private  void hidePlayerToken(Player p) {
+    ImageView token = iconsOnBoard.get(p);
+    if (token != null) {
+        grid.getChildren().remove(token);
+    }
+}
+
+private  String getTokenImagePath(Player player) {
+    switch (player.getPlayerColor()) {
+        case Red:
+            return RED;
+        case Green:
+            return GREEN;
+        case Yellow:
+            return YELLOW;
+        case Blue:
+            return BLUE;
+        case Pink:
+            return PINK;
+        case Purple:
+            return PURPLE;
+        default:
+            return null;
+    }
+}
+ 
+private  void endgame() {
+   newScreen("Winner");
+}
+
+  
 
 	private void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
@@ -381,9 +549,7 @@ public class EasyController implements Initializable{
 		}  	
     }
 	
-    public static void movePlayer(int n) {
-     
-    }
+    
  
 	private void ensureExitButtonOnTop() {
 	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
