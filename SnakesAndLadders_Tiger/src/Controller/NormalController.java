@@ -1,10 +1,13 @@
 package Controller;
+import java.awt.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
@@ -24,6 +27,7 @@ import Model.Question;
 import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
+import Model.SysData;
 import Model.Tile;
 import View.Alerts;
 import javafx.animation.Animation;
@@ -46,6 +50,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
@@ -189,6 +195,8 @@ public class NormalController implements Initializable{
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
+		Dice dice = new Dice();
+		dice.RollingDiceStartingGame(game);
 	}
 	
 	private void startTimer() {
@@ -412,15 +420,10 @@ public class NormalController implements Initializable{
 
     
     private Player getNextPlayerToMove() {
-        // If there are no players in the game or currentPlayerIndex is out of bounds, return null
-        if (game == null || game.getPlayers() == null || game.getPlayers().isEmpty() || currentPlayerIndex < 0 || currentPlayerIndex >= game.getPlayers().size()) {
-            return null;
-        }        
-        // Get the next player to move
-        Player nextPlayer = game.getPlayers().get(currentPlayerIndex);
+        Player nextPlayer = game.getPlayersOrder().poll();
         // Increment currentPlayerIndex for the next turn
-        currentPlayerIndex = (currentPlayerIndex + 1) % game.getPlayers().size();       
         System.out.println("current player: "+nextPlayer.getPlayerName());
+        game.getPlayersOrder().add(nextPlayer);
         return nextPlayer;
     }
 
@@ -430,13 +433,18 @@ public class NormalController implements Initializable{
     		move(currentPlayer, diceResult);
 		}
     	else if(diceResult == 7 || diceResult == 8) {
-    		//display easy question    		
+    		//display easy question 
+    		showQuestionPopup(Difficulty.Easy);
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
+    		showQuestionPopup(Difficulty.Medium);
+
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
+    		showQuestionPopup(Difficulty.Hard);
+
         }	
 	}
 
@@ -515,6 +523,7 @@ public class NormalController implements Initializable{
 	    token.setVisible(true);
 	    
 	    Tile pos = board.getTile(newPosition);
+	    System.out.println(pos);
 	    int row = pos.getxCoord();
 	    int column = pos.getyCoord();
 	    
@@ -538,7 +547,84 @@ public class NormalController implements Initializable{
 	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
 	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
 	}
+	
+	
+	
+	//question pop up :
+	public  void showQuestionPopup(Difficulty difficulty) {//view the question  dialog 
+	    Dialog<ButtonType> dialog = new Dialog<>();
+	    dialog.setTitle("Question");
+		
+			Question q = returnQuestion(difficulty);
+		
+	    // Create  elements for the question and answer:
+	    VBox vbox = new VBox();
+	    Label questionLabel = new Label(q.getQuestion());
+	    ToggleGroup answerGroup = new ToggleGroup();
+	    RadioButton answer1 = new RadioButton(q.getAnswer1());
+	    RadioButton answer2 = new RadioButton(q.getAnswer2());
+	    RadioButton answer3 = new RadioButton(q.getAnswer3());
+	    RadioButton answer4 = new RadioButton(q.getAnswer4());
+	    TextField resultTextField = new TextField();
+	    resultTextField.setEditable(false);
+	    vbox.getChildren().addAll(questionLabel, answer1, answer2, answer3, answer4);
+	    dialog.getDialogPane().setContent(vbox);	 // Set the content of the dialog
+	    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+	    Optional<ButtonType> result = dialog.showAndWait(); // Show the dialog and wait for a button click
 
+	    if (result.isPresent() && result.get() == ButtonType.OK) {  // Handle  button click
+	        RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle();	 // Check the selected answer
+	        if (selectedAnswer != null) {
+	            int selectedAnswerNumber = (int) selectedAnswer.getUserData();//get the number of seelcted answer
+	            int correctAnswerNumber=q.getCorrectAnswer();
+	            if(selectedAnswerNumber == correctAnswerNumber) {
+	           //     resultTextField.setText("Your answer is right!");
+	                selectedAnswer.setStyle("-fx-text-fill: green;");
+	            }
+	         else {
+               // resultTextField.setText("Wrong answer.");
+                selectedAnswer.setStyle("-fx-text-fill: red;");
+                switch (q.getCorrectAnswer()) {//mark the right answer in green
+                case 1:
+                    answer1.setStyle("-fx-text-fill: green;");
+                    break;
+                case 2:
+                    answer2.setStyle("-fx-text-fill: green;");
+                    break;
+                case 3:
+                    answer3.setStyle("-fx-text-fill: green;");
+                    break;
+                case 4:
+                    answer4.setStyle("-fx-text-fill: green;");
+                    break;
+            }
+	        }
+	        }
+	    }
+	}
+	
+    public Question returnQuestion(Difficulty difficulty) {
+        HashSet<Question> questions = SysData.getInstance().getQuestions();
+        HashMap<Difficulty, ArrayList<Question>> questionMap = new HashMap<>();
+
+        // Initialize ArrayList for each difficulty
+        for (Question question : questions) {
+            Difficulty diff = question.getDifficulty();
+            ArrayList<Question> q = questionMap.getOrDefault(diff, new ArrayList<>());
+            q.add(question);
+            questionMap.put(diff, q);
+        }
+
+        Random random = new Random();
+        int r = random.nextInt(10);
+
+        // Ensure that the ArrayList for the specified difficulty is not null and contains questions
+        while (questionMap.get(difficulty) == null || questionMap.get(difficulty).isEmpty() || questionMap.get(difficulty).get(r) == null) {
+            r = random.nextInt(10);
+        }
+
+        return questionMap.get(difficulty).get(r);
+    }
     
 }
 
