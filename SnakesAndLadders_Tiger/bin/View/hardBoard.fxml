@@ -103,6 +103,6 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="temp" layoutX="39.0" layoutY="448.0" mnemonicParsing="false" onAction="#win" text="Button" />
+      <Button fx:id="temp" layoutX="39.0" layoutY="448.0" mnemonicParsing="false" onAction="#win" text="See winner page" />
    </children>
 </AnchorPane>
