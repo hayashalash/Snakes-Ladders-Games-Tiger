@@ -486,20 +486,20 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-    		showQuestionPopup(Difficulty.Easy);
+//    		showQuestionPopup(Difficulty.Easy);
     		move(currentPlayer, 0);
 
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-    		showQuestionPopup(Difficulty.Medium);
+//    		showQuestionPopup(Difficulty.Medium);
     		move(currentPlayer, 0);
 
 
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-    		showQuestionPopup(Difficulty.Hard);
+//    		showQuestionPopup(Difficulty.Hard);
     		move(currentPlayer, 0);
 
 
