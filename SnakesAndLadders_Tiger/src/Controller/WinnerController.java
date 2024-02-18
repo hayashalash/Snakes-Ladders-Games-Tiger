@@ -76,7 +76,7 @@ public class WinnerController implements Initializable{
         System.out.println("Image height: " + i.getHeight());
 
         
-        String congrats = "Congrats " + "haya" + " you won!";
+        String congrats = "Congrats " + "haya" + " you won!"; //Change haya to the winner game.getWinner.getPlayerName
         winnerLabel.setText(congrats);
 
         // Center the text in the screen

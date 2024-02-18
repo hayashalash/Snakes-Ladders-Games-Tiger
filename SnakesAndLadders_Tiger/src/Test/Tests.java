@@ -38,7 +38,7 @@ class Tests {
 	 * question_scheme.Json file and check if it is done successfully
 	 */
     
-	@Test
+	@Test  //Test ID = A1
 	public void writeToJsonTest() throws IOException, ParseException {
 	
 	    SysData.getInstance().writeToJson(question);
@@ -46,8 +46,13 @@ class Tests {
 	
 	}
 	
-	// Delete a question from question_scheme.json expects not to find the deleted question in the Question HashSet and SysData
-	@Test
+	
+	/*
+	 * Delete a question from question_scheme.json expects not to find the deleted
+	 * question in the Question HashSet and SysData
+	 */
+	
+	@Test   //Test ID = B1
     public void deleteFromJsonTest() throws IOException, ParseException {
 	   
         SysData.getInstance().deleteFromJson(question);
@@ -55,8 +60,11 @@ class Tests {
         assertTrue(!SysData.getInstance().getQuestions().contains(question));
    }
    
-   // Check if the SysData and the Data Structure HashSet is not Null
-   @Test
+	/*
+	 * Check if the SysData and the Data Structure HashSet is not Null
+	 */
+	
+   @Test  //Test ID = D1
    public void isJsonNullTest() throws IOException, ParseException {
        	SysData.getInstance().readFromJson();
        	SysData.getInstance().getQuestions();
@@ -64,9 +72,12 @@ class Tests {
 
   }
    
-   // Updating the question in the HashSet and Json File
-   @Test
-   public void updateInJsonTest() throws IOException, ParseException {
+	/*
+	 * Updating the question in the HashSet and Json File
+	 */
+   
+   @Test   //Test ID = E1
+   public void updateInJsonTest1() throws IOException, ParseException {
 
        SysData.getInstance().getQuestions().add(oldQuestion);
 
@@ -77,11 +88,13 @@ class Tests {
        assertFalse(SysData.getInstance().getQuestions().contains(oldQuestion)); // Old question should not be present
        assertTrue(SysData.getInstance().getQuestions().contains(newQuestion));  // New question should be present
    }
+   
+ 
 
    /*
     * Check that random tiles are created within the board limits
     * */
-   @Test
+   @Test   //Test ID = F1
    public void testChooseRandomTile() {
 	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
        board.createBoard();
@@ -93,7 +106,7 @@ class Tests {
     * Check that the method choosing a random tile from a row, returns a tile in the given row.
     * */
    
-   @Test
+   @Test   //Test ID = G1
    public void testChooseRandomInRow() {
 	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
 	   board.createBoard();
@@ -106,7 +119,7 @@ class Tests {
     * This test does not check for surprises as easy boards don't have surprise tiles
     * */
    
-   @Test
+   @Test   //Test ID = H1
    public void testSpecialTiles() {
 	   Board board = new Board(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random difficulty
        board.createBoard();
@@ -130,7 +143,7 @@ class Tests {
        }
    }
 	/*
-	 * After check I have to keep the originJson file, without any changes. 
+	 * After check I have to keep the origin Json file, without any changes. 
 	 * so we clean up the SysData from the changes that happen in the JUnit test
 	 */
    
