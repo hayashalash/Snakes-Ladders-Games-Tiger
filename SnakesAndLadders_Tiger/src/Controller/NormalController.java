@@ -22,11 +22,13 @@ import Model.Dice;
 import Model.Difficulty;
 import Model.Game;
 import Model.Ladder;
+import Model.LadderTile;
 import Model.Player;
 import Model.Question;
 import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
+import Model.SnakeTile;
 import Model.SysData;
 import Model.Tile;
 import View.Alerts;
@@ -490,6 +492,74 @@ public class NormalController implements Initializable{
 	        System.out.println(player.getPlayerName() + " is the WINNER!");
 	    }
 	}
+	
+	/*
+	 	void move(Player player, int steps) {	    
+	    System.out.println(player.toString());
+	    int currentPosition = player.getPlayerPlace();
+	    player.setPlayerPrevPlace(currentPosition);
+	    hidePlayerToken(player);
+	    
+	    int newPosition = NextMove(currentPosition,steps);	    
+	    System.out.println("current player position: "+newPosition);
+	    // Set player's new position
+	    player.setPlayerPlace(newPosition);
+	    displayPlayerToken(player, newPosition);
+	    
+	    // Check if player reaches 100
+	    if (newPosition == 100) {
+	        player.setPlayerPlace(newPosition);
+	        displayPlayerToken(player, newPosition);
+	        game.setWinner(player);
+	        System.out.println(player.getPlayerName() + " is the WINNER!");
+	    }
+	}
+	*/
+	
+	 int NextMove(int currPosition, int steps) {
+		    int nextPos = currPosition + steps;
+
+		    if (nextPos > board.getBoardSize()) {
+		        return currPosition; // Ensure next position is within the board boundaries
+		    }
+
+		    Tile nextTile = board.getTile(nextPos);
+		    if (nextTile == null) {
+		        return currPosition; // Handle case where tile is null
+		    }
+
+		    switch (nextTile.gettType()) {
+		        case Classic:
+		            System.out.println("Next step will be: " + nextPos);
+		            return nextPos;
+		        case SnakeHead:
+		            SnakeTile snakeT = (SnakeTile) nextTile;
+		            Snake snake = snakeT.getSnake();
+		            if (snake.getColor() == SnakeColor.Red) {
+		                System.out.println("Next step will be: 1");
+		                return 1;
+		            } else {
+		                System.out.println("Next step will be: " + snake.getSnakeTail());
+		                return snake.getSnakeTail();
+		            }
+		        case LadderBottom:
+		            LadderTile ladderT = (LadderTile) nextTile;
+		            Ladder ladder = ladderT.getLadder();
+		            System.out.println("Next step will be: " + ladder.getLadderTop());
+		            return ladder.getLadderBottom();
+		        case Surprise:
+		            System.out.println("Yaaaay you got a gift!");
+		            break; // Handle surprise tiles appropriately
+		        case Question:
+		            System.out.println("I have a question for you");
+		            break; // Handle question tiles appropriately
+		        default:
+		            // Handle unknown tile types or other cases
+		            break;
+		    }
+
+		    return 0;
+		}
 
 	   
 	private String getTokenImagePath(Player player) {
