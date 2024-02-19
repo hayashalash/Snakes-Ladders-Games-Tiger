@@ -95,7 +95,7 @@
                <children>
                   <Label text="Player 1:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="player1txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
@@ -109,7 +109,7 @@
                <children>
                   <Label text="Color:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Comic Sans MS Bold" size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
@@ -127,7 +127,7 @@
                <children>
                   <Label text="Player 2:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="player2txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
@@ -141,7 +141,7 @@
                <children>
                   <Label text="Color:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
@@ -159,7 +159,7 @@
                <children>
                   <Label text="Player 3:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="player3txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
@@ -173,7 +173,7 @@
                <children>
                   <Label text="Color:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
@@ -191,7 +191,7 @@
                <children>
                   <Label text="Player 4:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="player4txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
@@ -205,7 +205,7 @@
                <children>
                   <Label text="Color:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">

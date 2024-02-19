@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import Model.Difficulty;
 import Model.Game;
+import Model.Player;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -74,9 +75,21 @@ public class WinnerController implements Initializable{
 
         System.out.println("Image width: " + i.getWidth());
         System.out.println("Image height: " + i.getHeight());
-
+        Difficulty diff = HardController.game.getType();
+        String congrats = null;
+        Player winner = null;
+        if (diff == Difficulty.Easy)
+        	winner = EasyController.game.getWinner();
+     	else if (diff == Difficulty.Medium) 
+     		winner = NormalController.game.getWinner();
+     	else if (diff == Difficulty.Hard)
+     		winner = HardController.game.getWinner();
         
-        String congrats = "Congrats " + "haya" + " you won!"; //Change haya to the winner game.getWinner.getPlayerName
+     	if (winner == null) 
+     		congrats ="Congrats Haya you won!";
+     	else
+     		congrats = "Congrats " + winner.getPlayerName() + " you won!";
+        
         winnerLabel.setText(congrats);
 
         // Center the text in the screen

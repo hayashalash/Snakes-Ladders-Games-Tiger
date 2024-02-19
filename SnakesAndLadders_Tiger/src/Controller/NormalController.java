@@ -555,6 +555,7 @@ public class NormalController implements Initializable{
 	        player.setPlayerPlace(newPosition);
 	        displayPlayerToken(player, newPosition);
 	        game.setWinner(player);
+	        newScreen("Winner");
 	        System.out.println(player.getPlayerName() + " is the WINNER!");
 	    }
 	}

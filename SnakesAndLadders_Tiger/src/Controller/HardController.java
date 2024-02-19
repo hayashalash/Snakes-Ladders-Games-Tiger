@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import Controller.ChoosePlayersController.ImageListCell;
 import Model.Board;
 import Model.Color;
+import Model.Dice;
 import Model.Difficulty;
 import Model.Game;
 import Model.Ladder;
@@ -72,13 +73,14 @@ public class HardController implements Initializable{
 	private GameController gameController;
 	public static Game game;
 	Board board = new Board(game.getType());
+	
+	@FXML
+	private AnchorPane rootAnchorPane;
+	
 	@FXML
     private Button temp;
 	
 	public Player currentTurn;
-	
-	@FXML
-	private AnchorPane rootAnchorPane;
 	
     @FXML
     private AnchorPane screen;
@@ -132,15 +134,15 @@ public class HardController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
-	     startTimer();
-			showPlayers();
-		    gameController = new GameController(board, grid);
-		    gameController.showSnakes();
-		    gameController.showLadders();
-			showQuestions();
-			showSurprises();
-			getCellWidth(4);
-			getCellHeight(4);
+        startTimer();
+		showPlayers();
+	    gameController = new GameController(board, grid);
+	    gameController.showSnakes();
+	    gameController.showLadders();
+		showQuestions();
+		showSurprises();
+		ensureExitButtonOnTop();
+	//	Dice.RollingDiceStartingGame(game);
 	}
 	
 	private void startTimer() {
@@ -238,18 +240,6 @@ public class HardController implements Initializable{
 	}
 	
 
-	public double getCellHeight(int rowIndex) {
-        double cellHeight = grid.getRowConstraints().get(rowIndex).getPrefHeight();
-        
-        System.out.println("Cell height: " + cellHeight);
-        return cellHeight;
-	}
-	public double getCellWidth(int colIndex) {
-        double cellWidth = grid.getColumnConstraints().get(colIndex).getPrefWidth();
-        
-        System.out.println("Cell width: " + cellWidth);
-        return cellWidth;
-	}
 	
 	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
 		// Create ImageView for the icon
