@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Board {
 	static final int minItemLen = 0;
@@ -44,6 +45,7 @@ public class Board {
 		mediumQuestions = new HashMap<>();
 		hardQuestions = new HashMap<>();
 		playerOn = new HashMap<>();
+		importQuestions();
 	}
 
 	public static int getIdCounter() {
@@ -186,20 +188,25 @@ public class Board {
 	}
 	
 	public void importQuestions () {
-		for (Question q : SysData.getInstance().getQuestions()) {
+		HashSet<Question> qs = new HashSet<>();
+		qs.addAll(SysData.getInstance().getQuestions());
+		for (Question q : qs) {
 		    addQuestion(q);
 		}
+		System.out.println("Number of easy questions: "+getEasyQuestions().size());
+		System.out.println("Number of medium questions: "+getMediumQuestions().size());
+		System.out.println("Number of hard questions: "+getHardQuestions().size());
 	}
 	
-	public boolean addQuestion(Question q) {
+	public void addQuestion(Question q) {
 		if(q == null || getEasyQuestions().containsKey(q.getQuestionID()) || getMediumQuestions().containsKey(q.getQuestionID()) || getHardQuestions().containsKey(q.getQuestionID()))
-			return false;
+			return;
 		if (q.getDifficulty() == Difficulty.Easy)
-			return getEasyQuestions().put(q.getQuestionID(), q) == null;
+			getEasyQuestions().put(q.getQuestionID(), q);
 		else if (q.getDifficulty() == Difficulty.Medium) 
-			return getMediumQuestions().put(q.getQuestionID(), q) == null;
+			getMediumQuestions().put(q.getQuestionID(), q);
 		else // if difficulty isn't easy/medium - it is hard
-			return getHardQuestions().put(q.getQuestionID(), q) == null;
+			getHardQuestions().put(q.getQuestionID(), q);
 	}
 
 /*	public boolean createBoard() {
