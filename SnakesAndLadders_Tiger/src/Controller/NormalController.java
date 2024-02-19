@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import Model.Admin;
 import Model.Board;
 import Model.Color;
 import Model.Dice;
@@ -428,6 +430,8 @@ public class NormalController implements Initializable{
     
     @FXML
     void handleDiceClick(ActionEvent event) throws InterruptedException {
+    	// Enable the button after animation completes
+        diceButton.setDisable(true);
         initializeMap();
         int lastDiceResult=0;
         Duration duration = Duration.millis(1000);
@@ -446,12 +450,14 @@ public class NormalController implements Initializable{
 
             timeline.getKeyFrames().add(keyFrame);
         }
+        
 
         timeline.setCycleCount(1); // Set the timeline to one cycle
         timeline.setOnFinished(e -> {
+            
             // After 10 seconds, reset the dice image to the default
-            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
-            pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
+            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(7));
+            pauseTransition.setOnFinished(event1 -> onFinished());
             pauseTransition.play();
         });
 
@@ -459,13 +465,19 @@ public class NormalController implements Initializable{
         System.out.println("Dice result: "+lastDiceResult);
         // Display the dice result
 
+        timeline.play(); // Start the animation
+        
         // Move the current player based on the dice result
         Player currentPlayer = getNextPlayerToMove();
         viewResultDice(currentPlayer, lastDiceResult);
 
-        timeline.play(); // Start the animation
     }
 
+    public void onFinished() {
+    	updateDiceImage(DEFAULT_DICE_IMAGE_PATH);
+    	// Enable the button after animation completes
+        diceButton.setDisable(false);
+    }
     
     private Player getNextPlayerToMove() {
         Player nextPlayer = game.getPlayersOrder().poll();
@@ -486,21 +498,21 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-//    		showQuestionPopup(Difficulty.Easy);
-    		move(currentPlayer, 0);
+//    		int steps = showQuestionPopup(Difficulty.Easy);
+    		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
 
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-//    		showQuestionPopup(Difficulty.Medium);
-    		move(currentPlayer, 0);
+//    		int steps = showQuestionPopup(Difficulty.Medium);
+    		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
 
 
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-//    		showQuestionPopup(Difficulty.Hard);
-    		move(currentPlayer, 0);
+//    		int steps = showQuestionPopup(Difficulty.Hard);
+    		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
 
 
         }	
@@ -509,6 +521,7 @@ public class NormalController implements Initializable{
 	private void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
+    	 
     }
     
 	void newScreen(String path) {
@@ -531,7 +544,7 @@ public class NormalController implements Initializable{
 	    player.setPlayerPrevPlace(currentPosition);
 	    hidePlayerToken(player);
 	    
-	    int newPosition = NextMove(currentPosition,steps);	    
+	    int newPosition = NextMove(currentPosition,steps, player);	    
 	    System.out.println("new player position: "+newPosition);
 	    // Set player's new position
 	    player.setPlayerPlace(newPosition);
@@ -548,23 +561,23 @@ public class NormalController implements Initializable{
 
 	   
 	private String getTokenImagePath(Player player) {
-		    switch (player.getPlayerColor()) {
-		        case Red:
-		            return RED;
-		        case Green:
-		            return GREEN;
-		        case Yellow:
-		            return YELLOW;
-		        case Blue:
-		            return BLUE;
-		        case Pink:
-		            return PINK;
-		        case Purple:
-		            return PURPLE;
-		        default:
-		            return null;
-		    }
-		}
+	    switch (player.getPlayerColor()) {
+	        case Red:
+	            return RED;
+	        case Green:
+	            return GREEN;
+	        case Yellow:
+	            return YELLOW;
+	        case Blue:
+	            return BLUE;
+	        case Pink:
+	            return PINK;
+	        case Purple:
+	            return PURPLE;
+	        default:
+	            return null;
+	    }
+	}
 	
 	private void displayPlayerToken(Player player, int newPosition) {
 	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
@@ -624,11 +637,9 @@ public class NormalController implements Initializable{
 	
 	
 	
-	//question pop up :
-	public  void showQuestionPopup(Difficulty difficulty) {//view the question  dialog 
+	public int showQuestionPopup(Difficulty difficulty) {//view the question  dialog  and return the number of steps he has to step 
 	    Dialog<ButtonType> dialog = new Dialog<>();
 	    dialog.setTitle("Question");
-		
 			Question q = returnQuestion(difficulty);
 			System.out.println(q);
 		
@@ -655,31 +666,41 @@ public class NormalController implements Initializable{
 	            if(selectedAnswerNumber == correctAnswerNumber) {
 	                resultTextField.setText("Your answer is right!");
 	                selectedAnswer.setStyle("-fx-text-fill: green;");
-	            }
-	            else {
-	                resultTextField.setText("Wrong answer.");
-	                selectedAnswer.setStyle("-fx-text-fill: red;");
-	                switch (q.getCorrectAnswer()) {//mark the right answer in green
-	                case 1:
-	                    answer1.setStyle("-fx-text-fill: green;");
-	                    break;
-	                case 2:
-	                    answer2.setStyle("-fx-text-fill: green;");
-	                    break;
-	                case 3:
-	                    answer3.setStyle("-fx-text-fill: green;");
-	                    break;
-	                case 4:
-	                    answer4.setStyle("-fx-text-fill: green;");
-	                    break;
+	                if(difficulty==Difficulty.Easy || difficulty==Difficulty.Medium) {
+	                	return 0;
 	                }
+	                else return 1;
 	            }
-	       }
-	   }
+	         else {
+                resultTextField.setText("Wrong answer.");
+                selectedAnswer.setStyle("-fx-text-fill: red;");
+                switch (q.getCorrectAnswer()) {//mark the right answer in green
+                case 1:
+                    answer1.setStyle("-fx-text-fill: green;");
+                    break;
+                case 2:
+                    answer2.setStyle("-fx-text-fill: green;");
+                    break;
+                case 3:
+                    answer3.setStyle("-fx-text-fill: green;");
+                    break;
+                case 4:
+                    answer4.setStyle("-fx-text-fill: green;");
+                    break;
+            }
+                if(difficulty==Difficulty.Easy)return -1;
+                if(difficulty==Difficulty.Medium)return -2;
+                if(difficulty==Difficulty.Hard)return -3;
+
+
+	        }
+	        }
+	    }
+		return 0;
 	}
 	
     public Question returnQuestion(Difficulty difficulty) {
-        HashSet<Question> questions = SysData.getInstance().getQuestions();
+    	HashSet<Question> questions = SysData.getInstance().getQuestions();
         HashMap<Difficulty, ArrayList<Question>> questionMap = new HashMap<>();
 
         // Initialize ArrayList for each difficulty
@@ -689,7 +710,9 @@ public class NormalController implements Initializable{
             q.add(question);
             questionMap.put(diff, q);
         }
-
+        System.out.println("number of easy questions AREEN: "+questionMap.get(Difficulty.Easy).size());
+        System.out.println("number of easy questions AREEN: "+questionMap.get(Difficulty.Medium).size());
+        System.out.println("number of easy questions AREEN: "+questionMap.get(Difficulty.Hard).size());
         Random random = new Random();
         int r = random.nextInt(10);
 
@@ -699,9 +722,40 @@ public class NormalController implements Initializable{
         }
 
         return questionMap.get(difficulty).get(r);
+//    	ArrayList<Question> questions = new ArrayList<>();
+//    	Question randomQ = null;
+//    	Random random = new Random();
+//    	if (difficulty == Difficulty.Easy) {
+//    		for (Question q : board.getEasyQuestions().values()) {
+//    			questions.add(q);
+//    			System.out.println(q.toString());
+//    		}
+//    		int r = random.nextInt(questions.size());
+//    		randomQ = questions.get(r);
+//    	}
+//    	if (difficulty == Difficulty.Medium) {
+//    		for (Question q : board.getMediumQuestions().values()) {
+//    			questions.add(q);
+//    			System.out.println(q.toString());
+//
+//    		}
+//    		int r = random.nextInt(questions.size());
+//    		randomQ = questions.get(r);
+//    	}
+//    	if (difficulty == Difficulty.Hard) {
+//    		for (Question q : board.getHardQuestions().values()) {
+//    			questions.add(q);
+//    			System.out.println(q.toString());
+//
+//    		}
+//    		System.out.println("size of questions is: "+questions.size());
+//    		int r = random.nextInt(questions.size());
+//    		randomQ = questions.get(r);
+//    	}
+//        return randomQ;
     }
     
-    int NextMove(int currPosition, int steps) {
+    int NextMove(int currPosition, int steps, Player p) {
     	System.out.println("steps to move in NextMove are: " + steps);
 	    int nextPos = currPosition + steps;
 
@@ -740,7 +794,18 @@ public class NormalController implements Initializable{
 	            break; // Handle surprise tiles appropriately
 	        case Question:
 	            System.out.println("I have a question for you");
-	            break; // Handle question tiles appropriately
+//	            int newPosition = nextPos;
+//	    	    p.setPlayerPrevPlace(currPosition);
+//				hidePlayerToken(p);
+//	    	    System.out.println("new player position: "+newPosition);
+//	    	    // Set player's new position
+//	    	    p.setPlayerPlace(newPosition);
+//	    	    displayPlayerToken(p, newPosition);
+//	    	    System.out.println("current player position on question tile: "+newPosition);
+//	            int newSteps = showQuestionPopup(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random diff
+//	    		move(p, newSteps);
+//	            return p.getPlayerPlace();
+	            break;
 	        default:
 	            // Handle unknown tile types or other cases
 	        	System.out.println("Next step will be: " + nextPos);

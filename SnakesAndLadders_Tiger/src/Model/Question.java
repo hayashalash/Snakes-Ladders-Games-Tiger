@@ -113,6 +113,11 @@ public  class  Question implements Comparable<Question>{
 		return this.question.compareToIgnoreCase(o.getQuestion());
 		
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Question [answer1=" + answer1 + ", answer2=" + answer2 + ", answer3=" + answer3 + ", answer4=" + answer4
+				+ ", questionID=" + questionID + ", question=" + question + ", difficulty=" + difficulty
+				+ ", correctAnswer=" + correctAnswer + "]";
+	}
 }
