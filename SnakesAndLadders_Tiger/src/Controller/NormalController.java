@@ -433,15 +433,16 @@ public class NormalController implements Initializable{
     	// Enable the button after animation completes
         diceButton.setDisable(true);
         initializeMap();
-        int lastDiceResult=0;
+        int[] lastDiceResult = new int[1]; // Array to hold the result
+        Player currentPlayer = getNextPlayerToMove();
         Duration duration = Duration.millis(1000);
         int numFrames = 20;
         Duration frameInterval = duration.divide(numFrames);
         Timeline timeline = new Timeline();
         // Add keyframes to the timeline
         for (int i = 0; i < numFrames; i++) {
-            int result = Dice.RandomNumberGenerator(Difficulty.Medium);
-            lastDiceResult = result; // Save the result
+        	int result = Dice.RandomNumberGenerator(Difficulty.Medium);
+            lastDiceResult[0] = result; // Save the result into the array
             String imagePath = diceImageMap.get(result);
 
             // Create a keyframe for each image of the dice
@@ -456,33 +457,46 @@ public class NormalController implements Initializable{
         timeline.setOnFinished(e -> {
             
             // After 10 seconds, reset the dice image to the default
-            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(7));
-            pauseTransition.setOnFinished(event1 -> onFinished());
+            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+            pauseTransition.setOnFinished(event1 -> onFinished(currentPlayer, lastDiceResult[0]));
             pauseTransition.play();
         });
 
         // Roll the dice once to get the result
-        System.out.println("Dice result: "+lastDiceResult);
+        System.out.println("Dice result: "+lastDiceResult[0]);
         // Display the dice result
 
         timeline.play(); // Start the animation
         
-        // Move the current player based on the dice result
-        Player currentPlayer = getNextPlayerToMove();
-        viewResultDice(currentPlayer, lastDiceResult);
-
     }
 
-    public void onFinished() {
-    	updateDiceImage(DEFAULT_DICE_IMAGE_PATH);
+    public void onFinished(Player currentPlayer, int lastResult) {
+    	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
     	// Enable the button after animation completes
         diceButton.setDisable(false);
+        // Move the current player based on the dice result after animation completes
+        viewResultDice(currentPlayer, lastResult);
     }
     
     private Player getNextPlayerToMove() {
         Player nextPlayer = game.getPlayersOrder().poll();
         // Increment currentPlayerIndex for the next turn
         System.out.println("current player: "+nextPlayer.getPlayerName());
+        // Select the player in green to indicate their turn
+        if (nextPlayer.equals(game.getPlayers().get(0))) {
+        	player1.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
+        }
+        else if (nextPlayer.equals(game.getPlayers().get(1))) {
+        	player2.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
+        }
+        else if (game.getPlayersNum()>2) {
+        	if (nextPlayer.equals(game.getPlayers().get(2)))
+        		player3.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
+        }
+        else if (game.getPlayersNum()>3) {
+        	if (nextPlayer.equals(game.getPlayers().get(3)))
+        		player4.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
+        }
         boolean added = game.getPlayersOrder().offer(nextPlayer);
         if(added)
         	System.out.println("player "+nextPlayer.getPlayerName()+" was added back to the queue");
@@ -558,6 +572,22 @@ public class NormalController implements Initializable{
 	        newScreen("Winner");
 	        System.out.println(player.getPlayerName() + " is the WINNER!");
 	    }
+	    
+	    // clear green border once the player finishes their turn
+	    if (player.equals(game.getPlayers().get(0))) {
+	    	player1.setStyle("-fx-border-color: transparent;");
+        }
+        else if (player.equals(game.getPlayers().get(1))) {
+        	player2.setStyle("-fx-border-color: transparent;");
+        }
+        else if (game.getPlayersNum()>2) {
+        	if (player.equals(game.getPlayers().get(2)))
+        		player3.setStyle("-fx-border-color: transparent;");
+        }
+        else if (game.getPlayersNum()>3) {
+        	if (player.equals(game.getPlayers().get(3)))
+        		player4.setStyle("-fx-border-color: transparent;");
+        }
 	}
 
 	   
@@ -600,15 +630,21 @@ public class NormalController implements Initializable{
 			        	playersStart.getChildren().remove(0);
 			        	playersOutsideBoard.remove(0);
 			        }
-			        else if (player.equals(playersOutsideBoard.get(1))) {
+		        }
+		        else if (playersOutsideBoard.size() > 1) {
+		        	if(player.equals(playersOutsideBoard.get(1))) {
 			        	playersStart.getChildren().remove(1);
 			        	playersOutsideBoard.remove(1);
 			        }
-			        else if (game.getPlayersNum()>2 && player.equals(playersOutsideBoard.get(2))) {
+		        }
+		        else if (playersOutsideBoard.size() > 2) {
+			        if (game.getPlayersNum()>2 && player.equals(playersOutsideBoard.get(2))) {
 			        	playersStart.getChildren().remove(2);
 			        	playersOutsideBoard.remove(2);
 			        }
-			        else if (game.getPlayersNum()>3 && player.equals(playersOutsideBoard.get(3))) {
+		        }
+		        else if (playersOutsideBoard.size() > 3) {
+			        if (game.getPlayersNum()>3 && player.equals(playersOutsideBoard.get(3))) {
 			        	playersStart.getChildren().remove(3);
 			        	playersOutsideBoard.remove(3);
 			        }

@@ -13,14 +13,17 @@ import java.util.Map.Entry;
 import Model.GameHistory;
 import Model.Player;
 import Model.SysData;
+import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 public class  topThreeController implements Initializable{
    // private HashMap<Player, Integer> playersWinningGames;//the value represent the number of games the player wins i think we should save it in sysdata  
 
@@ -34,10 +37,13 @@ public class  topThreeController implements Initializable{
 	    private Text player3;
 
         @FXML
-	    private Button exit;
+	    private Button exitButton;
+        
+        @FXML
+	    private Button backBtn;
 	    
 	    @FXML
-	    void exit(ActionEvent event) {
+	    void back(ActionEvent event) {
 	    	try {
 				Parent root = FXMLLoader.load(getClass().getResource("/View/GameHistory.fxml"));
 				Scene scene = new Scene(root);
@@ -75,8 +81,7 @@ public class  topThreeController implements Initializable{
 
 	        return topPlayersList;
 	    }
-
-
+	    
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			List<Entry<Player, Integer>> topPlayersList = calculateTopThree();
@@ -95,10 +100,23 @@ public class  topThreeController implements Initializable{
 
 
 		    }
-		}			
-		}
-
-
-	
-
-	
+		}	
+		
+		@FXML
+	    void entered(MouseEvent event){
+	    	((Node)event.getSource()).setScaleX(1.1);
+	    	((Node)event.getSource()).setScaleY(1.1);
+	    }
+	    @FXML
+	    void exited(MouseEvent event){
+	    	((Node)event.getSource()).setScaleX(1);
+	    	((Node)event.getSource()).setScaleY(1);
+	    }
+	    
+	    @FXML
+	    void exit(ActionEvent event) {
+	    	if (Alerts.exit()==1)
+				Main.mainWindow.close();
+	    }
+	    
+	}

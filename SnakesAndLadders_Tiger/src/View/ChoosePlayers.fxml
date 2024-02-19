@@ -109,12 +109,12 @@
                <children>
                   <Label text="Color:">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="16.0" />
+                        <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
                      <HBox.margin>
-                        <Insets left="31.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
@@ -146,7 +146,7 @@
                   </Label>
                   <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
                      <HBox.margin>
-                        <Insets left="31.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
@@ -178,7 +178,7 @@
                   </Label>
                   <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
                      <HBox.margin>
-                        <Insets left="31.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
@@ -210,7 +210,7 @@
                   </Label>
                   <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
                      <HBox.margin>
-                        <Insets left="31.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
