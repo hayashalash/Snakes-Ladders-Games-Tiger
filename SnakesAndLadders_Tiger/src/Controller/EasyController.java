@@ -16,11 +16,14 @@ import Model.Color;
 import Model.Dice;
 import Model.Difficulty;
 import Model.Game;
+import Model.Ladder;
+import Model.LadderTile;
 import Model.Player;
 import Model.Question;
 import Model.QuestionTile;
 import Model.Snake;
 import Model.SnakeColor;
+import Model.SnakeTile;
 import Model.SysData;
 import Model.Tile;
 import View.Alerts;
@@ -65,8 +68,8 @@ import javafx.util.Duration;
 
 public class EasyController implements Initializable{
 
-	private final double ICON_SIZE = 35; // the moving icons on the board
-    private final double IMAGE_SIZE = 45; // the icons next to the names
+	private final double ICON_SIZE = 50; // the moving icons on the board
+    private final double IMAGE_SIZE = 50; // the icons next to the names
     private final double QUESTION_WIDTH = 50; // question icon size
     private final double QUESTION_HEIGHT = 50;
     private HashMap<Player, Image> icons = new HashMap<>();
@@ -79,17 +82,16 @@ public class EasyController implements Initializable{
 	private static final String YELLOW = "/img/icons/yellowPlayer.png";	
 	private static final String INFO_IMAGE_PATH = "/img/screens/blank.jpg";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
-	private double QUESTION_SIZE = 0;
-	private double SURPRISE_SIZE = 0;
-	private double RED_SNAKE_SIZE = 0;
-	private double TILE_SIZE = 0;
-	private double TOKEN_SIZE = 0;
+	private double SURPRISE_SIZE = 50;
+	private double TOKEN_SIZE = 50;
 	public static Game game;
 	private GameController gameController;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
-	
+	private static final String SURPRISE_IMAGE_PATH = null;
+	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
+
 	@FXML
 	private AnchorPane rootAnchorPane;
 
@@ -174,8 +176,30 @@ public class EasyController implements Initializable{
 	    gameController.showSnakes();
 	    gameController.showLadders();
 		showQuestions();
-		Dice dice = new Dice();
-		dice.RollingDiceStartingGame(game);
+		showSurprises();
+		//ensureExitButtonOnTop();
+		Dice.RollingDiceStartingGame(game);
+	}
+	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
+		// Create ImageView for the icon
+        ImageView iv = new ImageView(img);
+        iv.setFitHeight(imgSize);
+        iv.setFitWidth(imgSize);
+        iv.setVisible(true);
+        GridPane.setRowIndex(iv, row);
+        GridPane.setColumnIndex(iv, col);
+        // Add the icon to GridPane
+        grid.getChildren().addAll(iv);
+        GridPane.setHalignment(iv, javafx.geometry.HPos.CENTER); // Center horizontally
+        GridPane.setValignment(iv, javafx.geometry.VPos.CENTER); // Center vertically
+	}
+	public void showSurprises() {
+		for (Tile st : board.getSurpriseTiles()) {
+			Image surpriseImage = new Image(getClass().getResource(SURPRISE_IMAGE_PATH).toExternalForm());
+			int row = st.getxCoord();
+	        int column = st.getyCoord();
+	        showOneCellIcon(surpriseImage, row, column, SURPRISE_SIZE);
+		}
 	}
 	private void startTimer() {
 		// Create a timeline for the game duration
@@ -388,207 +412,233 @@ public class EasyController implements Initializable{
     }
     
     @FXML
-    void handleDiceClick(ActionEvent event) throws InterruptedException {	
-    	 initializeMap();
-    	 int lastDiceResult=0;
-    	 Duration duration = Duration.millis(1000);
-    	 int numFrames = 20;
-    	 Duration frameInterval = duration.divide(numFrames);
-    	 Timeline timeline = new Timeline();
-    	 // Add keyframes to the timeline
-    	    for (int i = 0; i < numFrames; i++) {
-    	        int result = Dice.RandomNumberGenerator(Difficulty.Easy);
-    	        lastDiceResult = result; // Save the result
-    	        String imagePath = diceImageMap.get(result);
+    void handleDiceClick(ActionEvent event) throws InterruptedException {
+        initializeMap();
+        int lastDiceResult=0;
+        Duration duration = Duration.millis(1000);
+        int numFrames = 20;
+        Duration frameInterval = duration.divide(numFrames);
+        Timeline timeline = new Timeline();
+        // Add keyframes to the timeline
+        for (int i = 0; i < numFrames; i++) {
+            int result = Dice.RandomNumberGenerator(Difficulty.Easy);
+            lastDiceResult = result; // Save the result
+            String imagePath = diceImageMap.get(result);
 
-    	        // Create a keyframe for each image of the dice
-    	        KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
-    	                e -> updateDiceImage(imagePath));
+            // Create a keyframe for each image of the dice
+            KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
+                    e -> updateDiceImage(imagePath));
 
-    	        timeline.getKeyFrames().add(keyFrame);
-    	    }
-    	    
-    	  timeline.setCycleCount(1); // Set the time line to  one
-    	  timeline.setOnFinished(e -> {
-    	    	 // After 10 seconds, reset the dice image to the default
-    	   PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
-    	    pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
-    	    pauseTransition.play();    	   
-    	  });
-		viewResultDise(lastDiceResult);
-    	  timeline.play();//animation
-    	}
+            timeline.getKeyFrames().add(keyFrame);
+        }
 
-    private  void viewResultDise(int diceResult){//this for easy  difficulty only
-    	if(diceResult<5) {//move the player
-    		movePlayer(diceResult);
-		}
-    	if(diceResult==5) {//display easy question
-    		showQuestionPopup(Difficulty.Easy);
-    	}
-    	else { if(diceResult==6) {//display normal question 
-    		showQuestionPopup(Difficulty.Medium);
+        timeline.setCycleCount(1); // Set the timeline to one cycle
+        timeline.setOnFinished(e -> {
+            // After 10 seconds, reset the dice image to the default
+            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(10));
+            pauseTransition.setOnFinished(event1 -> updateDiceImage(DEFAULT_DICE_IMAGE_PATH));
+            pauseTransition.play();
+        });
 
-    	}
-    	  else if(diceResult==7) {//display hard question 	
-    	  }
-		showQuestionPopup(Difficulty.Hard);
+        // Roll the dice once to get the result
+        System.out.println("Dice result: "+lastDiceResult);
+        // Display the dice result
 
-    	}
+        // Move the current player based on the dice result
+        Player currentPlayer = getNextPlayerToMove();
+        viewResultDice(currentPlayer, lastDiceResult);
 
+        timeline.play(); // Start the animation
     }
-    public  void showQuestionPopup(Difficulty difficulty) {//view the question  dialog 
-	    Dialog<ButtonType> dialog = new Dialog<>();
-	    dialog.setTitle("Question");
-		
-			Question q = returnQuestion(difficulty);
-		
-	    // Create  elements for the question and answer:
-	    VBox vbox = new VBox();
-	    Label questionLabel = new Label(q.getQuestion());
-	    ToggleGroup answerGroup = new ToggleGroup();
-	    RadioButton answer1 = new RadioButton(q.getAnswer1());
-	    RadioButton answer2 = new RadioButton(q.getAnswer2());
-	    RadioButton answer3 = new RadioButton(q.getAnswer3());
-	    RadioButton answer4 = new RadioButton(q.getAnswer4());
-	   // TextField resultTextField = new TextField();
-	    //resultTextField.setEditable(false);
-	    vbox.getChildren().addAll(questionLabel, answer1, answer2, answer3, answer4);
-	    dialog.getDialogPane().setContent(vbox);	 // Set the content of the dialog
-	    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-	    Optional<ButtonType> result = dialog.showAndWait(); // Show the dialog and wait for a button click
 
-	    if (result.isPresent() && result.get() == ButtonType.OK) {  // Handle  button click
-	        RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle();	 // Check the selected answer
-	        if (selectedAnswer != null) {
-	            int selectedAnswerNumber = (int) selectedAnswer.getUserData();//get the number of seelcted answer
-	            int correctAnswerNumber=q.getCorrectAnswer();
-	            if(selectedAnswerNumber == correctAnswerNumber) {
-	           //     resultTextField.setText("Your answer is right!");
-	                selectedAnswer.setStyle("-fx-text-fill: green;");
-	            }
-	         else {
-               // resultTextField.setText("Wrong answer.");
-                selectedAnswer.setStyle("-fx-text-fill: red;");
-                switch (q.getCorrectAnswer()) {//mark the right answer in green
-                case 1:
-                    answer1.setStyle("-fx-text-fill: green;");
-                    break;
-                case 2:
-                    answer2.setStyle("-fx-text-fill: green;");
-                    break;
-                case 3:
-                    answer3.setStyle("-fx-text-fill: green;");
-                    break;
-                case 4:
-                    answer4.setStyle("-fx-text-fill: green;");
-                    break;
-            }
-	        }
-	        }
+    
+    private Player getNextPlayerToMove() {
+        Player nextPlayer = game.getPlayersOrder().poll();
+        // Increment currentPlayerIndex for the next turn
+        System.out.println("current player: "+nextPlayer.getPlayerName());
+        boolean added = game.getPlayersOrder().offer(nextPlayer);
+        if(added)
+        	System.out.println("player "+nextPlayer.getPlayerName()+" was added back to the queue");
+        else
+        	System.out.println("player "+nextPlayer.getPlayerName()+" was NOT added back to the queue");
+        return nextPlayer;
+    }
+
+
+    private void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+    	if(diceResult <= 4) {
+    		move(currentPlayer, diceResult);
+		}
+    	else if(diceResult == 5 ) {
+    		//display easy question 
+//    		showQuestionPopup(Difficulty.Easy);
+    		move(currentPlayer, 0);
+
+    	}
+    	else if(diceResult ==6) {
+    		//display normal question 
+//    		showQuestionPopup(Difficulty.Medium);
+    		move(currentPlayer, 0);
+
+
+    	}
+    	else if(diceResult == 7) {
+    		//display hard question 	
+//    		showQuestionPopup(Difficulty.Hard);
+    		move(currentPlayer, 0);
+
+
+        }	
+	}
+
+	
+   
+	
+    
+
+
+    void move(Player player, int steps) {	    
+//	    System.out.println(player.toString());
+	    int currentPosition = player.getPlayerPlace();
+	    System.out.println("current player position: "+currentPosition);
+
+	    player.setPlayerPrevPlace(currentPosition);
+	    hidePlayerToken(player);
+	    
+	    int newPosition = NextMove(currentPosition,steps);	    
+	    System.out.println("new player position: "+newPosition);
+	    // Set player's new position
+	    player.setPlayerPlace(newPosition);
+	    displayPlayerToken(player, newPosition);
+	    
+	    // Check if player reaches last tile
+	    if (newPosition == board.getBoardSize()) {
+	        player.setPlayerPlace(newPosition);
+	        displayPlayerToken(player, newPosition);
+	        game.setWinner(player);
+	        System.out.println(player.getPlayerName() + " is the WINNER!");
 	    }
 	}
+
+	   
+	private String getTokenImagePath(Player player) {
+		    switch (player.getPlayerColor()) {
+		        case Red:
+		            return RED;
+		        case Green:
+		            return GREEN;
+		        case Yellow:
+		            return YELLOW;
+		        case Blue:
+		            return BLUE;
+		        case Pink:
+		            return PINK;
+		        case Purple:
+		            return PURPLE;
+		        default:
+		            return null;
+		    }
+		}
 	
-    public Question returnQuestion(Difficulty difficulty) {
-        HashSet<Question> questions = SysData.getInstance().getQuestions();
-        HashMap<Difficulty, ArrayList<Question>> questionMap = new HashMap<>();
+	private void displayPlayerToken(Player player, int newPosition) {
+	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
+	    ImageView token = iconsOnBoard.get(player);
+	    if (token == null) {
+	        token = new ImageView(tokenImage);
+	        iconsOnBoard.put(player, token);
+	    }
+	    token.setFitHeight(TOKEN_SIZE);
+	    token.setFitWidth(TOKEN_SIZE);
+	    token.setVisible(true);
+	    System.out.println("player to be displayed now: "+player.getPlayerName());
+	    if(newPosition!=0) {
+	    	// If the token is not already in the grid, add it
+		    if (!grid.getChildren().contains(iconsOnBoard.get(player))) {
+		        grid.getChildren().add(iconsOnBoard.get(player));
+		        if (playersOutsideBoard.size() > 0) { // if there are still players outside the board
+		        	if (player.equals(playersOutsideBoard.get(0))) {
+			        	playersStart.getChildren().remove(0);
+			        	playersOutsideBoard.remove(0);
+			        }
+			        else if (player.equals(playersOutsideBoard.get(1))) {
+			        	playersStart.getChildren().remove(1);
+			        	playersOutsideBoard.remove(1);
+			        }
+			        else if (game.getPlayersNum()>2 && player.equals(playersOutsideBoard.get(2))) {
+			        	playersStart.getChildren().remove(2);
+			        	playersOutsideBoard.remove(2);
+			        }
+			        else if (game.getPlayersNum()>3 && player.equals(playersOutsideBoard.get(3))) {
+			        	playersStart.getChildren().remove(3);
+			        	playersOutsideBoard.remove(3);
+			        }
+		        }
+		    }
+		    Tile pos = board.getTile(newPosition);
+//		    System.out.println(pos);
+		    int row = pos.getxCoord();
+		    int column = pos.getyCoord();
+		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
+		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
+		    
+	    }
+	}
 
-        // Initialize ArrayList for each difficulty
-        for (Question question : questions) {
-            Difficulty diff = question.getDifficulty();
-            ArrayList<Question> q = questionMap.getOrDefault(diff, new ArrayList<>());
-            q.add(question);
-            questionMap.put(diff, q);
-        }
+	private void hidePlayerToken(Player p) {
+	    ImageView token = iconsOnBoard.get(p);
+	    if (token != null) {
+	        grid.getChildren().remove(token);
+	    }
+	}
+	 int NextMove(int currPosition, int steps) {
+	    	System.out.println("steps to move in NextMove are: " + steps);
+		    int nextPos = currPosition + steps;
 
-        Random random = new Random();
-        int r = random.nextInt(10);
+		    if (nextPos > board.getBoardSize() || nextPos < 1) {
+		    	System.out.println("next position is "+ nextPos +" and is larger than the board size os smaller than 1.");
+		        return currPosition; // Ensure next position is within the board boundaries
+		    }
 
-        // Ensure that the ArrayList for the specified difficulty is not null and contains questions
-        while (questionMap.get(difficulty) == null || questionMap.get(difficulty).isEmpty() || questionMap.get(difficulty).get(r) == null) {
-            r = random.nextInt(10);
-        }
+		    Tile nextTile = board.getTile(nextPos);
+		    if (nextTile == null) {
+		    	System.out.println("next position is "+ nextPos +" and that tile is null.");
+		        return currPosition; // Handle case where tile is null
+		    }
 
-        return questionMap.get(difficulty).get(r);
-    }
+		    switch (nextTile.gettType()) {
+		        case Classic:
+		            System.out.println("Next step will be: " + nextPos);
+		            return nextPos;
+		        case SnakeHead:
+		            SnakeTile snakeT = (SnakeTile) nextTile;
+		            Snake snake = snakeT.getSnake();
+		            if (snake.getColor() == SnakeColor.Red) {
+		                System.out.println("Next step will be: 1");
+		                return 1;
+		            } else {
+		                System.out.println("Next step will be: " + snake.getSnakeTail());
+		                return snake.getSnakeTail();
+		            }
+		        case LadderBottom:
+		            LadderTile ladderT = (LadderTile) nextTile;
+		            Ladder ladder = ladderT.getLadder();
+		            System.out.println("Next step will be: " + ladder.getLadderTop());
+		            return ladder.getLadderTop();
+		        case Surprise:
+		            System.out.println("Yaaaay you got a gift!");
+		            return nextPos; // Handle surprise tiles appropriately
+		        case Question:
+		            System.out.println("I have a question for you");
+		            return nextPos; // Handle question tiles appropriately
+		        default:
+		            // Handle unknown tile types or other cases
+		        	System.out.println("Next step will be: " + nextPos);
+		            return nextPos;
+		    }
 
+		}
 
-public  void movePlayer(int steps) {
-	Player p =game.getPlayersOrder().poll();
-    int currentPosition = p.getPlayerPlace();
-	int newPosition = currentPosition + steps;
-    if (newPosition > 49) {//check if the player reaches last tile
-        return; // Skip this player
-    }
-    hidePlayerToken(p);
-    // Set player's new position
-    p.setPlayerPlace(newPosition);
-    displayPlayerToken(p,newPosition);
-    
-  //check if the player reaches last tile
-    if (newPosition == 49) {
-        p.setPlayerPlace(newPosition);
-        displayPlayerToken(p,newPosition);
-    	game.setWinner(p);
-        System.out.println(p.getPlayerName() + " is the WINNER!");
-    }
-}
-private  void displayPlayerToken(Player player, int newPosition) {
-    Image tokenImage = new Image(player.getClass().getResource(getTokenImagePath(player)).toExternalForm());
-    ImageView token = iconsOnBoard.get(player);
-    if (token == null) {
-        token = new ImageView(tokenImage);
-        iconsOnBoard.put(player, token);
-    }
-    token.setFitHeight(TOKEN_SIZE);
-    token.setFitWidth(TOKEN_SIZE);
-    token.setVisible(true);
-    
-    Tile pos = board.getTile(newPosition);
-    int row = pos.getxCoord();
-    int column = pos.getyCoord();
-    
-    GridPane.setRowIndex(token, row);
-    GridPane.setColumnIndex(token, column);
-    
-    // If the token is not already in the grid, add it
-    if (!grid.getChildren().contains(token)) {
-        grid.getChildren().add(token);
-    }
-}
-
-private  void hidePlayerToken(Player p) {
-    ImageView token = iconsOnBoard.get(p);
-    if (token != null) {
-        grid.getChildren().remove(token);
-    }
-}
-
-private  String getTokenImagePath(Player player) {
-    switch (player.getPlayerColor()) {
-        case Red:
-            return RED;
-        case Green:
-            return GREEN;
-        case Yellow:
-            return YELLOW;
-        case Blue:
-            return BLUE;
-        case Pink:
-            return PINK;
-        case Purple:
-            return PURPLE;
-        default:
-            return null;
-    }
-}
- 
-private  void endgame() {
-   newScreen("Winner");
-}
-
-  
-
+	
 	private void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
@@ -604,12 +654,80 @@ private  void endgame() {
 			e.printStackTrace();
 		}  	
     }
+	public  int showQuestionPopup(Difficulty difficulty) {//view the question  dialog  and return the number of steps he has to step 
+	    Dialog<ButtonType> dialog = new Dialog<>();
+	    dialog.setTitle("Question");
+			Question q = returnQuestion(difficulty);
+			System.out.println(q);
+		
+	    // Create  elements for the question and answer:
+	    VBox vbox = new VBox();
+	    Label questionLabel = new Label(q.getQuestion());
+	    ToggleGroup answerGroup = new ToggleGroup();
+	    RadioButton answer1 = new RadioButton(q.getAnswer1());
+	    RadioButton answer2 = new RadioButton(q.getAnswer2());
+	    RadioButton answer3 = new RadioButton(q.getAnswer3());
+	    RadioButton answer4 = new RadioButton(q.getAnswer4());
+	    TextField resultTextField = new TextField();
+	    resultTextField.setEditable(false);
+	    vbox.getChildren().addAll(questionLabel, answer1, answer2, answer3, answer4);
+	    dialog.getDialogPane().setContent(vbox);	 // Set the content of the dialog
+	    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+	    Optional<ButtonType> result = dialog.showAndWait(); // Show the dialog and wait for a button click
+
+	    if (result.isPresent() && result.get() == ButtonType.OK) {  // Handle  button click
+	        RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle();	 // Check the selected answer
+	        if (selectedAnswer != null) {
+	            int selectedAnswerNumber = (int) selectedAnswer.getUserData();//get the number of seelcted answer
+	            int correctAnswerNumber=q.getCorrectAnswer();
+	            if(selectedAnswerNumber == correctAnswerNumber) {
+	                resultTextField.setText("Your answer is right!");
+	                selectedAnswer.setStyle("-fx-text-fill: green;");
+	                if(difficulty==Difficulty.Easy || difficulty==Difficulty.Medium) {
+	                	return 0;
+	                }
+	                else return 1;
+	            }
+	         else {
+                resultTextField.setText("Wrong answer.");
+                selectedAnswer.setStyle("-fx-text-fill: red;");
+                switch (q.getCorrectAnswer()) {//mark the right answer in green
+                case 1:
+                    answer1.setStyle("-fx-text-fill: green;");
+                    break;
+                case 2:
+                    answer2.setStyle("-fx-text-fill: green;");
+                    break;
+                case 3:
+                    answer3.setStyle("-fx-text-fill: green;");
+                    break;
+                case 4:
+                    answer4.setStyle("-fx-text-fill: green;");
+                    break;
+            }
+                if(difficulty==Difficulty.Easy)return -1;
+                if(difficulty==Difficulty.Medium)return -2;
+                if(difficulty==Difficulty.Hard)return -3;
+
+
+	        }
+	        }
+	    }
+		return 0;
+	}
+	private Question returnQuestion(Difficulty difficulty) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
     
- 
+    
+
+	
 	private void ensureExitButtonOnTop() {
-	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
+	  rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
 	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
 	}
-}
+	}
+
 
