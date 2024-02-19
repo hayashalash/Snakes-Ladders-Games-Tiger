@@ -92,6 +92,7 @@ public class NormalController implements Initializable{
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
     //Path
+    private static final String ARROW = "/img/icons/arrow1.gif"; //Player's turn arrow path
 	private static final String GREEN = "/img/icons/greenPlayer.png"; //Player Token path
 	private static final String BLUE = "/img/icons/bluePlayer.png"; //Player Token path
 	private static final String PINK = "/img/icons/pinkPlayer.png"; //Player Token path
@@ -163,6 +164,7 @@ public class NormalController implements Initializable{
     
     private HashMap<Integer, String> diceImageMap;
 
+    private ArrayList<Player> originalOrder = new ArrayList<>();
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
@@ -195,6 +197,7 @@ public class NormalController implements Initializable{
     		return;
     	}
         startTimer();
+        Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
 		showPlayers();
 	    gameController = new GameController(board, grid);
 	    gameController.showSnakes();
@@ -202,8 +205,6 @@ public class NormalController implements Initializable{
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
-		Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
-
 	}
 	
 	private void startTimer() {
@@ -225,7 +226,7 @@ public class NormalController implements Initializable{
 
 	public void showPlayers() {
 		ObservableList<ImageView> playerIcons = FXCollections.observableArrayList();
-		for (Player p : game.getPlayers()) {
+		for (Player p : game.getPlayersOrder()) {
 			if (p.getPlayerColor() == Color.Green) {
 				Image greenPlayer = new Image(getClass().getResource(GREEN).toExternalForm());
 				ImageView greenImageView = new ImageView(greenPlayer);
@@ -276,7 +277,15 @@ public class NormalController implements Initializable{
 			playersStart.getChildren().add(iv);
 		}
 		
-		for (Player p : game.getPlayers()) {
+		for (Player p : game.getPlayersOrder()) {
+			originalOrder.add(p);
+			Image arrow = new Image(getClass().getResourceAsStream(ARROW));
+			ImageView arrowIV = new ImageView();
+			arrowIV.setImage(arrow);
+			arrowIV.setOpacity(0);
+			arrowIV.setFitHeight(20);
+			arrowIV.setPreserveRatio(true);
+			arrowIV.setStyle("-fx-margin-top: 20");
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
 			name.setPadding(new Insets(10,5,10,5));
@@ -285,14 +294,16 @@ public class NormalController implements Initializable{
 			icon.setFitWidth(IMAGE_WIDTH);
 			icon.setVisible(true);
 			if (player1.getChildren().isEmpty())
-				player1.getChildren().addAll(icon, name);
+				player1.getChildren().addAll(arrowIV, icon, name);
 			else if (player2.getChildren().isEmpty())
-				player2.getChildren().addAll(icon, name);
+				player2.getChildren().addAll(arrowIV, icon, name);
 			else if (player3.getChildren().isEmpty())
-				player3.getChildren().addAll(icon, name);
+				player3.getChildren().addAll(arrowIV, icon, name);
 			else // player4 is empty
-				player4.getChildren().addAll(icon, name);
-		}			
+				player4.getChildren().addAll(arrowIV, icon, name);
+		}
+	    // Point the arrow to the first player to indicate their turn
+		player1.getChildren().get(0).setOpacity(1);
 	}
 	
 	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
@@ -452,56 +463,30 @@ public class NormalController implements Initializable{
             timeline.getKeyFrames().add(keyFrame);
         }
         
-
         timeline.setCycleCount(1); // Set the timeline to one cycle
         timeline.setOnFinished(e -> {
             
-            // After 10 seconds, reset the dice image to the default
+            // After 5 seconds, reset the dice image to the default
             PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
             pauseTransition.setOnFinished(event1 -> onFinished(currentPlayer, lastDiceResult[0]));
             pauseTransition.play();
         });
-
-        // Roll the dice once to get the result
         System.out.println("Dice result: "+lastDiceResult[0]);
         // Display the dice result
 
         timeline.play(); // Start the animation
-        
     }
 
     public void onFinished(Player currentPlayer, int lastResult) {
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
-    	// Enable the button after animation completes
-        diceButton.setDisable(false);
+        diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
     }
     
     private Player getNextPlayerToMove() {
-        Player nextPlayer = game.getPlayersOrder().poll();
-        // Increment currentPlayerIndex for the next turn
-        System.out.println("current player: "+nextPlayer.getPlayerName());
-        // Select the player in green to indicate their turn
-        if (nextPlayer.equals(game.getPlayers().get(0))) {
-        	player1.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
-        }
-        else if (nextPlayer.equals(game.getPlayers().get(1))) {
-        	player2.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
-        }
-        else if (game.getPlayersNum()>2) {
-        	if (nextPlayer.equals(game.getPlayers().get(2)))
-        		player3.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
-        }
-        else if (game.getPlayersNum()>3) {
-        	if (nextPlayer.equals(game.getPlayers().get(3)))
-        		player4.setStyle("-fx-border-color: #00FF00; -fx-border-radius: 10; -fx-border-width: 3;");
-        }
-        boolean added = game.getPlayersOrder().offer(nextPlayer);
-        if(added)
-        	System.out.println("player "+nextPlayer.getPlayerName()+" was added back to the queue");
-        else
-        	System.out.println("player "+nextPlayer.getPlayerName()+" was NOT added back to the queue");
+        Player nextPlayer = game.getPlayersOrder().poll(); // Take the player out of the queue to start their turn
+        game.getPlayersOrder().offer(nextPlayer); // Return the player to the end of the queue
         return nextPlayer;
     }
 
@@ -514,21 +499,16 @@ public class NormalController implements Initializable{
     		//display easy question 
 //    		int steps = showQuestionPopup(Difficulty.Easy);
     		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
-
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
 //    		int steps = showQuestionPopup(Difficulty.Medium);
     		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
-
-
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
 //    		int steps = showQuestionPopup(Difficulty.Hard);
     		move(currentPlayer, 0); // change 0 to steps once questionPopUp works
-
-
         }	
 	}
 
@@ -551,42 +531,56 @@ public class NormalController implements Initializable{
 
     
 	void move(Player player, int steps) {	    
-//	    System.out.println(player.toString());
 	    int currentPosition = player.getPlayerPlace();
 	    System.out.println("current player position: "+currentPosition);
-
-	    player.setPlayerPrevPlace(currentPosition);
-	    hidePlayerToken(player);
-	    
-	    int newPosition = NextMove(currentPosition,steps, player);	    
-	    System.out.println("new player position: "+newPosition);
-	    // Set player's new position
-	    player.setPlayerPlace(newPosition);
-	    displayPlayerToken(player, newPosition);
-	    
-	    // Check if player reaches 100
-	    if (newPosition == board.getBoardSize()) {
-	        player.setPlayerPlace(newPosition);
-	        displayPlayerToken(player, newPosition);
-	        game.setWinner(player);
-	        newScreen("Winner");
-	        System.out.println(player.getPlayerName() + " is the WINNER!");
+	    if (steps > 0) {
+	    	player.setPlayerPrevPlace(currentPosition);
+		    hidePlayerToken(player);
+		    
+		    int newPosition = NextMove(currentPosition,steps, player);	    
+		    // Set player's new position
+		    player.setPlayerPlace(newPosition);
+		    displayPlayerToken(player, newPosition);
+		    // Check if player reached the last tile
+		    if (newPosition == board.getBoardSize()) {
+		        player.setPlayerPlace(newPosition);
+		        displayPlayerToken(player, newPosition);
+		        game.setWinner(player);
+		        newScreen("Winner");
+		        System.out.println(player.getPlayerName() + " is the WINNER!");
+		    }
 	    }
 	    
-	    // clear green border once the player finishes their turn
-	    if (player.equals(game.getPlayers().get(0))) {
-	    	player1.setStyle("-fx-border-color: transparent;");
+	    // clear arrow once the player finishes their turn
+	    if (player.equals(originalOrder.get(0))) {
+	    		player1.getChildren().get(0).setOpacity(0);
         }
-        else if (player.equals(game.getPlayers().get(1))) {
-        	player2.setStyle("-fx-border-color: transparent;");
+        else if (player.equals(originalOrder.get(1))) {
+	    		player2.getChildren().get(0).setOpacity(0);
         }
         else if (game.getPlayersNum()>2) {
-        	if (player.equals(game.getPlayers().get(2)))
-        		player3.setStyle("-fx-border-color: transparent;");
+        	if (player.equals(originalOrder.get(2)))
+        		player3.getChildren().get(0).setOpacity(0);
         }
         else if (game.getPlayersNum()>3) {
-        	if (player.equals(game.getPlayers().get(3)))
-        		player4.setStyle("-fx-border-color: transparent;");
+        	if (player.equals(originalOrder.get(3)))
+        		player4.getChildren().get(0).setOpacity(0);
+        }
+	    Player nextPlayer = game.getPlayersOrder().peek();
+	    // Point the arrow to the next player to indicate their turn
+        if (nextPlayer.equals(originalOrder.get(0))) {
+        	player1.getChildren().get(0).setOpacity(1);
+        }
+        else if (nextPlayer.equals(originalOrder.get(1))) {
+        	player2.getChildren().get(0).setOpacity(1);
+        }
+        else if (game.getPlayersNum()>2) {
+        	if (nextPlayer.equals(originalOrder.get(2)))
+        		player3.getChildren().get(0).setOpacity(1);
+        }
+        else if (game.getPlayersNum()>3) {
+        	if (nextPlayer.equals(originalOrder.get(3)))
+        		player4.getChildren().get(0).setOpacity(1);
         }
 	}
 
@@ -625,30 +619,6 @@ public class NormalController implements Initializable{
 	    	// If the token is not already in the grid, add it
 		    if (!grid.getChildren().contains(iconsOnBoard.get(player))) {
 		        grid.getChildren().add(iconsOnBoard.get(player));
-		        if (playersOutsideBoard.size() > 0) { // if there are still players outside the board
-		        	if (player.equals(playersOutsideBoard.get(0))) {
-			        	playersStart.getChildren().remove(0);
-			        	playersOutsideBoard.remove(0);
-			        }
-		        }
-		        else if (playersOutsideBoard.size() > 1) {
-		        	if(player.equals(playersOutsideBoard.get(1))) {
-			        	playersStart.getChildren().remove(1);
-			        	playersOutsideBoard.remove(1);
-			        }
-		        }
-		        else if (playersOutsideBoard.size() > 2) {
-			        if (game.getPlayersNum()>2 && player.equals(playersOutsideBoard.get(2))) {
-			        	playersStart.getChildren().remove(2);
-			        	playersOutsideBoard.remove(2);
-			        }
-		        }
-		        else if (playersOutsideBoard.size() > 3) {
-			        if (game.getPlayersNum()>3 && player.equals(playersOutsideBoard.get(3))) {
-			        	playersStart.getChildren().remove(3);
-			        	playersOutsideBoard.remove(3);
-			        }
-		        }
 		    }
 		    Tile pos = board.getTile(newPosition);
 //		    System.out.println(pos);
@@ -665,6 +635,31 @@ public class NormalController implements Initializable{
 	    if (token != null) {
 	        grid.getChildren().remove(token);
 	    }
+	    // if player is still outside the board, remove them from there
+	    if (playersOutsideBoard.size() > 0) { // if there are still players outside the board
+        	if (p.equals(playersOutsideBoard.get(0))) {
+	        	playersStart.getChildren().remove(0);
+	        	playersOutsideBoard.remove(0);
+	        }
+        }
+        else if (playersOutsideBoard.size() > 1) {
+        	if(p.equals(playersOutsideBoard.get(1))) {
+	        	playersStart.getChildren().remove(1);
+	        	playersOutsideBoard.remove(1);
+	        }
+        }
+        else if (playersOutsideBoard.size() > 2) {
+	        if (game.getPlayersNum()>2 && p.equals(playersOutsideBoard.get(2))) {
+	        	playersStart.getChildren().remove(2);
+	        	playersOutsideBoard.remove(2);
+	        }
+        }
+        else if (playersOutsideBoard.size() > 3) {
+	        if (game.getPlayersNum()>3 && p.equals(playersOutsideBoard.get(3))) {
+	        	playersStart.getChildren().remove(3);
+	        	playersOutsideBoard.remove(3);
+	        }
+        }
 	}
 	
 	private void ensureExitButtonOnTop() {
@@ -842,7 +837,7 @@ public class NormalController implements Initializable{
 //	            int newSteps = showQuestionPopup(Difficulty.values()[new Random().nextInt(Difficulty.values().length)]); // choose a random diff
 //	    		move(p, newSteps);
 //	            return p.getPlayerPlace();
-	            break;
+	            return nextPos; // temporary until question pop up is fixed
 	        default:
 	            // Handle unknown tile types or other cases
 	        	System.out.println("Next step will be: " + nextPos);

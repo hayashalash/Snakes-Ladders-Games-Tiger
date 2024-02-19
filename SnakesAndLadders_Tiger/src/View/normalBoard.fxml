@@ -22,7 +22,7 @@
             </image>
         </ImageView>
         <HBox fx:id="playersStart" layoutX="14.0" layoutY="506.0" prefHeight="50.0" prefWidth="197.0" />
-        <VBox fx:id="playerNamesVbox" layoutX="40.0" layoutY="169.0" prefHeight="235.0" prefWidth="121.0">
+        <VBox fx:id="playerNamesVbox" layoutX="6.0" layoutY="165.0" prefHeight="235.0" prefWidth="197.0">
             <children>
                 <HBox fx:id="player1" prefHeight="59.0" prefWidth="153.0" />
                 <HBox fx:id="player2" layoutX="10.0" layoutY="10.0" prefHeight="59.0" prefWidth="153.0" />
