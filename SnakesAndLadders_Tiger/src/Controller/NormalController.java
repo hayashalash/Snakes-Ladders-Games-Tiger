@@ -211,19 +211,32 @@ public class NormalController implements Initializable{
 		// Create a timeline for the game duration
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             gameDuration = gameDuration.add(Duration.seconds(1));
-            long totalSeconds = (long) gameDuration.toSeconds();
-            long minutes = totalSeconds / 60;
-            long seconds = totalSeconds % 60;
-            // Convert long values to String with two digits
-            String minutesString = String.format("%02d", minutes);
-            String secondsString = String.format("%02d", seconds);
-            String gameDuration = minutesString + " : " + secondsString;
-            time.setText(gameDuration);
+            updateTimeLabel();
         }));
         timer.setCycleCount(Animation.INDEFINITE);
         timer.play();
     }
+	
+	// Method to update the time label on the screen
+	private void updateTimeLabel() {
+	    long totalSeconds = (long) gameDuration.toSeconds();
+	    long minutes = totalSeconds / 60;
+	    long seconds = totalSeconds % 60;
+	    // Convert long values to String with two digits
+	    String minutesString = String.format("%02d", minutes);
+	    String secondsString = String.format("%02d", seconds);
+	    String formattedTime = minutesString + " : " + secondsString;
+	    time.setText(formattedTime);
+	}
+	
+	// Method to stop the timer and return the duration of the game
+	private Duration stopTimer() {
+	    timer.stop();
+	    return gameDuration;
+	}
 
+	// Method to show the player names and associated colors according to their randomly chosen order of play
+	// and additionally show the player tokens that will be moving on the board during the game
 	public void showPlayers() {
 		ObservableList<ImageView> playerIcons = FXCollections.observableArrayList();
 		for (Player p : game.getPlayersOrder()) {
@@ -274,6 +287,7 @@ public class NormalController implements Initializable{
 		for (ImageView iv : playerIcons) {
 			iv.setFitHeight(ICON_SIZE);
 			iv.setFitWidth(ICON_SIZE);
+			iv.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 3);");
 			playersStart.getChildren().add(iv);
 		}
 		
@@ -299,7 +313,7 @@ public class NormalController implements Initializable{
 				player2.getChildren().addAll(arrowIV, icon, name);
 			else if (player3.getChildren().isEmpty())
 				player3.getChildren().addAll(arrowIV, icon, name);
-			else // player4 is empty
+			else if (player4.getChildren().isEmpty())
 				player4.getChildren().addAll(arrowIV, icon, name);
 		}
 	    // Point the arrow to the first player to indicate their turn
@@ -443,6 +457,8 @@ public class NormalController implements Initializable{
     void handleDiceClick(ActionEvent event) throws InterruptedException {
     	// Enable the button after animation completes
         diceButton.setDisable(true);
+        diceButton.setOpacity(1.0);
+        diceButton.setStyle("-fx-background-color: transparent;");
         initializeMap();
         int[] lastDiceResult = new int[1]; // Array to hold the result
         Player currentPlayer = getNextPlayerToMove();
@@ -467,7 +483,7 @@ public class NormalController implements Initializable{
         timeline.setOnFinished(e -> {
             
             // After 5 seconds, reset the dice image to the default
-            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+            PauseTransition pauseTransition = new PauseTransition(Duration.seconds(2));
             pauseTransition.setOnFinished(event1 -> onFinished(currentPlayer, lastDiceResult[0]));
             pauseTransition.play();
         });
@@ -515,7 +531,27 @@ public class NormalController implements Initializable{
 	private void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
-    	 
+    	 if (imagePath.equals( DEFAULT_DICE_IMAGE_PATH)) {
+    		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 4 , 0);");
+//    		 diceButton.setOnMouseEntered(e -> {
+//    			((Node)e.getSource()).setScaleX(1.1);
+//    		    ((Node)e.getSource()).setScaleY(1.1);
+//    		    ((Node) e.getSource()).setCursor(Cursor.HAND);
+//    		 });
+//    		 diceButton.setOnMouseExited(event -> {
+//    			((Node)event.getSource()).setScaleX(1);
+//    		    ((Node)event.getSource()).setScaleY(1);
+//    		    ((Node) event.getSource()).setCursor(Cursor.DEFAULT);
+//    		 });
+    	 }
+    	 else {
+    		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 0);");
+//    		 diceButton.setOnMouseEntered(e -> {
+//     			((Node)e.getSource()).setScaleX(1);
+//     		    ((Node)e.getSource()).setScaleY(1);
+//     		    ((Node) e.getSource()).setCursor(Cursor.DEFAULT);
+//     		 });
+    	 }
     }
     
 	void newScreen(String path) {
@@ -541,11 +577,13 @@ public class NormalController implements Initializable{
 		    // Set player's new position
 		    player.setPlayerPlace(newPosition);
 		    displayPlayerToken(player, newPosition);
-		    // Check if player reached the last tile
+		    // Check if player reached the last tile and end the game
 		    if (newPosition == board.getBoardSize()) {
 		        player.setPlayerPlace(newPosition);
 		        displayPlayerToken(player, newPosition);
 		        game.setWinner(player);
+		        game.setGameDuration(stopTimer());
+		        WinnerController.diff = game.getType();
 		        newScreen("Winner");
 		        System.out.println(player.getPlayerName() + " is the WINNER!");
 		    }
@@ -613,6 +651,7 @@ public class NormalController implements Initializable{
 	    }
 	    token.setFitHeight(TOKEN_SIZE);
 	    token.setFitWidth(TOKEN_SIZE);
+	    token.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 3);");
 	    token.setVisible(true);
 	    System.out.println("player to be displayed now: "+player.getPlayerName());
 	    if(newPosition!=0) {
@@ -627,6 +666,35 @@ public class NormalController implements Initializable{
 		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
 		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
 		    
+		    boolean tileHasOtherPlayers = false;
+		    ArrayList<Player> otherPlayers = new ArrayList<>(); // arraylist for the other players
+		    for (Player p : game.getPlayers())
+		    	otherPlayers.add(p);
+		    otherPlayers.remove(player); // remove the current player playing from this list
+		    //check if other players are already on this tile to avoid covering each other's tokens
+		    if (otherPlayers.get(0).getPlayerPlace() == newPosition) {
+		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
+		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		        tileHasOtherPlayers = true;
+		    }
+		    if (game.getPlayersNum() > 2) { // if the game has more than two players, check third player as well
+		    	if (otherPlayers.get(1).getPlayerPlace() == newPosition) {
+		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
+		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		    		tileHasOtherPlayers = true;
+		    	}
+		    }
+		    if (game.getPlayersNum() > 3) { // if the game has more than 3 players, check the fourth player as well
+		    	if (otherPlayers.get(2).getPlayerPlace() == newPosition) {
+		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
+		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		    		tileHasOtherPlayers = true;
+		    	}
+		    }
+		    if (tileHasOtherPlayers == false) {
+		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
+		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
+		    }
 	    }
 	}
 
@@ -638,25 +706,25 @@ public class NormalController implements Initializable{
 	    // if player is still outside the board, remove them from there
 	    if (playersOutsideBoard.size() > 0) { // if there are still players outside the board
         	if (p.equals(playersOutsideBoard.get(0))) {
-	        	playersStart.getChildren().remove(0);
+	        	playersStart.getChildren().remove(iconsOnBoard.get(p));
 	        	playersOutsideBoard.remove(0);
 	        }
         }
         else if (playersOutsideBoard.size() > 1) {
         	if(p.equals(playersOutsideBoard.get(1))) {
-	        	playersStart.getChildren().remove(1);
+	        	playersStart.getChildren().remove(iconsOnBoard.get(p));
 	        	playersOutsideBoard.remove(1);
 	        }
         }
         else if (playersOutsideBoard.size() > 2) {
 	        if (game.getPlayersNum()>2 && p.equals(playersOutsideBoard.get(2))) {
-	        	playersStart.getChildren().remove(2);
+	        	playersStart.getChildren().remove(iconsOnBoard.get(p));
 	        	playersOutsideBoard.remove(2);
 	        }
         }
         else if (playersOutsideBoard.size() > 3) {
 	        if (game.getPlayersNum()>3 && p.equals(playersOutsideBoard.get(3))) {
-	        	playersStart.getChildren().remove(3);
+	        	playersStart.getChildren().remove(iconsOnBoard.get(p));
 	        	playersOutsideBoard.remove(3);
 	        }
         }
@@ -803,9 +871,6 @@ public class NormalController implements Initializable{
 	    }
 
 	    switch (nextTile.gettType()) {
-	        case Classic:
-	            System.out.println("Next step will be: " + nextPos);
-	            return nextPos;
 	        case SnakeHead:
 	            SnakeTile snakeT = (SnakeTile) nextTile;
 	            Snake snake = snakeT.getSnake();
@@ -823,9 +888,10 @@ public class NormalController implements Initializable{
 	            return ladder.getLadderTop();
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
-	            break; // Handle surprise tiles appropriately
+	            return nextPos; // TODO Handle surprise tiles appropriately
 	        case Question:
 	            System.out.println("I have a question for you");
+	            // TODO handle question tiles appropriately
 //	            int newPosition = nextPos;
 //	    	    p.setPlayerPrevPlace(currPosition);
 //				hidePlayerToken(p);
@@ -838,14 +904,10 @@ public class NormalController implements Initializable{
 //	    		move(p, newSteps);
 //	            return p.getPlayerPlace();
 	            return nextPos; // temporary until question pop up is fixed
-	        default:
-	            // Handle unknown tile types or other cases
+	        default: // Handle the rest of the tile types which do not require special treatment
 	        	System.out.println("Next step will be: " + nextPos);
 	            return nextPos;
 	    }
-
-	    return 0;
 	}
 
 }
-

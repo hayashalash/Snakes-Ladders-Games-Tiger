@@ -24,9 +24,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 public class WinnerController implements Initializable{
 
+	public static Difficulty diff;
     @FXML
     private AnchorPane screen;
 
@@ -48,19 +50,32 @@ public class WinnerController implements Initializable{
 
      @FXML
      void playAgain(ActionEvent event) {
-    	 Difficulty diff = HardController.game.getType();
-    	 if (diff == Difficulty.Easy) {
+    	if (diff == Difficulty.Easy) {
+    		resetGame(EasyController.game);
      		EasyController.game = new Game(diff, EasyController.game.getPlayers());
      		newScreen("easyBoard");
      	}
      	else if (diff == Difficulty.Medium) {
+     		resetGame(NormalController.game);
      		NormalController.game = new Game(diff, NormalController.game.getPlayers());
      		newScreen("normalBoard");
      	}
      	else if (diff == Difficulty.Hard) {
+     		resetGame(HardController.game);
      		HardController.game = new Game(diff, HardController.game.getPlayers());
      		newScreen("hardBoard");
      	}
+     }
+     
+     void resetGame(Game game) {
+    	 game.setGameDuration(Duration.ZERO);
+    	 game.setWinner(null);
+    	 game.getPlayersOrder().clear();
+    	 for (Player p : game.getPlayers()) {
+    		 p.setPlayerPlace(0);
+    		 p.setPlayerPrevPlace(0);
+    		 p.setNumberOrder(0);
+    	 }
      }
      
 	@Override
@@ -75,7 +90,6 @@ public class WinnerController implements Initializable{
 
         System.out.println("Image width: " + i.getWidth());
         System.out.println("Image height: " + i.getHeight());
-        Difficulty diff = HardController.game.getType();
         String congrats = null;
         Player winner = null;
         if (diff == Difficulty.Easy)

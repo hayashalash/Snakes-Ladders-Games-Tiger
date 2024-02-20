@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javafx.util.Duration;
+
 public class Game {
 
 	private static int idCounter = 1;
@@ -12,7 +14,7 @@ public class Game {
 	private Difficulty type;
 	private Date date;
 	private int playersNum;
-	private Double gameDuration;
+	private Duration gameDuration = Duration.ZERO;
 	private ArrayList<Player> players = new ArrayList<>();//should delete?
 	private Player winner;
 	private Queue<Player> playersOrder = new LinkedList<Player>();
@@ -50,11 +52,11 @@ public class Game {
 		this.playersNum = playersNum;
 	}
 
-	public Double getGameDuration() {
+	public Duration getGameDuration() {
 		return gameDuration;
 	}
 
-	public void setGameDuration(Double gameDuration) {
+	public void setGameDuration(Duration gameDuration) {
 		this.gameDuration = gameDuration;
 	}
 
