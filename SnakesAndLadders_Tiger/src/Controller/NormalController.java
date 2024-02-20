@@ -103,6 +103,9 @@ public class NormalController implements Initializable{
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
+	private static final String SURPRISE_VALUE_PATH = "/img/icons/surpriseValue.png"; 
+	private static final int VISIBLE_DURATION_MS = 4500; // 10 seconds
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 	
 	private GameController gameController;
@@ -110,6 +113,12 @@ public class NormalController implements Initializable{
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
+	
+    @FXML
+    private ImageView surpriseValue;
+	
+    @FXML
+    private ImageView surprise;
 	
 	@FXML
 	private AnchorPane rootAnchorPane;
@@ -888,6 +897,7 @@ public class NormalController implements Initializable{
 	            return ladder.getLadderTop();
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
+	            displaySurprise();
 	            return nextPos; // TODO Handle surprise tiles appropriately
 	        case Question:
 	            System.out.println("I have a question for you");
@@ -909,5 +919,26 @@ public class NormalController implements Initializable{
 	            return nextPos;
 	    }
 	}
+    
+    void displaySurprise() {
+    	// Load the surprise value image
+    	Image j = new Image(getClass().getResourceAsStream(SURPRISE_VALUE_PATH));
+    	surpriseValue.setImage(j);
+
+    	// Load the surprise GIF image
+    	Image i = new Image(getClass().getResourceAsStream(SURPRISE_GIF_PATH));
+    	surprise.setImage(i);
+
+    	// Create a timeline to hide the images after the specified duration
+    	Timeline timeline = new Timeline(
+    	    new KeyFrame(Duration.millis(VISIBLE_DURATION_MS), event -> {
+    	        // Hide the images
+    	        surpriseValue.setVisible(false);
+    	        surprise.setVisible(false);
+    	    })
+    	);
+    	timeline.play();
+    }
+
 
 }
