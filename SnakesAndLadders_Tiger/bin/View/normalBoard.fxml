@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.NormalController">
+<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.NormalController">
     <children>
         <ImageView fitHeight="595.0" fitWidth="852.0">
             <image>
@@ -107,5 +107,7 @@
             <Image url="@../img/icons/deadline.png" />
          </image>
       </ImageView>
+        <ImageView fx:id="surpriseValue" fitHeight="100.0" fitWidth="100.0" layoutX="450.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="surprise" fitHeight="388.0" fitWidth="482.0" layoutX="261.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>

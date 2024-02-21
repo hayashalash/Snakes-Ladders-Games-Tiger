@@ -222,6 +222,7 @@ import javafx.scene.layout.VBox;
 		private static final String DEFAULT_LADDER_IMAGE_PATH = null;
 		private static final String TOKEN_IMAGE_PATH = "/img/icons/greenPlayer.png";
 		private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+		private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
 		
 	    private Board board;
 	    private GridPane grid;
@@ -612,77 +613,26 @@ import javafx.scene.layout.VBox;
 	        GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
 		}
 		
-		
+		public void showSurpriseGif() {
+		    try {
+		        // Load the surprise image
+		        Image surpriseImage = new Image(getClass().getResource(SURPRISE_GIF_PATH).toExternalForm());
+		        ImageView surpriseImageView = new ImageView(surpriseImage);
+		        
+		        // Show the surprise GIF
+		        surpriseImageView.setVisible(true);
 
-/*
- int NextMove(int currPosition, int steps) {
-	    int nextPos = currPosition + steps;
+		        // Set up a timeline or pause transition to hide the GIF after a few seconds
+		        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+		            surpriseImageView.setVisible(false);
+		        }));
+		        timeline.play();
+		    } catch (Exception e) {
+		        // Handle any exceptions (e.g., image not found)
+		        e.printStackTrace();
+		    }
+		}
 
-	    if (nextPos > board.getBoardSize()) {
-	        return currPosition; // Ensure next position is within the board boundaries
-	    }
-
-	    Tile nextTile = board.getTile(nextPos);
-	    if (nextTile == null) {
-	        return currPosition; // Handle case where tile is null
-	    }
-
-	    switch (nextTile.gettType()) {
-	        case Classic:
-	            System.out.println("Next step will be: " + nextPos);
-	            return nextPos;
-	        case SnakeHead:
-	            SnakeTile snakeT = (SnakeTile) nextTile;
-	            Snake snake = snakeT.getSnake();
-	            if (snake.getColor() == SnakeColor.Red) {
-	                System.out.println("Next step will be: 1");
-	                return 1;
-	            } else {
-	                System.out.println("Next step will be: " + snake.getSnakeTail());
-	                return snake.getSnakeTail();
-	            }
-	        case LadderBottom:
-	            LadderTile ladderT = (LadderTile) nextTile;
-	            Ladder ladder = ladderT.getLadder();
-	            System.out.println("Next step will be: " + ladder.getLadderTop());
-	            return ladder.getLadderBottom();
-	        case Surprise:
-	            System.out.println("Yaaaay you got a gift!");
-	            break; // Handle surprise tiles appropriately
-	        case Question:
-	            System.out.println("I have a question for you");
-	            break; // Handle question tiles appropriately
-	        default:
-	            // Handle unknown tile types or other cases
-	            break;
-	    }
-
-	    return 0;
-	}
-
-
-	void move(Player player, int steps) {	    
-	    System.out.println(player.toString());
-	    int currentPosition = player.getPlayerPlace();
-	    player.setPlayerPrevPlace(currentPosition);
-	    hidePlayerToken(player);
-	    
-	    int newPosition = NextMove(currentPosition,steps);	    
-	    System.out.println("current player position: "+newPosition);
-	    // Set player's new position
-	    player.setPlayerPlace(newPosition);
-	    displayPlayerToken(player, newPosition);
-	    
-	    // Check if player reaches 100
-	    if (newPosition == 100) {
-	        player.setPlayerPlace(newPosition);
-	        displayPlayerToken(player, newPosition);
-	        game.setWinner(player);
-	        System.out.println(player.getPlayerName() + " is the WINNER!");
-	    }
-	}
-*/
-		
 
 		
 	
