@@ -751,7 +751,7 @@ public class NormalController implements Initializable{
 			int selectedAnswerNumber = (int) selectedAnswer.getUserData();// Get the number of selected answer
 			int correctAnswerNumber=q.getCorrectAnswer();
 			if(selectedAnswerNumber == correctAnswerNumber) {
-				selectedAnswer.setStyle("-fx-text-fill: green;");
+				selectedAnswer.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 			    if(difficulty==Difficulty.Easy || difficulty==Difficulty.Medium) {
 			    	resultText.setText("Your answer is correct! You will stay in place!");
 					returnVal = 0;
@@ -762,19 +762,19 @@ public class NormalController implements Initializable{
 				}
 			}
 			else {
-			      selectedAnswer.setStyle("-fx-text-fill: red;");
+			      selectedAnswer.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
 				switch (q.getCorrectAnswer()) {//mark the right answer in green
 				case 1:
-					answer1.setStyle("-fx-text-fill: green;");
+					answer1.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 					break;
 				case 2:
-					answer2.setStyle("-fx-text-fill: green;");
+					answer2.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 					break;
 				case 3:
-					answer3.setStyle("-fx-text-fill: green;");
+					answer3.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 					break;
 				case 4:
-					answer4.setStyle("-fx-text-fill: green;");
+					answer4.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 					break;
 				}
 				if(difficulty==Difficulty.Easy) {
