@@ -239,12 +239,6 @@ public class ManageQuestionsController implements Initializable {
         Tooltip d = new Tooltip("Delete");
         Tooltip.install(delete, d);
       
-		try {
-			SysData.getInstance().readFromJson();
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		fill();
 		questionTable.refresh();
 	}

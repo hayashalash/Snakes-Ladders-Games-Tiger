@@ -21,7 +21,7 @@
                 <Image url="@../img/screens/normalStageBack.jpg" />
             </image>
         </ImageView>
-        <HBox fx:id="playersStart" layoutX="14.0" layoutY="506.0" prefHeight="50.0" prefWidth="197.0" />
+        <HBox fx:id="playersStart" layoutX="14.0" layoutY="517.0" prefHeight="50.0" prefWidth="197.0" />
         <VBox fx:id="playerNamesVbox" layoutX="6.0" layoutY="165.0" prefHeight="235.0" prefWidth="197.0">
             <children>
                 <HBox fx:id="player1" prefHeight="59.0" prefWidth="153.0" />
@@ -89,7 +89,7 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <Label fx:id="time" layoutX="60.0" layoutY="90.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: olive; -fx-border-radius: 10;" text="00 : 00">
+        <Label fx:id="time" layoutX="60.0" layoutY="90.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #D2691E; -fx-border-radius: 10;" text="00 : 00" textFill="CHOCOLATE">
             <font>
                 <Font name="Baskerville Old Face" size="22.0" />
             </font>

@@ -8,7 +8,10 @@ import java.util.ResourceBundle;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.SwingUtilities;
 
+import org.json.simple.parser.ParseException;
+
 import Model.Admin;
+import Model.SysData;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,6 +94,12 @@ public class homeController implements Initializable{
         Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
 
+        try {
+			SysData.getInstance().readFromJson();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	if (note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);
     		note.play();

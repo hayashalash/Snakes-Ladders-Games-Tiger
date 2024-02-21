@@ -22,10 +22,7 @@ public class Board {
 	private HashMap<Integer, Snake> snakes; // all the snakes and the tile with their head
 	private HashMap<Integer, Ladder> ladders; // all the ladder and the tile with their top
 	private ArrayList<QuestionTile> questionTiles; // tiles with questions on them
-	private ArrayList<Tile> surpriseTiles; // tiles with questions on them
-	private HashMap<Integer, Question> easyQuestions; // all the easy questions in the game
-	private HashMap<Integer, Question> mediumQuestions; // all the medium questions in the game
-	private HashMap<Integer, Question> hardQuestions; // all the hard questions in the game
+	private ArrayList<Tile> surpriseTiles; // tiles with surprises on them
 	public HashMap<Integer, Player> playerOn; // where the player is placed on the board
 	
 	public Board(Difficulty bType) {
@@ -41,11 +38,7 @@ public class Board {
 		ladders = new HashMap<>();
 		questionTiles = new ArrayList<>();
 		surpriseTiles = new ArrayList<>();
-		easyQuestions = new HashMap<>();
-		mediumQuestions = new HashMap<>();
-		hardQuestions = new HashMap<>();
 		playerOn = new HashMap<>();
-		importQuestions();
 	}
 
 	public static int getIdCounter() {
@@ -143,30 +136,6 @@ public class Board {
 		this.ladders = ladders;
 	}
 
-	public HashMap<Integer, Question> getEasyQuestions() {
-		return easyQuestions;
-	}
-
-	public void setEasyQuestions(HashMap<Integer, Question> easyQuestions) {
-		this.easyQuestions = easyQuestions;
-	}
-
-	public HashMap<Integer, Question> getMediumQuestions() {
-		return mediumQuestions;
-	}
-
-	public void setMediumQuestions(HashMap<Integer, Question> mediumQuestions) {
-		this.mediumQuestions = mediumQuestions;
-	}
-
-	public HashMap<Integer, Question> getHardQuestions() {
-		return hardQuestions;
-	}
-
-	public void setHardQuestions(HashMap<Integer, Question> hardQuestions) {
-		this.hardQuestions = hardQuestions;
-	}
-
 	public ArrayList<QuestionTile> getQuestionTiles() {
 		return questionTiles;
 	}
@@ -187,28 +156,6 @@ public class Board {
 		return getTiles().get(id);
 	}
 	
-	public void importQuestions () {
-		HashSet<Question> qs = new HashSet<>();
-		qs.addAll(SysData.getInstance().getQuestions());
-		for (Question q : qs) {
-		    addQuestion(q);
-		}
-		System.out.println("Number of easy questions: "+getEasyQuestions().size());
-		System.out.println("Number of medium questions: "+getMediumQuestions().size());
-		System.out.println("Number of hard questions: "+getHardQuestions().size());
-	}
-	
-	public void addQuestion(Question q) {
-		if(q == null || getEasyQuestions().containsKey(q.getQuestionID()) || getMediumQuestions().containsKey(q.getQuestionID()) || getHardQuestions().containsKey(q.getQuestionID()))
-			return;
-		if (q.getDifficulty() == Difficulty.Easy)
-			getEasyQuestions().put(q.getQuestionID(), q);
-		else if (q.getDifficulty() == Difficulty.Medium) 
-			getMediumQuestions().put(q.getQuestionID(), q);
-		else // if difficulty isn't easy/medium - it is hard
-			getHardQuestions().put(q.getQuestionID(), q);
-	}
-
 /*	public boolean createBoard() {
 		int boardCounter = 1;
 		int i = boardLen-1;
@@ -273,23 +220,19 @@ public class Board {
 
 	
 	public void addQuestionTiles() {
-		// boolean retVal = false; //value to return indicating of success 
 		for (int i=0 ; i < 3 ; i++) { // a board has 3 question tiles - one of each difficulty
 			int random = chooseRandomTile(0); 
-			Question q;
+			getTile(random).settType(TileType.Question);
+			QuestionTile qt;
 			if (i==0) { // in the first iteration add an easy question
-				int rand = (int) (Math.random() * (getEasyQuestions().size()));
-				q = getEasyQuestions().get(rand);
+				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Easy);
 			}
 			else if (i==1) { // in the second iteration add a medium question
-				int rand = (int) (Math.random() * (getMediumQuestions().size()));
-				q = getMediumQuestions().get(rand);
+				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Medium);
 			}
 			else { // if (i==2) - in the third iteration add a hard question
-				int rand = (int) (Math.random() * (getHardQuestions().size()));
-				q = getHardQuestions().get(rand);
+				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Hard);
 			}
-			QuestionTile qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), q);
 			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
 			tiles.put(qt.gettNum(), qt); // add the question tile to the tiles HashMap
 			questionTiles.add(qt);

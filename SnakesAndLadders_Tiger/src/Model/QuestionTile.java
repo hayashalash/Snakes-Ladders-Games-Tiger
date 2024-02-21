@@ -1,20 +1,21 @@
 package Model;
 
-public class QuestionTile extends Tile {
-	private Question question;
+public class QuestionTile extends Tile{
 
-	public QuestionTile(Integer tNum, Integer xCoord, Integer yCoord, Question question) {
+	private Difficulty questionDiff;
+
+	public QuestionTile(Integer tNum, Integer xCoord, Integer yCoord, Difficulty dif) {
 		super(tNum, xCoord, yCoord);
 		super.settType(TileType.Question);
-		this.question = question;
+		this.questionDiff = dif;
 	}
 
-	public Question getQuestion() {
-		return question;
+	public Difficulty getQuestionDiff() {
+		return questionDiff;
 	}
 
-	public void setQuestion(Question question) {
-		this.question = question;
+	public void setQuestionDiff(Difficulty questionDiff) {
+		this.questionDiff = questionDiff;
 	}
-	
+
 }
