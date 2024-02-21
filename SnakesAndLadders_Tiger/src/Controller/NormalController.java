@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -541,29 +542,50 @@ public class NormalController implements Initializable{
 		    	otherPlayers.add(p);
 		    otherPlayers.remove(player); // remove the current player playing from this list
 		    //check if other players are already on this tile to avoid covering each other's tokens
-		    if (otherPlayers.get(0).getPlayerPlace() == newPosition) {
+		    int playersOnTile = 0;
+		    for (Player p : otherPlayers) {
+		    	if (p.getPlayerPlace() == newPosition)
+		    		playersOnTile++;
+		    }
+		    if (playersOnTile == 1) {
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
 		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-		        tileHasOtherPlayers = true;
 		    }
-		    if (game.getPlayersNum() > 2) { // if the game has more than two players, check third player as well
-		    	if (otherPlayers.get(1).getPlayerPlace() == newPosition) {
-		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
-		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-		    		tileHasOtherPlayers = true;
-		    	}
+		    else if (playersOnTile == 2) {
+		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
+	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
 		    }
-		    if (game.getPlayersNum() > 3) { // if the game has more than 3 players, check the fourth player as well
-		    	if (otherPlayers.get(2).getPlayerPlace() == newPosition) {
-		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
-		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-		    		tileHasOtherPlayers = true;
-		    	}
+		    else if (playersOnTile == 3) {
+		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER);
+	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
 		    }
-		    if (tileHasOtherPlayers == false) {
+		    else { // no players on this tile
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
 		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
 		    }
+//		    if (otherPlayers.get(0).getPlayerPlace() == newPosition) {
+//		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
+//		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+//		        tileHasOtherPlayers = true;
+//		    }
+//		    if (game.getPlayersNum() > 2) { // if the game has more than two players, check third player as well
+//		    	if (otherPlayers.get(1).getPlayerPlace() == newPosition) {
+//		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
+//		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+//		    		tileHasOtherPlayers = true;
+//		    	}
+//		    }
+//		    if (game.getPlayersNum() > 3) { // if the game has more than 3 players, check the fourth player as well
+//		    	if (otherPlayers.get(2).getPlayerPlace() == newPosition) {
+//		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
+//		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+//		    		tileHasOtherPlayers = true;
+//		    	}
+//		    }
+//		    if (tileHasOtherPlayers == false) {
+//		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
+//		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
+//		    }
 	    }
 	    else { // if the new position is 0
 	    	if (!playersStart.getChildren().contains(iconsOnBoard.get(player))) { // if the player is not outside the board
@@ -683,7 +705,7 @@ public class NormalController implements Initializable{
 		Button submit = new Button("Submit Answer");
 		submit.setPadding(new Insets(5, 5, 5, 5));// top right bottom left
 		// Apply CSS styles to the button
-		  String btnStyle = "-fx-background-color: #D2691E; " +  // Background color
+		String btnStyle = "-fx-background-color: #D2691E; " +  // Background color
 							"-fx-text-fill: white; " +           // Text color
 							"-fx-font-size: 14px; " +            // Font size
 							"-fx-font-family: Serif; " +         // Font family
@@ -710,30 +732,33 @@ public class NormalController implements Initializable{
 		  
 		StackPane content = new StackPane(vbox);
 		dialog.getDialogPane().setContent(content);
-		  
-		// Enable submit button only when a radio button is selected
+		
 		answerGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
-		    if (newToggle != null) {
+		    if (newToggle != null) // Enable submit button only when a radio button is selected
 		        submit.setDisable(false);
-		    }
+//		    if (answerGroup.getUserData() != null) { // Check if the user has already submitted their answer
+//		        answerGroup.selectToggle(oldToggle); // If the user has submitted their answer, deselect the new selection
+//		        submit.setDisable(true);  // do not allow the player to submit a different answer
+//		    }
 		});
-		correct = false; // initialize the boolean to a default: false
 		returnVal = 0; // initialize the return value to a  default: 0
 		submit.setOnAction(e -> {
 			okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
-			  
 			RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle(); // Get the selected answer
+//			if (selectedAnswer != null) {
+//		        answerGroup.setUserData(selectedAnswer); // set this as the user data an prevent changing it later
+//		    }
 			int selectedAnswerNumber = (int) selectedAnswer.getUserData();// Get the number of selected answer
 			int correctAnswerNumber=q.getCorrectAnswer();
 			if(selectedAnswerNumber == correctAnswerNumber) {
 				selectedAnswer.setStyle("-fx-text-fill: green;");
 			    if(difficulty==Difficulty.Easy || difficulty==Difficulty.Medium) {
-					 resultText.setText("Your answer is correct! You will stay in place!");
-					 returnVal = 0;
+			    	resultText.setText("Your answer is correct! You will stay in place!");
+					returnVal = 0;
 				}
 				else {
-					 resultText.setText("Your answer is correct! You will move one step forward!");
-				    	 returnVal = 1;
+					resultText.setText("Your answer is correct! You will move one step forward!");
+				    returnVal = 1;
 				}
 			}
 			else {

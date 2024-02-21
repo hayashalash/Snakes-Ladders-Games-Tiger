@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.homeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.homeController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -65,9 +65,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="start" layoutX="337.0" layoutY="369.0" mnemonicParsing="false" onAction="#start" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="69.0" prefWidth="178.0" style="-fx-background-color: transparent;">
+      <Button fx:id="start" layoutX="329.0" layoutY="356.0" mnemonicParsing="false" onAction="#start" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="69.0" prefWidth="178.0" style="-fx-background-color: transparent;">
                <graphic>
-            <ImageView fitHeight="71.0" fitWidth="158.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
+            <ImageView fitHeight="81.0" fitWidth="178.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,6 , 0 );">
                <image>
                   <Image url="@../img/icons/start.png" />
                </image>
@@ -92,6 +92,16 @@
       <ImageView fx:id="turnOffIcon" fitHeight="38.0" fitWidth="71.0" layoutX="-1.0" layoutY="545.0" opacity="0.0" rotate="35.5">
          <image>
             <Image url="@../img/icons/turnOff.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="218.0" fitWidth="200.0" layoutX="84.0" layoutY="195.0" style="-fx-opacity: 0.8;">
+         <image>
+            <Image url="@../img/icons/homeSnake.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="259.0" fitWidth="200.0" layoutX="620.0" layoutY="234.0" style="-fx-opacity: 0.8;">
+         <image>
+            <Image url="@../img/icons/homeLadder.png" />
          </image>
       </ImageView>
    </children>
