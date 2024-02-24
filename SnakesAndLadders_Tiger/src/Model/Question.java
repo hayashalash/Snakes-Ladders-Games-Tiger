@@ -1,9 +1,10 @@
 package Model;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
-public  class  Question implements Comparable<Question>{
+public  class  Question extends Sort implements Comparable<Question>{
 	
 	//private ArrayList<Answer> answers;
 	public static int idCounter = 1;
@@ -43,6 +44,10 @@ public  class  Question implements Comparable<Question>{
 	public Question(String question) {
 		super();
 		this.question = question;
+	}
+	
+	public Question() {
+		super();
 	}
 	
 	public int getQuestionID() {
@@ -119,5 +124,30 @@ public  class  Question implements Comparable<Question>{
 		return "Question [answer1=" + answer1 + ", answer2=" + answer2 + ", answer3=" + answer3 + ", answer4=" + answer4
 				+ ", questionID=" + questionID + ", question=" + question + ", difficulty=" + difficulty
 				+ ", correctAnswer=" + correctAnswer + "]";
+	}
+
+
+	@Override
+	public ArrayList<Object> getSorted(String s) {
+        // disregard received value of string (which indicated how to sort) as the questions are only sorted by difficulty
+        ArrayList<Question> sortDiff = new ArrayList<>(SysData.getInstance().getQuestions());
+        ArrayList<Object> sorted = new ArrayList<>();
+
+        for (Question q : sortDiff) {
+            if (q.getDifficulty().equals(Difficulty.Easy)) {
+                sorted.add(q);
+            }
+        }
+        for (Question q : sortDiff) {
+            if (q.getDifficulty().equals(Difficulty.Medium)) {
+                sorted.add(q);
+            }
+        }
+        for (Question q : sortDiff) {
+            if (q.getDifficulty().equals(Difficulty.Hard)) {
+                sorted.add(q);
+            }
+        }
+        return sorted;
 	}
 }

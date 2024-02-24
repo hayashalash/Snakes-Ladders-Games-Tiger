@@ -1,5 +1,6 @@
 package Controller;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -385,15 +386,15 @@ public class ChoosePlayersController implements Initializable{
     		players.add(fourthP);
     	}
     	if (diff == Difficulty.Easy) {
-    		EasyController.game = new Game(diff, players);
+    		EasyController.game = new Game(diff, players, LocalDate.now());
     		newScreen("easyBoard");
     	}
     	else if (diff == Difficulty.Medium) {
-    		NormalController.game = new Game(diff, players);
+    		NormalController.game = new Game(diff, players, LocalDate.now());
     		newScreen("normalBoard");
     	}
     	else if (diff == Difficulty.Hard) {
-    		HardController.game = new Game(diff, players);
+    		HardController.game = new Game(diff, players, LocalDate.now());
     		newScreen("hardBoard");
     	}
     }

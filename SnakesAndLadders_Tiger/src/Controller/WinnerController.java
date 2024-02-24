@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Model.Difficulty;
@@ -52,17 +53,17 @@ public class WinnerController implements Initializable{
      void playAgain(ActionEvent event) {
     	if (diff == Difficulty.Easy) {
     		resetGame(EasyController.game);
-     		EasyController.game = new Game(diff, EasyController.game.getPlayers());
+     		EasyController.game = new Game(diff, EasyController.game.getPlayers(), LocalDate.now());
      		newScreen("easyBoard");
      	}
      	else if (diff == Difficulty.Medium) {
      		resetGame(NormalController.game);
-     		NormalController.game = new Game(diff, NormalController.game.getPlayers());
+     		NormalController.game = new Game(diff, NormalController.game.getPlayers(), LocalDate.now());
      		newScreen("normalBoard");
      	}
      	else if (diff == Difficulty.Hard) {
      		resetGame(HardController.game);
-     		HardController.game = new Game(diff, HardController.game.getPlayers());
+     		HardController.game = new Game(diff, HardController.game.getPlayers(), LocalDate.now());
      		newScreen("hardBoard");
      	}
      }

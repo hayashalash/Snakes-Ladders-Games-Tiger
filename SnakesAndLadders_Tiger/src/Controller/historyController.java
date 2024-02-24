@@ -2,6 +2,7 @@ package Controller;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Model.SysData;
 import Model.Difficulty;
-import Model.GameHistory;
+import Model.Game;
 import Model.Player;
 import Model.Question;
 
@@ -40,19 +41,22 @@ public class historyController implements Initializable{
 
     private HashMap<Player, Integer> playersWinningGames;//the value represent the number of games the player wins  
     @FXML
-    private TableView<GameHistory> History;
+    private TableView<Game> History;
 
     @FXML
-    private TableColumn<GameHistory, Integer> gameID;
+    private TableColumn<Game, Integer> gameID;
 
     @FXML
-    private TableColumn<GameHistory, Difficulty> difficulty;
+    private TableColumn<Game, Difficulty> difficulty;
 
     @FXML
-    private TableColumn<GameHistory, Player> winner;
+    private TableColumn<Game, Player> winner;
 
     @FXML
-    private TableColumn<GameHistory, String> duration;
+    private TableColumn<Game, String> duration;
+    
+    @FXML
+    private TableColumn<Game, LocalDate> date;
     
     @FXML
     private Button homeButton;
@@ -76,12 +80,12 @@ public class historyController implements Initializable{
 
     @FXML
     void OrderWinner(ActionEvent event) {
-    	   List<GameHistory> orderByWinner = new ArrayList<>(SysData.getInstance().getGames());
+    	   List<Game> orderByWinner = new ArrayList<>(SysData.getInstance().getGames());
 
            // Sort the games based on the winner's name
-           Collections.sort(orderByWinner, new Comparator<GameHistory>() {
+           Collections.sort(orderByWinner, new Comparator<Game>() {
                @Override
-               public int compare(GameHistory w1, GameHistory w2) {
+               public int compare(Game w1, Game w2) {
                    String winnerName1 = w1.getWinner().getPlayerName();
                    String winnerName2 = w2.getWinner().getPlayerName();
                    return winnerName1.compareTo(winnerName2);
@@ -89,16 +93,16 @@ public class historyController implements Initializable{
            });
 
     	// Retrieve the top three winners
-    	List<GameHistory> topThreeWinners = orderByWinner.subList(0, Math.min(3, orderByWinner.size()));
+    	List<Game> topThreeWinners = orderByWinner.subList(0, Math.min(3, orderByWinner.size()));
 
     	// Display the top three winners in a TableView
-    	ObservableList<GameHistory> dataQues = FXCollections.observableArrayList(topThreeWinners);
+    	ObservableList<Game> dataQues = FXCollections.observableArrayList(topThreeWinners);
     	gameID.setCellValueFactory(new PropertyValueFactory<>("GameID"));
     	duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
     	difficulty.setCellValueFactory(new PropertyValueFactory<>("type"));
     	winner.setCellValueFactory(new PropertyValueFactory<>("winner"));
 
-    	ObservableList<GameHistory> temp = FXCollections.observableArrayList(dataQues);
+    	ObservableList<Game> temp = FXCollections.observableArrayList(dataQues);
     	History.setItems(temp);
     }
 
@@ -140,15 +144,15 @@ public class historyController implements Initializable{
     }
 
     public void fillHistoryTable() {
-     ObservableList<GameHistory> Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
-     
-     gameID.setCellValueFactory(new PropertyValueFactory<GameHistory, Integer>("GameID"));
-     duration.setCellValueFactory(new PropertyValueFactory<GameHistory, String>("gameDuration"));
-     winner.setCellValueFactory(new PropertyValueFactory<GameHistory, Player>("winner"));
-     difficulty.setCellValueFactory(new PropertyValueFactory<GameHistory, Difficulty>("difficulty"));
+		ObservableList<Game> Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
+		 
+		gameID.setCellValueFactory(new PropertyValueFactory<Game, Integer>("GameID"));
+		duration.setCellValueFactory(new PropertyValueFactory<Game, String>("gameDuration"));
+		winner.setCellValueFactory(new PropertyValueFactory<Game, Player>("winner"));
+		difficulty.setCellValueFactory(new PropertyValueFactory<Game, Difficulty>("difficulty"));
+		date.setCellValueFactory(new PropertyValueFactory<Game, LocalDate>("date"));
 
-     History.setItems(Gamesdata);
-     
+		History.setItems(Gamesdata);
     }
     
 	

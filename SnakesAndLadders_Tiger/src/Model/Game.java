@@ -1,30 +1,32 @@
 package Model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.util.Duration;
 
-public class Game {
+public class Game extends Sort{
 
 	private static int idCounter = 1;
 	private int GameID;
 	private Difficulty type;
-	private Date date;
+	private LocalDate date;
 	private int playersNum;
 	private Duration gameDuration = Duration.ZERO;
 	private ArrayList<Player> players = new ArrayList<>();//should delete?
 	private Player winner;
 	private Queue<Player> playersOrder = new LinkedList<Player>();
 	
-	public Game(Difficulty type, ArrayList<Player> players) {
+	public Game(Difficulty type, ArrayList<Player> players, LocalDate date) {
 		super();
 		GameID = idCounter++;
 		this.type = type;
 		this.playersNum = players.size();
 		this.players = players;
+		this.date = date;
 	}
 
 
@@ -76,11 +78,11 @@ public class Game {
 		this.winner = winner;
 	}
 
-	public final Date getDate() {
+	public final LocalDate getDate() {
 		return date;
 	}
 
-	public final void setDate(Date date) {
+	public final void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -97,10 +99,14 @@ public class Game {
     	Player p=playersOrder.poll();
     	playersOrder.add(p);
     }
-	
-	
-	
 
+
+	@Override
+	public ArrayList<Object> getSorted(String sortedBy) {
+		// TODO Auto-generated method stub
+		//sort by dificulty or by duration based on the string received
+		return null;
+	}
 	
 }
 

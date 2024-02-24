@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.infoController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.infoController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
-            <Image url="@../img/screens/infoBack.jpg" />
+            <Image url="@../img/screens/blank.jpg" />
          </image>
       </ImageView>
       <Button fx:id="closeButton" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeStage" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
@@ -42,5 +48,154 @@
             <Image url="@../img/icons/info.png" />
          </image>
       </ImageView>
+      <VBox layoutX="163.0" layoutY="155.0" prefHeight="319.0" prefWidth="571.0" spacing="7.0">
+         <children>
+            <HBox prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/dice.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Roll the dice to determine your fate">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="15.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/arrow1.gif" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label text="The arrow indicates your turn">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="48.0" prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/redSnake.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Encounter snakes and slide down">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="124.0" prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/ladderIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Find ladders and climb up">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="86.0" prefHeight="56.0" prefWidth="700.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/question.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="7.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <VBox prefHeight="30.0" prefWidth="478.0">
+                     <children>
+                        <Label prefHeight="24.0" prefWidth="459.0" text="Land on a question mark or get one on the dice roll">
+                           <font>
+                              <Font name="Baskerville Old Face" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                        <Label text="and answer questions for your destiny">
+                           <font>
+                              <Font name="Baskerville Old Face" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="124.0" prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0">
+                     <image>
+                        <Image url="@../img/icons/surprise.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Surprises can move you forward or backwards">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="253.0" prefHeight="38.0" prefWidth="549.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../img/icons/trophy.png" />
+                     </image>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </ImageView>
+                  <Label text="Be the first to reach the last tile to claim victory">
+                     <font>
+                        <Font name="Baskerville Old Face" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="13.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="178.0" layoutY="106.0" text="Get ready for the quest!">
+         <font>
+            <Font name="Britannic Bold" size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

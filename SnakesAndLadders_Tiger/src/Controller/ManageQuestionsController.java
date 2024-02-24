@@ -36,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
+import sun.util.resources.cldr.en.CalendarData_en_Dsrt_US;
 import Model.SysData;
 import javafx.application.Application;
 import javafx.scene.control.ListCell;
@@ -58,6 +59,7 @@ import org.json.simple.parser.ParseException;
 
 import Model.Difficulty;
 import Model.Question;
+import Model.Sort;
 
 public class ManageQuestionsController implements Initializable {
 	
@@ -109,35 +111,19 @@ public class ManageQuestionsController implements Initializable {
     
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
-    
-
+    List<Question> originalOrder = new ArrayList<>(SysData.getInstance().getQuestions()); // Save the original order to revert back to after sorting
+    ArrayList<Question> sorted = new ArrayList<>(); // Arraylist to store the sorted questions
     private boolean isSorted = false;
-    private List<Question> originalOrder;
+    
 
     @FXML
     void OrderDifficulty(ActionEvent event) {
+    	
+    	
         if (!isSorted) {
-            // Save the original order before sorting
-            originalOrder = new ArrayList<>(SysData.getInstance().getQuestions());
-            
-            ArrayList<Question> sortDiff = new ArrayList<>(originalOrder);
-            ArrayList<Question> sorted = new ArrayList<>();
-
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Easy)) {
-                    sorted.add(q);
-                }
-            }
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Medium)) {
-                    sorted.add(q);
-                }
-            }
-            for (Question q : sortDiff) {
-                if (q.getDifficulty().equals(Difficulty.Hard)) {
-                    sorted.add(q);
-                }
-            }
+            Sort sort = new Question();
+            for (Object obj : sort.getSorted("difficulty"))
+            	sorted.add((Question) obj);
             ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
             question.setCellValueFactory(new PropertyValueFactory<>("question"));
             difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
@@ -239,9 +225,10 @@ public class ManageQuestionsController implements Initializable {
         Tooltip d = new Tooltip("Delete");
         Tooltip.install(delete, d);
       
-		fill();
-		questionTable.refresh();
+        fill();
+        questionTable.refresh();
 	}
+    
     public void fill() {
 
     	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
@@ -361,7 +348,6 @@ public class ManageQuestionsController implements Initializable {
   		arr.addAll(dataQues);
   		dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
-  		
 
   	}
     
@@ -400,5 +386,6 @@ public class ManageQuestionsController implements Initializable {
         // Check if the answer is correct and apply styling
     	  return "   " + answer;
     }
+
 }
    
