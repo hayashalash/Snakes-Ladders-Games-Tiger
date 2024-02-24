@@ -107,7 +107,7 @@
             <Image url="@../img/icons/deadline.png" />
          </image>
       </ImageView>
-        <ImageView fx:id="surpriseValue" fitHeight="100.0" fitWidth="100.0" layoutX="450.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="surpriseValue" fitHeight="120.0" fitWidth="120.0" layoutX="435.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="surprise" fitHeight="388.0" fitWidth="482.0" layoutX="261.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>

@@ -613,27 +613,6 @@ import javafx.scene.layout.VBox;
 	        GridPane.setValignment(ladderImageView, javafx.geometry.VPos.CENTER); // Center vertically
 		}
 		
-		public void showSurpriseGif() {
-		    try {
-		        // Load the surprise image
-		        Image surpriseImage = new Image(getClass().getResource(SURPRISE_GIF_PATH).toExternalForm());
-		        ImageView surpriseImageView = new ImageView(surpriseImage);
-		        
-		        // Show the surprise GIF
-		        surpriseImageView.setVisible(true);
-
-		        // Set up a timeline or pause transition to hide the GIF after a few seconds
-		        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-		            surpriseImageView.setVisible(false);
-		        }));
-		        timeline.play();
-		    } catch (Exception e) {
-		        // Handle any exceptions (e.g., image not found)
-		        e.printStackTrace();
-		    }
-		}
 
 
-		
-	
 }

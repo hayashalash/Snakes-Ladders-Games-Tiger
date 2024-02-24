@@ -173,8 +173,8 @@ public class EasyController implements Initializable{
         startTimer();
 		showPlayers();
 	    gameController = new GameController(board, grid);
-	    gameController.showSnakes();
 	    gameController.showLadders();
+	    gameController.showSnakes();
 		showQuestions();
 		showSurprises();
 		//ensureExitButtonOnTop();
@@ -720,9 +720,6 @@ public class EasyController implements Initializable{
 		return null;
 	}
 	
-    
-    
-
 	
 	private void ensureExitButtonOnTop() {
 	  rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane

@@ -107,6 +107,11 @@ public class NormalController implements Initializable{
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
+	private static final String SURPRISE_PLUS_PATH = "/img/icons/surprisePlus.png"; 
+	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
+	private static final int VISIBLE_DURATION_MS = 4500; // 10 seconds
+	
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 	boolean correct = false; // checks if answer is correct
     int returnVal = 0; // returns the number of steps the player should move based on their answer
@@ -115,6 +120,12 @@ public class NormalController implements Initializable{
 	public static Game game;
 	Board board = new Board(game.getType());
 	public Player currentTurn;
+	
+    @FXML
+    private ImageView surpriseValue;
+	
+    @FXML
+    private ImageView surprise;	
 	
 	@FXML
 	private AnchorPane rootAnchorPane;
@@ -205,8 +216,8 @@ public class NormalController implements Initializable{
         Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
 		showPlayers();
 	    gameController = new GameController(board, grid);
-	    gameController.showSnakes();
 	    gameController.showLadders();
+	    gameController.showSnakes();
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
@@ -640,6 +651,10 @@ public class NormalController implements Initializable{
 	                System.out.println("Next step will be: " + snake.getSnakeTail());
 	                return snake.getSnakeTail();
 	            }
+	      //  case Classic:
+	      //      System.out.println("Yaaaay you got a gift!");
+	     //       handleSurpriseTileReached();
+	      //      return nextPos; // TODO Handle surprise tiles appropriately
 	        case LadderBottom:
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
@@ -647,6 +662,7 @@ public class NormalController implements Initializable{
 	            return ladder.getLadderTop();
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
+	            handleSurpriseTileReached();
 	            return nextPos; // TODO Handle surprise tiles appropriately
 	        case Question:
 	            System.out.println("I have a question for you");
@@ -671,6 +687,48 @@ public class NormalController implements Initializable{
 	            return nextPos;
 	    }
 	}
+    
+    
+    void displaySurprise() {
+    	// Load the surprise value image
+    	Image p = new Image(getClass().getResourceAsStream(SURPRISE_PLUS_PATH));
+    	Image m = new Image(getClass().getResourceAsStream(SURPRISE_MINUS_PATH));
+    	
+        int[] possibleValues = {-10, 10};
+        Random random = new Random();
+        int index = random.nextInt(possibleValues.length);
+        int surpriseResult = possibleValues[index];
+        
+        if(surpriseResult == -10)
+        	surpriseValue.setImage(m);
+        else
+    	    surpriseValue.setImage(p);
+
+    	// Load the surprise GIF image
+    	Image i = new Image(getClass().getResourceAsStream(SURPRISE_GIF_PATH));
+    	surprise.setImage(i);
+
+    	// Create a timeline to hide the images after the specified duration
+    	Timeline timeline = new Timeline(
+    	    new KeyFrame(Duration.millis(VISIBLE_DURATION_MS), event -> {
+    	        // Hide the images
+    	        surpriseValue.setVisible(false);
+    	        surprise.setVisible(false);
+    	    })
+    	);
+    	timeline.play();
+    }
+    
+ // Wherever you handle the player reaching a surprise tile
+    void handleSurpriseTileReached() {
+        // Show the surprise box and its images
+        surpriseValue.setVisible(true);
+        surprise.setVisible(true);
+
+        // Call the function to display the surprise
+        displaySurprise();
+    }
+
     
 	public int showQuestionPopup(Difficulty difficulty) { // view the question  dialog  and return the number of steps to move
 		Dialog<ButtonType> dialog = new Dialog<>();

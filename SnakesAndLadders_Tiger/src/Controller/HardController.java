@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
@@ -69,10 +70,21 @@ public class HardController implements Initializable{
 	private static final String INFO_IMAGE_PATH = "/img/screens/blank.jpg";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
+	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
+	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
+	private static final String SURPRISE_PLUS_PATH = "/img/icons/surprisePlus.png"; 
+	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
+	private static final int VISIBLE_DURATION_MS = 4500; // 10 seconds
 	
 	private GameController gameController;
 	public static Game game;
 	Board board = new Board(game.getType());
+	
+    @FXML
+    private ImageView surpriseValue;
+	
+    @FXML
+    private ImageView surprise;	
 	
 	@FXML
 	private AnchorPane rootAnchorPane;
@@ -137,8 +149,8 @@ public class HardController implements Initializable{
         startTimer();
 		showPlayers();
 	    gameController = new GameController(board, grid);
-	    gameController.showSnakes();
 	    gameController.showLadders();
+	    gameController.showSnakes();
 		showQuestions();
 		showSurprises();
 		ensureExitButtonOnTop();
@@ -355,6 +367,47 @@ public class HardController implements Initializable{
 
         dialog.showAndWait();
     }
+	
+    void displaySurprise() {
+    	// Load the surprise value image
+    	Image p = new Image(getClass().getResourceAsStream(SURPRISE_PLUS_PATH));
+    	Image m = new Image(getClass().getResourceAsStream(SURPRISE_MINUS_PATH));
+    	
+        int[] possibleValues = {-10, 10};
+        Random random = new Random();
+        int index = random.nextInt(possibleValues.length);
+        int surpriseResult = possibleValues[index];
+        
+        if(surpriseResult == -10)
+        	surpriseValue.setImage(m);
+        else
+    	    surpriseValue.setImage(p);
+
+    	// Load the surprise GIF image
+    	Image i = new Image(getClass().getResourceAsStream(SURPRISE_GIF_PATH));
+    	surprise.setImage(i);
+
+    	// Create a timeline to hide the images after the specified duration
+    	Timeline timeline = new Timeline(
+    	    new KeyFrame(Duration.millis(VISIBLE_DURATION_MS), event -> {
+    	        // Hide the images
+    	        surpriseValue.setVisible(false);
+    	        surprise.setVisible(false);
+    	    })
+    	);
+    	timeline.play();
+    }
+    
+ // Wherever you handle the player reaching a surprise tile
+    void handleSurpriseTileReached() {
+        // Show the surprise box and its images
+        surpriseValue.setVisible(true);
+        surprise.setVisible(true);
+
+        // Call the function to display the surprise
+        displaySurprise();
+    }
+
 	
 	@FXML
     void entered(MouseEvent event){
