@@ -80,17 +80,17 @@ public class historyController implements Initializable{
 
     @FXML
     void OrderWinner(ActionEvent event) {
-    	   List<Game> orderByWinner = new ArrayList<>(SysData.getInstance().getGames());
-
-           // Sort the games based on the winner's name
-           Collections.sort(orderByWinner, new Comparator<Game>() {
-               @Override
-               public int compare(Game w1, Game w2) {
-                   String winnerName1 = w1.getWinner().getPlayerName();
-                   String winnerName2 = w2.getWinner().getPlayerName();
-                   return winnerName1.compareTo(winnerName2);
-               }
-           });
+		List<Game> orderByWinner = new ArrayList<>(SysData.getInstance().getGames());
+		
+		// Sort the games based on the winner's name
+		Collections.sort(orderByWinner, new Comparator<Game>() {
+			@Override
+			public int compare(Game w1, Game w2) {
+				String winnerName1 = w1.getWinner().getPlayerName();
+				String winnerName2 = w2.getWinner().getPlayerName();
+				return winnerName1.compareTo(winnerName2);
+			}
+		});
 
     	// Retrieve the top three winners
     	List<Game> topThreeWinners = orderByWinner.subList(0, Math.min(3, orderByWinner.size()));
@@ -119,9 +119,7 @@ public class historyController implements Initializable{
             e.printStackTrace();
             System.out.println("Error loading FXML: " + e.getMessage());
         }
-    }
-
-    
+    }    
    
     @FXML
     void exit(ActionEvent event) {

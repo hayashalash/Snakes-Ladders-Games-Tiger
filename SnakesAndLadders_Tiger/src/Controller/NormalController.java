@@ -1,25 +1,17 @@
 package Controller;
-import java.awt.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import Model.Admin;
+import org.json.simple.parser.ParseException;
+
 import Model.Board;
 import Model.Color;
 import Model.Dice;
@@ -36,11 +28,13 @@ import Model.SnakeColor;
 import Model.SnakeTile;
 import Model.SysData;
 import Model.Tile;
+import Model.TileType;
 import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +43,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -70,18 +63,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import javafx.animation.RotateTransition;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-import javafx.scene.shape.Line;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 
 public class NormalController implements Initializable{
@@ -112,6 +94,8 @@ public class NormalController implements Initializable{
 	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
 	private static final int VISIBLE_DURATION_MS = 4500; // 10 seconds
 	
+	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 	boolean correct = false; // checks if answer is correct
     int returnVal = 0; // returns the number of steps the player should move based on their answer
@@ -202,6 +186,9 @@ public class NormalController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+        
+        System.out.println("cell width is: "+grid.getColumnConstraints().get(0).getPrefWidth());
+		System.out.println("cell height is: "+grid.getRowConstraints().get(0).getPrefHeight());
 		// TODO Auto-generated method stub
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
@@ -435,30 +422,33 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-    		Platform.runLater(() -> {
-    		    // Place your UI-related operation here
-    			int steps = showQuestionPopup(Difficulty.Easy);
-    			System.out.println("steps to move after question are: "+steps);
-        		move(currentPlayer, steps); 
-    		});
+//    		Platform.runLater(() -> {
+//    		    // Place your UI-related operation here
+//    			int steps = showQuestionPopup(Difficulty.Easy);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		move(currentPlayer, steps); 
+//    		});
+    		move(currentPlayer, 1); 
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-    		Platform.runLater(() -> {
-    		    // Place your UI-related operation here
-    			int steps = showQuestionPopup(Difficulty.Medium);
-    			System.out.println("steps to move after question are: "+steps);
-        		move(currentPlayer, steps); 
-    		});
+//    		Platform.runLater(() -> {
+//    		    // Place your UI-related operation here
+//    			int steps = showQuestionPopup(Difficulty.Medium);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		move(currentPlayer, steps); 
+//    		});
+    		move(currentPlayer, 1); 
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-    		Platform.runLater(() -> {
-    		    // Place your UI-related operation here
-    			int steps = showQuestionPopup(Difficulty.Hard);
-    			System.out.println("steps to move after question are: "+steps);
-        		move(currentPlayer, steps); 
-    		});
+//    		Platform.runLater(() -> {
+//    		    // Place your UI-related operation here
+//    			int steps = showQuestionPopup(Difficulty.Hard);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		move(currentPlayer, steps); 
+//    		});
+    		move(currentPlayer, 1); 
         }	
 	}
 
@@ -472,28 +462,74 @@ public class NormalController implements Initializable{
     		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 0);");
     	 }
     }
+	
+	public void win(int currentRow, int currentColumn, Player p, int newPosition) {
+		p.setPlayerPlace(newPosition);
+        displayPlayerToken(currentRow, currentColumn, p, newPosition);
+        game.setWinner(p);
+        game.setGameDuration(stopTimer());
+        WinnerController.diff = game.getType();
+        try {
+			SysData.getInstance().writeToJsonGames(game);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        newScreen("Winner");
+        System.out.println(p.getPlayerName() + " is the WINNER!");
+	}
     
 	void move(Player player, int steps) {	    
 	    int currentPosition = player.getPlayerPlace();
+	    int currentRow;
+	    int currentColumn;
+	    if (currentPosition > 0) {
+	    	Tile pos = board.getTile(currentPosition);
+		    currentRow = pos.getxCoord();
+		    currentColumn = pos.getyCoord();
+	    }
+	    else {
+	    	currentRow = board.getBoardLen()-1;
+	    	currentColumn = 0;
+	    }
 	    System.out.println("current player position: "+currentPosition);
 	    if (steps != 0) {
-	    	player.setPlayerPrevPlace(currentPosition);
-		    hidePlayerToken(player);
 		    
-		    int newPosition = NextMove(currentPosition,steps, player);	    
-		    // Set player's new position
-		    player.setPlayerPlace(newPosition);
-		    displayPlayerToken(player, newPosition);
+		    int nextPos = currentPosition + steps;
+		    int newPosition = NextMove(currentRow, currentColumn, currentPosition, steps, player);
+		    if (nextPos < board.getBoardSize() && nextPos >= 1) {
+		    	player.setPlayerPrevPlace(currentPosition);
+			    hidePlayerToken(player);
+		    	Tile nextTile = board.getTile(nextPos);
+		    	// if the next tile is a snake head or ladder bottom,
+		    	// move the player to that tile before moving them to the snake tail / ladder top
+		    	if (nextTile.gettType().equals(TileType.LadderBottom) || nextTile.gettType().equals(TileType.SnakeHead)) {
+		    		int newRow = nextTile.getxCoord();
+				    int newColumn = nextTile.getyCoord();
+				    Platform.runLater(() -> {
+				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
+			    		hidePlayerToken(player);
+				    });
+		    		
+//		    		scheduleTask(newRow, newColumn, player, newPosition);
+		    		Platform.runLater(() -> {
+		    			player.setPlayerPlace(newPosition);
+					    displayPlayerToken(newRow, newColumn, player, newPosition);
+		    		});
+		    	}
+		    	else {
+			    	// Set player's new position
+				    player.setPlayerPlace(newPosition);
+				    displayPlayerToken(currentRow, currentColumn, player, newPosition);
+			    }
+		   }
 		    // Check if player reached the last tile and end the game
 		    if (newPosition == board.getBoardSize()) {
-		        player.setPlayerPlace(newPosition);
-		        displayPlayerToken(player, newPosition);
-		        game.setWinner(player);
-		        game.setGameDuration(stopTimer());
-		        WinnerController.diff = game.getType();
-		        newScreen("Winner");
-		        System.out.println(player.getPlayerName() + " is the WINNER!");
-		    }
+		        win(currentRow, currentColumn, player, newPosition);
+		    } 
 	    }
 	    
 	    // clear arrow once the player finishes their turn
@@ -525,7 +561,7 @@ public class NormalController implements Initializable{
         }
 	}
 	
-	private void displayPlayerToken(Player player, int newPosition) {
+	private void displayPlayerToken(int currentR, int currentC, Player player, int newPosition) {
 	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
 	    ImageView token = iconsOnBoard.get(player);
 	    if (token == null) {
@@ -547,14 +583,38 @@ public class NormalController implements Initializable{
 //		    System.out.println(pos);
 		    int row = pos.getxCoord();
 		    int column = pos.getyCoord();
-		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
-		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
+		    moveTokenToCell(currentR, currentC, row, column, token);
 		    
+		    // Create TranslateTransition to move the ImageView
+//		    // Calculate the translation needed to move to the target row and column
+//	        double targetX = column * grid.getColumnConstraints().get(0).getPrefWidth();
+//	        double targetY = row * grid.getRowConstraints().get(0).getPrefHeight();
+//	        
+//	        // Create TranslateTransition to move the ImageView to the target position
+//	        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
+//	        translateTransition.setToX(targetX - token.getLayoutX());
+//	        translateTransition.setToY(targetY - token.getLayoutY());
+//	        
+//	        // Play the TranslateTransition
+//	        translateTransition.play();
+		    
+//		    // Create TranslateTransition to move the ImageView
+//	        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
+//	        translateTransition.setByX(100); // Move by 100 pixels in the X direction
+//	        translateTransition.setByY(100); // Move by 100 pixels in the Y direction
+//	        
+//	        // Play the TranslateTransition
+//	        translateTransition.play();
+		    
+//		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
+//		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
+		    
+		    //check if other players are already on this tile to avoid covering each other's tokens
 		    ArrayList<Player> otherPlayers = new ArrayList<>(); // arraylist for the other players
 		    for (Player p : game.getPlayers())
 		    	otherPlayers.add(p);
 		    otherPlayers.remove(player); // remove the current player playing from this list
-		    //check if other players are already on this tile to avoid covering each other's tokens
+		    
 		    int playersOnTile = 0;
 		    for (Player p : otherPlayers) {
 		    	if (p.getPlayerPlace() == newPosition)
@@ -583,6 +643,26 @@ public class NormalController implements Initializable{
 	    	}
 	    }
 	}
+	
+	private void moveTokenToCell(int currentRow, int currentColumn, int targetRow, int targetColumn, ImageView token) {
+		double tileWidth = grid.getPrefWidth()/board.getBoardLen();
+		double tileHeight = grid.getPrefHeight()/board.getBoardLen();
+
+		double width = tileWidth * (targetColumn-currentColumn); // move along the x axis
+    	double height = tileHeight * (targetRow-currentRow); // move along the y axis   
+
+        // Create TranslateTransition to move the ImageView to the target position
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
+        translateTransition.setToX(width);
+        translateTransition.setToY(height);
+        
+        // Play the TranslateTransition
+        translateTransition.play();
+        
+        // Update the row and column index of the token --> this is where the animation will start from
+        GridPane.setRowIndex(token, currentRow);
+        GridPane.setColumnIndex(token, currentColumn);
+    }
 
 	private void hidePlayerToken(Player p) {
 	    ImageView token = iconsOnBoard.get(p);
@@ -599,7 +679,7 @@ public class NormalController implements Initializable{
 	    }
 	}
 
-    int NextMove(int currPosition, int steps, Player p) {
+    int NextMove(int currentRow, int currentColumn, int currPosition, int steps, Player p) {
     	System.out.println("steps to move in NextMove are: " + steps);
 	    int nextPos = currPosition + steps;
 
@@ -616,11 +696,19 @@ public class NormalController implements Initializable{
 	    	System.out.println("next position is "+ nextPos +" and that tile is null.");
 	        return currPosition; // Handle case where tile is null
 	    }
-
+	    
 	    switch (nextTile.gettType()) {
 	        case SnakeHead:
 	            SnakeTile snakeT = (SnakeTile) nextTile;
 	            Snake snake = snakeT.getSnake();
+//	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
+//				try {
+//					Thread.sleep(3000);
+//				} catch (InterruptedException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				hidePlayerToken(p);
 	            if (snake.getColor() == SnakeColor.Red) {
 	                System.out.println("Next step will be: 1");
 	                return 1;
@@ -628,17 +716,21 @@ public class NormalController implements Initializable{
 	                System.out.println("Next step will be: " + snake.getSnakeTail());
 	                return snake.getSnakeTail();
 	            }
-	        case Classic:
-	            return nextPos;
+	            
 	        case LadderBottom:
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
 	            System.out.println("Next step will be: " + ladder.getLadderTop());
+//	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
+
+//	            scheduleTask(currentRow, currentColumn, p, nextPos);
 	            return ladder.getLadderTop();
+	            
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
 	            int surpriseSteps = handleSurpriseTileReached();
 	            return nextPos+surpriseSteps;
+	            
 	        case Question:
 	            System.out.println("I have a question for you");
 	            // TODO handle question tiles appropriately
@@ -648,7 +740,7 @@ public class NormalController implements Initializable{
 	    	    System.out.println("new player position: "+newPosition);
 	    	    // Set player's new position
 	    	    p.setPlayerPlace(newPosition);
-	    	    displayPlayerToken(p, newPosition);
+	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition);
 	    	    System.out.println("current player position on question tile: "+newPosition);
 	    	    Platform.runLater(() -> {
 	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
@@ -987,4 +1079,11 @@ public class NormalController implements Initializable{
 		}  	
     }
     
+	public void scheduleTask(int currentRow, int currentColumn, Player p, int newPos) {
+        executor.schedule(() -> {
+        	// Set player's new position
+		    p.setPlayerPlace(newPos);
+		    displayPlayerToken(currentRow, currentColumn, p, newPos);
+        }, 3, TimeUnit.SECONDS);
+    }
 }
