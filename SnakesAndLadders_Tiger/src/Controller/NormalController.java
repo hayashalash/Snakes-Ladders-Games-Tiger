@@ -186,10 +186,6 @@ public class NormalController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        
-        System.out.println("cell width is: "+grid.getColumnConstraints().get(0).getPrefWidth());
-		System.out.println("cell height is: "+grid.getRowConstraints().get(0).getPrefHeight());
-		// TODO Auto-generated method stub
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
 		Tooltip r = new Tooltip("Game Rules");
@@ -428,7 +424,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); 
+    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
@@ -438,7 +434,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); 
+    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
@@ -448,7 +444,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); 
+    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 
@@ -465,17 +461,17 @@ public class NormalController implements Initializable{
 	
 	public void win(int currentRow, int currentColumn, Player p, int newPosition) {
 		p.setPlayerPlace(newPosition);
-        displayPlayerToken(currentRow, currentColumn, p, newPosition);
+        displayPlayerToken(currentRow, currentColumn, p, newPosition); // display the winner at the last tile
         game.setWinner(p);
         game.setGameDuration(stopTimer());
         WinnerController.diff = game.getType();
         try {
 			SysData.getInstance().writeToJsonGames(game);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// Auto-generated catch block
 			e.printStackTrace();
 		}
         newScreen("Winner");
@@ -513,7 +509,6 @@ public class NormalController implements Initializable{
 				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
 			    		hidePlayerToken(player);
 				    });
-		    		
 //		    		scheduleTask(newRow, newColumn, player, newPosition);
 		    		Platform.runLater(() -> {
 		    			player.setPlayerPlace(newPosition);
@@ -573,44 +568,21 @@ public class NormalController implements Initializable{
 	    token.setFitWidth(TOKEN_SIZE);
 	    token.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 3);");
 	    token.setVisible(true);
-	    System.out.println("player to be displayed now: "+player.getPlayerName());
 	    if(newPosition!=0) {
 	    	// If the token is not already in the grid, add it
 		    if (!grid.getChildren().contains(iconsOnBoard.get(player))) {
 		        grid.getChildren().add(iconsOnBoard.get(player));
 		    }
 		    Tile pos = board.getTile(newPosition);
-//		    System.out.println(pos);
 		    int row = pos.getxCoord();
 		    int column = pos.getyCoord();
-		    moveTokenToCell(currentR, currentC, row, column, token);
-		    
-		    // Create TranslateTransition to move the ImageView
-//		    // Calculate the translation needed to move to the target row and column
-//	        double targetX = column * grid.getColumnConstraints().get(0).getPrefWidth();
-//	        double targetY = row * grid.getRowConstraints().get(0).getPrefHeight();
-//	        
-//	        // Create TranslateTransition to move the ImageView to the target position
-//	        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
-//	        translateTransition.setToX(targetX - token.getLayoutX());
-//	        translateTransition.setToY(targetY - token.getLayoutY());
-//	        
-//	        // Play the TranslateTransition
-//	        translateTransition.play();
-		    
-//		    // Create TranslateTransition to move the ImageView
-//	        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
-//	        translateTransition.setByX(100); // Move by 100 pixels in the X direction
-//	        translateTransition.setByY(100); // Move by 100 pixels in the Y direction
-//	        
-//	        // Play the TranslateTransition
-//	        translateTransition.play();
-		    
+		    moveTokenToCell(currentR, currentC, row, column, token);		    
+
 //		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
 //		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
 		    
 		    //check if other players are already on this tile to avoid covering each other's tokens
-		    ArrayList<Player> otherPlayers = new ArrayList<>(); // arraylist for the other players
+		    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
 		    for (Player p : game.getPlayers())
 		    	otherPlayers.add(p);
 		    otherPlayers.remove(player); // remove the current player playing from this list
@@ -705,7 +677,7 @@ public class NormalController implements Initializable{
 //				try {
 //					Thread.sleep(3000);
 //				} catch (InterruptedException e1) {
-//					// TODO Auto-generated catch block
+//					// Auto-generated catch block
 //					e1.printStackTrace();
 //				}
 //				hidePlayerToken(p);
@@ -733,7 +705,6 @@ public class NormalController implements Initializable{
 	            
 	        case Question:
 	            System.out.println("I have a question for you");
-	            // TODO handle question tiles appropriately
 	            int newPosition = nextPos;
 	    	    p.setPlayerPrevPlace(currPosition);
 				hidePlayerToken(p);
@@ -1074,7 +1045,7 @@ public class NormalController implements Initializable{
 			Scene scene = new Scene(root);
 			Main.mainWindow.setScene(scene);
 		} catch (Exception e) {
-			// TODO: handle exception
+			// handle exception
 			e.printStackTrace();
 		}  	
     }
