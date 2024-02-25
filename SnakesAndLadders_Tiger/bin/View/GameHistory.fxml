@@ -50,12 +50,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <CheckBox fx:id="winnerCheck" layoutX="252.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderWinner" text="Order By Winner">
+      <CheckBox fx:id="winnerCheck" layoutX="142.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderWinner" text=" Winner">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="durationCheck" layoutX="473.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDuration" text="Order By Duration">
+      <CheckBox fx:id="durationCheck" layoutX="303.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDuration" text="Duration">
          <font>
             <Font name="Aharoni Bold" size="13.0" />
          </font>
@@ -68,5 +68,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <CheckBox fx:id="DifficultyCheck" layoutX="605.0" layoutY="161.0" mnemonicParsing="false" onAction="#OrderDifficulty" text=" Difficulty">
+         <font>
+            <Font name="Aharoni Bold" size="13.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="DateCheck" layoutX="468.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDate" text="Date">
+         <font>
+            <Font name="Aharoni Bold" size="13.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>

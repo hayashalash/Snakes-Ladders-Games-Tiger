@@ -3,8 +3,13 @@ package Model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import javafx.util.Duration;
 
@@ -35,6 +40,9 @@ public class Game extends Sort{
 		this.gameDuration = dur;
 		this.winner = winner;
 	}
+	public Game() {
+		super();
+	}
 
 	public int getGameID() {
 		return GameID;
@@ -44,11 +52,11 @@ public class Game extends Sort{
 		GameID = gameID;
 	}
 
-	public Difficulty getType() {
+	public Difficulty getDifficulty() {
 		return type;
 	}
 
-	public void setType(Difficulty type) {
+	public void setDifficulty(Difficulty type) {
 		this.type = type;
 	}
 
@@ -106,13 +114,67 @@ public class Game extends Sort{
     	playersOrder.add(p);
     }
 
+    @Override
+    public ArrayList<Object> getSorted(String sortedBy) {
+        HashSet<Game> games = new HashSet<>(SysData.getInstance().getGames());
+        ArrayList<Object> sorted = new ArrayList<>();
 
-	@Override
-	public ArrayList<Object> getSorted(String sortedBy) {
-		// TODO Auto-generated method stub
-		//sort by dificulty or by duration based on the string received
-		return null;
-	}
-	
+        if (sortedBy.equals("Duration")) {
+            sorted.addAll(sortByDuration(games));
+        } else if (sortedBy.equals("Difficulty")) {
+            sorted.addAll(sortByDifficulty(games));
+        } else if (sortedBy.equals("Date")) {
+            sorted.addAll(sortByDate(games));
+        }
+
+        return sorted;
+    }
+
+    private ArrayList<Game> sortByDate(HashSet<Game> games) {//sort the  games based on the date .
+        return games.stream()
+                .sorted(Comparator.comparing(Game::getDate))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private ArrayList<Game> sortByDifficulty(HashSet<Game> games) {//sort the  games based on the Difficulty.
+        ArrayList<Game> sorted = new ArrayList<>();
+        ArrayList<Game> hard = new ArrayList<>();
+        ArrayList<Game> medium = new ArrayList<>();
+        ArrayList<Game> easy = new ArrayList<>();
+        for(Game g : games) {
+        	if(g.getDifficulty()==Difficulty.Easy) {
+        		easy.add(g);
+        	}
+        	else if(g.getDifficulty()==Difficulty.Medium) {
+        		medium.add(g);
+        	}
+        	else hard.add(g);
+        }
+        sorted.addAll(easy);
+        sorted.addAll(medium);
+        sorted.addAll(easy);
+        
+      return sorted;
+    }
+
+    private ArrayList<Game> sortByDuration(HashSet<Game> games) {//sort the  games based on the duration game .
+        return games.stream()
+                .sorted(Comparator.comparing(Game::getGameDuration))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 }
+
+/*	private List<String> sortByWinner(HashSet<Game> games) {
+        Map<String, Long> playerWinsCount = games.stream()
+                .filter(game -> game.getWinner() != null)
+                .collect(Collectors.groupingBy(Game::getWinner, Collectors.counting()));
+
+        return playerWinsCount.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());}
+  */  
+
+	
+
 

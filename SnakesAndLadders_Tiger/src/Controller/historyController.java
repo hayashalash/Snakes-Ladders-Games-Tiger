@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import Model.Difficulty;
 import Model.Game;
 import Model.Player;
 import Model.Question;
+import Model.Sort;
 
 public class historyController implements Initializable{
 
@@ -72,11 +74,52 @@ public class historyController implements Initializable{
 
     @FXML
     private Button topButton;
+    
+    @FXML
+    private CheckBox DifficultyCheck;
 
     @FXML
+    private CheckBox DateCheck;
+
+    ArrayList<Game> sorted = new ArrayList<>(); // Arraylist to store the sorted Games
+    private boolean isSorted = false;
+    
+    
+    public void sort(ArrayList<Game> sorted){
+	   for (Game g : sorted) {
+       	sorted.add((Game) g);
+       ObservableList<Game> dataGame = FXCollections.observableArrayList(sorted);
+       gameID.setCellValueFactory(new PropertyValueFactory<>("GameID"));
+    	duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+    	difficulty.setCellValueFactory(new PropertyValueFactory<>("type"));
+    	winner.setCellValueFactory(new PropertyValueFactory<>("winner"));
+        ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
+        History.setItems(temp);
+	   }
+	   
+   }
+    
+    @FXML
     void OrderDuration(ActionEvent event) {
+    	if (!isSorted) {
+            Sort sort = new Game();
+            sort(sort.getSorted("Duration"));
+
+            isSorted = true;
+        }
 
     }
+    
+    @FXML
+    void OrderDate(ActionEvent event) {
+
+    }
+
+    @FXML
+    void OrderDifficulty(ActionEvent event) {
+
+    }
+
 
     @FXML
     void OrderWinner(ActionEvent event) {
@@ -159,6 +202,7 @@ public class historyController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		fillHistoryTable();	
+		
 	}
 	
 	 @FXML
