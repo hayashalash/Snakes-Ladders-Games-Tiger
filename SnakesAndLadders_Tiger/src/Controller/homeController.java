@@ -97,10 +97,14 @@ public class homeController implements Initializable{
 
         try {
 			SysData.getInstance().readFromJson();
+			SysData.getInstance().ReadFromJsonGames();
+
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+ 
+	 
     	if (note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);
     		note.play();

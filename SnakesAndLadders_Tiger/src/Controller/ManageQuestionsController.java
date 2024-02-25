@@ -348,6 +348,7 @@ public class ManageQuestionsController implements Initializable {
   		arr.addAll(dataQues);
   		dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
+  	//	System.out.println(arr);
 
   	}
     

@@ -15,19 +15,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
-      <ImageView fitHeight="595.0" fitWidth="852.0" layoutX="14.0">
+      <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/historyBack.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="History" layoutX="120.0" layoutY="185.0" prefHeight="250.0" prefWidth="612.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="History" layoutX="138.0" layoutY="185.0" prefHeight="250.0" prefWidth="566.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="gameID" prefWidth="103.0" style="-fx-background-color: #FFDAB9;" text="Game ID" />
-            <TableColumn fx:id="difficulty" prefWidth="128.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
-            <TableColumn fx:id="winner" prefWidth="152.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
-            <TableColumn fx:id="duration" prefWidth="110.0" style="-fx-background-color: #FFDAB9;" text="Duration" />
+            <TableColumn fx:id="gameID" prefWidth="61.0" style="-fx-background-color: #FFDAB9;" text="Game ID" />
+            <TableColumn fx:id="winner" prefWidth="133.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
+            <TableColumn fx:id="difficulty" prefWidth="124.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
+            <TableColumn fx:id="duration" prefWidth="128.0" style="-fx-background-color: #FFDAB9;" text="Duration (mm:ss)" />
             <TableColumn fx:id="date" prefWidth="118.0" style="-fx-background-color: #FFDAB9;" text="Date" />
          </columns>
       </TableView>
@@ -100,7 +100,7 @@
                   </Stop>
                   <Stop offset="1.0">
                      <color>
-                        <Color red="1.0" green="1.0" blue="1.0" />
+                        <Color blue="1.0" green="1.0" red="1.0" />
                      </color>
                   </Stop>
                </stops>

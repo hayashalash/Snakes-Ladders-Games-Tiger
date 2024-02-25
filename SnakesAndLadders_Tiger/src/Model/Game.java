@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.Date;
+import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,10 +9,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import javafx.util.Duration;
 
 public class Game extends Sort{
 
@@ -113,8 +114,30 @@ public class Game extends Sort{
     	Player p=playersOrder.poll();
     	playersOrder.add(p);
     }
+    
+    
 
     @Override
+	public int hashCode() {
+		return Objects.hash(GameID, date, gameDuration, players, playersNum, playersOrder, type, winner);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		return GameID == other.GameID && Objects.equals(date, other.date)
+				&& Objects.equals(gameDuration, other.gameDuration) && Objects.equals(players, other.players)
+				&& playersNum == other.playersNum && Objects.equals(playersOrder, other.playersOrder)
+				&& type == other.type && Objects.equals(winner, other.winner);
+	}
+
+	@Override
     public ArrayList<Object> getSorted(String sortedBy) {
         HashSet<Game> games = new HashSet<>(SysData.getInstance().getGames());
         ArrayList<Object> sorted = new ArrayList<>();
@@ -162,6 +185,58 @@ public class Game extends Sort{
                 .sorted(Comparator.comparing(Game::getGameDuration))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+    
+	// Custom method to format duration as "mm:ss"
+    public static String formatDuration(Duration duration) {
+//        long minutes = duration.toMinutes();
+//        long seconds = duration.getSeconds() % 60;
+	    long totalSeconds = (long) duration.toSeconds();
+	    long minutes = totalSeconds / 60;
+	    long seconds = totalSeconds % 60;
+	    // Convert long values to String with two digits
+	    String minutesString = String.format("%02d", minutes);
+	    String secondsString = String.format("%02d", seconds);
+	    String formattedTime = minutesString + " : " + secondsString;
+        return formattedTime;
+
+//        return String.format("%02d:%02d", formattedTime);
+    }
+ // Custom method to parse duration string in "mm:ss" format and convert to JavaFX Duration
+    public static Duration parseDuration(String durationString) {
+        String[] parts = durationString.split(":");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid duration format: " + durationString);
+        }
+        try {
+            long minutes = Long.parseLong(parts[0]);
+            long seconds = Long.parseLong(parts[1]);
+            long totalMillis = (minutes * 60 + seconds) * 1000;
+            return new Duration(totalMillis);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid duration format: " + durationString, e);
+        }
+    }
+ // Custom method to parse duration string in "mm:ss" format and convert to Duration
+//    public static Duration parseDuration(String durationString) {
+//        String[] parts = durationString.split(":");
+//        if (parts.length != 2) {
+//            throw new IllegalArgumentException("Invalid duration format: " + durationString);
+//        }
+//        try {
+//            long minutes = Long.parseLong(parts[0]);
+//            long seconds = Long.parseLong(parts[1]);
+//            return Duration.toMinutes(minutes).plusSeconds(seconds);
+//        } catch (NumberFormatException e) {
+//            throw new IllegalArgumentException("Invalid duration format: " + durationString, e);
+//        }
+//    }
+
+	@Override
+	public String toString() {
+		return "Game [type=" + type + ", date=" + date + ", gameDuration=" + gameDuration + ", winner=" + winner.getPlayerName() +"]";
+	}
+
+	
 }
 
 /*	private List<String> sortByWinner(HashSet<Game> games) {

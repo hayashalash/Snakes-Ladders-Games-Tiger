@@ -102,7 +102,7 @@ public class NormalController implements Initializable{
 	private GameController gameController;
 	private int currentPlayerIndex = 0;
 	public static Game game;
-	Board board = new Board(game.getType());
+	Board board = new Board(game.getDifficulty());
 	public Player currentTurn;
 	
     @FXML
@@ -424,7 +424,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
+    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
@@ -434,7 +434,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
+    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
@@ -444,7 +444,7 @@ public class NormalController implements Initializable{
 //    			System.out.println("steps to move after question are: "+steps);
 //        		move(currentPlayer, steps); 
 //    		});
-    		move(currentPlayer, 1); // TODO this is temporary for testing purposes, revert back when done
+    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 
@@ -464,7 +464,7 @@ public class NormalController implements Initializable{
         displayPlayerToken(currentRow, currentColumn, p, newPosition); // display the winner at the last tile
         game.setWinner(p);
         game.setGameDuration(stopTimer());
-        WinnerController.diff = game.getType();
+        WinnerController.diff = game.getDifficulty();
         try {
 			SysData.getInstance().writeToJsonGames(game);
 		} catch (IOException e) {

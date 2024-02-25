@@ -1,18 +1,27 @@
 package Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.json.simple.parser.ParseException;
+
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import View.Alerts;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,13 +34,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import Model.SysData;
 import Model.Difficulty;
 import Model.Game;
@@ -55,7 +67,7 @@ public class historyController implements Initializable{
     private TableColumn<Game, Player> winner;
 
     @FXML
-    private TableColumn<Game, String> duration;
+    private TableColumn<Game, Duration> duration;
     
     @FXML
     private TableColumn<Game, LocalDate> date;
@@ -77,6 +89,9 @@ public class historyController implements Initializable{
     
     @FXML
     private CheckBox DifficultyCheck;
+    
+    private ObservableList<Game> Gamesdata;
+    private ObservableList<Game> Gamesdata1;
 
     @FXML
     private CheckBox DateCheck;
@@ -101,12 +116,12 @@ public class historyController implements Initializable{
     
     @FXML
     void OrderDuration(ActionEvent event) {
-    	if (!isSorted) {
-            Sort sort = new Game();
-            sort(sort.getSorted("Duration"));
-
-            isSorted = true;
-        }
+//    	if (!isSorted) {
+//            Sort sort = new Game();
+//            sort(sort.getSorted("Duration"));
+//
+//            isSorted = true;
+//        }
 
     }
     
@@ -185,24 +200,52 @@ public class historyController implements Initializable{
     }
 
     public void fillHistoryTable() {
-		ObservableList<Game> Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
+    	Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
 		 
-		duration.setCellValueFactory(new PropertyValueFactory<Game, String>("gameDuration"));
-		winner.setCellValueFactory(new PropertyValueFactory<Game, Player>("winner"));
+    	duration.setCellValueFactory(param -> {
+    	    Duration gameDuration = param.getValue().getGameDuration();
+    	    String dur = param.getValue().formatDuration(gameDuration);
+    	    return new SimpleObjectProperty(dur);
+    	});
+    	
+		// Set cell value factory to display winner's name
+        winner.setCellValueFactory(new Callback<CellDataFeatures<Game, Player>, ObservableValue<Player>>() {
+            @Override
+            public ObservableValue<Player> call(CellDataFeatures<Game, Player> param) {
+                Player winner = param.getValue().getWinner();
+                String winnerName = (winner != null) ? winner.getPlayerName() : "";
+                return new SimpleObjectProperty(winnerName);
+            }
+        });
 		difficulty.setCellValueFactory(new PropertyValueFactory<Game, Difficulty>("difficulty"));
-		date.setCellValueFactory(new PropertyValueFactory<Game, LocalDate>("date"));
+
+        date.setCellValueFactory(param -> {
+		    LocalDate gameDate = param.getValue().getDate();
+		    return new SimpleObjectProperty<>(gameDate);
+		});
+        
 		gameID.setCellValueFactory(cellData -> {
 	            int rowIndex = History.getItems().indexOf(cellData.getValue()) + 1;
 	            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
 	        });
+		
 		History.setItems(Gamesdata);
+  		
     }
     
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		 try {
+				SysData.getInstance().ReadFromJsonGames();
+			} catch (IOException | ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
 		fillHistoryTable();	
 		
+		History.refresh();
 	}
 	
 	 @FXML

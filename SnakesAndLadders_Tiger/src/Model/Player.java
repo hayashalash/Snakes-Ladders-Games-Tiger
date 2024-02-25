@@ -19,6 +19,12 @@ public class Player {
 		this.playerColor = playerColor;
 	}
 	
+	//this constructor used for histroy games only
+	public Player(String playerName) {
+		this.playerName = playerName;
+	}
+
+
 	public void printPlayerAddedSuccess() {
         System.out.println("New player" + playerName + "added successfully!");
     }

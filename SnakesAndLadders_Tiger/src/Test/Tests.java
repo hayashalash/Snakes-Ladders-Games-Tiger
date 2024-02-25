@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import Model.Board;
 import Model.Difficulty;
+import Model.Game;
 import Model.Ladder;
 import Model.Question;
 import Model.QuestionTile;
@@ -31,7 +33,6 @@ class Tests {
 
     // New question
     Question newQuestion = new Question("b1", "b2", "b3", "b4", "New Question", Difficulty.Medium, 3);
-    
     
 	/*
 	 * Create a new question and add it to the HashSet question and write it to
