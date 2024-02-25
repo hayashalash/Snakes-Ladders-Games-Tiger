@@ -29,6 +29,12 @@ public class Game extends Sort{
 		this.date = date;
 	}
 
+	public Game(Difficulty dif, LocalDate date, Duration dur, Player winner) { // constructor to use for game history loading from Json
+		this.type = dif;
+		this.date = date;
+		this.gameDuration = dur;
+		this.winner = winner;
+	}
 
 	public int getGameID() {
 		return GameID;

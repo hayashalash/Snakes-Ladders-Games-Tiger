@@ -96,7 +96,7 @@ public class NormalController implements Initializable{
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
     //Path
-    private static final String ARROW = "/img/icons/arrow1.gif"; //Player's turn arrow path
+    private static final String ARROW = "/img/icons/arrow2.gif"; //Player's turn arrow path
 	private static final String GREEN = "/img/icons/greenPlayer.png"; //Player Token path
 	private static final String BLUE = "/img/icons/bluePlayer.png"; //Player Token path
 	private static final String PINK = "/img/icons/pinkPlayer.png"; //Player Token path
@@ -318,25 +318,27 @@ public class NormalController implements Initializable{
 			Image arrow = new Image(getClass().getResourceAsStream(ARROW));
 			ImageView arrowIV = new ImageView();
 			arrowIV.setImage(arrow);
-			arrowIV.setOpacity(0);
-			arrowIV.setFitHeight(20);
+			//arrowIV.setOpacity(0);
+			arrowIV.setFitHeight(25);
 			arrowIV.setPreserveRatio(true);
-			arrowIV.setStyle("-fx-margin-top: 20");
+			StackPane arrowPane = new StackPane(arrowIV);
+			arrowPane.setPadding(new Insets(0,0,10,0)); // top right bottom left
+			arrowPane.setOpacity(0);
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
-			name.setPadding(new Insets(10,5,10,5));
+			name.setPadding(new Insets(10,5,10,5)); // top right bottom left
 			ImageView icon = new ImageView(icons.get(p));
 			icon.setFitHeight(IMAGE_HEIGHT);
 			icon.setFitWidth(IMAGE_WIDTH);
 			icon.setVisible(true);
 			if (player1.getChildren().isEmpty())
-				player1.getChildren().addAll(arrowIV, icon, name);
+				player1.getChildren().addAll(arrowPane, icon, name);
 			else if (player2.getChildren().isEmpty())
-				player2.getChildren().addAll(arrowIV, icon, name);
+				player2.getChildren().addAll(arrowPane, icon, name);
 			else if (player3.getChildren().isEmpty())
-				player3.getChildren().addAll(arrowIV, icon, name);
+				player3.getChildren().addAll(arrowPane, icon, name);
 			else if (player4.getChildren().isEmpty())
-				player4.getChildren().addAll(arrowIV, icon, name);
+				player4.getChildren().addAll(arrowPane, icon, name);
 		}
 	    // Point the arrow to the first player to indicate their turn
 		player1.getChildren().get(0).setOpacity(1);
@@ -548,7 +550,6 @@ public class NormalController implements Initializable{
 		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
 		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
 		    
-		    boolean tileHasOtherPlayers = false;
 		    ArrayList<Player> otherPlayers = new ArrayList<>(); // arraylist for the other players
 		    for (Player p : game.getPlayers())
 		    	otherPlayers.add(p);
@@ -575,34 +576,10 @@ public class NormalController implements Initializable{
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
 		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
 		    }
-//		    if (otherPlayers.get(0).getPlayerPlace() == newPosition) {
-//		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
-//		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-//		        tileHasOtherPlayers = true;
-//		    }
-//		    if (game.getPlayersNum() > 2) { // if the game has more than two players, check third player as well
-//		    	if (otherPlayers.get(1).getPlayerPlace() == newPosition) {
-//		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
-//		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-//		    		tileHasOtherPlayers = true;
-//		    	}
-//		    }
-//		    if (game.getPlayersNum() > 3) { // if the game has more than 3 players, check the fourth player as well
-//		    	if (otherPlayers.get(2).getPlayerPlace() == newPosition) {
-//		    		GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
-//		    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
-//		    		tileHasOtherPlayers = true;
-//		    	}
-//		    }
-//		    if (tileHasOtherPlayers == false) {
-//		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
-//		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
-//		    }
 	    }
 	    else { // if the new position is 0
 	    	if (!playersStart.getChildren().contains(iconsOnBoard.get(player))) { // if the player is not outside the board
 	    		playersStart.getChildren().add(token); // place the player outside the board = position 0
-//	    		token.setUserData(player.getPlayerID());
 	    	}
 	    }
 	}
@@ -651,10 +628,8 @@ public class NormalController implements Initializable{
 	                System.out.println("Next step will be: " + snake.getSnakeTail());
 	                return snake.getSnakeTail();
 	            }
-	      //  case Classic:
-	      //      System.out.println("Yaaaay you got a gift!");
-	     //       handleSurpriseTileReached();
-	      //      return nextPos; // TODO Handle surprise tiles appropriately
+	        case Classic:
+	            return nextPos;
 	        case LadderBottom:
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
@@ -662,8 +637,8 @@ public class NormalController implements Initializable{
 	            return ladder.getLadderTop();
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
-	            handleSurpriseTileReached();
-	            return nextPos; // TODO Handle surprise tiles appropriately
+	            int surpriseSteps = handleSurpriseTileReached();
+	            return nextPos+surpriseSteps;
 	        case Question:
 	            System.out.println("I have a question for you");
 	            // TODO handle question tiles appropriately
@@ -681,7 +656,6 @@ public class NormalController implements Initializable{
 		    		move(p, newSteps);
 	    	    });
 	            return p.getPlayerPlace();
-//	            return nextPos; // temporary until question pop up is fixed
 	        default: // Handle the rest of the tile types which do not require special treatment
 	        	System.out.println("Next step will be: " + nextPos);
 	            return nextPos;
@@ -689,11 +663,10 @@ public class NormalController implements Initializable{
 	}
     
     
-    void displaySurprise() {
+    public int displaySurprise() {
     	// Load the surprise value image
     	Image p = new Image(getClass().getResourceAsStream(SURPRISE_PLUS_PATH));
     	Image m = new Image(getClass().getResourceAsStream(SURPRISE_MINUS_PATH));
-    	
         int[] possibleValues = {-10, 10};
         Random random = new Random();
         int index = random.nextInt(possibleValues.length);
@@ -717,16 +690,17 @@ public class NormalController implements Initializable{
     	    })
     	);
     	timeline.play();
+    	return surpriseResult;
     }
     
- // Wherever you handle the player reaching a surprise tile
-    void handleSurpriseTileReached() {
+    // Wherever you handle the player reaching a surprise tile
+    public int handleSurpriseTileReached() {
         // Show the surprise box and its images
         surpriseValue.setVisible(true);
         surprise.setVisible(true);
 
-        // Call the function to display the surprise
-        displaySurprise();
+        // Call the function to display the surprise and return [-10/+10] steps for the player to move
+        return displaySurprise();
     }
 
     

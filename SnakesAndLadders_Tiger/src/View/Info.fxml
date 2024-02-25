@@ -71,7 +71,7 @@
                <children>
                   <ImageView fitHeight="15.0" fitWidth="30.0">
                      <image>
-                        <Image url="@../img/icons/arrow1.gif" />
+                        <Image url="@../img/icons/arrow.gif" />
                      </image>
                      <HBox.margin>
                         <Insets top="10.0" />

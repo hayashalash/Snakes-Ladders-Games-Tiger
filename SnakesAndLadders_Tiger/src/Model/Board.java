@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Board {
-	static final int minItemLen = 0;
+	static final int minItemLen = -1;
 	static final int maxItemLen = 8;
+	static final int surpriseTile = -1;
 	static final int yellowSnakeLen = 1;
 	static final int greenSnakeLen = 2;
 	static final int blueSnakeLen = 3;
@@ -243,33 +244,29 @@ public class Board {
 		if (this.bType == Difficulty.Easy)
 			return;
 		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard boards
-			int rand = chooseRandomTile(0);
+			int rand = chooseRandomTile(surpriseTile);
 			getTile(rand).settType(TileType.Surprise);
 			surpriseTiles.add(getTile(rand));
 		}
 		if (this.bType == Difficulty.Hard) { // if board is hard, add another surprise tile
-			int random = chooseRandomTile(0);
+			int random = chooseRandomTile(surpriseTile);
 			getTile(random).settType(TileType.Surprise);
 			surpriseTiles.add(getTile(random));
 		}
 	}
-	
-//	public Integer chooseRandomTile() {
-//		int random = (int) (Math.random() * (boardSize-1)) + 1;
-//		while (getTile(random).gettType() != TileType.Classic) { // ensure we don't change a non-classic tile
-//			random = (int) (Math.random() * (boardSize-1)) + 1;
-//		}
-//		return random;
-//	}
 	
 	public Integer chooseRandomTile(int itemLen) {
 		int partialSize = boardSize; // the part of the board we will take a random tile from
 		int eliminatedRowsSize = 0; // the part of the board that will be eliminated
 		if (itemLen < minItemLen || itemLen > maxItemLen)
 			return 0;
-		else if (itemLen > minItemLen) { // [snake head]/[ladder top] cannot be at a tile lower than 'length' number of rows
+		else if (itemLen > 0) { // [snake head]/[ladder top] cannot be at a tile lower than 'length' number of rows
 			eliminatedRowsSize = itemLen * boardLen;
 			partialSize = boardSize - eliminatedRowsSize;
+		}
+		else if (itemLen == surpriseTile) { // surprises must be at least 10 tiles away from beginning/end
+			partialSize = boardSize - 20;
+			eliminatedRowsSize = 10;
 		}
 		// else if itemLen == 0, item doesn't have a length and therefore no rows are eliminated (item = question/surprise/red snake)
 		int random = (int) (Math.random() * (partialSize-1)) + eliminatedRowsSize + 1;
