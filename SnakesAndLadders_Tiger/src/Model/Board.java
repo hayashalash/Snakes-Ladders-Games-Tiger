@@ -18,7 +18,6 @@ public class Board {
 	private Integer boardLen; // equals width, based on board type - 7 / 10 / 13
 	private int boardSize; //based on board type - 49 / 100 / 169
 	private ArrayList<Integer> surprises; // tiles with surprises [+10/-10]
-	private Tile[][] grid;
 	private HashMap<Integer, Tile> tiles; // all the board tiles easily retrieved by their number
 	private HashMap<Integer, Snake> snakes; // all the snakes and the tile with their head
 	private HashMap<Integer, Ladder> ladders; // all the ladder and the tile with their top
@@ -32,7 +31,7 @@ public class Board {
 		this.bType = bType;
 		setBoardLen(bType);
 		setBoardSize(boardLen);
-		this.grid = new Tile[boardLen][boardLen];
+//		this.grid = new Tile[boardLen][boardLen];
 		surprises = new ArrayList<>();
 		tiles = new HashMap<>();
 		snakes = new HashMap<>();
@@ -89,14 +88,6 @@ public class Board {
 		this.surprises = surprises;
 	}
 
-	public Tile[][] getGrid() {
-			return grid;
-	}
-
-	public void setGrid(Tile[][] grid) {
-		this.grid = grid;
-	}
- 
 	public HashMap<Integer, Tile> getTiles() {
 		return tiles;
 	}
@@ -157,55 +148,20 @@ public class Board {
 		return getTiles().get(id);
 	}
 	
-/*	public boolean createBoard() {
-		int boardCounter = 1;
-		int i = boardLen-1;
-		
-		while (i>0) {
-			for (int j = 0 ; j < boardLen ; j++) { // go over row from left to right
-				System.out.println("["+i+","+j+"]");
-				this.grid[i][j] = new Tile(boardCounter++, i, j);
-				getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
-				if (j==boardLen-1 && i == 0 && (bType == Difficulty.Easy || bType == Difficulty.Hard)) { // in these two board, last tile is on the top right
-					j = boardLen; // exit loop as we've reached the last tile
-				}
-				else if (j==boardLen-1) { // reached end of row
-					i--; // go to the next row
-					for (j = boardLen-1 ; j >= 0 ; j--) { // go over row from right to left
-						System.out.println("["+i+","+j+"]");
-						this.grid[i][j] = new Tile(boardCounter++, i, j);
-						getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
-						if (j==0 && i == 0 && (bType == Difficulty.Medium)) { // in the normal board, last tile is on the top left
-							j = boardLen; // exit loop as we've reached the last tile
-						}
-						else if (j==0) // reached end of row
-							i--; // go to the next row
-					}
-				}
-			}
-		}
-		addSnakeTiles();
-		addQuestionTiles(); // adds 3 question tiles to the board
-		addSurpriseTiles();
-		System.out.println("boardCounter is "+boardCounter);
-		System.out.println("boardSize is "+boardSize);
-		return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
-	}*/
-	
 	public boolean createBoard() {
 	    int boardCounter = 1;
 	    int i = boardLen - 1;
 
 	    while (i >= 0) { // Changed loop condition to i >= 0
 	        for (int j = 0; j < boardLen; j++) { // go over row from left to right
-	            this.grid[i][j] = new Tile(boardCounter++, i, j);
-	            getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
+	        	Tile tile = new Tile(boardCounter++, i, j);
+                getTiles().put(tile.gettNum(), tile);
 	        }
 	        i--; // Decrement i after each row iteration
 	        if (i >= 0) { // Check if i is still valid before entering the loop again
 	            for (int j = boardLen - 1; j >= 0; j--) { // go over row from right to left
-	                this.grid[i][j] = new Tile(boardCounter++, i, j);
-	                getTiles().put(this.grid[i][j].gettNum(), this.grid[i][j]);
+	            	Tile tile = new Tile(boardCounter++, i, j);
+	                getTiles().put(tile.gettNum(), tile);
 	            }
 	            i--; // Decrement i again after each row iteration
 	        }
@@ -234,7 +190,6 @@ public class Board {
 			else { // if (i==2) - in the third iteration add a hard question
 				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Hard);
 			}
-			this.grid[qt.xCoord][qt.yCoord] = qt; // put the question tile back in the board
 			tiles.put(qt.gettNum(), qt); // add the question tile to the tiles HashMap
 			questionTiles.add(qt);
 		}
@@ -336,7 +291,6 @@ public class Board {
 		snakes.put(s.getSnakeID(), s);
 		SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
 		getTile(snakeTail).settType(TileType.SnakeTail);
-		this.grid[st.xCoord][st.yCoord] = st; // put the snake tile back in the board
 		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 	}
 	
@@ -362,7 +316,6 @@ public class Board {
 		ladders.put(l.getLadderID(), l);
 		LadderTile lt = new LadderTile (ladderbottom, getTile(ladderbottom).getxCoord(), getTile(ladderbottom).getyCoord(), l); // create a ladder tile to replace the regular tile
 		getTile(laddertop).settType(TileType.LadderTop);
-		this.grid[lt.xCoord][lt.yCoord] = lt; // put the ladder tile back in the board
 		tiles.put(lt.gettNum(), lt); // add the ladder tile to the tiles HashMap
 		System.out.println("ladder length: " + length);
 		System.out.println("Ladder top is on: " + laddertop + " and ladder bottopn is on: " +ladderbottom);

@@ -78,7 +78,7 @@ public class NormalController implements Initializable{
     private HashMap<Player, Image> icons = new HashMap<>();
     private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
     //Path
-    private static final String ARROW = "/img/icons/arrow2.gif"; //Player's turn arrow path
+    private static final String ARROW = "/img/icons/arrow3.gif"; //Player's turn arrow path
 	private static final String GREEN = "/img/icons/greenPlayer.png"; //Player Token path
 	private static final String BLUE = "/img/icons/bluePlayer.png"; //Player Token path
 	private static final String PINK = "/img/icons/pinkPlayer.png"; //Player Token path
@@ -302,10 +302,10 @@ public class NormalController implements Initializable{
 			ImageView arrowIV = new ImageView();
 			arrowIV.setImage(arrow);
 			//arrowIV.setOpacity(0);
-			arrowIV.setFitHeight(25);
+			arrowIV.setFitHeight(20);
 			arrowIV.setPreserveRatio(true);
 			StackPane arrowPane = new StackPane(arrowIV);
-			arrowPane.setPadding(new Insets(0,0,10,0)); // top right bottom left
+			arrowPane.setPadding(new Insets(0,0,20,0)); // top right bottom left
 			arrowPane.setOpacity(0);
 			Label name = new Label(p.getPlayerName());
 			name.setStyle("-fx-font-family: Serif; -fx-font-size: 20px;");
@@ -452,7 +452,7 @@ public class NormalController implements Initializable{
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
     	 if (imagePath.equals(DEFAULT_DICE_IMAGE_PATH)) {
-    		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 4 , 0);");
+    		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 2 , 4);");
     	 }
     	 else {
     		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 0);");
@@ -587,26 +587,37 @@ public class NormalController implements Initializable{
 		    	otherPlayers.add(p);
 		    otherPlayers.remove(player); // remove the current player playing from this list
 		    
-		    int playersOnTile = 0;
-		    for (Player p : otherPlayers) {
-		    	if (p.getPlayerPlace() == newPosition)
-		    		playersOnTile++;
+		    ArrayList<Integer> enteredTileOrder = new ArrayList<>(); // ArrayList for how the other players entered this tile
+		    // A player can be positioned on the tile in 4 different places in order to avoid covering each other
+		    for (Player p : otherPlayers) { // loop over the other players
+		    	if (p.getPlayerPlace() == newPosition) { // if the other player is on this tile i'm heading to
+		    		enteredTileOrder.add(p.getEnteredTile()); // save where they are positioned on the tile so I don't cover them
+		    	}
 		    }
-		    if (playersOnTile == 1) {
+		    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
+		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
+		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER); // Center vertically
+		    	player.setEnteredTile(1); // I entered in the first position
+		    }
+		    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
 		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		        player.setEnteredTile(2); // I entered in the second position
 		    }
-		    else if (playersOnTile == 2) {
+		    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
 	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+	    		player.setEnteredTile(3); // I entered in the third position
 		    }
-		    else if (playersOnTile == 3) {
+		    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER);
 	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
+	    		player.setEnteredTile(4); // I entered in the fourth position
 		    }
-		    else { // no players on this tile
+		    else { // no players on this tile, I'm the first player on this tile
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
 		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
+		    	player.setEnteredTile(1);
 		    }
 	    }
 	    else { // if the new position is 0

@@ -10,6 +10,7 @@ public class Player {
 	private int playerPlace=0;
 	private int playerPrevPlace=0; //player previous position
 	private int numberOrder=0;
+	private int enteredTile=0; // if the player entered their current position (playerPlace) first/second/third/fourth
 	
 	public Player(String playerName, Color playerColor) {
 		super();
@@ -71,6 +72,14 @@ public class Player {
 	}
 	
 	
+	public int getEnteredTile() {
+		return enteredTile;
+	}
+
+	public void setEnteredTile(int enteredTile) {
+		this.enteredTile = enteredTile;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(numberOrder, playerColor, playerID, playerName, playerPlace);
