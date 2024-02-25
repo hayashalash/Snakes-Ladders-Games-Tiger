@@ -146,12 +146,14 @@ public class historyController implements Initializable{
     public void fillHistoryTable() {
 		ObservableList<Game> Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
 		 
-		gameID.setCellValueFactory(new PropertyValueFactory<Game, Integer>("GameID"));
 		duration.setCellValueFactory(new PropertyValueFactory<Game, String>("gameDuration"));
 		winner.setCellValueFactory(new PropertyValueFactory<Game, Player>("winner"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Game, Difficulty>("difficulty"));
 		date.setCellValueFactory(new PropertyValueFactory<Game, LocalDate>("date"));
-
+		gameID.setCellValueFactory(cellData -> {
+	            int rowIndex = History.getItems().indexOf(cellData.getValue()) + 1;
+	            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
+	        });
 		History.setItems(Gamesdata);
     }
     

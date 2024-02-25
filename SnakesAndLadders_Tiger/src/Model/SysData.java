@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import Model.Game;
+import javafx.util.Duration;
 
 import org.json.simple.parser.JSONParser;
 
@@ -31,12 +32,12 @@ public class SysData {
 	private HashSet<Game> games = new HashSet(); 
 	private HashSet<Question> questions = new HashSet(); // we use HashSet to prevent duplication of question in the table
 	
-//	public HashSet<GameHistory> getGames() {
-//		return games;
-//	}
-//	public void setGames(HashSet<GameHistory> games) {
-//		this.games = games;
-//	}
+	public HashSet<Game> getGames() {
+		return games;
+	}
+	public void setGames(HashSet<Game> games) {
+		this.games = games;
+	}
 	public  HashSet<Question> getQuestions() {
 		return questions;
 	}
@@ -196,95 +197,99 @@ public class SysData {
 	}
 
 	
-	// Saving the Games history in json file, Not checked yet! 
-//	public void writeToJsonGames(GameHistory g) throws IOException, ParseException { 
-//		JSONParser parser = new JSONParser();
-//		FileInputStream fis = new FileInputStream(HJSON);
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-//		Object obje = parser.parse(reader);
-//		JSONObject jo = (JSONObject) obje;
-//		JSONArray gamesArray = (JSONArray) jo.get("gamesHistory");
-//		
-//		JSONObject jsonObject = new JSONObject();
-//		
-//		jsonObject.put("GameNumber", g.getGameID());
-//		jsonObject.put("Winner", g.getWinner().getPlayerName());
-//		  Difficulty diff = g.getDiff();
-//		    String str; 	  //convert the question level from enum to string 
-//
-//		  		if (diff.equals(Difficulty.Easy)) {
-//		  			str = "1";
-//		  		} else if (diff.equals(Difficulty.Medium)) {	
-//		  			str = "2";
-//		  		} else {     //diff.equals(Difficulty.Hard)
-//		  			str = "3"; 	
-//		  		}
-//		jsonObject.put("Difficulty", str);
-//		String dur = g.getDuration();
-//		jsonObject.put("Duration", dur);
-//		gamesArray.add(jsonObject);
-//		JSONObject jsonObject2 = new JSONObject();
-//		jsonObject2.put("gamesHistory", gamesArray); 
-//		try {
-//			FileWriter file = new FileWriter(HJSON);
-//			file.write(jsonObject2.toJSONString());
-//			file.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	public void ReadFromJsonGames() throws IOException, ParseException {
-//		
-//		try ( FileInputStream fis = new FileInputStream(HJSON))
-//		{
-//			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-//	         if (isJsonNull(reader)==true)
-//	         {
-//	        	 return;
-//	         }
-//	         else {
-//	 			JSONParser parser2 = new JSONParser();
-//	 			FileInputStream fis2 = new FileInputStream(HJSON);
-//				BufferedReader reader2 = new BufferedReader(new InputStreamReader(fis2));
-//				Object obje = parser2.parse(reader2);
-//			
-//				JSONObject jo = (JSONObject) obje;
-//	
-//				JSONArray quesArray = (JSONArray) jo.get("gamesHistory");
-//
-//				Iterator<JSONObject> QuestionIter = quesArray.iterator();
-//				while (QuestionIter.hasNext()) {
-//	
-//					JSONObject que = QuestionIter.next();
-//					Integer gID = (Integer) que.get("gameID");
-//					String durr = (String)que.get("Duration");
-//					Player PlayerName = (Player)que.get("Winner");
-//					String diff = (String) que.get("difficulty");
-//					Difficulty d;
-//					if (diff.equals("1")) 
-//						d = Difficulty.Easy;		
-//					else if (diff.equals("2"))
-//						d = Difficulty.Medium;
-//					else // if (diff == "3")
-//						d = Difficulty.Hard;
-//					
-//	            	GameHistory gh = new GameHistory(gID,PlayerName,d,durr);
-//	            	SysData.getInstance().getGames().add(gh);
-//				}}
-//			}
-//			catch (FileNotFoundException e) {
-//					e.printStackTrace();
-//				}
-//			catch (IOException e) {
-//					e.printStackTrace();
-//				}	
-//			catch (ParseException e) {
-//					e.printStackTrace();
-//					}	
-//		
-//	}
+//	 Saving the Games history in json file, Not checked yet! 
+	public void writeToJsonGames(Game g) throws IOException, ParseException { 
+		JSONParser parser = new JSONParser();
+		FileInputStream fis = new FileInputStream(HJSON);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+		Object obje = parser.parse(reader);
+		JSONObject jo = (JSONObject) obje;
+		JSONArray gamesArray = (JSONArray) jo.get("gamesHistory");
+		
+		JSONObject jsonObject = new JSONObject();
+		
+		jsonObject.put("GameNumber", g.getGameID());
+		jsonObject.put("Winner", g.getWinner().getPlayerName());
+		  Difficulty diff = g.getType();
+		    String str; 	  //convert the question level from enum to string 
+
+		  		if (diff.equals(Difficulty.Easy)) {
+		  			str = "1";
+		  		} else if (diff.equals(Difficulty.Medium)) {	
+		  			str = "2";
+		  		} else {     //diff.equals(Difficulty.Hard)
+		  			str = "3"; 	
+		  		}
+		jsonObject.put("Difficulty", str);
+		Duration dur = g.getGameDuration();
+		jsonObject.put("Duration", dur);
+		LocalDate d = g.getDate();
+		jsonObject.put("Date", d);
+		Player p = g.getWinner();
+		jsonObject.put("Winner", p);
+		gamesArray.add(jsonObject);
+		JSONObject jsonObject2 = new JSONObject();
+		jsonObject2.put("gamesHistory", gamesArray); 
+		try {
+			FileWriter file = new FileWriter(HJSON);
+			file.write(jsonObject2.toJSONString());
+			file.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void ReadFromJsonGames() throws IOException, ParseException {
+		
+		try ( FileInputStream fis = new FileInputStream(HJSON))
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+	         if (isJsonNull(reader)==true)
+	         {
+	        	 return;
+	         }
+	         else {
+	 			JSONParser parser2 = new JSONParser();
+	 			FileInputStream fis2 = new FileInputStream(HJSON);
+				BufferedReader reader2 = new BufferedReader(new InputStreamReader(fis2));
+				Object obje = parser2.parse(reader2);
+			
+				JSONObject jo = (JSONObject) obje;
+	
+				JSONArray quesArray = (JSONArray) jo.get("gamesHistory");
+
+				Iterator<JSONObject> QuestionIter = quesArray.iterator();
+				while (QuestionIter.hasNext()) {
+	
+					JSONObject que = QuestionIter.next();
+					Duration durr = (Duration)que.get("Duration");
+					Player PlayerName = (Player)que.get("Winner");
+					LocalDate ld = (LocalDate)que.get("durr");
+					String diff = (String) que.get("difficulty");
+					Difficulty d;
+					if (diff.equals("1")) 
+						d = Difficulty.Easy;		
+					else if (diff.equals("2"))
+						d = Difficulty.Medium;
+					else // if (diff == "3")
+						d = Difficulty.Hard;
+					
+	            	Game g = new Game(d,ld,durr,PlayerName);
+	            	SysData.getInstance().getGames().add(g);
+				}}
+			}
+			catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			catch (IOException e) {
+					e.printStackTrace();
+				}	
+			catch (ParseException e) {
+					e.printStackTrace();
+					}	
+		
+	}
 	
 	public boolean isJsonNull(BufferedReader reader) throws IOException {
 	    StringBuilder json = new StringBuilder();
