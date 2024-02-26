@@ -21,7 +21,6 @@ public class Game extends Sort{
 	private Difficulty type;
 	private LocalDate date;
 	private int playersNum;
-//	private Duration gameDuration = Duration.ZERO;
 	private String gameDuration = null;
 	private ArrayList<Player> players = new ArrayList<>();//should delete?
 	private Player winner;
@@ -102,11 +101,9 @@ public class Game extends Sort{
 		this.date = date;
 	}
 
-
 	public Queue<Player> getPlayersOrder() {
 		return playersOrder;
 	}
-
 
 	public void setPlayersOrder(Queue<Player> playersOrder) {
 		this.playersOrder = playersOrder;
@@ -115,8 +112,6 @@ public class Game extends Sort{
     	Player p=playersOrder.poll();
     	playersOrder.add(p);
     }
-    
-    
 
     @Override
 	public int hashCode() {
@@ -181,7 +176,7 @@ public class Game extends Sort{
       return sorted;
     }
 
-    private ArrayList<Game> sortByDuration(HashSet<Game> games) {//sort the  games based on the duration game .
+    private ArrayList<Game> sortByDuration(HashSet<Game> games) {//sort the  games based on the game duration
         return games.stream()
                 .sorted(Comparator.comparing(Game::getGameDuration))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -189,8 +184,6 @@ public class Game extends Sort{
     
 	// Custom method to format duration as "mm:ss" string
     public static String formatDuration(Duration duration) {
-//        long minutes = duration.toMinutes();
-//        long seconds = duration.getSeconds() % 60;
 	    long totalSeconds = (long) duration.toSeconds();
 	    long minutes = totalSeconds / 60;
 	    long seconds = totalSeconds % 60;
@@ -199,10 +192,8 @@ public class Game extends Sort{
 	    String secondsString = String.format("%02d", seconds);
 	    String formattedTime = minutesString + " : " + secondsString;
         return formattedTime;
-
-//        return String.format("%02d:%02d", formattedTime);
     }
- // Custom method to parse duration string in "mm:ss" format and convert to JavaFX Duration
+    // Custom method to parse duration string in "mm:ss" format and convert to JavaFX Duration
     public static Duration parseDuration(String durationString) {
         String[] parts = durationString.split(":");
         if (parts.length != 2) {
@@ -217,27 +208,11 @@ public class Game extends Sort{
             throw new IllegalArgumentException("Invalid duration format: " + durationString, e);
         }
     }
- // Custom method to parse duration string in "mm:ss" format and convert to Duration
-//    public static Duration parseDuration(String durationString) {
-//        String[] parts = durationString.split(":");
-//        if (parts.length != 2) {
-//            throw new IllegalArgumentException("Invalid duration format: " + durationString);
-//        }
-//        try {
-//            long minutes = Long.parseLong(parts[0]);
-//            long seconds = Long.parseLong(parts[1]);
-//            return Duration.toMinutes(minutes).plusSeconds(seconds);
-//        } catch (NumberFormatException e) {
-//            throw new IllegalArgumentException("Invalid duration format: " + durationString, e);
-//        }
-//    }
 
 	@Override
 	public String toString() {
 		return "Game [type=" + type + ", date=" + date + ", gameDuration=" + gameDuration + ", winner=" + winner.getPlayerName() +"]";
 	}
-
-	
 }
 
 /*	private List<String> sortByWinner(HashSet<Game> games) {

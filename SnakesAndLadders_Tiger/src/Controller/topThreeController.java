@@ -53,7 +53,6 @@ public class  topThreeController implements Initializable{
 				e.printStackTrace();
 			}  	
 	    }
-
 	    
 	    private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
 	        HashMap<Player, Integer> playersWinningGames = new HashMap<>();
@@ -97,8 +96,6 @@ public class  topThreeController implements Initializable{
 		        player1.setText("Ruba");
 		        player2.setText("Haya");
 		        player3.setText("Bisan");
-
-
 		    }
 		}	
 		

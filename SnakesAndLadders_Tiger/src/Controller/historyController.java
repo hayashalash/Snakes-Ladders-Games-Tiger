@@ -159,11 +159,11 @@ public class historyController implements Initializable{
     }
     
     void sort(ObservableList<Game> dataGame) {
-	 if (!isSorted) {
-	 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
-     History.setItems(temp);
-     isSorted = true;
-     }
+		 if (!isSorted) {
+		 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
+	     History.setItems(temp);
+	     isSorted = true;
+	     }
      }
 
 

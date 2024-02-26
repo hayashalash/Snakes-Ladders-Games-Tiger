@@ -13,11 +13,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class infoController implements Initializable {
+	  @FXML
+	    private AnchorPane anchor;
+
 	@FXML
 	 private Button closeButton;
 
@@ -29,9 +33,16 @@ public class infoController implements Initializable {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
-    
 
-    @FXML
+    public Button getHomeButton() {
+		return homeButton;
+	}
+
+	public void setHomeButton(Button homeButton) {
+		this.homeButton = homeButton;
+	}
+
+	@FXML
     private void goHome() {
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
