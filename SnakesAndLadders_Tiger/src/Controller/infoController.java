@@ -19,11 +19,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class infoController implements Initializable {
-	  @FXML
-	    private AnchorPane anchor;
+	@FXML
+	private AnchorPane anchor;
 
 	@FXML
-	 private Button closeButton;
+	private Button closeButton;
 
     @FXML
     private Button homeButton;

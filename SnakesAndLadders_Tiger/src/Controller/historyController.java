@@ -93,7 +93,6 @@ public class historyController implements Initializable{
     private Button topButton;
     
     private ObservableList<Game> Gamesdata;
-
     
     ArrayList<Game> sorted = new ArrayList<>(); // Arraylist to store the sorted Games
     private boolean isSorted = false;
@@ -102,6 +101,18 @@ public class historyController implements Initializable{
     ArrayList<Game> sortedByDifficulty = new ArrayList<>();// Arraylist to store the sorted Games by Difficulty
     HashSet<Game> originalOrder = new HashSet<>(SysData.getInstance().getGames()); // Save the original order to revert back to after sorting
 
+    @Override
+	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			SysData.getInstance().ReadFromJsonGames();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		fillHistoryTable();	
+		History.refresh();
+	}
     
     @FXML
     void OrderDuration(ActionEvent event) {
@@ -164,8 +175,7 @@ public class historyController implements Initializable{
 	     History.setItems(temp);
 	     isSorted = true;
 	     }
-     }
-
+    }
 
     @FXML
     void OrderWinner(ActionEvent event) {
@@ -263,19 +273,6 @@ public class historyController implements Initializable{
 		
 		History.setItems(Gamesdata);
     }
-    
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			SysData.getInstance().ReadFromJsonGames();
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		fillHistoryTable();	
-		History.refresh();
-	}
 	
 	 @FXML
 	 void entered(MouseEvent event) {

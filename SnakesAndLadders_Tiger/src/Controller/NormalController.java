@@ -86,7 +86,6 @@ public class NormalController implements Initializable{
 	private static final String RED = "/img/icons/redPlayer.png"; //Player Token path
 	private static final String PURPLE = "/img/icons/purplePlayer.png"; //Player Token path
 	private static final String YELLOW = "/img/icons/yellowPlayer.png";	//Player Token path
-	private static final String INFO_IMAGE_PATH = "/img/screens/blank.jpg";
 	private static final String QUESTION_IMAGE_PATH = "/img/icons/question.png";
 	private static final String SURPRISE_IMAGE_PATH = "/img/icons/surprise.png";
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
@@ -95,8 +94,6 @@ public class NormalController implements Initializable{
 	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
 	private static final int VISIBLE_DURATION_MS = 4500; // 10 seconds
 	
-	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 	boolean correct = false; // checks if answer is correct
     int returnVal = 0; // returns the number of steps the player should move based on their answer
@@ -166,6 +163,7 @@ public class NormalController implements Initializable{
     private HashMap<Integer, String> diceImageMap;
 
     private ArrayList<Player> originalOrder = new ArrayList<>();
+    
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
@@ -183,7 +181,6 @@ public class NormalController implements Initializable{
         diceImageMap.put(11, "/img/icons/diceQ.png");
         diceImageMap.put(12, "/img/icons/diceQ.png");
     }
-       
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -512,7 +509,6 @@ public class NormalController implements Initializable{
 				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
 			    		hidePlayerToken(player);
 				    });
-//		    		scheduleTask(newRow, newColumn, player, newPosition);
 		    		Platform.runLater(() -> {
 		    			player.setPlayerPlace(newPosition);
 					    displayPlayerToken(newRow, newColumn, player, newPosition);
@@ -584,7 +580,7 @@ public class NormalController implements Initializable{
 //		    GridPane.setRowIndex(iconsOnBoard.get(player), row);
 //		    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
 		    
-		    //check if other players are already on this tile to avoid covering each other's tokens
+		    // Check if other players are already on this tile to avoid covering each other's tokens
 		    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
 		    for (Player p : game.getPlayers())
 		    	otherPlayers.add(p);
@@ -616,11 +612,6 @@ public class NormalController implements Initializable{
 		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER);
 	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
 	    		player.setEnteredTile(4); // I entered in the fourth position
-		    }
-		    else { // no players on this tile, I'm the first player on this tile
-		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
-		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.TOP); // Top vertically
-		    	player.setEnteredTile(1);
 		    }
 	    }
 	    else { // if the new position is 0
@@ -702,7 +693,7 @@ public class NormalController implements Initializable{
 	            Ladder ladder = ladderT.getLadder();
 	            System.out.println("Next step will be: " + ladder.getLadderTop());
 //	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
-
+//				hidePlayerToken(p);
 	            return ladder.getLadderTop();
 	            
 	        case Surprise:
@@ -731,7 +722,6 @@ public class NormalController implements Initializable{
 	            return nextPos;
 	    }
 	}
-    
     
     public int displaySurprise() {
     	// Load the surprise value image
@@ -763,7 +753,6 @@ public class NormalController implements Initializable{
     	return surpriseResult;
     }
     
-    // Wherever you handle the player reaching a surprise tile
     public int handleSurpriseTileReached() {
         // Show the surprise box and its images
         surpriseValue.setVisible(true);
@@ -842,17 +831,12 @@ public class NormalController implements Initializable{
 		answerGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
 		    if (newToggle != null) // Enable submit button only when a radio button is selected
 		        submit.setDisable(false);
-//		    if (answerGroup.getUserData() != null) { // Check if the user has already submitted their answer
-//		        answerGroup.selectToggle(oldToggle); // If the user has submitted their answer, deselect the new selection
-//		        submit.setDisable(true);  // do not allow the player to submit a different answer
-//		    }
 		});
 		returnVal = 0; // initialize the return value to a  default: 0
 		submit.setOnAction(e -> {
 			okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
 			RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle(); // Get the selected answer
 			if (selectedAnswer != null) {
-//		        answerGroup.setUserData(selectedAnswer); // set this as the user data an prevent changing it later
 		        submit.setDisable(true); // do not allow to submit again
 		        for (Toggle toggle : answerGroup.getToggles()) {
 		            RadioButton radioButton = (RadioButton) toggle;
@@ -931,7 +915,6 @@ public class NormalController implements Initializable{
 	    rootAnchorPane.getChildren().remove(exitButton); // Remove exitButton from AnchorPane
 	    rootAnchorPane.getChildren().add(exitButton);    // Re-add exitButton to AnchorPane (on top)
 	}
-	
 
     @FXML
     void showInfo(ActionEvent event) throws IOException{	
