@@ -2,22 +2,17 @@ package Model;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-
-import Model.Game;
 
 import org.json.simple.parser.JSONParser;
 
@@ -28,9 +23,9 @@ public class SysData {
 	private static final String QJSON = "JSON/questions_scheme.json";
 	private static final String HJSON = "JSON/demo.json";
 	
-	public ArrayList<Question> deleted = new ArrayList();
-	private HashSet<Game> games = new HashSet(); 
-	private HashSet<Question> questions = new HashSet(); // we use HashSet to prevent duplication of question in the table
+	public ArrayList<Question> deleted = new ArrayList<>();
+	private HashSet<Game> games = new HashSet<>(); 
+	private HashSet<Question> questions = new HashSet<>(); // we use HashSet to prevent duplication of question in the table
 	
 	public HashSet<Game> getGames() {
 		return games;
@@ -225,7 +220,7 @@ public class SysData {
 //		String durationString = dur.toString();
 		
 		// Convert Duration to custom format string
-        double durationString = g.getGameDuration().toMillis();
+        String durationString = g.getGameDuration();
 		jsonObject.put("Duration", durationString);
 
         
@@ -270,15 +265,13 @@ public class SysData {
 				while (historyIter.hasNext()) {
 	
 					JSONObject que = historyIter.next();
-		            Double durationdou = (Double) que.get("Duration");
+		            String duration = (String) que.get("Duration");
 		            
 		         // Convert duration string to Duration object
 		          //  Duration duration = Game.parseDuration(durationString);
-		            Duration duration = Duration.millis(durationdou);
 		            
 		            String playerName = (String) que.get("Winner");
 		            Player winner = new Player(playerName);
-
 		           
 		            LocalDate localDate = LocalDate.parse((String) que.get("gameDate"));  	
 

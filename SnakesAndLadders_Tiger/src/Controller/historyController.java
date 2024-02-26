@@ -3,7 +3,6 @@ package Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,7 +66,7 @@ public class historyController implements Initializable{
     private TableColumn<Game, Player> winner;
 
     @FXML
-    private TableColumn<Game, Duration> duration;
+    private TableColumn<Game, String> duration;
     
     @FXML
     private TableColumn<Game, LocalDate> date;
@@ -91,7 +90,6 @@ public class historyController implements Initializable{
     private CheckBox DifficultyCheck;
     
     private ObservableList<Game> Gamesdata;
-    private ObservableList<Game> Gamesdata1;
 
     @FXML
     private CheckBox DateCheck;
@@ -134,7 +132,6 @@ public class historyController implements Initializable{
     void OrderDifficulty(ActionEvent event) {
 
     }
-
 
     @FXML
     void OrderWinner(ActionEvent event) {
@@ -201,11 +198,11 @@ public class historyController implements Initializable{
 
     public void fillHistoryTable() {
     	Gamesdata = FXCollections.observableArrayList(SysData.getInstance().getGames());
-		 
+    	
+    	// duration column
     	duration.setCellValueFactory(param -> {
-    	    Duration gameDuration = param.getValue().getGameDuration();
-    	    String dur = param.getValue().formatDuration(gameDuration);
-    	    return new SimpleObjectProperty(dur);
+    	    String gameDuration = param.getValue().getGameDuration();
+    	    return new SimpleObjectProperty(gameDuration);
     	});
     	
 		// Set cell value factory to display winner's name
@@ -217,34 +214,32 @@ public class historyController implements Initializable{
                 return new SimpleObjectProperty(winnerName);
             }
         });
+        // difficulty column
 		difficulty.setCellValueFactory(new PropertyValueFactory<Game, Difficulty>("difficulty"));
-
+		// date column
         date.setCellValueFactory(param -> {
 		    LocalDate gameDate = param.getValue().getDate();
 		    return new SimpleObjectProperty<>(gameDate);
 		});
-        
+        // game counter column
 		gameID.setCellValueFactory(cellData -> {
-	            int rowIndex = History.getItems().indexOf(cellData.getValue()) + 1;
-	            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
-	        });
+            int rowIndex = History.getItems().indexOf(cellData.getValue()) + 1;
+            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
+        });
 		
 		History.setItems(Gamesdata);
-  		
     }
     
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		 try {
-				SysData.getInstance().ReadFromJsonGames();
-			} catch (IOException | ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			SysData.getInstance().ReadFromJsonGames();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
 		fillHistoryTable();	
-		
 		History.refresh();
 	}
 	
@@ -259,5 +254,4 @@ public class historyController implements Initializable{
 	    ((Node)event.getSource()).setScaleX(1);
 	    ((Node)event.getSource()).setScaleY(1);
 	 }	
-	
 }

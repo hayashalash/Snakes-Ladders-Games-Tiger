@@ -3,12 +3,19 @@ package Controller;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import Model.Difficulty;
 import Model.Game;
 import Model.Player;
+import Model.Question;
+import Model.SysData;
 import View.Alerts;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,15 +28,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class WinnerController implements Initializable{
 
-	public static Difficulty diff;
+	public static Game game;
     @FXML
     private AnchorPane screen;
 
@@ -47,7 +59,23 @@ public class WinnerController implements Initializable{
 
     @FXML
     private Button home;
+    
+    @FXML
+    private TableView<Game> gameSummary;
 
+    @FXML
+    private TableColumn<Game, Player> winner;
+
+    @FXML
+    private TableColumn<Game, Difficulty> difficulty;
+
+    @FXML
+    private TableColumn<Game, String> duration;
+
+    @FXML
+    private TableColumn<Game, LocalDate> date;
+    
+    Difficulty diff = game.getDifficulty();
 
      @FXML
      void playAgain(ActionEvent event) {
@@ -69,7 +97,7 @@ public class WinnerController implements Initializable{
      }
      
      void resetGame(Game game) {
-    	 game.setGameDuration(Duration.ZERO);
+    	 game.setGameDuration(null);
     	 game.setWinner(null);
     	 game.getPlayersOrder().clear();
     	 for (Player p : game.getPlayers()) {
@@ -81,9 +109,8 @@ public class WinnerController implements Initializable{
      
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		// Get the screen dimensions
-
+		fillSummary();
+		gameSummary.refresh();
         // Load the GIF file
     	Image i = new Image(getClass().getResourceAsStream("/img/icons/celebrating-tiger.gif"));
         // Set the loaded image to the existing ImageView (celebrate)
@@ -118,8 +145,38 @@ public class WinnerController implements Initializable{
                 "-fx-font-size: 36px; " +
                 "-fx-font-family: Broadway; ");
     }
-	
 
+	public void fillSummary() {
+		HashSet<Game> arr = new HashSet<>();
+  		arr.add(game);
+  		System.out.println("arr of game summary: "+arr);
+		ObservableList<Game> Gamedata = FXCollections.observableArrayList(arr);
+		// duration column
+    	duration.setCellValueFactory(param -> {
+    	    String gameDuration = param.getValue().getGameDuration();
+    	    return new SimpleObjectProperty(gameDuration);
+    	});
+    	
+		// Set cell value factory to display winner's name
+        winner.setCellValueFactory(new Callback<CellDataFeatures<Game, Player>, ObservableValue<Player>>() {
+            @Override
+            public ObservableValue<Player> call(CellDataFeatures<Game, Player> param) {
+                Player winner = param.getValue().getWinner();
+                String winnerName = (winner != null) ? winner.getPlayerName() : "";
+                return new SimpleObjectProperty(winnerName);
+            }
+        });
+        // difficulty column
+		difficulty.setCellValueFactory(new PropertyValueFactory<Game, Difficulty>("difficulty"));
+		// date column
+        date.setCellValueFactory(param -> {
+		    LocalDate gameDate = param.getValue().getDate();
+		    return new SimpleObjectProperty<>(gameDate);
+		});
+
+        gameSummary.setItems(Gamedata);
+	}
+	
     @FXML
     void returnHome(ActionEvent event) {
     	newScreen("Home");

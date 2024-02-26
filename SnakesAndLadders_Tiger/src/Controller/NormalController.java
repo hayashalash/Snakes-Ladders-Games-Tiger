@@ -418,33 +418,33 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-//    		Platform.runLater(() -> {
-//    		    // Place your UI-related operation here
-//    			int steps = showQuestionPopup(Difficulty.Easy);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		move(currentPlayer, steps); 
-//    		});
-    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    		    // Place your UI-related operation here
+    			int steps = showQuestionPopup(Difficulty.Easy);
+    			System.out.println("steps to move after question are: "+steps);
+        		move(currentPlayer, steps); 
+    		});
+//    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-//    		Platform.runLater(() -> {
-//    		    // Place your UI-related operation here
-//    			int steps = showQuestionPopup(Difficulty.Medium);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		move(currentPlayer, steps); 
-//    		});
-    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    		    // Place your UI-related operation here
+    			int steps = showQuestionPopup(Difficulty.Medium);
+    			System.out.println("steps to move after question are: "+steps);
+        		move(currentPlayer, steps); 
+    		});
+//    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-//    		Platform.runLater(() -> {
-//    		    // Place your UI-related operation here
-//    			int steps = showQuestionPopup(Difficulty.Hard);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		move(currentPlayer, steps); 
-//    		});
-    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    		    // Place your UI-related operation here
+    			int steps = showQuestionPopup(Difficulty.Hard);
+    			System.out.println("steps to move after question are: "+steps);
+        		move(currentPlayer, steps); 
+    		});
+//    		move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 
@@ -461,10 +461,12 @@ public class NormalController implements Initializable{
 	
 	public void win(int currentRow, int currentColumn, Player p, int newPosition) {
 		p.setPlayerPlace(newPosition);
+		hidePlayerToken(p);
         displayPlayerToken(currentRow, currentColumn, p, newPosition); // display the winner at the last tile
         game.setWinner(p);
-        game.setGameDuration(stopTimer());
-        WinnerController.diff = game.getDifficulty();
+        String durationGame = Game.formatDuration(stopTimer());
+        game.setGameDuration(durationGame);
+        WinnerController.game = game;
         try {
 			SysData.getInstance().writeToJsonGames(game);
 		} catch (IOException e) {
@@ -685,12 +687,6 @@ public class NormalController implements Initializable{
 	            SnakeTile snakeT = (SnakeTile) nextTile;
 	            Snake snake = snakeT.getSnake();
 //	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
-//				try {
-//					Thread.sleep(3000);
-//				} catch (InterruptedException e1) {
-//					// Auto-generated catch block
-//					e1.printStackTrace();
-//				}
 //				hidePlayerToken(p);
 	            if (snake.getColor() == SnakeColor.Red) {
 	                System.out.println("Next step will be: 1");
@@ -706,7 +702,6 @@ public class NormalController implements Initializable{
 	            System.out.println("Next step will be: " + ladder.getLadderTop());
 //	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
 
-//	            scheduleTask(currentRow, currentColumn, p, nextPos);
 	            return ladder.getLadderTop();
 	            
 	        case Surprise:
@@ -905,9 +900,7 @@ public class NormalController implements Initializable{
       return returnVal;
 	}
 	
-    
-    
-	private String getTokenImagePath(Player player) {
+  	private String getTokenImagePath(Player player) {
 	    switch (player.getPlayerColor()) {
 	        case Red:
 	            return RED;
@@ -1010,11 +1003,10 @@ public class NormalController implements Initializable{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/Info.fxml"));
         try {
             AnchorPane dialogContent = loader.load();
-
             // Create a dialog
             Dialog<Void> dialog = new Dialog<>();
             dialog.getDialogPane().setContent(dialogContent);
-            dialog.setTitle("Your Dialog Title");
+            dialog.setTitle("Game Rules");
             ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().add(closeButton);
             // Show the dialog
@@ -1059,13 +1051,5 @@ public class NormalController implements Initializable{
 			// handle exception
 			e.printStackTrace();
 		}  	
-    }
-    
-	public void scheduleTask(int currentRow, int currentColumn, Player p, int newPos) {
-        executor.schedule(() -> {
-        	// Set player's new position
-		    p.setPlayerPlace(newPos);
-		    displayPlayerToken(currentRow, currentColumn, p, newPos);
-        }, 3, TimeUnit.SECONDS);
     }
 }

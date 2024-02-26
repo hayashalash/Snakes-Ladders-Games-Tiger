@@ -63,7 +63,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <TableView layoutX="108.0" layoutY="456.0" prefHeight="58.0" prefWidth="637.0">
+      <TableView fx:id="gameSummary" layoutX="108.0" layoutY="456.0" prefHeight="58.0" prefWidth="637.0">
         <columns>
             <TableColumn fx:id="winner" prefWidth="154.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
             <TableColumn fx:id="difficulty" prefWidth="139.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />

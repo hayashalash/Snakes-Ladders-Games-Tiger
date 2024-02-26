@@ -49,7 +49,6 @@ public class homeController implements Initializable{
 	private final double ICON_SIZE = 35; // the moving icons on the board
 
 	
-	
     @FXML
     private Button history;
 
@@ -103,7 +102,6 @@ public class homeController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
 	 
     	if (note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);

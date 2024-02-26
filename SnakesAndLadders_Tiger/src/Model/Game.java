@@ -21,7 +21,8 @@ public class Game extends Sort{
 	private Difficulty type;
 	private LocalDate date;
 	private int playersNum;
-	private Duration gameDuration = Duration.ZERO;
+//	private Duration gameDuration = Duration.ZERO;
+	private String gameDuration = null;
 	private ArrayList<Player> players = new ArrayList<>();//should delete?
 	private Player winner;
 	private Queue<Player> playersOrder = new LinkedList<Player>();
@@ -35,7 +36,7 @@ public class Game extends Sort{
 		this.date = date;
 	}
 
-	public Game(Difficulty dif, LocalDate date, Duration dur, Player winner) { // constructor to use for game history loading from Json
+	public Game(Difficulty dif, LocalDate date, String dur, Player winner) { // constructor to use for game history loading from Json
 		this.type = dif;
 		this.date = date;
 		this.gameDuration = dur;
@@ -69,11 +70,11 @@ public class Game extends Sort{
 		this.playersNum = playersNum;
 	}
 
-	public Duration getGameDuration() {
+	public String getGameDuration() {
 		return gameDuration;
 	}
 
-	public void setGameDuration(Duration gameDuration) {
+	public void setGameDuration(String gameDuration) {
 		this.gameDuration = gameDuration;
 	}
 
@@ -186,7 +187,7 @@ public class Game extends Sort{
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     
-	// Custom method to format duration as "mm:ss"
+	// Custom method to format duration as "mm:ss" string
     public static String formatDuration(Duration duration) {
 //        long minutes = duration.toMinutes();
 //        long seconds = duration.getSeconds() % 60;
