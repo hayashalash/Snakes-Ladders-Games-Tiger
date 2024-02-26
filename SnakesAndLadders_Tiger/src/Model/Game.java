@@ -176,7 +176,7 @@ public class Game extends Sort{
         }
         sorted.addAll(easy);
         sorted.addAll(medium);
-        sorted.addAll(easy);
+        sorted.addAll(hard);
         
       return sorted;
     }

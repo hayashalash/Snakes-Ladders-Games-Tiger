@@ -82,56 +82,90 @@ public class historyController implements Initializable{
 
     @FXML
     private CheckBox durationCheck;
-
-    @FXML
-    private Button topButton;
     
-    @FXML
-    private CheckBox DifficultyCheck;
-    
-    private ObservableList<Game> Gamesdata;
-
     @FXML
     private CheckBox DateCheck;
 
+    @FXML
+    private CheckBox DifficultyCheck;
+    
+    @FXML
+    private Button topButton;
+    
+    private ObservableList<Game> Gamesdata;
+
+    
     ArrayList<Game> sorted = new ArrayList<>(); // Arraylist to store the sorted Games
     private boolean isSorted = false;
-    
-    
-    public void sort(ArrayList<Game> sorted){
-	   for (Game g : sorted) {
-       	sorted.add((Game) g);
-       ObservableList<Game> dataGame = FXCollections.observableArrayList(sorted);
-       gameID.setCellValueFactory(new PropertyValueFactory<>("GameID"));
-    	duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
-    	difficulty.setCellValueFactory(new PropertyValueFactory<>("type"));
-    	winner.setCellValueFactory(new PropertyValueFactory<>("winner"));
-        ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
-        History.setItems(temp);
-	   }
-	   
-   }
+    ArrayList<Game> sortedByDuration = new ArrayList<>(); // Arraylist to store the sorted Games by duration
+    ArrayList<Game> sortedByDate = new ArrayList<>();// Arraylist to store the sorted Games by date
+    ArrayList<Game> sortedByDifficulty = new ArrayList<>();// Arraylist to store the sorted Games by Difficulty
+    HashSet<Game> originalOrder = new HashSet<>(SysData.getInstance().getGames()); // Save the original order to revert back to after sorting
+
     
     @FXML
     void OrderDuration(ActionEvent event) {
-//    	if (!isSorted) {
-//            Sort sort = new Game();
-//            sort(sort.getSorted("Duration"));
-//
-//            isSorted = true;
-//        }
-
+    	if (!isSorted) {
+            Sort sort = new Game();
+            for (Object obj : sort.getSorted("Duration"))
+                 sortedByDuration.add((Game) obj);
+			System.out.println("by Duration:"+sortedByDuration);
+            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDuration);
+            sort(dataGame);
+    	}
+    	else {
+    		ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+    	     History.setItems(temp);
+    	     
+    	     isSorted = false;
+    	}
     }
-    
+   
     @FXML
     void OrderDate(ActionEvent event) {
-
+    	if (!isSorted) {
+            Sort sort = new Game();
+			for (Object obj : sort.getSorted("Date"))
+                 sortedByDate.add((Game) obj);
+			System.out.println("by date:"+sortedByDate);
+            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDate);
+            sort(dataGame); 	
+    	}
+    	else {
+    		ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+    	     History.setItems(temp);
+    	     
+    	     isSorted = false;
+    	}
     }
 
     @FXML
     void OrderDifficulty(ActionEvent event) {
-
+    	 if (!isSorted) {
+            Sort sort = new Game();
+			for (Object obj : sort.getSorted("Difficulty"))
+                 sortedByDifficulty.add((Game) obj);
+			System.out.println("by diff:"+sortedByDifficulty);
+            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDifficulty);
+            sort(dataGame);   
+    	 }
+            else {
+                // Restore the original order
+                ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+                History.setItems(temp);
+                
+                isSorted = false;
+                }
     }
+    
+    void sort(ObservableList<Game> dataGame) {
+	 if (!isSorted) {
+	 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
+     History.setItems(temp);
+     isSorted = true;
+     }
+     }
+
 
     @FXML
     void OrderWinner(ActionEvent event) {
