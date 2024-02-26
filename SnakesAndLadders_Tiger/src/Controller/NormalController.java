@@ -52,6 +52,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -803,6 +804,7 @@ public class NormalController implements Initializable{
 		answer2.setUserData(2);
 		answer3.setUserData(3);
 		answer4.setUserData(4);
+		answerGroup.setUserData(null);
 		Label resultText = new Label(); // text that will tell the player whether he was correct or wrong
 		resultText.setPadding(new Insets(10, 0, 10, 0)); // top right bottom left
 		resultText.setStyle("-fx-font-size: 12px; -fx-font-weight: bolder;");
@@ -849,9 +851,14 @@ public class NormalController implements Initializable{
 		submit.setOnAction(e -> {
 			okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
 			RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle(); // Get the selected answer
-//			if (selectedAnswer != null) {
+			if (selectedAnswer != null) {
 //		        answerGroup.setUserData(selectedAnswer); // set this as the user data an prevent changing it later
-//		    }
+		        submit.setDisable(true); // do not allow to submit again
+		        for (Toggle toggle : answerGroup.getToggles()) {
+		            RadioButton radioButton = (RadioButton) toggle;
+		            radioButton.setDisable(true); // do not allow to change the answer
+		        }
+		    }
 			int selectedAnswerNumber = (int) selectedAnswer.getUserData();// Get the number of selected answer
 			int correctAnswerNumber=q.getCorrectAnswer();
 			if(selectedAnswerNumber == correctAnswerNumber) {
@@ -894,8 +901,9 @@ public class NormalController implements Initializable{
 					returnVal = -3;
 				}
 			}
+			// When text is bold, it is slightly enlarged. We want the dialog to fit the enlarged text without clipping it
+			dialog.getDialogPane().getScene().getWindow().sizeToScene(); 
 		});
-      
       dialog.showAndWait();
       return returnVal;
 	}
