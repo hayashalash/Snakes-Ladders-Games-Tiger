@@ -78,7 +78,7 @@ public class HardController implements Initializable{
 	
 	private GameController gameController;
 	public static Game game;
-	Board board = new Board(game.getType());
+	Board board = new Board(game.getDifficulty());
 	
     @FXML
     private ImageView surpriseValue;

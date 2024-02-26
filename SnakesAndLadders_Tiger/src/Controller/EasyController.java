@@ -86,7 +86,7 @@ public class EasyController implements Initializable{
 	private double TOKEN_SIZE = 50;
 	public static Game game;
 	private GameController gameController;
-	Board board = new Board(game.getType());
+	Board board = new Board(game.getDifficulty());
 	public Player currentTurn;
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
 	private static final String SURPRISE_IMAGE_PATH = null;
