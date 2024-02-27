@@ -32,6 +32,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -91,6 +92,10 @@ public class historyController implements Initializable{
     
     @FXML
     private Button topButton;
+    
+    @FXML
+    private ComboBox<String> orderBox;
+
     
     private ObservableList<Game> Gamesdata;
     
@@ -203,6 +208,11 @@ public class historyController implements Initializable{
 
     	ObservableList<Game> temp = FXCollections.observableArrayList(dataQues);
     	History.setItems(temp);
+    }
+    
+    @FXML
+    void OrderByBox(ActionEvent event) {
+
     }
 
     @FXML

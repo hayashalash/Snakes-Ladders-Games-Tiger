@@ -35,12 +35,22 @@ public class  topThreeController implements Initializable{
 
 	    @FXML
 	    private Text player3;
+	    
+	    @FXML
+	    private Text win1;
 
+	    @FXML
+	    private Text win2;
+
+	    @FXML
+	    private Text win3;
+	    
         @FXML
 	    private Button exitButton;
         
         @FXML
 	    private Button backBtn;
+        
 	    
 	    @FXML
 	    void back(ActionEvent event) {
@@ -91,6 +101,10 @@ public class  topThreeController implements Initializable{
 		        player1.setText(topPlayersList.get(0).getKey().getPlayerName());
 		        player2.setText(topPlayersList.get(1).getKey().getPlayerName());
 		        player3.setText(topPlayersList.get(2).getKey().getPlayerName());
+		        win1.setText("Wins: " +Integer.toString(topPlayersList.get(0).getValue()));
+		        win2.setText("Wins: " +Integer.toString(topPlayersList.get(1).getValue()));
+		        win3.setText("Wins: " +Integer.toString(topPlayersList.get(2).getValue()));
+
 		    } else {
 		        //display default values just for test
 		        player1.setText("Ruba");
