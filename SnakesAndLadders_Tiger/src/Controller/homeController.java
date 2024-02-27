@@ -70,18 +70,17 @@ public class homeController implements Initializable{
     @FXML
     private Button musicOff;
     
-    public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.mp3").toString());
+    //public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.mp3").toString());
 
     @FXML
     void TurnOffOn(ActionEvent event) {
-    	if (turnOffIcon.getOpacity() == 0.0) { // if music is on
-			note.stop();
-			turnOffIcon.setOpacity(1.0);
-		}
-    	else { // is music is off
-    		note.play();
-			note.setVolume(0.2);
+    	if (Main.note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);
+    		Main.stopBackgroundMusic();
+    	}
+    	else {
+    		turnOffIcon.setOpacity(1.0);
+    		Main.resumeBackgroundMusic();
     	}
     }
 
@@ -103,13 +102,13 @@ public class homeController implements Initializable{
 			e.printStackTrace();
 		}
 	 
-    	if (note.isPlaying()) {
+    	if (Main.note.isPlaying()) {
     		turnOffIcon.setOpacity(0.0);
-    		note.play();
+    		//Main.stopBackgroundMusic();
     	}
     	else {
     		turnOffIcon.setOpacity(1.0);
-        	note.stop();
+    		//Main.resumeBackgroundMusic();
     	}
     }
     
@@ -231,6 +230,8 @@ public class homeController implements Initializable{
         // Show the dialog
         dialog.showAndWait();
     }
+    
+    
 
   
 }
