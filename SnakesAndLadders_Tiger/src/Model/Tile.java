@@ -3,24 +3,24 @@ package Model;
 public class Tile {
 	protected Integer tNum;
 	protected TileType tType;
-	protected Integer xCoord;
-	protected Integer yCoord;
+	protected Integer row;
+	protected Integer column;
 	
-	public Tile(Integer tNum, TileType tType, Integer xCoord, Integer yCoord) {
+	public Tile(Integer tNum, TileType tType, Integer row, Integer column) {
 		super();
 		this.tNum = tNum;
 		this.tType = tType;
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
+		this.row = row;
+		this.column = column;
 	}
 	
 	// default creation of tile is of type classic.
-	public Tile(Integer tNum, Integer xCoord, Integer yCoord) {
+	public Tile(Integer tNum, Integer row, Integer column) {
 		super();
 		this.tNum = tNum;
 		this.tType = TileType.Classic;
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
+		this.row = row;
+		this.column = column;
 	}
 
 	public Integer gettNum() {
@@ -39,21 +39,20 @@ public class Tile {
 		this.tType = tType;
 	}
 
-	public Integer getxCoord() {
-		return xCoord;
+	public Integer getRow() {
+		return row;
 	}
 
-	public void setxCoord(Integer xCoord) {
-		this.xCoord = xCoord;
+	public void setRow(Integer row) {
+		this.row = row;
 	}
 
-	public Integer getyCoord() {
-		return yCoord;
+	public Integer getColumn() {
+		return column;
 	}
 
-	public void setyCoord(Integer yCoord) {
-		this.yCoord = yCoord;
+	public void setColumn(Integer column) {
+		this.column = column;
 	}
-	
 	
 }

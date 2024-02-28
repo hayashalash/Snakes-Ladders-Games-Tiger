@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -9,8 +8,7 @@ import java.util.ResourceBundle;
 import Model.Difficulty;
 import Model.Game;
 import Model.Player;
-import Model.Question;
-import Model.SysData;
+
 import View.Alerts;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -18,14 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -37,10 +29,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
-import javafx.util.Duration;
 
 public class WinnerController implements Initializable{
 
+	Methods methods = new Methods();
+	
 	public static Game game;
     @FXML
     private AnchorPane screen;
@@ -82,17 +75,17 @@ public class WinnerController implements Initializable{
     	if (diff == Difficulty.Easy) {
     		resetGame(EasyController.game);
      		EasyController.game = new Game(diff, EasyController.game.getPlayers(), LocalDate.now());
-     		newScreen("easyBoard");
+     		methods.newScreen("easyBoard");
      	}
      	else if (diff == Difficulty.Medium) {
      		resetGame(NormalController.game);
      		NormalController.game = new Game(diff, NormalController.game.getPlayers(), LocalDate.now());
-     		newScreen("normalBoard");
+     		methods.newScreen("normalBoard");
      	}
      	else if (diff == Difficulty.Hard) {
      		resetGame(HardController.game);
      		HardController.game = new Game(diff, HardController.game.getPlayers(), LocalDate.now());
-     		newScreen("hardBoard");
+     		methods.newScreen("hardBoard");
      	}
      }
      
@@ -179,36 +172,22 @@ public class WinnerController implements Initializable{
 	
     @FXML
     void returnHome(ActionEvent event) {
-    	newScreen("Home");
+    	methods.newScreen("Home");
     }
 
 	 @FXML
     void entered(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1.1);
-    	((Node)event.getSource()).setScaleY(1.1);
-   
+		 methods.entered(event);
 	 }
 	 
     @FXML
     void exited(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1);
-    	((Node)event.getSource()).setScaleY(1);
+    	methods.exited(event);
     }
 	    
     @FXML
     void exit(ActionEvent event) {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
-    }
-    
-    void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
     }
 }

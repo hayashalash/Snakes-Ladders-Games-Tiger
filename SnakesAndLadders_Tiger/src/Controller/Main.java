@@ -3,26 +3,6 @@ import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
 
-import Model.Difficulty;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.media.AudioClip;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.animation.PauseTransition;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
-
-import Model.Difficulty;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -90,11 +70,6 @@ public class Main extends Application {
         }
     }
 
-    public static void showQuestion(Difficulty d) {
-        // Bring Hashmap from question difficulty and Arraylist of question for each difficulty 
-        // Choose the difficulty and bring a random question from the arraylist 
-    }
-
     private void playBackgroundMusic() {
         if (note != null) {
             note.play();
@@ -113,8 +88,5 @@ public class Main extends Application {
             note.play();
         }
     }
-	
-
-	
 	
 }

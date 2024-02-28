@@ -2,11 +2,7 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.swing.SwingUtilities;
 
 import org.json.simple.parser.ParseException;
 
@@ -15,39 +11,28 @@ import Model.SysData;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
 public class homeController implements Initializable{
 
 	private static final String ADMIN = "/img/screens/admin.jpg";
-	private static final String INFO_IMAGE_PATH = "/img/screens/blank.jpg";
-	private final double ICON_SIZE = 35; // the moving icons on the board
 
+	Methods methods = new Methods();
 	
     @FXML
     private Button history;
@@ -114,7 +99,7 @@ public class homeController implements Initializable{
     
     @FXML
     void start(ActionEvent event) {
-    	newScreen("ChooseDifficulty");
+    	methods.newScreen("ChooseDifficulty");
     }
 
     @FXML
@@ -122,41 +107,24 @@ public class homeController implements Initializable{
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
-    
-    void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-			Main.mainWindow.show();
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
 
     @FXML
     void entered(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1.1);
-    	((Node)event.getSource()).setScaleY(1.1);
-    	((Node)event.getSource()).setCursor(Cursor.HAND);
+    	methods.entered(event);
     }
     @FXML
     void exited(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1);
-    	((Node)event.getSource()).setScaleY(1);
-    	((Node)event.getSource()).setCursor(Cursor.DEFAULT);
+    	methods.exited(event);
     }
     
     @FXML
     void showHistory(ActionEvent event) throws IOException{
-    	newScreen("GameHistory");
+    	methods.newScreen("GameHistory");
     }
 
     @FXML
     void showInfo(ActionEvent event) throws IOException{
-    	newScreen("Info");
+    	methods.newScreen("Info");
     }
 
     @FXML
@@ -179,14 +147,7 @@ public class homeController implements Initializable{
         Button logInButton = new Button("Log In");
         logInButton.setPadding(new Insets(5, 5, 5, 5));
         // Apply CSS styles to the button
-        logInButton.setStyle("-fx-background-color: #D2691E; " +  // Background color
-                "-fx-text-fill: white; " +           // Text color
-                "-fx-font-size: 14px; " +            // Font size
-                "-fx-font-family: Serif; " +         // Font family
-                "-fx-background-radius: 5px; " +     // Background radius
-                "-fx-border-radius: 5px; " +         // Border radius
-                "-fx-border-color: #DEB887;" +      // Border color
-        		"-fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );"); // Drop shadow effect
+        logInButton.setStyle(methods.getButtonStyle()); // Drop shadow effect
         logInButton.setOnMouseEntered(e -> entered(e));
         logInButton.setOnMouseExited(e -> exited(e));
         Label errorLabel = new Label("Incorrect password");
@@ -202,7 +163,7 @@ public class homeController implements Initializable{
         logInButton.setOnAction(e -> {
         	String p = textField.getText();
         	if (Admin.getInstance().checkPassword(p)) {
-        		newScreen("manageQuestion");
+        		methods.newScreen("manageQuestion");
         		dialog.close();
         	}
         	else {
@@ -231,7 +192,4 @@ public class homeController implements Initializable{
         dialog.showAndWait();
     }
     
-    
-
-  
 }

@@ -7,16 +7,13 @@ import Model.Difficulty;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 public class difficultyController implements Initializable {
-
+	Methods methods = new Methods();
+	
     @FXML
     private Button easyButton;
 
@@ -40,28 +37,28 @@ public class difficultyController implements Initializable {
 
     @FXML
     void goHome(ActionEvent event) {
-    	newScreen("Home");
+    	methods.newScreen("Home");
     }
 
     @FXML
     void hard(ActionEvent event) {
     	ChoosePlayersController.diff = Difficulty.Hard;
     	// TODO pass difficulty to next screen
-    	newScreen("ChoosePlayers");
+    	methods.newScreen("ChoosePlayers");
     }
 
     @FXML
     void normal(ActionEvent event) {
     	ChoosePlayersController.diff = Difficulty.Medium;
     	// TODO pass difficulty to next screen
-    	newScreen("ChoosePlayers");
+    	methods.newScreen("ChoosePlayers");
     }
 
     @FXML
     void easy(ActionEvent event) {
     	ChoosePlayersController.diff = Difficulty.Easy;
     	// TODO pass difficulty to next screen
-    	newScreen("ChoosePlayers");
+    	methods.newScreen("ChoosePlayers");
     }
     
 	@Override
@@ -69,31 +66,15 @@ public class difficultyController implements Initializable {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-			Main.mainWindow.show();
 
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
-	
 	 @FXML
 	 void entered(MouseEvent event){
-		 ((Node)event.getSource()).setScaleX(1.1);
-		 ((Node)event.getSource()).setScaleY(1.1);
+		 methods.entered(event);
 	 }
 	 
 	@FXML
 	 void exited(MouseEvent event){
-	    ((Node)event.getSource()).setScaleX(1);
-	    ((Node)event.getSource()).setScaleY(1);
+		methods.exited(event);
 	 }	
 	
-
 }

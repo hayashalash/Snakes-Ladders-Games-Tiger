@@ -182,13 +182,13 @@ public class Board {
 			getTile(random).settType(TileType.Question);
 			QuestionTile qt;
 			if (i==0) { // in the first iteration add an easy question
-				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Easy);
+				qt = new QuestionTile(random, getTile(random).getRow(), getTile(random).getColumn(), Difficulty.Easy);
 			}
 			else if (i==1) { // in the second iteration add a medium question
-				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Medium);
+				qt = new QuestionTile(random, getTile(random).getRow(), getTile(random).getColumn(), Difficulty.Medium);
 			}
 			else { // if (i==2) - in the third iteration add a hard question
-				qt = new QuestionTile(random, getTile(random).getxCoord(), getTile(random).getyCoord(), Difficulty.Hard);
+				qt = new QuestionTile(random, getTile(random).getRow(), getTile(random).getColumn(), Difficulty.Hard);
 			}
 			tiles.put(qt.gettNum(), qt); // add the question tile to the tiles HashMap
 			questionTiles.add(qt);
@@ -269,27 +269,27 @@ public class Board {
 		}
 		else if (color == SnakeColor.Yellow) {
 			snakeHead = chooseRandomTile(yellowSnakeLen);
-			int snakeBottomRow = getTile(snakeHead).getxCoord()+yellowSnakeLen; 
+			int snakeBottomRow = getTile(snakeHead).getRow()+yellowSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
 			System.out.println("yellow snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Yellow, snakeHead, snakeTail);
 		}
 		else if (color == SnakeColor.Green) {
 			snakeHead = chooseRandomTile(greenSnakeLen);
-			int snakeBottomRow = getTile(snakeHead).getxCoord()+greenSnakeLen; 
+			int snakeBottomRow = getTile(snakeHead).getRow()+greenSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
 			System.out.println("green snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Green, snakeHead, snakeTail);
 		}
 		else { // if (color == SnakeColor.Blue)
 			snakeHead = chooseRandomTile(blueSnakeLen);
-			int snakeBottomRow = getTile(snakeHead).getxCoord()+blueSnakeLen; 
+			int snakeBottomRow = getTile(snakeHead).getRow()+blueSnakeLen; 
 			snakeTail = chooseRandomInRow (snakeBottomRow);
 			System.out.println("Blue snake is on: "+snakeHead+", "+ snakeTail);
 			s = new Snake(SnakeColor.Blue, snakeHead, snakeTail);
 		}
 		snakes.put(s.getSnakeID(), s);
-		SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getxCoord(), getTile(snakeHead).getyCoord(), s); // create a snake tile to replace the regular tile
+		SnakeTile st = new SnakeTile (snakeHead, getTile(snakeHead).getRow(), getTile(snakeHead).getColumn(), s); // create a snake tile to replace the regular tile
 		getTile(snakeTail).settType(TileType.SnakeTail);
 		tiles.put(st.gettNum(), st); // add the snake tile to the tiles HashMap
 	}
@@ -310,11 +310,11 @@ public class Board {
 	
 	public void createLadder(int length) {
 		int laddertop = chooseRandomTile(length);
-		int ladderBottomRow = getTile(laddertop).getxCoord()+length;
+		int ladderBottomRow = getTile(laddertop).getRow()+length;
 		int ladderbottom = chooseRandomInRow (ladderBottomRow);
 		Ladder l = new Ladder(length, laddertop, ladderbottom);
 		ladders.put(l.getLadderID(), l);
-		LadderTile lt = new LadderTile (ladderbottom, getTile(ladderbottom).getxCoord(), getTile(ladderbottom).getyCoord(), l); // create a ladder tile to replace the regular tile
+		LadderTile lt = new LadderTile (ladderbottom, getTile(ladderbottom).getRow(), getTile(ladderbottom).getColumn(), l); // create a ladder tile to replace the regular tile
 		getTile(laddertop).settType(TileType.LadderTop);
 		tiles.put(lt.gettNum(), lt); // add the ladder tile to the tiles HashMap
 		System.out.println("ladder length: " + length);

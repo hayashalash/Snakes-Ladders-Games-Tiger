@@ -15,12 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
@@ -33,6 +28,8 @@ import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
 
+	Methods methods = new Methods();
+	
 	// color images paths to be displayed in the combobox
 	private static final String GREEN = "/img/icons/green.png";
 	private static final String BLUE = "/img/icons/blue.png";
@@ -203,11 +200,10 @@ public class ChoosePlayersController implements Initializable{
     		playersNum--;
     	}
     }
-
     
     @FXML
     void backToDifficulty(ActionEvent event) {
-    	newScreen("ChooseDifficulty");
+    	methods.newScreen("ChooseDifficulty");
     }
 
     @FXML
@@ -305,7 +301,7 @@ public class ChoosePlayersController implements Initializable{
             }
         }
     	
-    	ArrayList<Player> players = new ArrayList();
+    	ArrayList<Player> players = new ArrayList<>();
     	String p1name = player1txt.getText();
     	String p2name = player2txt.getText();
     	int player1indx = player1clr.getSelectionModel().getSelectedIndex();
@@ -387,42 +383,28 @@ public class ChoosePlayersController implements Initializable{
     	}
     	if (diff == Difficulty.Easy) {
     		EasyController.game = new Game(diff, players, LocalDate.now());
-    		newScreen("easyBoard");
+    		methods.newScreen("easyBoard");
     	}
     	else if (diff == Difficulty.Medium) {
     		NormalController.game = new Game(diff, players, LocalDate.now());
-    		newScreen("normalBoard");
+    		methods.newScreen("normalBoard");
     	}
     	else if (diff == Difficulty.Hard) {
     		HardController.game = new Game(diff, players, LocalDate.now());
-    		newScreen("hardBoard");
+    		methods.newScreen("hardBoard");
     	}
     }
     
     @FXML
     void entered(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1.1);
-    	((Node)event.getSource()).setScaleY(1.1);
-    	((Node) event.getSource()).setCursor(Cursor.HAND);
+    	methods.entered(event);
     }
 	
     @FXML
     void exited(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1);
-    	((Node)event.getSource()).setScaleY(1);
-    	((Node) event.getSource()).setCursor(Cursor.DEFAULT);
+    	methods.exited(event);
     }
     
-    void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
 }
 
 

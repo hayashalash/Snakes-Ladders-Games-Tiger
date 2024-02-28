@@ -3,28 +3,19 @@ package Controller;
 import View.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -32,24 +23,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
-import sun.util.resources.cldr.en.CalendarData_en_Dsrt_US;
 import Model.SysData;
-import javafx.application.Application;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -62,6 +43,8 @@ import Model.Question;
 import Model.Sort;
 
 public class ManageQuestionsController implements Initializable {
+	
+	Methods methods = new Methods();
 	
 	@FXML
 	 private TableView<Question> questionTable;
@@ -140,10 +123,9 @@ public class ManageQuestionsController implements Initializable {
         }
     }
 
-
     @FXML
     void addQuestion(ActionEvent event) {
-    	newScreen("AddQuestion");
+    	methods.newScreen("AddQuestion");
     }
 
     @FXML
@@ -182,7 +164,7 @@ public class ManageQuestionsController implements Initializable {
     		}
     		//the question that we want to update is selected
     		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
-    		newScreen("EditQuestion");
+    		methods.newScreen("EditQuestion");
     	}
 
     @FXML
@@ -193,19 +175,9 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     void returnHome(ActionEvent event) {
-    	newScreen("Home");
+    	methods.newScreen("Home");
     }
-    void newScreen(String path) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/"+path+".fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-    }
-    
+
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 //    	  questionTable.setRowFactory(tv -> {
@@ -352,35 +324,32 @@ public class ManageQuestionsController implements Initializable {
 
   	}
     
-    
-        void SearchForAQuestion(String filter) {
-    	
-        	 String lowerCaseFilter = filter.toLowerCase();
+    void SearchForAQuestion(String filter) {
+	
+    	 String lowerCaseFilter = filter.toLowerCase();
 
-             if (lowerCaseFilter.length() != 0) {
-                 ObservableList<Question> filteredList = FXCollections.observableArrayList();
+         if (lowerCaseFilter.length() != 0) {
+             ObservableList<Question> filteredList = FXCollections.observableArrayList();
 
-                 for (Question q : SysData.getInstance().getQuestions()) {
-                     if (q.getQuestion().toLowerCase().contains(lowerCaseFilter)) {
-                         filteredList.add(q);
-                     }
+             for (Question q : SysData.getInstance().getQuestions()) {
+                 if (q.getQuestion().toLowerCase().contains(lowerCaseFilter)) {
+                     filteredList.add(q);
                  }
-
-                 questionTable.setItems(filteredList);
-             } else {
-                 questionTable.setItems(dataQues2);
              }
+
+             questionTable.setItems(filteredList);
+         } else {
+             questionTable.setItems(dataQues2);
          }
+     }
     
     @FXML
     void entered(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1.1);
-    	((Node)event.getSource()).setScaleY(1.1);
+    	methods.entered(event);
     }
     @FXML
     void exited(MouseEvent event){
-    	((Node)event.getSource()).setScaleX(1);
-    	((Node)event.getSource()).setScaleY(1);
+    	methods.exited(event);
     }
     
     private String formatAnswer(int answerIndex, String answer, int correctAnswerIndex) {

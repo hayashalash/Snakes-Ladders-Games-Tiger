@@ -12,33 +12,30 @@ import Model.SysData;
 import View.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 
 public class AddQuestionController implements Initializable{
 
-	  @FXML
-	    private TextField questionText;
+	Methods methods = new Methods();
+	
+	@FXML
+    private TextField questionText;
 
-	    @FXML
-	    private TextField ans1Text;
+    @FXML
+    private TextField ans1Text;
 
-	    @FXML
-	    private TextField ans2Text;
+    @FXML
+    private TextField ans2Text;
 
-	    @FXML
-	    private TextField ans3Text;
+    @FXML
+    private TextField ans3Text;
 
-	    @FXML
-	    private TextField ans4Text;
+    @FXML
+    private TextField ans4Text;
 
     @FXML
     private ComboBox<Difficulty> difficulty;
@@ -109,7 +106,6 @@ public class AddQuestionController implements Initializable{
 		ans4Text.clear();
 
     }
-    
 
     @FXML
     void exit(ActionEvent event) {
@@ -119,39 +115,26 @@ public class AddQuestionController implements Initializable{
 
     @FXML
     void previous(ActionEvent event) {
-    	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/manageQuestion.fxml"));
-			Scene scene = new Scene(root);
-			Main.mainWindow.setScene(scene);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}  	
-
+    	methods.newScreen("manageQuestion");
     }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) { // fill the combobox
-		// TODO Auto-generated method stub
-
 		difficulty.getItems().clear();
 		for (Difficulty d : Difficulty.values()) {
 			difficulty.getItems().add(d);
 		}
 		correctAnswer.getItems().addAll(1, 2, 3, 4);
-		
 	}
-	 @FXML
-	 void entered(MouseEvent event){
-		 ((Node)event.getSource()).setScaleX(1.1);
-		 ((Node)event.getSource()).setScaleY(1.1);
-	 }
+	
+	@FXML
+	void entered(MouseEvent event){
+		methods.entered(event);
+	}
 	 
 	@FXML
-	 void exited(MouseEvent event){
-	    ((Node)event.getSource()).setScaleX(1);
-	    ((Node)event.getSource()).setScaleY(1);
-	 }	
+	void exited(MouseEvent event){
+	    methods.exited(event);
+	}	
 	
-
 }

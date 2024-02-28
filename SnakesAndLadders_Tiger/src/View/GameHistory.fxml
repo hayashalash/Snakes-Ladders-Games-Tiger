@@ -12,14 +12,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
             <Image url="@../img/screens/blank.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="History" layoutX="142.0" layoutY="243.0" prefHeight="233.0" prefWidth="575.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="History" layoutX="142.0" layoutY="243.0" prefHeight="211.0" prefWidth="575.0" style="-fx-background-color: #FFEFD5;">
          <columns>
             <TableColumn fx:id="gameID" prefWidth="57.0" style="-fx-background-color: #FFDAB9;" text="No." />
             <TableColumn fx:id="winner" prefWidth="129.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
@@ -78,12 +78,12 @@
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="317.0" layoutY="116.0" prefHeight="25.0" prefWidth="39.0" text="2" textFill="#725b18">
+      <Label layoutX="317.0" layoutY="116.0" prefHeight="32.0" prefWidth="26.0" text="2" textFill="#725b18">
          <font>
             <Font name="Baskerville Old Face" size="26.0" />
          </font>
       </Label>
-      <Label layoutX="520.0" layoutY="116.0" prefHeight="25.0" prefWidth="39.0" text="3" textFill="#725b18">
+      <Label layoutX="520.0" layoutY="116.0" prefHeight="32.0" prefWidth="26.0" text="3" textFill="#725b18">
          <font>
             <Font name="Baskerville Old Face" size="26.0" />
          </font>
