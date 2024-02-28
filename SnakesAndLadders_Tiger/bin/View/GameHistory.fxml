@@ -2,33 +2,30 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
-            <Image url="@../img/screens/historyBack.jpg" />
+            <Image url="@../img/screens/blank.jpg" />
          </image>
       </ImageView>
-      <TableView fx:id="History" layoutX="138.0" layoutY="185.0" prefHeight="250.0" prefWidth="566.0" style="-fx-background-color: #FFEFD5;">
+      <TableView fx:id="History" layoutX="142.0" layoutY="243.0" prefHeight="233.0" prefWidth="575.0" style="-fx-background-color: #FFEFD5;">
          <columns>
-            <TableColumn fx:id="gameID" prefWidth="45.0" style="-fx-background-color: #FFDAB9;" text="No." />
-            <TableColumn fx:id="winner" prefWidth="149.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
-            <TableColumn fx:id="difficulty" prefWidth="124.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
-            <TableColumn fx:id="duration" prefWidth="128.0" style="-fx-background-color: #FFDAB9;" text="Duration (mm:ss)" />
-            <TableColumn fx:id="date" prefWidth="118.0" style="-fx-background-color: #FFDAB9;" text="Date" />
+            <TableColumn fx:id="gameID" prefWidth="57.0" style="-fx-background-color: #FFDAB9;" text="No." />
+            <TableColumn fx:id="winner" prefWidth="129.0" style="-fx-background-color: #FFDAB9;" text="Winner" />
+            <TableColumn fx:id="difficulty" prefWidth="130.0" style="-fx-background-color: #FFDAB9;" text="Difficulty" />
+            <TableColumn fx:id="duration" prefWidth="138.0" style="-fx-background-color: #FFDAB9;" text="Duration (mm:ss)" />
+            <TableColumn fx:id="date" prefWidth="120.0" style="-fx-background-color: #FFDAB9;" text="Date" />
          </columns>
       </TableView>
       <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#home" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
@@ -55,57 +52,66 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <CheckBox fx:id="winnerCheck" layoutX="209.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderWinner" prefHeight="3.0" prefWidth="82.0" text=" Winner">
+      <ComboBox fx:id="orderBox" layoutX="142.0" layoutY="205.0" onAction="#OrderByBox" prefHeight="25.0" prefWidth="95.0" promptText="Order By" style="-fx-background-color: #FAFAD2;" />
+      <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="402.0" layoutY="125.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -0.5, 0 );">
+         <image>
+            <Image url="@../img/icons/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="302.0" layoutY="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -0.5 , 0 );">
+         <image>
+            <Image url="@../img/icons/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="502.0" layoutY="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -0.5 , 0 );">
+         <image>
+            <Image url="@../img/icons/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="48.0" fitWidth="46.0" layoutX="403.0" layoutY="72.0">
+         <image>
+            <Image url="@../img/icons/crown.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="420.0" layoutY="85.0" prefHeight="28.0" prefWidth="26.0" text="1" textFill="#725b18">
          <font>
-            <Font name="Aharoni Bold" size="13.0" />
+            <Font name="Baskerville Old Face" size="21.0" />
          </font>
-      </CheckBox>
-      <CheckBox fx:id="durationCheck" layoutX="291.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDuration" text="Duration">
+      </Label>
+      <Label layoutX="317.0" layoutY="116.0" prefHeight="25.0" prefWidth="39.0" text="2" textFill="#725b18">
          <font>
-            <Font name="Aharoni Bold" size="13.0" />
+            <Font name="Baskerville Old Face" size="26.0" />
          </font>
-      </CheckBox>
-      <Button fx:id="topButton" layoutX="396.0" layoutY="444.0" mnemonicParsing="false" onAction="#ShowTopThree" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #FAFAD2; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );" text="Top Three">
+      </Label>
+      <Label layoutX="520.0" layoutY="116.0" prefHeight="25.0" prefWidth="39.0" text="3" textFill="#725b18">
          <font>
-            <Font name="Baskerville Old Face" size="15.0" />
+            <Font name="Baskerville Old Face" size="26.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <CheckBox fx:id="DifficultyCheck" layoutX="443.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDifficulty" text=" Difficulty">
+      </Label>
+      <Text fx:id="player2" fill="#725b18" layoutX="280.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="88.00000047683716">
          <font>
-            <Font name="Aharoni Bold" size="13.0" />
+            <Font name="Baskerville Old Face" size="20.0" />
          </font>
-      </CheckBox>
-      <CheckBox fx:id="DateCheck" layoutX="380.0" layoutY="160.0" mnemonicParsing="false" onAction="#OrderDate" text="Date">
-         <font>
-            <Font name="Aharoni Bold" size="13.0" />
-         </font>
-      </CheckBox>
-      <Text fontSmoothingType="LCD" layoutX="138.0" layoutY="173.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.0" text="Order By " wrappingWidth="62.39998779296877">
-         <effect>
-            <Blend />
-         </effect>
-         <font>
-            <Font name="Aharoni Bold" size="13.0" />
-         </font>
-         <stroke>
-            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="1.0" green="1.0" blue="1.0" />
-                     </color>
-                  </Stop>
-               </stops>
-            </RadialGradient>
-         </stroke>
       </Text>
+      <Text fx:id="player3" fill="#725b18" layoutX="474.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="101.99999731779099">
+         <font>
+            <Font name="Baskerville Old Face" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="player1" fill="#725b18" layoutX="377.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="95.13678741455078">
+         <font>
+            <Font name="Baskerville Old Face" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="45.0" fitWidth="50.0" layoutX="81.0" layoutY="83.0">
+         <image>
+            <Image url="@../img/icons/history.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="135.0" layoutY="91.0" text="Past Logs">
+         <font>
+            <Font name="Serif Regular" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -94,7 +94,7 @@
       </Button>
       <CheckBox fx:id="checkDifficulty" layoutX="591.0" layoutY="150.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
-            <Font name="Aharoni Bold" size="13.0" />
+            <Font name="Serif Bold" size="13.0" />
          </font>
       </CheckBox>
       <TextField fx:id="searchField" layoutX="108.0" layoutY="143.0" prefHeight="28.0" prefWidth="139.0" promptText="Search " style="-fx-background-color: #FFE#F5F5DCBCD;" />
