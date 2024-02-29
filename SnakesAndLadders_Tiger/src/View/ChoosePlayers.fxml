@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -217,5 +218,17 @@
             </HBox>
          </children>
       </VBox>
+      <StackPane layoutX="324.0" layoutY="182.0" prefHeight="38.0" prefWidth="206.0">
+         <children>
+            <Label fx:id="difficulty" alignment="CENTER" style="-fx-background-color: #d99058; -fx-background-radius: 5; -fx-font-weight: bolder;" text="Label">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

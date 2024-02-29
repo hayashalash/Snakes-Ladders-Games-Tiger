@@ -42,7 +42,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import java.util.Iterator;
 import Model.SysData;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
@@ -65,11 +64,11 @@ import javafx.scene.layout.StackPane;
     private final double N_TILE_SIZE  = 53.8;
 	private final double N_TOKEN_SIZE = 35;
 	// Hard Board Sizes
-    private final double H_QUESTION_SIZE = 30; // question icon size
-    private final double H_SURPRISE_SIZE = 30; // surprise icon size
-    private final double H_RED_SNAKE_SIZE = 35; 
+    private final double H_QUESTION_SIZE = 25; // question icon size
+    private final double H_SURPRISE_SIZE = 25; // surprise icon size
+    private final double H_RED_SNAKE_SIZE = 30; 
     private final double H_TILE_SIZE  = 42;
-	private final double H_TOKEN_SIZE = 35;
+	private final double H_TOKEN_SIZE = 30;
 	// Current Sizes: depends on the difficulty of the current board
 	private double QUESTION_SIZE = 0;
 	private double SURPRISE_SIZE = 0;
@@ -78,7 +77,6 @@ import javafx.scene.layout.StackPane;
 	private double TOKEN_SIZE = 0;
     //Lists
     private HashMap<Player, Image> icons = new HashMap<>();
-    private HashMap<Player, ImageView> iconsOnBoard = new HashMap<>();
     private ArrayList<Player> originalOrder = new ArrayList<>();
     //Path
 	private static final String GREEN = "/img/icons/greenPlayer.png"; //Player Token path
@@ -212,7 +210,6 @@ import javafx.scene.layout.StackPane;
 				Image greenPlayer = new Image(getClass().getResource(GREEN).toExternalForm());
 				ImageView greenImageView = new ImageView(greenPlayer);
 				playerIcons.add(greenImageView);
-				iconsOnBoard.put(p, greenImageView); // save players icons to control during the game
 				greenImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, greenPlayer); // associate created image with the player
 			}
@@ -220,7 +217,6 @@ import javafx.scene.layout.StackPane;
 				Image bluePlayer = new Image(getClass().getResource(BLUE).toExternalForm());
 				ImageView blueImageView = new ImageView(bluePlayer);
 				playerIcons.add(blueImageView);
-				iconsOnBoard.put(p, blueImageView); // save players icons to control during the game
 				blueImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, bluePlayer); // associate created image with the player
 			}
@@ -228,7 +224,6 @@ import javafx.scene.layout.StackPane;
 				Image pinkPlayer = new Image(getClass().getResource(PINK).toExternalForm());
 				ImageView pinkImageView = new ImageView(pinkPlayer);
 				playerIcons.add(pinkImageView);
-				iconsOnBoard.put(p, pinkImageView); // save players icons to control during the game
 				pinkImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, pinkPlayer); // associate created image with the player
 			}
@@ -236,7 +231,6 @@ import javafx.scene.layout.StackPane;
 				Image redPlayer = new Image(getClass().getResource(RED).toExternalForm());
 				ImageView redImageView = new ImageView(redPlayer);
 				playerIcons.add(redImageView);
-				iconsOnBoard.put(p, redImageView); // save players icons to control during the game
 				redImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, redPlayer); // associate created image with the player
 			}
@@ -244,7 +238,6 @@ import javafx.scene.layout.StackPane;
 				Image purplePlayer = new Image(getClass().getResource(PURPLE).toExternalForm());
 				ImageView purpleImageView = new ImageView(purplePlayer);
 				playerIcons.add(purpleImageView);
-				iconsOnBoard.put(p, purpleImageView); // save players icons to control during the game
 				purpleImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, purplePlayer); // associate created icon with the player
 			}
@@ -252,7 +245,6 @@ import javafx.scene.layout.StackPane;
 				Image yellowPlayer = new Image(getClass().getResource(YELLOW).toExternalForm());
 				ImageView yellowImageView = new ImageView(yellowPlayer);
 				playerIcons.add(yellowImageView);
-				iconsOnBoard.put(p, yellowImageView); // save players icons to control during the game
 				yellowImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, yellowPlayer); // associate created icon with the player
 			}
@@ -296,10 +288,9 @@ import javafx.scene.layout.StackPane;
 	}
 	
 	public void win(int currentRow, int currentColumn, Player p, int newPosition) {
-		p.setPlayerPlace(newPosition);
-		hidePlayerToken(p);
         displayPlayerToken(currentRow, currentColumn, p, newPosition); // display the winner at the last tile
-        
+		p.setPlayerPlace(newPosition);
+
         game.setWinner(p);
         game.setGameDuration(stopTimer());
         WinnerController.game = game;
@@ -313,7 +304,7 @@ import javafx.scene.layout.StackPane;
 			e.printStackTrace();
 		}
         // Wait 2 seconds before loading the winner FXML
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
         delay.setOnFinished(event -> {
         	methods.newScreen("Winner");
             System.out.println(p.getPlayerName() + " is the WINNER!");
@@ -339,36 +330,53 @@ import javafx.scene.layout.StackPane;
 		    
 		    int nextPos = currentPosition + steps;
 		    int newPosition = NextMove(currentRow, currentColumn, currentPosition, steps, player);
-		    if (nextPos < board.getBoardSize() && nextPos >= 1) {
+		    if (nextPos < board.getBoardSize() && nextPos >= 1) { // if nextPos is within the board boundaries, it could be a snake/ladder
 		    	player.setPlayerPrevPlace(currentPosition);
-			    hidePlayerToken(player);
 		    	Tile nextTile = board.getTile(nextPos);
 		    	// if the next tile is a snake head or ladder bottom,
 		    	// move the player to that tile before moving them to the snake tail / ladder top
 		    	if (nextTile.gettType().equals(TileType.LadderBottom) || nextTile.gettType().equals(TileType.SnakeHead)) {
 		    		int newRow = nextTile.getRow();
 				    int newColumn = nextTile.getColumn();
+				    // move to the ladder bottom / snake head
 				    Platform.runLater(() -> {
 				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
-			    		hidePlayerToken(player);
+			        	player.setPlayerPlace(nextPos);
 				    });
-		    		Platform.runLater(() -> {
-		    			player.setPlayerPlace(newPosition);
+				    
+				    // Wait 2 seconds before climbing up the ladder or sliding down the snake
+			        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
+			        delay.setOnFinished(event -> {
+			        	System.out.println("newRow is: "+newRow);
+			        	System.out.println("newColumn is: "+newColumn);
 					    displayPlayerToken(newRow, newColumn, player, newPosition);
-		    		});
+					    player.setPlayerPlace(newPosition);
+			        });
+			        Platform.runLater(() -> {
+			        	delay.play();
+			        });
 		    	}
 		    	else {
 			    	// Set player's new position
-				    player.setPlayerPlace(newPosition);
-				    displayPlayerToken(currentRow, currentColumn, player, newPosition);
+		    		Platform.runLater(() -> {
+		    			displayPlayerToken(currentRow, currentColumn, player, newPosition);
+		    			player.setPlayerPlace(newPosition);
+		    		});
 			    }
-		   }
+		    }
+		    else { // new position is outside the board --> 0
+		    	// Set player's new position
+	    		Platform.runLater(() -> {
+	    			displayPlayerToken(currentRow, currentColumn, player, newPosition);
+	    			player.setPlayerPlace(newPosition);
+	    		});
+		    }
+		   
 		    // Check if player reached the last tile and end the game
 		    if (newPosition == board.getBoardSize()) {
 		        win(currentRow, currentColumn, player, newPosition);
 		    } 
 	    }
-	    
 	    // clear arrow once the player finishes their turn
 	    if (player.equals(originalOrder.get(0))) {
 	    		player1.getChildren().get(0).setOpacity(0);
@@ -398,30 +406,50 @@ import javafx.scene.layout.StackPane;
         }
 	}
 	
+	private ImageView getTokenFromGrid(Player player) {
+		String id = String.valueOf(player.getPlayerID());
+        for (javafx.scene.Node node : grid.getChildren()) {
+            if (node instanceof ImageView && node.getId() != null && node.getId().equals(id)) {
+            	return (ImageView) node;
+            }
+        }
+        return null; // Return null if a token with the player ID is not found
+    }
+	
+	private ImageView getTokenFromStart(Player player) {
+		String id = String.valueOf(player.getPlayerID());
+    	for (javafx.scene.Node node : playersStart.getChildren()) { // Look for token outside the grid
+            if (node instanceof ImageView && node.getId() != null && node.getId().equals(id)) {
+            	return (ImageView) node;
+            }
+        }
+        return null; // Return null if a token with the player ID is not found
+    }
+	
 	private void displayPlayerToken(int currentR, int currentC, Player player, int newPosition) {
-	    Image tokenImage = new Image(getClass().getResource(getTokenImagePath(player)).toExternalForm());
-	    ImageView token = iconsOnBoard.get(player);
-	    if (token == null) {
-	        token = new ImageView(tokenImage);
-	        iconsOnBoard.put(player, token);
+		ImageView playerToken = null;
+		if (player.getPlayerPlace() == 0) {
+			playerToken = getTokenFromStart(player);
+			System.out.println("player is moving from position 0");
+		}
+		else{
+			playerToken = getTokenFromGrid(player);
+			System.out.println("player is moving from a place in the grid");
+		}
+
+	    if (playerToken == null) {
+	    	System.out.println("playerToken is NULL!");
 	    }
-	    token.setId(String.valueOf(player.getPlayerID()));
-	    token.setFitHeight(TOKEN_SIZE);
-	    token.setFitWidth(TOKEN_SIZE);
-	    token.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 3);");
-	    token.setVisible(true);
-	    if(newPosition!=0) {
+	    if(newPosition!=0) { // new position is on the grid
 	    	// If the token is not already in the grid, add it
-		    if (!grid.getChildren().contains(iconsOnBoard.get(player))) {
-		        grid.getChildren().add(iconsOnBoard.get(player));
+		    if (getTokenFromGrid(player) == null) {
+		        grid.getChildren().add(playerToken);
 		    }
 		    Tile pos = board.getTile(newPosition);
 		    int row = pos.getRow();
 		    int column = pos.getColumn();
-		    moveTokenToCell(currentR, currentC, row, column, token);		    
-
-//			    GridPane.setRowIndex(iconsOnBoard.get(player), row);
-//			    GridPane.setColumnIndex(iconsOnBoard.get(player), column);
+		    playerToken.toFront();
+		    moveTokenToCell(currentR, currentC, row, column, playerToken);
 		    
 		    // Check if other players are already on this tile to avoid covering each other's tokens
 		    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
@@ -437,29 +465,35 @@ import javafx.scene.layout.StackPane;
 		    	}
 		    }
 		    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
-		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER); // Center horizontally
-		    	GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER); // Center vertically
+		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER); // Center horizontally
+		    	GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER); // Center vertically
 		    	player.setEnteredTile(1); // I entered in the first position
 		    }
 		    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
-		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.LEFT); // set player at the cell's left
-		        GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.LEFT); // set player at the cell's left
+		        GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
 		        player.setEnteredTile(2); // I entered in the second position
 		    }
 		    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
-		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.RIGHT); // set player at the cell's right
-	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.CENTER);
+		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.RIGHT); // set player at the cell's right
+	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
 	    		player.setEnteredTile(3); // I entered in the third position
 		    }
 		    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
-		    	GridPane.setHalignment(iconsOnBoard.get(player), javafx.geometry.HPos.CENTER);
-	    		GridPane.setValignment(iconsOnBoard.get(player), javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
+		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER);
+	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
 	    		player.setEnteredTile(4); // I entered in the fourth position
 		    }
 	    }
 	    else { // if the new position is 0
-	    	if (!playersStart.getChildren().contains(iconsOnBoard.get(player))) { // if the player is not outside the board
-	    		playersStart.getChildren().add(token); // place the player outside the board = position 0
+	    	if (getTokenFromStart(player) == null) { // if the player is not outside the board
+	    		playersStart.getChildren().add(playerToken); // place the player outside the board = position 0
+	    		playerToken.setVisible(true);
+	    		if (playerToken.isVisible()) {
+	    			System.out.println("player "+player.getPlayerName()+" is visible");
+	    		}
+	    		playerToken.toFront();
+	    		System.out.println("player "+player.getPlayerName()+" was added to the start HBox");
 	    	}
 	    }
 	}
@@ -468,36 +502,30 @@ import javafx.scene.layout.StackPane;
 		double tileWidth = grid.getPrefWidth()/board.getBoardLen();
 		double tileHeight = grid.getPrefHeight()/board.getBoardLen();
 
-		double width = tileWidth * (targetColumn-currentColumn); // move along the x axis
-    	double height = tileHeight * (targetRow-currentRow); // move along the y axis   
+    	// Calculate the starting coordinates based on currentRow and currentColumn
+        double startX = currentColumn * tileWidth;
+        double startY = currentRow * tileHeight;
+
+        // Calculate the ending coordinates based on targetRow and targetColumn
+        double endX = targetColumn * tileWidth;
+        double endY = targetRow * tileHeight;
 
         // Create TranslateTransition to move the ImageView to the target position
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
-        translateTransition.setToX(width);
-        translateTransition.setToY(height);
-        
+
+        // Set the starting position
+        translateTransition.setFromX(startX);
+        translateTransition.setFromY(startY);
+
+        // Set the ending position
+        translateTransition.setToX(endX);
+        translateTransition.setToY(endY);
+
         // Play the TranslateTransition
         translateTransition.play();
-        
-        // Update the row and column index of the token --> this is where the animation will start from
-        GridPane.setRowIndex(token, currentRow);
-        GridPane.setColumnIndex(token, currentColumn);
+        System.out.println("currentRow in moveTokenToCell: "+currentRow);
+        System.out.println("currentColumn in moveTokenToCell: "+currentColumn);
     }
-
-	private void hidePlayerToken(Player p) {
-	    ImageView token = iconsOnBoard.get(p);
-	    if (token != null) {
-	        grid.getChildren().remove(token);
-	    }
-	    // If player token is still outside the board, remove it from there
-	    for (Iterator<Node> iterator = playersStart.getChildren().iterator(); iterator.hasNext();) { // Iterate over tokens outside the board
-	        Node node = iterator.next();
-	        if (node instanceof ImageView && ((ImageView) node).getId().equals(String.valueOf(p.getPlayerID()))) { // If token is this player
-	            iterator.remove(); // Remove the token from the HBox outside the board
-	            break; // Exit the loop once the token is removed
-	        }
-	    }
-	}
 
     int NextMove(int currentRow, int currentColumn, int currPosition, int steps, Player p) {
     	System.out.println("steps to move in NextMove are: " + steps);
@@ -521,22 +549,18 @@ import javafx.scene.layout.StackPane;
 	        case SnakeHead:
 	            SnakeTile snakeT = (SnakeTile) nextTile;
 	            Snake snake = snakeT.getSnake();
-//		            displayPlayerToken(currentRow, currentColumn, p, nextPos);
-//					hidePlayerToken(p);
 	            if (snake.getColor() == SnakeColor.Red) {
-	                System.out.println("Next step will be: 1");
+	                System.out.println("NextMove will be: 1");
 	                return 1;
 	            } else {
-	                System.out.println("Next step will be: " + snake.getSnakeTail());
+	                System.out.println("NextMove will be: " + snake.getSnakeTail());
 	                return snake.getSnakeTail();
 	            }
 	            
 	        case LadderBottom:
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
-	            System.out.println("Next step will be: " + ladder.getLadderTop());
-//		            displayPlayerToken(currentRow, currentColumn, p, nextPos);
-//					hidePlayerToken(p);
+	            System.out.println("NextMove will be: " + ladder.getLadderTop());
 	            return ladder.getLadderTop();
 	            
 	        case Surprise:
@@ -548,40 +572,29 @@ import javafx.scene.layout.StackPane;
 	            System.out.println("I have a question for you");
 	            int newPosition = nextPos;
 	    	    p.setPlayerPrevPlace(currPosition);
-				hidePlayerToken(p);
-	    	    System.out.println("new player position: "+newPosition);
 	    	    // Set player's new position
-	    	    p.setPlayerPlace(newPosition);
 	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition);
+	    	    p.setPlayerPlace(newPosition);
 	    	    System.out.println("current player position on question tile: "+newPosition);
-	    	    Platform.runLater(() -> {
-	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
+	    	    // Wait 2 seconds before showing the question dialog
+		        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
+		        delay.setOnFinished(event -> {
+		        	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
 	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
 		    		move(p, newSteps);
-	    	    });
+		        });
+		        Platform.runLater(() -> {
+		        	delay.play();
+		        });
+//	    	    Platform.runLater(() -> {
+//	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
+//	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
+//		    		move(p, newSteps);
+//	    	    });
 	            return p.getPlayerPlace();
 	        default: // Handle the rest of the tile types which do not require special treatment
 	        	System.out.println("Next step will be: " + nextPos);
 	            return nextPos;
-	    }
-	}
-    
-    private String getTokenImagePath(Player player) {
-	    switch (player.getPlayerColor()) {
-	        case Red:
-	            return RED;
-	        case Green:
-	            return GREEN;
-	        case Yellow:
-	            return YELLOW;
-	        case Blue:
-	            return BLUE;
-	        case Pink:
-	            return PINK;
-	        case Purple:
-	            return PURPLE;
-	        default:
-	            return null;
 	    }
 	}
 	
@@ -752,21 +765,6 @@ import javafx.scene.layout.StackPane;
         // Call the function to display the surprise and return [-10/+10] steps for the player to move
         return displaySurprise();
     }
-
-    public  static void viewResultDise(int diceResult){//this for easy  difficulty only
-    	if(diceResult<4) {
-    		// function to move the player 
-		}
-    	if(diceResult==5) {//display easy question
-    		
-    	}
-    	else { if(diceResult==6) {//display normal question 
-    		
-    	}
-    	  else if(diceResult==7) {//display hard question 	
-    	  }
-    	}
-	}
 	
 //	public static void viewSurpriseTile() {
 //        Dialog<ButtonType> dialog = new Dialog<>();

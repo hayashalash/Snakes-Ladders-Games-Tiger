@@ -16,7 +16,7 @@ import View.Alerts;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
-
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -195,30 +195,30 @@ public class NormalController implements Initializable{
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Easy);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Easy);
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Medium);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Medium);
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Hard);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Hard);
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 

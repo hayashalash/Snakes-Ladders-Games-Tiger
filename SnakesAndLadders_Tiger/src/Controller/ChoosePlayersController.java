@@ -19,11 +19,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class ChoosePlayersController implements Initializable{
@@ -40,6 +43,10 @@ public class ChoosePlayersController implements Initializable{
 	private int playersNum = 2; //default value
 	
 	public static Difficulty diff;
+	
+	@FXML
+	private AnchorPane rootAnchorPane;
+	
 	@FXML
     private Button exitBtn;
 
@@ -91,6 +98,9 @@ public class ChoosePlayersController implements Initializable{
     @FXML
     private Button removeFourth;
     
+    @FXML
+    private Label difficulty;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         final ObservableList<Image> images = fetchImages();
@@ -98,6 +108,9 @@ public class ChoosePlayersController implements Initializable{
         fillComboBox(player2clr, images);
         fillComboBox(player3clr, images);
         fillComboBox(player4clr, images);
+        difficulty.setText("Game Difficulty: "+diff);
+        StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
+        
 //    	player1clr.getItems().addAll(Color.values());
 //    	player1clr.getSelectionModel().select(0);
 //    	Media mediaFile = new Media(this.getClass().getResource(MEDIA_URL).toExternalForm());

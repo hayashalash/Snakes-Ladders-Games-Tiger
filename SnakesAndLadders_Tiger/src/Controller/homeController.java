@@ -60,11 +60,11 @@ public class homeController implements Initializable{
     @FXML
     void TurnOffOn(ActionEvent event) {
     	if (Main.note.isPlaying()) {
-    		turnOffIcon.setOpacity(0.0);
+    		turnOffIcon.setOpacity(1.0);
     		Main.stopBackgroundMusic();
     	}
     	else {
-    		turnOffIcon.setOpacity(1.0);
+    		turnOffIcon.setOpacity(0.0);
     		Main.resumeBackgroundMusic();
     	}
     }
@@ -77,7 +77,6 @@ public class homeController implements Initializable{
         Tooltip.install(question, q);
         Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
-
         try {
 			SysData.getInstance().readFromJson();
 			SysData.getInstance().ReadFromJsonGames();
@@ -129,10 +128,10 @@ public class homeController implements Initializable{
 
     @FXML
     void showQuestion(ActionEvent event) throws IOException{
-    	openCustomDialog();
+    	openAdminDialog();
     }
     
-    private void openCustomDialog() {
+    private void openAdminDialog() {
         // Create a custom dialog
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Admin Access Only");
@@ -150,7 +149,7 @@ public class homeController implements Initializable{
         logInButton.setStyle(methods.getButtonStyle()); // Drop shadow effect
         logInButton.setOnMouseEntered(e -> entered(e));
         logInButton.setOnMouseExited(e -> exited(e));
-        Label errorLabel = new Label("Incorrect password");
+        Label errorLabel = new Label("Incorrect Password");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setOpacity(0);
         // Add the elements to an HBox layout
