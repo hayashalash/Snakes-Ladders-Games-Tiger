@@ -1,5 +1,14 @@
 package Controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.ResourceBundle;
+import org.json.simple.parser.ParseException;
+
+import Model.Difficulty;
+import Model.Question;
+import Model.SysData;
 import View.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,66 +19,40 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
-import Model.SysData;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.json.simple.parser.ParseException;
-
-
-import Model.Difficulty;
-import Model.Question;
-import Model.Sort;
-
-public class ManageQuestionsController implements Initializable {
-	
+public class RestoreQuestionController  implements Initializable {
 	Methods methods = new Methods();
-	
+
+
 	@FXML
 	 private TableView<Question> questionTable;
 
-    @FXML
-    private TableColumn<Question, String> question;
+   @FXML
+   private TableColumn<Question, String> question;
+
+   @FXML
+   private TableColumn<Question, Difficulty> difficulty;
+   
+   @FXML
+   private TableColumn<Question, Integer> questionNum;
+ 
+   @FXML
+   private TableColumn<Question, Void> answers;
 
     @FXML
-    private TableColumn<Question, Difficulty> difficulty;
-    
-    @FXML
-    private TableColumn<Question, Integer> questionNum;
-
-    
-    @FXML
-    private TableColumn<Question, Void> answers;
-
-    @FXML
-    private Button delete;
-
-    @FXML
-    private Button edit;
-
-    @FXML
-    private Button add;
+    private Button restore;
 
     @FXML
     private Button home;
@@ -77,145 +60,35 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button exit;
     
-    
     @FXML
-    private CheckBox checkDifficulty;
-
-    @FXML
-    private CheckBox checkOrder;
-    
-    public AudioClip note;
-
-    @FXML
-    private Button retrive;
-
-    @FXML
-    private TextField searchField;
-    
-    @FXML
-    private Button searchbutton;
+    private Button previousButton;
     
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
-    List<Question> originalOrder = new ArrayList<>(SysData.getInstance().getQuestions()); // Save the original order to revert back to after sorting
-    ArrayList<Question> sorted = new ArrayList<>(); // Arraylist to store the sorted questions
-    private boolean isSorted = false;
+
     
-
-    @FXML
-    void OrderDifficulty(ActionEvent event) {
-    	
-    	
-        if (!isSorted) {
-            Sort sort = new Question();
-            for (Object obj : sort.getSorted("difficulty"))
-            	sorted.add((Question) obj);
-            ObservableList<Question> dataQuestion = FXCollections.observableArrayList(sorted);
-            question.setCellValueFactory(new PropertyValueFactory<>("question"));
-            difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
-            ObservableList<Question> temp = FXCollections.observableArrayList(dataQuestion);
-            questionTable.setItems(temp);
-
-            isSorted = true;
-        } else {
-            // Restore the original order
-            ObservableList<Question> temp = FXCollections.observableArrayList(originalOrder);
-            questionTable.setItems(temp);
-            
-            isSorted = false;
-        }
-    }
-
-    @FXML
-    void addQuestion(ActionEvent event) {
-    	methods.newScreen("AddQuestion");
-    }
-
-    @FXML
-    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
-    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    		Alerts.message("Error","Please select a question to delete.");
-    		return;
-    	}
-    	String deletedQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
-    	Difficulty deletedDifficulty = questionTable.getSelectionModel().getSelectedItem().getDifficulty();
-    	String deletedAnswer1 = questionTable.getSelectionModel().getSelectedItem().getAnswer1();
-    	String deletedAnswer2 = questionTable.getSelectionModel().getSelectedItem().getAnswer2();
-    	String deletedAnswer3 = questionTable.getSelectionModel().getSelectedItem().getAnswer3();
-    	String deletedAnswer4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
-    	Integer deletedCorrect = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
-
-    	Question deletedQ = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
-    			,deletedDifficulty,deletedCorrect);
-    	
-    	if (Alerts.delete(deletedQuestion) == 1) {
-    		SysData.getInstance().deleteFromJson(deletedQ);
-    		SysData.getInstance().getQuestions().remove(deletedQ);
-    	}
-    	questionTable.getItems().clear();
-		fill();
-		
-    }
-    
-    
-    @FXML
-    void editQuestion(ActionEvent event) {
- 
-    		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    			Alerts.message("Error", "Please choose question that you want to edit.");
-    			return;
-    		}
-    		//the question that we want to update is selected
-    		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
-    		methods.newScreen("EditQuestion");
-    	}
-    
-
-    @FXML
-    void retriveQuestion(ActionEvent event) {
-    	methods.newScreen("RestoreQuestion");
-    }
-
-    @FXML
-    void exitGame(ActionEvent event) {
-		if (Alerts.exit()==1)
-			Main.mainWindow.close();
-    }
-
-    @FXML
-    void returnHome(ActionEvent event) {
-    	methods.newScreen("Home");
-    }
-
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-    	Tooltip a = new Tooltip("Add Question");
-        Tooltip.install(add, a);
-        Tooltip ed = new Tooltip("Edit");
-        Tooltip.install(edit, ed);
-        Tooltip d = new Tooltip("Delete");
-        Tooltip.install(delete, d);
-        Tooltip r = new Tooltip("Restore Question");
-        Tooltip.install(retrive, r);
-        
+		try {
+			SysData.getInstance().ReadFromDeletedQ();
+		}
+		catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
         fill();
         questionTable.refresh();
 	}
     
     public void fill() {
 
-    	dataQues = FXCollections.observableArrayList(SysData.getInstance().getQuestions());
+    	dataQues = FXCollections.observableArrayList(SysData.getInstance().deletedFromJSON);
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		 questionNum.setCellValueFactory(cellData -> {
 	            int rowIndex = questionTable.getItems().indexOf(cellData.getValue()) + 1;
 	            return javafx.beans.binding.Bindings.createObjectBinding(() -> rowIndex);
 	        });
-		 searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-			 SearchForAQuestion(newValue);
-	        });
-
 		
 		// answers column
 		Callback<TableColumn<Question, Void>, TableCell<Question, Void>> cellFactory =
@@ -322,36 +195,7 @@ public class ManageQuestionsController implements Initializable {
   		arr.addAll(dataQues);
   		dataQues2 =  FXCollections.observableArrayList(arr);
   		questionTable.setItems(dataQues2);
-  	//	System.out.println(arr);
-
-  	}
-    
-    void SearchForAQuestion(String filter) {
-	
-    	 String lowerCaseFilter = filter.toLowerCase();
-
-         if (lowerCaseFilter.length() != 0) {
-             ObservableList<Question> filteredList = FXCollections.observableArrayList();
-
-             for (Question q : SysData.getInstance().getQuestions()) {
-                 if (q.getQuestion().toLowerCase().contains(lowerCaseFilter)) {
-                     filteredList.add(q);
-                 }
-             }
-
-             questionTable.setItems(filteredList);
-         } else {
-             questionTable.setItems(dataQues2);
-         }
-     }
-    
-    @FXML
-    void entered(MouseEvent event){
-    	methods.entered(event);
-    }
-    @FXML
-    void exited(MouseEvent event){
-    	methods.exited(event);
+    	
     }
     
     private String formatAnswer(int answerIndex, String answer, int correctAnswerIndex) {
@@ -359,5 +203,61 @@ public class ManageQuestionsController implements Initializable {
     	  return "   " + answer;
     }
 
+    @FXML
+    void restoreQuestion(ActionEvent event) throws IOException, ParseException  {
+    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
+    		Alerts.message("Error","Please select a question to restore.");
+    		return;
+    	}
+    	String restoreQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
+    	Difficulty restoreDifficulty = questionTable.getSelectionModel().getSelectedItem().getDifficulty();
+    	String restoreAnswer1 = questionTable.getSelectionModel().getSelectedItem().getAnswer1();
+    	String restoreAnswer2 = questionTable.getSelectionModel().getSelectedItem().getAnswer2();
+    	String restoreAnswer3 = questionTable.getSelectionModel().getSelectedItem().getAnswer3();
+    	String restoreAnswer4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
+    	Integer restoreCorrect = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
+    	
+    	Question deletedQ = new Question(restoreAnswer1,restoreAnswer2,restoreAnswer3,restoreAnswer4,restoreQuestion
+    			,restoreDifficulty,restoreCorrect);
+    	
+    	if (Alerts.restore(restoreQuestion) == 1) {
+    	//delete question from Deleted Question JSON file
+    	SysData.getInstance().DeleteFromDeletedQ(deletedQ);
+		SysData.getInstance().deletedFromJSON.removeAll(SysData.getInstance().getQuestions());
+    	}
+		questionTable.getItems().clear();
+		fill();// fil
+    }
+    
+    
+    @FXML
+    void entered(MouseEvent event) {
+    	methods.entered(event);
+
+    }
+
+    @FXML
+    void exitGame(ActionEvent event) {
+		if (Alerts.exit()==1)
+			Main.mainWindow.close();
+    }
+
+    @FXML
+    void exited(MouseEvent event) {
+    	methods.exited(event);
+
+    }
+
+    @FXML
+    void returnHome(ActionEvent event) {
+    	methods.newScreen("Home");
+
+    }
+  
+    @FXML
+    void previous(ActionEvent event) {
+    	methods.newScreen("manageQuestion");
+    }
+
+
 }
-   

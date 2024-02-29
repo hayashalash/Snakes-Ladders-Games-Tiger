@@ -30,6 +30,18 @@ public class Alerts {
 			return 1;
 		return -1;
 	}
+	
+	public static int restore(String content){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Restore");
+		alert.setHeaderText("You're about to restore the question: "+ "\"" + content +"\"");
+		alert.setContentText("Are you sure you want to restore the selected question?");
+		
+		if (alert.showAndWait().get() == ButtonType.OK)
+			return 1;
+		return -1;
+	}
+
 
 	/** Update alert
 	 * @return
@@ -68,7 +80,7 @@ public class Alerts {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation");
-		alert.setHeaderText("Item was " + operation + " successfully");
+		alert.setHeaderText("Question was " + operation + " successfully");
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 //		stage.getIcons().add(Constants.SUCCESS_IMAGE); // change
 		stage.setAlwaysOnTop(true);

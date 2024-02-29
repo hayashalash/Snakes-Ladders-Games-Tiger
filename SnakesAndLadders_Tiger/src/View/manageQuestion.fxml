@@ -55,8 +55,20 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <HBox layoutX="146.0" layoutY="437.0" onMouseDragEntered="#entered" onMouseDragExited="#exited" prefHeight="43.0" prefWidth="113.0">
+      <HBox layoutX="108.0" layoutY="436.0" onMouseDragEntered="#entered" onMouseDragExited="#exited" prefHeight="45.0" prefWidth="172.0">
          <children>
+            <Button fx:id="add" mnemonicParsing="false" onAction="#addQuestion" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="36.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/add.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="edit" mnemonicParsing="false" onAction="#editQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
                <graphic>
                   <ImageView fitHeight="37.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
@@ -66,7 +78,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
+            <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="35.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="38.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -4 , 0 );">
                      <image>
@@ -80,23 +92,23 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </HBox>
-      <Button fx:id="add" layoutX="679.0" layoutY="438.0" mnemonicParsing="false" onAction="#addQuestion" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
-         <graphic>
-            <ImageView fitHeight="35.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
-               <image>
-                  <Image url="@../img/icons/add.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
       <CheckBox fx:id="checkDifficulty" layoutX="591.0" layoutY="150.0" mnemonicParsing="false" onAction="#OrderDifficulty" text="Order By Difficulty">
          <font>
             <Font name="Serif Bold" size="13.0" />
          </font>
       </CheckBox>
       <TextField fx:id="searchField" layoutX="108.0" layoutY="143.0" prefHeight="28.0" prefWidth="139.0" promptText="Search " style="-fx-background-color: #FFE#F5F5DCBCD;" />
+      <Button fx:id="retrive" layoutX="691.0" layoutY="433.0" mnemonicParsing="false" onAction="#retriveQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="48.0" prefWidth="67.0" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="44.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/restore.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
