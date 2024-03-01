@@ -202,6 +202,7 @@ public class Board {
 			int rand = chooseRandomTile(surpriseTile);
 			getTile(rand).settType(TileType.Surprise);
 			surpriseTiles.add(getTile(rand));
+
 		}
 		if (this.bType == Difficulty.Hard) { // if board is hard, add another surprise tile
 			int random = chooseRandomTile(surpriseTile);

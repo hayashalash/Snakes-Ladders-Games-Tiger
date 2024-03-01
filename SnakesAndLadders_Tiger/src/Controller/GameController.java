@@ -41,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import Model.SysData;
 import javafx.scene.control.*;
@@ -356,6 +357,28 @@ import javafx.scene.layout.StackPane;
 			        	delay.play();
 			        });
 		    	}
+		    	else if (nextTile.gettType().equals(TileType.Surprise)){
+		    		int newRow = nextTile.getRow();
+				    int newColumn = nextTile.getColumn();	
+				    
+				    Platform.runLater(() -> {
+				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
+			        	player.setPlayerPlace(nextPos);
+				    });
+				    
+		    		// Wait 3 seconds before moving to the next tile
+				    int surpriseSteps = handleSurpriseTileReached();
+			        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+			        delay.setOnFinished(event -> {
+			        	System.out.println("newRow is: "+newPosition+surpriseSteps);
+			        	System.out.println("newColumn is: "+newPosition+surpriseSteps);
+					    displayPlayerToken(newRow, newColumn, player, newPosition+surpriseSteps);
+					    player.setPlayerPlace(newPosition+surpriseSteps);
+			        });
+			        Platform.runLater(() -> {
+			        	delay.play();
+			        });
+		    	}
 		    	else {
 			    	// Set player's new position
 		    		Platform.runLater(() -> {
@@ -565,8 +588,26 @@ import javafx.scene.layout.StackPane;
 	            
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
-	            int surpriseSteps = handleSurpriseTileReached();
-	            return nextPos+surpriseSteps;
+	            //int surpriseSteps = handleSurpriseTileReached();
+	            //return nextPos+surpriseSteps;
+	            
+	            
+	            int newPosition1 = nextPos;
+	    	    p.setPlayerPrevPlace(currPosition);
+	    	    // Set player's new position
+	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition1);
+	    	    p.setPlayerPlace(newPosition1);
+	    	    System.out.println("current player position on surprise tile: "+newPosition1);
+	    	    // Wait 2 seconds before showing the question dialog
+		        PauseTransition delay1 = new PauseTransition(Duration.seconds(5));
+		        delay1.setOnFinished(event -> {
+		        	int surpriseSteps = handleSurpriseTileReached();
+		    		move(p, newPosition1+surpriseSteps);
+		        });
+		        Platform.runLater(() -> {
+		        	delay1.play();
+		        });
+	            return p.getPlayerPlace();
 	            
 	        case Question:
 	            System.out.println("I have a question for you");
@@ -601,6 +642,8 @@ import javafx.scene.layout.StackPane;
     public int showQuestionPopup(Difficulty difficulty) { // view the question  dialog  and return the number of steps to move
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Question");
+	    // Disable the close button
+		dialog.initStyle(StageStyle.UNDECORATED);
 		
 			QuestionFactory qf = new QuestionFactory();
 			Question q = qf.returnQuestion(difficulty);

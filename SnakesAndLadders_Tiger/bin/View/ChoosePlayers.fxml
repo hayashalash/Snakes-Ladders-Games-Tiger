@@ -220,7 +220,7 @@
       </VBox>
       <StackPane layoutX="324.0" layoutY="182.0" prefHeight="38.0" prefWidth="206.0">
          <children>
-            <Label fx:id="difficulty" alignment="CENTER" style="-fx-background-color: #d99058; -fx-background-radius: 5; -fx-font-weight: bolder;" text="Label">
+            <Label fx:id="difficulty" alignment="CENTER" style="-fx-background-color: #dfbc95; -fx-background-radius: 5; -fx-font-weight: bolder;" text="Label">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
