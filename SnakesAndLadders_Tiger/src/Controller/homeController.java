@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -149,7 +149,7 @@ public class homeController implements Initializable{
         textField.setPrefHeight(40);
         textField.setMaxWidth(200);
         textField.setPromptText("Enter Password");
-        textField.setStyle("-fx-border-radius: 20;");
+        textField.setStyle("-fx-border-radius: 10;");
         Button logInButton = new Button("Log In");
         logInButton.setPrefHeight(40);
         logInButton.setPrefWidth(200); // Set the same width as the text field
@@ -192,7 +192,7 @@ public class homeController implements Initializable{
         StackPane content = new StackPane();
         content.getChildren().addAll(imageView, vbox);
 
-        // Add cancel button
+     // Add cancel button
         ButtonType cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().add(cancelButtonType);
 
@@ -202,6 +202,7 @@ public class homeController implements Initializable{
         exitIcon.setFitHeight(20);
         cancelButton.setGraphic(exitIcon);
         cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
+        cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
         StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
         StackPane.setMargin(cancelButton, new Insets(10));
 

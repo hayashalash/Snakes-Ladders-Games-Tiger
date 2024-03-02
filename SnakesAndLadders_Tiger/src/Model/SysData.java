@@ -115,7 +115,7 @@ public class SysData {
 	    JSONObject json = new JSONObject(); // new object type json
 	    JSONArray queAnswers = new JSONArray(); // add new question about software engineering and QA
 
-	    queAnswers.add("answer1"); // Replace these with the actual answers from your Question object
+	    queAnswers.add("answer1"); 
 	    queAnswers.add("answer2");
 	    queAnswers.add("answer3");
 	    queAnswers.add("answer4");
