@@ -255,22 +255,18 @@ public class HardController implements Initializable{
 		gameController.showInfo();
     }
 	
-    @FXML
-    void updateBoard(ActionEvent event) throws IOException{
- 		resetGame(HardController.game);
- 		HardController.game = new Game(Difficulty.Hard, HardController.game.getPlayers(), LocalDate.now());
- 		methods.newScreen("hardBoard");
-    }
-    
-    void resetGame(Game game) {
-   	 game.setGameDuration(null);
-   	 game.setWinner(null);
-   	 game.getPlayersOrder().clear();
-   	 for (Player p : game.getPlayers()) {
-   		 p.setPlayerPlace(0);
-   		 p.setPlayerPrevPlace(0);
-   		 p.setNumberOrder(0);
-   	 }
-    }
-    
+	@FXML
+	void updateBoard(ActionEvent event) throws IOException {
+	    // Reset the game state through the GameController instance
+	    if (gameController != null) {
+	        gameController.resetGame();
+	    }
+
+	    // Create a new game instance
+	    HardController.game = new Game(Difficulty.Hard, HardController.game.getPlayers(), LocalDate.now());
+
+	    // Navigate to the hard board screen
+	    methods.newScreen("hardBoard");
+	}
+
 }

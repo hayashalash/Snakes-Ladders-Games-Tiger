@@ -1095,5 +1095,19 @@ import javafx.scene.layout.StackPane;
             e.printStackTrace();
         }
     }
+	
+	
+    // Method to reset the game state
+    public void resetGame() {
+        // Reset game duration, winner, and player positions
+        game.setGameDuration(null);
+        game.setWinner(null);
+        game.getPlayersOrder().clear();
+        for (Player p : game.getPlayers()) {
+            p.setPlayerPlace(0);
+            p.setPlayerPrevPlace(0);
+            p.setNumberOrder(0);
+        }
+    }
 
 }
