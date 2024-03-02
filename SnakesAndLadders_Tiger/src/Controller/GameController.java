@@ -1085,6 +1085,7 @@ import javafx.scene.layout.StackPane;
             // Create a dialog
             Dialog<Void> dialog = new Dialog<>();      
             dialog.getDialogPane().setContent(dialogContent);
+            dialog.initStyle(StageStyle.UNDECORATED);
             dialog.setTitle("Game Rules");
             ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().add(closeButton);

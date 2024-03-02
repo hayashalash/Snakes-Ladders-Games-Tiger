@@ -408,6 +408,7 @@ public class ChoosePlayersController implements Initializable{
     	}
     }
     
+       
     @FXML
     void entered(MouseEvent event){
     	methods.entered(event);

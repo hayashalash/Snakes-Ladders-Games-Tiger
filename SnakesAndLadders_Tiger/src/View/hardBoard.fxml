@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HardController">
+<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HardController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -71,7 +71,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button fx:id="home" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-border-radius: 50;" textFill="#651d1d">
+      <Button fx:id="home" layoutX="5.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-border-radius: 50;" textFill="#651d1d">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3, 0 );">
                <image>
@@ -79,11 +82,11 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="info" layoutX="55.0" layoutY="10.0" mnemonicParsing="false" onAction="#showInfo" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </Button>
-      <Button fx:id="info" layoutX="65.0" layoutY="10.0" mnemonicParsing="false" onAction="#showInfo" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
                <image>
@@ -91,9 +94,18 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="update" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Label fx:id="time" layoutX="60.0" layoutY="90.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #d2691e; -fx-border-radius: 10;" text="00 : 00" textFill="CHOCOLATE">
          <font>

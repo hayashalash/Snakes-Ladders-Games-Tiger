@@ -1,6 +1,7 @@
 package Controller;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -75,6 +76,9 @@ public class NormalController implements Initializable{
 
     @FXML
     private Button info;
+    
+    @FXML
+    private Button update;
     
     @FXML
     private Label time;
@@ -259,5 +263,24 @@ public class NormalController implements Initializable{
     void exited(MouseEvent event){
     	methods.exited(event);
     }
+    
+    @FXML
+    void updateBoard(ActionEvent event) throws IOException{
+ 		resetGame(NormalController.game);
+ 		NormalController.game = new Game(Difficulty.Medium, NormalController.game.getPlayers(), LocalDate.now());
+ 		methods.newScreen("hardBoard");
+    }
+    
+    void resetGame(Game game) {
+   	 game.setGameDuration(null);
+   	 game.setWinner(null);
+   	 game.getPlayersOrder().clear();
+   	 for (Player p : game.getPlayers()) {
+   		 p.setPlayerPlace(0);
+   		 p.setPlayerPrevPlace(0);
+   		 p.setNumberOrder(0);
+   	 }
+    }
+    
 
 }
