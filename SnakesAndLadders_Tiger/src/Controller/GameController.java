@@ -33,6 +33,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
@@ -113,7 +115,8 @@ import javafx.scene.layout.StackPane;
 	private static final String DEFAULT_LADDER_IMAGE_PATH = null;
 	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
 	private static final String SURPRISE_PLUS_PATH = "/img/icons/surprisePlus.png"; 
-	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
+	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png";
+	private static final String EXIT_ICON = "/img/icons/X.png";
 
 	//Fields
 	int returnVal = 0; // returns the number of steps the player should move based on their answer
@@ -508,17 +511,17 @@ import javafx.scene.layout.StackPane;
 	    		player.setEnteredTile(4); // I entered in the fourth position
 		    }
 	    }
-	    else { // if the new position is 0
-	    	if (getTokenFromStart(player) == null) { // if the player is not outside the board
-	    		playersStart.getChildren().add(playerToken); // place the player outside the board = position 0
-	    		playerToken.setVisible(true);
-	    		if (playerToken.isVisible()) {
-	    			System.out.println("player "+player.getPlayerName()+" is visible");
-	    		}
-	    		playerToken.toFront();
-	    		System.out.println("player "+player.getPlayerName()+" was added to the start HBox");
-	    	}
-	    }
+//	    else { // if the new position is 0
+//	    	if (getTokenFromStart(player) == null) { // if the player is not outside the board
+//	    		playersStart.getChildren().add(playerToken); // place the player at first position in the board (tile 1)
+//	    		playerToken.setVisible(true);
+//	    		if (playerToken.isVisible()) {
+//	    			System.out.println("player "+player.getPlayerName()+" is visible");
+//	    		}
+//	    		playerToken.toFront();
+//	    		System.out.println("player "+player.getPlayerName()+" was added to the start HBox");
+//	    	}
+//	    }
 	}
 	
 	private void moveTokenToCell(int currentRow, int currentColumn, int targetRow, int targetColumn, ImageView token) {
@@ -1074,6 +1077,7 @@ import javafx.scene.layout.StackPane;
             StackPane dialogContent = new StackPane();
             // Add the AnchorPane to the StackPane which centers better in a dialog than an AnchorPane
             dialogContent.getChildren().add(anchorPane);
+            dialogContent.setPadding(new Insets(0)); // Set padding of the StackPane to zero
             // Get the controller associated with the FXML of the game rules
             infoController controller = loader.getController();
             
@@ -1081,6 +1085,11 @@ import javafx.scene.layout.StackPane;
             Button homeButton = controller.getHomeButton();
             homeButton.setDisable(true);
             homeButton.setOpacity(0);
+            // Disable the button with fx:id "closeButton"
+            Button closeGame = controller.getCloseButton();
+            closeGame.setDisable(true);
+            closeGame.setOpacity(0);
+            
             
             // Create a dialog
             Dialog<Void> dialog = new Dialog<>();      
@@ -1089,6 +1098,18 @@ import javafx.scene.layout.StackPane;
             dialog.setTitle("Game Rules");
             ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().add(closeButton);
+
+            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(closeButton);
+            ImageView exitIcon = new ImageView(new Image(EXIT_ICON));
+            exitIcon.setFitWidth(20);
+            exitIcon.setFitHeight(20);
+            cancelButton.setGraphic(exitIcon);
+            cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
+            cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
+            cancelButton.setOnMouseEntered(e -> methods.entered(e));
+            cancelButton.setOnMouseExited(e -> methods.exited(e));
+            StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
+            StackPane.setMargin(cancelButton, new Insets(10));            
             // Show the dialog
             dialog.showAndWait();
         } catch (Exception e) {

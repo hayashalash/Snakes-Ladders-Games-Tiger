@@ -134,7 +134,7 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     void deleteQuestion(ActionEvent event) throws IOException, ParseException {
     	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    		Alerts.message("Error","Please select a question to delete.");
+    		Alerts.warning("Please select a question to delete.");
     		return;
     	}
     	String deletedQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
@@ -162,7 +162,7 @@ public class ManageQuestionsController implements Initializable {
     void editQuestion(ActionEvent event) {
  
     		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    			Alerts.message("Error", "Please choose question that you want to edit.");
+    			Alerts.warning("Please choose question that you want to edit.");
     			return;
     		}
     		//the question that we want to update is selected

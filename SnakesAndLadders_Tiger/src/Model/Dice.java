@@ -36,7 +36,6 @@ public class Dice {
             order++;//for the player order
 		}
 		 game.setPlayersOrder(playersOrder);//change the original queue to the random order of play
-		 System.out.println(playersOrder);
 	}
 	
 	public static  int RandomNumberGenerator(Difficulty type){

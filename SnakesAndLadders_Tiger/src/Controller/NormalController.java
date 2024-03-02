@@ -266,16 +266,18 @@ public class NormalController implements Initializable{
     
 	@FXML
 	void updateBoard(ActionEvent event) throws IOException {
-	    // Reset the game state through the GameController instance
-	    if (gameController != null) {
-	        gameController.resetGame();
-	    }
+		if (Alerts.restartGame() == 1) {
+			// Reset the game state through the GameController instance
+		    if (gameController != null) {
+		        gameController.resetGame();
+		    }
 
-	    // Create a new game instance
-	    NormalController.game = new Game(Difficulty.Medium, NormalController.game.getPlayers(), LocalDate.now());
+		    // Create a new game instance
+		    NormalController.game = new Game(Difficulty.Medium, NormalController.game.getPlayers(), LocalDate.now());
 
-	    // Navigate to the hard board screen
-	    methods.newScreen("normalBoard");
+		    // Navigate to the hard board screen
+		    methods.newScreen("normalBoard");
+		}
 	}
 
 

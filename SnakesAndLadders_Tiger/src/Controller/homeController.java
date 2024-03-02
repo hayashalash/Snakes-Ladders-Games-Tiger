@@ -56,18 +56,20 @@ public class homeController implements Initializable{
     private ImageView turnOffIcon = new ImageView();
 
     @FXML
-    private Button musicOff;
+    private Button musicIcon;
     
     //public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.mp3").toString());
 
     @FXML
     void TurnOffOn(ActionEvent event) {
     	if (Main.note.isPlaying()) {
-    		turnOffIcon.setOpacity(1.0);
+//    		turnOffIcon.setOpacity(1.0);
+    		musicIcon.setOpacity(0.5);
     		Main.stopBackgroundMusic();
     	}
     	else {
-    		turnOffIcon.setOpacity(0.0);
+//    		turnOffIcon.setOpacity(0.0);
+    		musicIcon.setOpacity(1);
     		Main.resumeBackgroundMusic();
     	}
     }
@@ -89,14 +91,14 @@ public class homeController implements Initializable{
 			e.printStackTrace();
 		}
 	 
-    	if (Main.note.isPlaying()) {
-    		turnOffIcon.setOpacity(0.0);
-    		//Main.stopBackgroundMusic();
-    	}
-    	else {
-    		turnOffIcon.setOpacity(1.0);
-    		//Main.resumeBackgroundMusic();
-    	}
+//    	if (Main.note.isPlaying()) {
+//    		turnOffIcon.setOpacity(0.0);
+//    		//Main.stopBackgroundMusic();
+//    	}
+//    	else {
+//    		turnOffIcon.setOpacity(1.0);
+//    		//Main.resumeBackgroundMusic();
+//    	}
     }
     
     @FXML
@@ -192,7 +194,7 @@ public class homeController implements Initializable{
         StackPane content = new StackPane();
         content.getChildren().addAll(imageView, vbox);
 
-     // Add cancel button
+        // Add cancel button
         ButtonType cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().add(cancelButtonType);
 
@@ -203,6 +205,8 @@ public class homeController implements Initializable{
         cancelButton.setGraphic(exitIcon);
         cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
         cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
+        cancelButton.setOnMouseEntered(e -> entered(e));
+        cancelButton.setOnMouseExited(e -> exited(e));
         StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
         StackPane.setMargin(cancelButton, new Insets(10));
 

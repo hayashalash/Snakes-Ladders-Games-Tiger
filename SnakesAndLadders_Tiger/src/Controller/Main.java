@@ -41,7 +41,7 @@ public class Main extends Application {
             playBackgroundMusic();
 
             // Delay before starting the fade-out transition
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            PauseTransition delay = new PauseTransition(Duration.seconds(1));
             delay.setOnFinished(event -> {
             	// Fade out transition for the splash screen
                 FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), splashScreenFXML);

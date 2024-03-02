@@ -21,7 +21,7 @@ public class infoController implements Initializable {
 	@FXML
 	private Button closeButton;
 
-    @FXML
+	@FXML
     private Button homeButton;
 
 	@Override
@@ -39,9 +39,9 @@ public class infoController implements Initializable {
     public Button getHomeButton() {
 		return homeButton;
 	}
-
-	public void setHomeButton(Button homeButton) {
-		this.homeButton = homeButton;
+    
+    public Button getCloseButton() {
+		return closeButton;
 	}
 
 	@FXML
