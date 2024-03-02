@@ -77,7 +77,6 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button exit;
     
-    
     @FXML
     private CheckBox checkDifficulty;
 
@@ -101,6 +100,13 @@ public class ManageQuestionsController implements Initializable {
     ArrayList<Question> sorted = new ArrayList<>(); // Arraylist to store the sorted questions
     private boolean isSorted = false;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
 
     @FXML
     void OrderDifficulty(ActionEvent event) {
@@ -198,7 +204,12 @@ public class ManageQuestionsController implements Initializable {
         Tooltip.install(delete, d);
         Tooltip r = new Tooltip("Restore Question");
         Tooltip.install(retrive, r);
-        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
         fill();
         questionTable.refresh();
 	}

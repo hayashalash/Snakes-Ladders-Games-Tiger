@@ -170,8 +170,8 @@ public class Board {
 	    getTile(1).settType(TileType.FirstTile);
 	    addSnakeTiles();
 	    addQuestionTiles(); // adds 3 question tiles to the board
-	    addSurpriseTiles();
 	    addLadderTiles();
+	    addSurpriseTiles();
 	    return (--boardCounter == boardSize); // if all board tiles were successfully added, method will return true, otherwise false
 	}
 
@@ -196,19 +196,23 @@ public class Board {
 	}
 	
 	public void addSurpriseTiles() {
-		if (this.bType == Difficulty.Easy)
+		if (this.bType == Difficulty.Easy) // No surprise tiles in an easy board
 			return;
-		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) { // add 1 surprise tile to medium/hard boards
-			int rand = chooseRandomTile(surpriseTile);
-			getTile(rand).settType(TileType.Surprise);
-			surpriseTiles.add(getTile(rand));
-
-		}
-		if (this.bType == Difficulty.Hard) { // if board is hard, add another surprise tile
-			int random = chooseRandomTile(surpriseTile);
-			getTile(random).settType(TileType.Surprise);
-			surpriseTiles.add(getTile(random));
-		}
+		if (this.bType == Difficulty.Medium || this.bType == Difficulty.Hard) // add 1 surprise tile to medium/hard boards
+			addSurprise();
+		if (this.bType == Difficulty.Hard) // if board is hard, add another surprise tile
+			addSurprise();
+	}
+	
+	public void addSurprise() {
+		int random = chooseRandomTile(surpriseTile);
+		// Ensure a surprise tile doesn't move the player to a ladder/snake
+		while (getTile(random+10).gettType() == TileType.LadderBottom || getTile(random+10).gettType() == TileType.SnakeHead ||
+				getTile(random-10).gettType() == TileType.LadderBottom || getTile(random-10).gettType() == TileType.SnakeHead)
+			random = chooseRandomTile(surpriseTile);
+					
+		getTile(random).settType(TileType.Surprise);
+		surpriseTiles.add(getTile(random));
 	}
 	
 	public Integer chooseRandomTile(int itemLen) {

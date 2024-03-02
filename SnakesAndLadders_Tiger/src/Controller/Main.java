@@ -1,4 +1,5 @@
 package Controller;
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
@@ -9,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.animation.FadeTransition;
@@ -17,8 +20,11 @@ import javafx.util.Duration;
 
 public class Main extends Application {
     public static AudioClip note;
+//	public static MediaPlayer note;
     public static Stage mainWindow = null;
 
+    public static boolean playing = true;
+    
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -31,7 +37,7 @@ public class Main extends Application {
             // StackPane to overlay the splash screen on top of the home screen
             StackPane root = new StackPane();
             root.getChildren().addAll(homeFXML, splashScreenFXML);
-
+            
             Scene scene = new Scene(root, 852, 595);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -63,6 +69,17 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         try {
+//        	String audioFile = "/img/wavs/gameSound.mp3";
+//        	Media media = new Media(new File(audioFile).toURI().toString());
+//
+//            // Create the media player
+//            MediaPlayer mediaPlayer = new MediaPlayer(media);
+//
+//            // Set cycle count to indefinite
+//            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+//
+//            // Start playing the media
+//            mediaPlayer.play();
             note = new AudioClip(Main.class.getResource("/img/wavs/gameSound.mp3").toString());
         } catch (NullPointerException e) {
             System.err.println("Error: Audio file not found or path is incorrect.");

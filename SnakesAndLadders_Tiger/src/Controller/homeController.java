@@ -53,29 +53,20 @@ public class homeController implements Initializable{
     private Button start;
 
     @FXML
-    private ImageView turnOffIcon = new ImageView();
-
-    @FXML
     private Button musicIcon;
     
     //public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.mp3").toString());
 
-    @FXML
+    public Button getMusicIcon() {
+		return musicIcon;
+	}
+
+	@FXML
     void TurnOffOn(ActionEvent event) {
-    	if (Main.note.isPlaying()) {
-//    		turnOffIcon.setOpacity(1.0);
-    		musicIcon.setOpacity(0.5);
-    		Main.stopBackgroundMusic();
-    	}
-    	else {
-//    		turnOffIcon.setOpacity(0.0);
-    		musicIcon.setOpacity(1);
-    		Main.resumeBackgroundMusic();
-    	}
+    	methods.turnOffOn(event, musicIcon);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-    	turnOffIcon.setMouseTransparent(true);
         Tooltip h = new Tooltip("History");
         Tooltip.install(history, h);
         Tooltip q = new Tooltip("Questions");
@@ -90,15 +81,17 @@ public class homeController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	 
-//    	if (Main.note.isPlaying()) {
-//    		turnOffIcon.setOpacity(0.0);
-//    		//Main.stopBackgroundMusic();
-//    	}
-//    	else {
-//    		turnOffIcon.setOpacity(1.0);
-//    		//Main.resumeBackgroundMusic();
-//    	}
+
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        if (Main.playing) { // indicated the music playing upon opening the system
+        	Main.playing = false;
+        	musicIcon.setOpacity(1.0);
+        }
     }
     
     @FXML

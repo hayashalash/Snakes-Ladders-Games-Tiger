@@ -89,6 +89,14 @@ public class HardController implements Initializable{
 	
     private HashMap<Integer, String> diceImageMap;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
@@ -97,6 +105,14 @@ public class HardController implements Initializable{
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        
 		if(!board.createBoard())
     	{
     		Alerts.warning("An error occured while creating the board!");

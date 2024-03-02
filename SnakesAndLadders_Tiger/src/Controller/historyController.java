@@ -99,6 +99,14 @@ public class historyController implements Initializable{
     
     private ObservableList<Game> Gamesdata;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
     ArrayList<Game> sorted = new ArrayList<>(); // Arraylist to store the sorted Games
     private boolean isSorted = false;
     ArrayList<Game> sortedByDuration = new ArrayList<>(); // Arraylist to store the sorted Games by duration
@@ -109,6 +117,13 @@ public class historyController implements Initializable{
 
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+    	
 		try {
 			SysData.getInstance().ReadFromJsonGames();
 		} catch (IOException | ParseException e) {

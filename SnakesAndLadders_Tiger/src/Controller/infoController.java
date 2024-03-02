@@ -24,10 +24,23 @@ public class infoController implements Initializable {
 	@FXML
     private Button homeButton;
 
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Auto-generated method stub
-		
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
 	}
 	
     @FXML

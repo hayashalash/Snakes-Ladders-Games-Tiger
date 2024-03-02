@@ -30,6 +30,14 @@ public class difficultyController implements Initializable {
     private Button homeButton;
 
     @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
+    @FXML
     void exit(ActionEvent event) {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
@@ -64,7 +72,12 @@ public class difficultyController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
 	}
 
 	 @FXML

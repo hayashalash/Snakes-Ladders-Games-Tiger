@@ -94,6 +94,13 @@ public class EasyController implements Initializable{
     
     private HashMap<Integer, String> diceImageMap;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
 
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
@@ -115,6 +122,14 @@ public class EasyController implements Initializable{
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        
 		if(!board.createBoard())
     	{
     		Alerts.warning("An error occured while creating the board!");

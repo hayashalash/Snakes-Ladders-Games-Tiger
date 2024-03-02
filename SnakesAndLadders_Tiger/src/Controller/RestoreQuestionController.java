@@ -35,21 +35,20 @@ import javafx.util.Callback;
 public class RestoreQuestionController  implements Initializable {
 	Methods methods = new Methods();
 
+	@FXML
+	private TableView<Question> questionTable;
 
 	@FXML
-	 private TableView<Question> questionTable;
+	private TableColumn<Question, String> question;
 
-   @FXML
-   private TableColumn<Question, String> question;
-
-   @FXML
-   private TableColumn<Question, Difficulty> difficulty;
-   
-   @FXML
-   private TableColumn<Question, Integer> questionNum;
- 
-   @FXML
-   private TableColumn<Question, Void> answers;
+	@FXML
+	private TableColumn<Question, Difficulty> difficulty;
+	   
+	@FXML
+	private TableColumn<Question, Integer> questionNum;
+	 
+	@FXML
+	private TableColumn<Question, Void> answers;
 
     @FXML
     private Button restore;
@@ -66,9 +65,23 @@ public class RestoreQuestionController  implements Initializable {
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
 
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+    	
 		try {
 			SysData.getInstance().ReadFromDeletedQ();
 		}

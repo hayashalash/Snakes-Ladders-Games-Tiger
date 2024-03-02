@@ -101,6 +101,14 @@ public class ChoosePlayersController implements Initializable{
     @FXML
     private Label difficulty;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         final ObservableList<Image> images = fetchImages();
@@ -110,6 +118,13 @@ public class ChoosePlayersController implements Initializable{
         fillComboBox(player4clr, images);
         difficulty.setText("Game Difficulty: "+diff);
         StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
         
 //    	player1clr.getItems().addAll(Color.values());
 //    	player1clr.getSelectionModel().select(0);
