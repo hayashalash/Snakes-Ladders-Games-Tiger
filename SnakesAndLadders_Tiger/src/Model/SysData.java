@@ -148,7 +148,7 @@ public class SysData {
 	        e.printStackTrace();
 	    } finally {
 	        addedAgainToJSON.add(question);
-	        deleted.removeAll(addedAgainToJSON);
+	        this.deleted.removeAll(addedAgainToJSON);
 	        SysData.getInstance().readFromJson();
 	    }
 	}
@@ -332,7 +332,7 @@ public class SysData {
 				d = Difficulty.Hard;
 			//read and prints the json
 			Question newQues = new Question(answers.get(0),answers.get(1), answers.get(2), answers.get(3),q,d,corrAns);
-			this.questions.add(newQues);
+			deletedFromJSON.add(newQues);
 		}
 			        
 		
