@@ -140,19 +140,19 @@ public class homeController implements Initializable{
         dialog.setTitle("Admin Access Only");
         dialog.initStyle(StageStyle.UNDECORATED);
         ImageView imageView = new ImageView(new Image(ADMIN));
-        imageView.setFitWidth(400);
-        imageView.setFitHeight(400);
-        dialog.getDialogPane().setPrefWidth(400);
-        dialog.getDialogPane().setPrefHeight(400);
+        imageView.setFitWidth(300);
+        imageView.setFitHeight(300);
+        dialog.getDialogPane().setPrefWidth(300);
+        dialog.getDialogPane().setPrefHeight(300);
 
         PasswordField textField = new PasswordField();
         textField.setPrefHeight(40);
-        textField.setMaxWidth(290);
+        textField.setMaxWidth(200);
         textField.setPromptText("Enter Password");
         textField.setStyle("-fx-border-radius: 20;");
         Button logInButton = new Button("Log In");
         logInButton.setPrefHeight(40);
-        logInButton.setPrefWidth(290); // Set the same width as the text field
+        logInButton.setPrefWidth(200); // Set the same width as the text field
         logInButton.setPadding(new Insets(5, 5, 5, 5));
         logInButton.setStyle("-fx-border-radius: 20; -fx-background-color: #dfbc95; " + methods.getButtonStyle()); // Drop shadow effect
         logInButton.setOnMouseEntered(e -> entered(e));
@@ -164,8 +164,8 @@ public class homeController implements Initializable{
         VBox vbox = new VBox(textField, errorLabel, logInButton);
 
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(5); // Set spacing between the text field and button
-        vbox.setPadding(new Insets(250, 0, 0, 0)); // Set padding around the layout
+        vbox.setSpacing(2); // Set spacing between the text field and button
+        vbox.setPadding(new Insets(180, 0, 0, 0)); // Set padding around the layout
         
         logInButton.setOnAction(e -> {
             String p = textField.getText();
