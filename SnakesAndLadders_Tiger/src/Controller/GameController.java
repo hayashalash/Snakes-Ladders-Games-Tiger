@@ -466,62 +466,56 @@ import javafx.scene.layout.StackPane;
 	    if (playerToken == null) {
 	    	System.out.println("playerToken is NULL!");
 	    }
-	    if(newPosition!=0) { // new position is on the grid
-	    	// If the token is not already in the grid, add it
-		    if (getTokenFromGrid(player) == null) {
-		        grid.getChildren().add(playerToken);
-		    }
-		    Tile pos = board.getTile(newPosition);
-		    int row = pos.getRow();
-		    int column = pos.getColumn();
-		    playerToken.toFront();
-		    moveTokenToCell(currentR, currentC, row, column, playerToken);
-		    
-		    // Check if other players are already on this tile to avoid covering each other's tokens
-		    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
-		    for (Player p : game.getPlayers())
-		    	otherPlayers.add(p);
-		    otherPlayers.remove(player); // remove the current player playing from this list
-		    
-		    ArrayList<Integer> enteredTileOrder = new ArrayList<>(); // ArrayList for how the other players entered this tile
-		    // A player can be positioned on the tile in 4 different places in order to avoid covering each other
-		    for (Player p : otherPlayers) { // loop over the other players
-		    	if (p.getPlayerPlace() == newPosition) { // if the other player is on this tile i'm heading to
-		    		enteredTileOrder.add(p.getEnteredTile()); // save where they are positioned on the tile so I don't cover them
-		    	}
-		    }
-		    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER); // Center horizontally
-		    	GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER); // Center vertically
-		    	player.setEnteredTile(1); // I entered in the first position
-		    }
-		    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.LEFT); // set player at the cell's left
-		        GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
-		        player.setEnteredTile(2); // I entered in the second position
-		    }
-		    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.RIGHT); // set player at the cell's right
-	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
-	    		player.setEnteredTile(3); // I entered in the third position
-		    }
-		    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER);
-	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
-	    		player.setEnteredTile(4); // I entered in the fourth position
-		    }
-	    }
-//	    else { // if the new position is 0
-//	    	if (getTokenFromStart(player) == null) { // if the player is not outside the board
-//	    		playersStart.getChildren().add(playerToken); // place the player at first position in the board (tile 1)
-//	    		playerToken.setVisible(true);
-//	    		if (playerToken.isVisible()) {
-//	    			System.out.println("player "+player.getPlayerName()+" is visible");
-//	    		}
-//	    		playerToken.toFront();
-//	    		System.out.println("player "+player.getPlayerName()+" was added to the start HBox");
-//	    	}
+//	    if (newPosition == 0 && getTokenFromStart(player) == null) { // if the player is not outside the board and new position is 0
+//	    	// place the player at first position in the board (tile 1)
+//	    	newPosition = 1;
 //	    }
+	    if (newPosition == 0 && getTokenFromGrid(player) == null) { // if player hasn't entered the board yet and new position is 0
+	    	return; // Do nothing
+	    }
+	    else if (newPosition != 0 && getTokenFromGrid(player) == null) { // if new position is > 1 and player is outside the board
+	    	// If the token is not already in the grid, add it
+		    grid.getChildren().add(playerToken);
+	    }
+	    Tile pos = board.getTile(newPosition);
+	    int row = pos.getRow();
+	    int column = pos.getColumn();
+	    playerToken.toFront();
+	    moveTokenToCell(currentR, currentC, row, column, playerToken);
+	    
+	    // Check if other players are already on this tile to avoid covering each other's tokens
+	    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
+	    for (Player p : game.getPlayers())
+	    	otherPlayers.add(p);
+	    otherPlayers.remove(player); // remove the current player playing from this list
+	    
+	    ArrayList<Integer> enteredTileOrder = new ArrayList<>(); // ArrayList for how the other players entered this tile
+	    // A player can be positioned on the tile in 4 different places in order to avoid covering each other
+	    for (Player p : otherPlayers) { // loop over the other players
+	    	if (p.getPlayerPlace() == newPosition) { // if the other player is on this tile i'm heading to
+	    		enteredTileOrder.add(p.getEnteredTile()); // save where they are positioned on the tile so I don't cover them
+	    	}
+	    }
+	    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER); // Center horizontally
+	    	GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER); // Center vertically
+	    	player.setEnteredTile(1); // I entered in the first position
+	    }
+	    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.LEFT); // set player at the cell's left
+	        GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
+	        player.setEnteredTile(2); // I entered in the second position
+	    }
+	    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.RIGHT); // set player at the cell's right
+    		GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
+    		player.setEnteredTile(3); // I entered in the third position
+	    }
+	    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER);
+    		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
+    		player.setEnteredTile(4); // I entered in the fourth position
+	    }
 	}
 	
 	private void moveTokenToCell(int currentRow, int currentColumn, int targetRow, int targetColumn, ImageView token) {
@@ -562,8 +556,12 @@ import javafx.scene.layout.StackPane;
 	        return currPosition; // Ensure next position is within the board boundaries
 	    }
 	    
-	    if (nextPos < 1) // Ensure next position is within the board boundaries
-	    	return 0;
+	    if (nextPos < 1) {// Ensure next position is within the board boundaries
+	    	if (p.getPlayerPlace() == 0)
+	    		return 0;
+	    	else
+	    		return 1;
+	    }
 
 	    Tile nextTile = board.getTile(nextPos);
 	    if (nextTile == null) {
