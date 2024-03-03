@@ -41,6 +41,14 @@ public class TopThreeController implements Initializable {
     
     @FXML
     private Button previousButton;
+    
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
 
 
     @FXML
