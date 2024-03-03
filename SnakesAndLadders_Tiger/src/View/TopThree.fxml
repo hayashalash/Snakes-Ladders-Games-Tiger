@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TopThreeController">
+   <children>
+      <ImageView fitHeight="500.0" fitWidth="726.0" layoutX="-4.0" layoutY="-13.0">
+         <image>
+            <Image url="@../img/screens/topThreeScreen.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="48.0" fitWidth="46.0" layoutX="336.0" layoutY="129.0">
+         <image>
+            <Image url="@../img/icons/crown.png" />
+         </image>
+      </ImageView>
+      <Circle fill="#3e2f0c" layoutX="269.0" layoutY="260.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#3e2f0c" layoutX="364.0" layoutY="215.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#3e2f0c" layoutX="456.0" layoutY="271.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="325.0" layoutY="177.0">
+         <image>
+            <Image url="@../img/icons/tiger.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="230.0" layoutY="222.0">
+         <image>
+            <Image url="@../img/icons/tiger.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="417.0" layoutY="233.0">
+         <image>
+            <Image url="@../img/icons/tiger.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="player1" fill="#3e2f0c" layoutX="336.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruba">
+         <font>
+            <Font name="System Italic" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="player2" fill="#3e2f0c" layoutX="241.0" layoutY="333.0" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="0.0" text="Haya" textAlignment="CENTER">
+         <font>
+            <Font name="System Italic" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="player3" fill="#3e2f0c" layoutX="427.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bisan">
+         <font>
+            <Font name="System Italic" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="259.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2nd" />
+      <Text layoutX="447.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3rd" />
+      <Button fx:id="exitButton" accessibleText="exit" layoutX="664.0" layoutY="8.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/X.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

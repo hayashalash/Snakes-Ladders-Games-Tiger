@@ -172,7 +172,7 @@ public class Game extends Sort{
         sorted.addAll(easy);
         sorted.addAll(medium);
         sorted.addAll(hard);
-        
+        System.out.println("sorted by difficulty : "+sorted);
       return sorted;
     }
 

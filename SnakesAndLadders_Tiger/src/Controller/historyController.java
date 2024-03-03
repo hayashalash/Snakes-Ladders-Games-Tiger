@@ -10,12 +10,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-
+import javafx.scene.Parent;
 import org.json.simple.parser.ParseException;
-
 import java.util.PriorityQueue;
 import java.util.ResourceBundle;
-
 import View.Alerts;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -23,7 +21,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -63,14 +63,6 @@ public class historyController implements Initializable{
     @FXML
     private TableColumn<Game, LocalDate> date;
     
-    @FXML
-    private Text player1;
-
-	@FXML
-    private Text player2;
-
-    @FXML
-    private Text player3;
     
     @FXML
     private Button homeButton;
@@ -89,23 +81,24 @@ public class historyController implements Initializable{
 
     @FXML
     private CheckBox DifficultyCheck;
-    
-    @FXML
-    private Button topButton;
-    
+      
     @FXML
     private ComboBox<String> orderBox;
+    
+    @FXML
+    private Button reset;
 
+    @FXML
+    private Button topthree;
     
     private ObservableList<Game> Gamesdata;
     
     ArrayList<Game> sorted = new ArrayList<>(); // Arraylist to store the sorted Games
-    private boolean isSorted = false;
     ArrayList<Game> sortedByDuration = new ArrayList<>(); // Arraylist to store the sorted Games by duration
     ArrayList<Game> sortedByDate = new ArrayList<>();// Arraylist to store the sorted Games by date
     ArrayList<Game> sortedByDifficulty = new ArrayList<>();// Arraylist to store the sorted Games by Difficulty
     HashSet<Game> originalOrder = new HashSet<>(SysData.getInstance().getGames()); // Save the original order to revert back to after sorting
-	List<Entry<Player, Integer>> topPlayersList = calculateTopThree();
+	//List<Entry<Player, Integer>> topPlayersList = calculateTopThree();
 
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -118,7 +111,7 @@ public class historyController implements Initializable{
 		
 		orderBox.getItems().addAll("Difficulty", "Date", "Duration");
 		
-	    if (topPlayersList.size() >= 3) {
+	    /*if (topPlayersList.size() >= 3) {
 	        // Display the names of the top 3 players
 	        player1.setText(topPlayersList.get(0).getKey().getPlayerName());
 	        player2.setText(topPlayersList.get(1).getKey().getPlayerName());
@@ -130,12 +123,12 @@ public class historyController implements Initializable{
 	        player2.setText("Haya");
 	        player3.setText("Bisan");
 	    }
-
+*/
 		fillHistoryTable();	
 		History.refresh();
 	}
     
-    private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
+   /* private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
         HashMap<Player, Integer> playersWinningGames = new HashMap<>();
         //save
     	List<Game> games = new ArrayList<>(SysData.getInstance().getGames());
@@ -160,9 +153,9 @@ public class historyController implements Initializable{
         Collections.reverse(topPlayersList); // Reverse to display in descending order
 
         return topPlayersList;
-    }
-    @FXML
-    void OrderDuration(ActionEvent event) {
+    }*/
+   // @FXML
+    //void OrderDuration(ActionEvent event) {
 //    	if (!isSorted) {
 //            Sort sort = new Game();
 //            for (Object obj : sort.getSorted("Duration"))
@@ -177,10 +170,10 @@ public class historyController implements Initializable{
 //    	     
 //    	     isSorted = false;
 //    	}
-    }
+  //  }
 //   
-    @FXML
-    void OrderDate(ActionEvent event) {
+  //  @FXML
+    //void OrderDate(ActionEvent event) {
 //    	if (!isSorted) {
 //            Sort sort = new Game();
 //			for (Object obj : sort.getSorted("Date"))
@@ -195,10 +188,10 @@ public class historyController implements Initializable{
 //    	     
 //    	     isSorted = false;
 //    	}
-    }
+  //  }
 //
-    @FXML
-    void OrderDifficulty(ActionEvent event) {
+  //  @FXML
+    //void OrderDifficulty(ActionEvent event) {
 //    	 if (!isSorted) {
 //            Sort sort = new Game();
 //			for (Object obj : sort.getSorted("Difficulty"))
@@ -214,25 +207,22 @@ public class historyController implements Initializable{
 //                
 //                isSorted = false;
 //                }
-    }
+  //  }
 //    
     void sort(ObservableList<Game> dataGame) {
-		 if (!isSorted) {
 		 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
 	     History.setItems(temp);
-	     isSorted = true;
-	     }
+	     
     }
 
     @FXML
     void OrderByBox(ActionEvent event) {
         // Get the selected sorting option from the ComboBox
         String selectedSortOption = orderBox.getValue();
-
         // Apply sorting based on the selected option
         switch (selectedSortOption) {
             case "Difficulty":
-	           	 if (!isSorted) {
+	           	 if (sortedByDifficulty.isEmpty()) {
 	           		 Sort sort = new Game();
 	  				 for (Object obj : sort.getSorted("Difficulty"))
 	  					sortedByDifficulty.add((Game) obj);
@@ -241,14 +231,13 @@ public class historyController implements Initializable{
 		             sort(dataGame);   
 	           	 }
 	              else {
-	                  // Restore the original order
-	                  ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+	                  // show the already sorted list
+	                  ObservableList<Game> temp = FXCollections.observableArrayList(sortedByDifficulty);
 	                  History.setItems(temp);
-	                  isSorted = false;
 	              }
                 break;
             case "Date":
-	            if (!isSorted) {
+	            if (sortedByDate.isEmpty()) {
 	            	Sort sort = new Game();
 		  			for (Object obj : sort.getSorted("Date"))
 		                   sortedByDate.add((Game) obj);
@@ -257,15 +246,13 @@ public class historyController implements Initializable{
 		              sort(dataGame); 	
 	            }
 		      	else {
-		      		ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+		      		ObservableList<Game> temp = FXCollections.observableArrayList(sortedByDate);
 		      	     History.setItems(temp);
-		      	     
-		      	     isSorted = false;
 		      	}
                 break;
             case "Duration":
             	
-                if (!isSorted) {
+                if (sortedByDuration.isEmpty()) {
                     Sort sort = new Game();
                     for (Object obj : sort.getSorted("Duration")) {
                         sortedByDuration.add((Game) obj);
@@ -273,12 +260,10 @@ public class historyController implements Initializable{
                     System.out.println("by Duration:" + sortedByDuration);
                     ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDuration);
                     sort(dataGame);
-                    isSorted = true;
                 } 
                 else {
-                    ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
+                    ObservableList<Game> temp = FXCollections.observableArrayList(sortedByDuration);
                     History.setItems(temp);
-                    isSorted = false;
                 }
         }
     }
@@ -289,11 +274,7 @@ public class historyController implements Initializable{
         Gamesdata.addAll(sortedList);
         History.refresh();
     }
-
-    @FXML
-    void ShowTopThree(ActionEvent event) {
-    	methods.newScreen("topThree");
-    }    
+   
    
     @FXML
     void exit(ActionEvent event) {
@@ -339,7 +320,12 @@ public class historyController implements Initializable{
 		
 		History.setItems(Gamesdata);
     }
-	
+    @FXML
+    void reset(ActionEvent event) {
+    	ObservableList<Game> dataGame = FXCollections.observableArrayList(originalOrder);
+        sort(dataGame);
+    }
+    
 	 @FXML
 	 void entered(MouseEvent event) {
 		 methods.entered(event);
@@ -349,4 +335,9 @@ public class historyController implements Initializable{
 	 void exited(MouseEvent event) {
 		methods.exited(event);
 	 }	
+	
+	 @FXML
+	    void showTopThree(ActionEvent event){
+	    	methods.newScreen("TopThree");
+	 }
 }
