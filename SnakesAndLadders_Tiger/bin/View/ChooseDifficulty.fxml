@@ -60,7 +60,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="homeButton" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#goHome" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
+      <Button fx:id="homeButton" layoutX="716.0" layoutY="74.0" mnemonicParsing="false" onAction="#goHome" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
@@ -72,9 +72,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="musicIcon" layoutX="3.0" layoutY="535.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="545.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="47.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+            <ImageView fitHeight="40.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
                <image>
                   <Image url="@../img/icons/music.png" />
                </image>

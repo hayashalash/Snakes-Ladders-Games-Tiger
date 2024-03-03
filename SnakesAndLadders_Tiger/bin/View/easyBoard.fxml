@@ -21,7 +21,7 @@
             <Image url="@../img/screens/easyStageBack.jpg" />
          </image>
       </ImageView>
-      <HBox fx:id="playersStart" layoutX="63.0" layoutY="518.0" prefHeight="50.0" prefWidth="168.0" />
+      <HBox fx:id="playersStart" layoutX="46.0" layoutY="505.0" prefHeight="50.0" prefWidth="180.0" />
       <VBox fx:id="playerNamesVbox" layoutY="161.0" prefHeight="235.0" prefWidth="206.0">
          <children>
             <HBox fx:id="player1" prefHeight="59.0" prefWidth="153.0" />
@@ -103,7 +103,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="diceButton" layoutX="25.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDiceClick" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="110.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+      <Button fx:id="diceButton" layoutX="25.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDiceClick" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
          </graphic>
          <graphic>
@@ -116,9 +116,9 @@
       </ImageView>
       <ImageView fx:id="surpriseValue" fitHeight="120.0" fitWidth="120.0" layoutX="445.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="surprise" fitHeight="388.0" fitWidth="482.0" layoutX="271.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="musicIcon" layoutX="3.0" layoutY="535.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="545.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="47.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+            <ImageView fitHeight="40.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
                <image>
                   <Image url="@../img/icons/music.png" />
                </image>

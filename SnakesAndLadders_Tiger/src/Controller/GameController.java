@@ -59,7 +59,7 @@ import javafx.scene.layout.StackPane;
     private final double E_SURPRISE_SIZE = 50; // surprise icon size
     private final double E_RED_SNAKE_SIZE = 50; 
     private final double E_TILE_SIZE  = 76;
-	private final double E_TOKEN_SIZE = 50;
+	private final double E_TOKEN_SIZE = 45;
 	// Normal Board Sizes
     private final double N_QUESTION_SIZE = 30; // question icon size
     private final double N_SURPRISE_SIZE = 35; // surprise icon size
