@@ -27,12 +27,6 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 
 		 // Common UI elements
 	    @FXML
-	    protected ImageView surpriseValue;
-
-	    @FXML
-	    protected ImageView surprise;
-
-	    @FXML
 	    protected Button exitButton;
 
 	    @FXML
@@ -44,41 +38,12 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 	    @FXML
 	    protected Button update;
 
-	    @FXML
-	    protected Label time;
-
-	    @FXML
-	    protected Timeline timer;
-	    
-
-	    @FXML
-	    protected Duration gameDuration = Duration.ZERO;
 	    Methods methods = new Methods();
-		public static Game game;
-		private GameController gameController;
-		private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
-		ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 
 		@FXML
 	    private GridPane grid;
 
-	    @FXML
-	    private HBox playersStart;
-
-	    @FXML
-	    private HBox player1;
-
-	    @FXML
-	    private HBox player2;
-
-	    @FXML
-	    private HBox player3;
-
-	    @FXML
-	    private HBox player4;  
 	    
-	    @FXML
-	    private Button diceButton;
 	     	    
 	    
 	    
