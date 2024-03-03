@@ -59,7 +59,11 @@ public class SysData {
 			}
 			return sysData;
 		}
-	
+/*
+ * After writing to JSON (writeToJson), we add the question to addedAgainToJSON, 
+ * remove it from deleted, and then call SysData.getInstance().readFromJson(), 
+ * which implies that observers are being notified of the change.	
+ */
 
 	public void readFromJson() throws IOException,  ParseException {
 		

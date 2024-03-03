@@ -351,8 +351,8 @@ public class historyController implements Initializable{
 		methods.exited(event);
 	 }	
 	
-	 @FXML
-	    void showTopThree(ActionEvent event){
+	@FXML
+	   void showTopThree(ActionEvent event){
 	    	methods.newScreen("TopThree");
-	 }
+	}
 }

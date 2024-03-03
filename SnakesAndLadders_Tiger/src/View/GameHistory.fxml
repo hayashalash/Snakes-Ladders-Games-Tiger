@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -62,25 +62,25 @@
             <Font name="Serif Regular" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="resetbutton" layoutX="282.0" layoutY="149.0" mnemonicParsing="false" onAction="#reset" prefHeight="26.0" prefWidth="50.0" style="-fx-background-color: #FFEFD5 #FFEFD5;" text="reset" textOverrun="CLIP">
+      <Button fx:id="resetbutton" layoutX="282.0" layoutY="149.0" mnemonicParsing="false" onAction="#reset" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="26.0" prefWidth="50.0" style="-fx-background-color: #FFEFD5 #FFEFD5; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );" text="reset" textOverrun="CLIP">
          <cursor>
-            <Cursor fx:constant="DEFAULT" />
+            <Cursor fx:constant="HAND" />
          </cursor>
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="topthree1" layoutX="580.0" layoutY="139.0" mnemonicParsing="false" onAction="#showTopThree" prefHeight="45.0" prefWidth="131.0" style="-fx-background-color: #FFEFD5 #FFEFD5;" text="Show Top Three" textOverrun="CLIP">
+      <Button fx:id="topthree1" layoutX="580.0" layoutY="156.0" mnemonicParsing="false" onAction="#showTopThree" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="28.0" prefWidth="131.0" style="-fx-background-color: #FFEFD5 #FFEFD5; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );" text="Show Top Three" textOverrun="CLIP">
          <cursor>
-            <Cursor fx:constant="DEFAULT" />
+            <Cursor fx:constant="HAND" />
          </cursor>
          <font>
-            <Font name="Arial Black" size="12.0" />
+            <Font name="Serif Regular" size="15.0" />
          </font>
-               </Button> 
-      <Button fx:id="musicIcon" layoutX="3.0" layoutY="535.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+               </Button>
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="545.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;">
          <graphic>
-            <ImageView fitHeight="47.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+            <ImageView fitHeight="40.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
                <image>
                   <Image url="@../img/icons/music.png" />
                </image>
