@@ -1,6 +1,7 @@
 package Controller;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -77,6 +78,9 @@ public class NormalController implements Initializable{
     private Button info;
     
     @FXML
+    private Button update;
+    
+    @FXML
     private Label time;
     
     @FXML
@@ -96,6 +100,14 @@ public class NormalController implements Initializable{
     
     private HashMap<Integer, String> diceImageMap;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
@@ -104,6 +116,14 @@ public class NormalController implements Initializable{
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        
 		if(!board.createBoard())
     	{
     		Alerts.warning("An error occured while creating the board!");
@@ -259,5 +279,22 @@ public class NormalController implements Initializable{
     void exited(MouseEvent event){
     	methods.exited(event);
     }
+    
+	@FXML
+	void updateBoard(ActionEvent event) throws IOException {
+		if (Alerts.restartGame() == 1) {
+			// Reset the game state through the GameController instance
+		    if (gameController != null) {
+		        gameController.resetGame();
+		    }
+
+		    // Create a new game instance
+		    NormalController.game = new Game(Difficulty.Medium, NormalController.game.getPlayers(), LocalDate.now());
+
+		    // Navigate to the hard board screen
+		    methods.newScreen("normalBoard");
+		}
+	}
+
 
 }

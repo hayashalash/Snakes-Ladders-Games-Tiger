@@ -77,7 +77,6 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button exit;
     
-    
     @FXML
     private CheckBox checkDifficulty;
 
@@ -85,6 +84,9 @@ public class ManageQuestionsController implements Initializable {
     private CheckBox checkOrder;
     
     public AudioClip note;
+
+    @FXML
+    private Button retrive;
 
     @FXML
     private TextField searchField;
@@ -98,6 +100,13 @@ public class ManageQuestionsController implements Initializable {
     ArrayList<Question> sorted = new ArrayList<>(); // Arraylist to store the sorted questions
     private boolean isSorted = false;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
 
     @FXML
     void OrderDifficulty(ActionEvent event) {
@@ -131,7 +140,7 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     void deleteQuestion(ActionEvent event) throws IOException, ParseException {
     	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    		Alerts.message("Error","Please select a question to delete.");
+    		Alerts.warning("Please select a question to delete.");
     		return;
     	}
     	String deletedQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
@@ -159,13 +168,19 @@ public class ManageQuestionsController implements Initializable {
     void editQuestion(ActionEvent event) {
  
     		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    			Alerts.message("Error", "Please choose question that you want to edit.");
+    			Alerts.warning("Please choose question that you want to edit.");
     			return;
     		}
     		//the question that we want to update is selected
     		EditQuestionController.edited = questionTable.getSelectionModel().getSelectedItem();
     		methods.newScreen("EditQuestion");
     	}
+    
+
+    @FXML
+    void retriveQuestion(ActionEvent event) {
+    	methods.newScreen("RestoreQuestion");
+    }
 
     @FXML
     void exitGame(ActionEvent event) {
@@ -180,23 +195,21 @@ public class ManageQuestionsController implements Initializable {
 
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-//    	  questionTable.setRowFactory(tv -> {
-//              TableRow<Question> row = new TableRow<>();
-//              row.setOnMouseClicked(event -> {
-//            	    if (!row.isEmpty()) {
-//            	        // Change text color to blue when the row is selected
-//            	        row.setStyle("-fx-text-fill: blue;");
-//            	    }
-//            	});	
-//              return row;
-//          });
+
     	Tooltip a = new Tooltip("Add Question");
         Tooltip.install(add, a);
         Tooltip ed = new Tooltip("Edit");
         Tooltip.install(edit, ed);
         Tooltip d = new Tooltip("Delete");
         Tooltip.install(delete, d);
-      
+        Tooltip r = new Tooltip("Restore Question");
+        Tooltip.install(retrive, r);
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
         fill();
         questionTable.refresh();
 	}

@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -71,6 +72,9 @@ public class EasyController implements Initializable{
     private Button info;
     
     @FXML
+    private Button update;
+    
+    @FXML
     private Label time;
     
     @FXML
@@ -90,6 +94,13 @@ public class EasyController implements Initializable{
     
     private HashMap<Integer, String> diceImageMap;
     
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
 
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
@@ -111,6 +122,14 @@ public class EasyController implements Initializable{
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        
 		if(!board.createBoard())
     	{
     		Alerts.warning("An error occured while creating the board!");
@@ -251,4 +270,21 @@ public class EasyController implements Initializable{
     void showInfo(ActionEvent event) throws IOException{
     	gameController.showInfo();
     }
+    
+	@FXML
+	void updateBoard(ActionEvent event) throws IOException {
+		if (Alerts.restartGame() == 1) {
+		    // Reset the game state through the GameController instance
+		    if (gameController != null) {
+		        gameController.resetGame();
+		    }
+
+		    // Create a new game instance
+		    EasyController.game = new Game(Difficulty.Easy, EasyController.game.getPlayers(), LocalDate.now());
+
+		    // Navigate to the hard board screen
+		    methods.newScreen("easyBoard");
+		}
+	}
+
 }

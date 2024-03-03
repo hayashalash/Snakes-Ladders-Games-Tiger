@@ -21,7 +21,7 @@
             <Image url="@../img/screens/hardStageBack.jpg" />
          </image>
       </ImageView>
-      <HBox fx:id="playersStart" layoutX="14.0" layoutY="519.0" prefHeight="40.0" prefWidth="197.0" />
+      <HBox fx:id="playersStart" layoutX="65.0" layoutY="523.0" prefHeight="40.0" prefWidth="150.0" />
       <VBox fx:id="playerNamesVbox" layoutX="6.0" layoutY="165.0" prefHeight="235.0" prefWidth="204.0">
          <children>
             <HBox fx:id="player1" prefHeight="59.0" prefWidth="153.0" />
@@ -71,7 +71,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button fx:id="home" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-border-radius: 50;" textFill="#651d1d">
+      <Button fx:id="home" layoutX="5.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent; -fx-border-radius: 50;" textFill="#651d1d">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3, 0 );">
                <image>
@@ -79,11 +82,11 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="info" layoutX="55.0" layoutY="10.0" mnemonicParsing="false" onAction="#showInfo" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </Button>
-      <Button fx:id="info" layoutX="65.0" layoutY="10.0" mnemonicParsing="false" onAction="#showInfo" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
                <image>
@@ -91,9 +94,18 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="update" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/update.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Label fx:id="time" layoutX="60.0" layoutY="90.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #d2691e; -fx-border-radius: 10;" text="00 : 00" textFill="CHOCOLATE">
          <font>
@@ -110,10 +122,22 @@
       </ImageView>
         <ImageView fx:id="surpriseValue" fitHeight="120.0" fitWidth="120.0" layoutX="435.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="surprise" fitHeight="388.0" fitWidth="482.0" layoutX="261.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="diceButton" layoutX="33.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleDiceClick" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
+      <Button fx:id="diceButton" layoutX="25.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleDiceClick" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: transparent; -fx-border-width: 0;">
          <graphic>
             <ImageView fx:id="diceResult" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(one-pass-box , black , 8 , 0.0 , 2 , 4);" />
          </graphic>
+      </Button>
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="535.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="46.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+               <image>
+                  <Image url="@../img/icons/music.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>  
    </children>
 </AnchorPane>

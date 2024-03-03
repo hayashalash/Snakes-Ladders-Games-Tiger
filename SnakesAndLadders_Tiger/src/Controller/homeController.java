@@ -14,8 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -27,10 +28,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 
 public class homeController implements Initializable{
 
-	private static final String ADMIN = "/img/screens/admin.jpg";
+	private static final String ADMIN = "/img/screens/AdminLogin.jpg";
+	private static final String EXIT_ICON = "/img/icons/X.png";
 
 	Methods methods = new Methods();
 	
@@ -50,27 +53,20 @@ public class homeController implements Initializable{
     private Button start;
 
     @FXML
-    private ImageView turnOffIcon = new ImageView();
-
-    @FXML
-    private Button musicOff;
+    private Button musicIcon;
     
     //public AudioClip note = new AudioClip(this.getClass().getResource("/img/wavs/sound.mp3").toString());
 
-    @FXML
+    public Button getMusicIcon() {
+		return musicIcon;
+	}
+
+	@FXML
     void TurnOffOn(ActionEvent event) {
-    	if (Main.note.isPlaying()) {
-    		turnOffIcon.setOpacity(1.0);
-    		Main.stopBackgroundMusic();
-    	}
-    	else {
-    		turnOffIcon.setOpacity(0.0);
-    		Main.resumeBackgroundMusic();
-    	}
+    	methods.turnOffOn(event, musicIcon);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-    	turnOffIcon.setMouseTransparent(true);
         Tooltip h = new Tooltip("History");
         Tooltip.install(history, h);
         Tooltip q = new Tooltip("Questions");
@@ -85,15 +81,17 @@ public class homeController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	 
+
     	if (Main.note.isPlaying()) {
-    		turnOffIcon.setOpacity(0.0);
-    		//Main.stopBackgroundMusic();
+    		musicIcon.setOpacity(1.0);
     	}
     	else {
-    		turnOffIcon.setOpacity(1.0);
-    		//Main.resumeBackgroundMusic();
+    		musicIcon.setOpacity(0.5);
     	}
+        if (Main.playing) { // indicated the music playing upon opening the system
+        	Main.playing = false;
+        	musicIcon.setOpacity(1.0);
+        }
     }
     
     @FXML
@@ -135,18 +133,23 @@ public class homeController implements Initializable{
         // Create a custom dialog
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Admin Access Only");
+        dialog.initStyle(StageStyle.UNDECORATED);
         ImageView imageView = new ImageView(new Image(ADMIN));
-        imageView.setFitWidth(400);
+        imageView.setFitWidth(300);
         imageView.setFitHeight(300);
+        dialog.getDialogPane().setPrefWidth(300);
+        dialog.getDialogPane().setPrefHeight(300);
 
         PasswordField textField = new PasswordField();
-        textField.setPrefHeight(20);
-        textField.setMaxWidth(150);
+        textField.setPrefHeight(40);
+        textField.setMaxWidth(200);
         textField.setPromptText("Enter Password");
+        textField.setStyle("-fx-border-radius: 10;");
         Button logInButton = new Button("Log In");
+        logInButton.setPrefHeight(40);
+        logInButton.setPrefWidth(200); // Set the same width as the text field
         logInButton.setPadding(new Insets(5, 5, 5, 5));
-        // Apply CSS styles to the button
-        logInButton.setStyle(methods.getButtonStyle()); // Drop shadow effect
+        logInButton.setStyle("-fx-border-radius: 20; -fx-background-color: #dfbc95; " + methods.getButtonStyle()); // Drop shadow effect
         logInButton.setOnMouseEntered(e -> entered(e));
         logInButton.setOnMouseExited(e -> exited(e));
         Label errorLabel = new Label("Incorrect Password");
@@ -156,39 +159,56 @@ public class homeController implements Initializable{
         VBox vbox = new VBox(textField, errorLabel, logInButton);
 
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(5); // Set spacing between the text field and button
-        vbox.setPadding(new Insets(140, 0, 0, 0)); // Set padding around the layout
+        vbox.setSpacing(2); // Set spacing between the text field and button
+        vbox.setPadding(new Insets(180, 0, 0, 0)); // Set padding around the layout
         
         logInButton.setOnAction(e -> {
-        	String p = textField.getText();
-        	if (Admin.getInstance().checkPassword(p)) {
-        		methods.newScreen("manageQuestion");
-        		dialog.close();
-        	}
-        	else {
-        		textField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
-        		// Show a label with red text underneath the text field to notify the user of a wrong password
+            String p = textField.getText();
+            if (Admin.getInstance().checkPassword(p)) {
+                methods.newScreen("manageQuestion");
+                dialog.close();
+            }
+            else {
+                textField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                // Show a label with red text underneath the text field to notify the user of a wrong password
                 errorLabel.setOpacity(1);
-        	}
+            }
         });
         logInButton.setDefaultButton(true);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-        	// If the user starts typing, remove the error label if it exists
+            // If the user starts typing, remove the error label if it exists
             if (errorLabel.getOpacity() != 0) {
                 errorLabel.setOpacity(0);
                 // Reset the style of the text field to its default state
                 textField.setStyle("");
             }
-	    });
+        });
         // Add the background image and the elements to a layout
         StackPane content = new StackPane();
         content.getChildren().addAll(imageView, vbox);
+
+        // Add cancel button
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(cancelButtonType);
+
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(cancelButtonType);
+        ImageView exitIcon = new ImageView(new Image(EXIT_ICON));
+        exitIcon.setFitWidth(20);
+        exitIcon.setFitHeight(20);
+        cancelButton.setGraphic(exitIcon);
+        cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
+        cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
+        cancelButton.setOnMouseEntered(e -> entered(e));
+        cancelButton.setOnMouseExited(e -> exited(e));
+        StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
+        StackPane.setMargin(cancelButton, new Insets(10));
+
+        content.setPadding(new Insets(0)); // Set padding of the StackPane to zero
         // Set the layout as the content of the dialog
         dialog.getDialogPane().setContent(content);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         // Show the dialog
         dialog.showAndWait();
     }
-    
+
 }

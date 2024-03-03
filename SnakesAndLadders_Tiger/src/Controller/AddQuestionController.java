@@ -57,6 +57,14 @@ public class AddQuestionController implements Initializable{
     private Button exitButton;
 
     @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    
+    @FXML
     boolean addQuestion(ActionEvent event) throws IOException, ParseException {
     	if(questionText.getText().length() == 0 || ans1Text.getText().length() == 0 ||
     			ans2Text.getText().length() == 0 || ans3Text.getText().length() == 0 ||
@@ -125,6 +133,13 @@ public class AddQuestionController implements Initializable{
 			difficulty.getItems().add(d);
 		}
 		correctAnswer.getItems().addAll(1, 2, 3, 4);
+		
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
 	}
 	
 	@FXML

@@ -21,13 +21,26 @@ public class infoController implements Initializable {
 	@FXML
 	private Button closeButton;
 
-    @FXML
+	@FXML
     private Button homeButton;
 
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Auto-generated method stub
-		
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
 	}
 	
     @FXML
@@ -39,9 +52,9 @@ public class infoController implements Initializable {
     public Button getHomeButton() {
 		return homeButton;
 	}
-
-	public void setHomeButton(Button homeButton) {
-		this.homeButton = homeButton;
+    
+    public Button getCloseButton() {
+		return closeButton;
 	}
 
 	@FXML

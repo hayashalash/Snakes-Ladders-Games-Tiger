@@ -1,10 +1,12 @@
 package Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 public class Methods {
@@ -46,5 +48,16 @@ public class Methods {
     	((Node)event.getSource()).setScaleX(1);
     	((Node)event.getSource()).setScaleY(1);
     	((Node)event.getSource()).setCursor(Cursor.DEFAULT);
+    }
+    
+    void turnOffOn(ActionEvent event, Button musicIcon) {
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(0.5);
+    		Main.stopBackgroundMusic();
+    	}
+    	else {
+    		musicIcon.setOpacity(1);
+    		Main.resumeBackgroundMusic();
+    	}
     }
 }

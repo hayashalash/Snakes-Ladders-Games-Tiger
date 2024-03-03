@@ -33,6 +33,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
@@ -41,6 +43,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import Model.SysData;
 import javafx.scene.control.*;
@@ -112,7 +115,8 @@ import javafx.scene.layout.StackPane;
 	private static final String DEFAULT_LADDER_IMAGE_PATH = null;
 	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
 	private static final String SURPRISE_PLUS_PATH = "/img/icons/surprisePlus.png"; 
-	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png"; 	
+	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png";
+	private static final String EXIT_ICON = "/img/icons/X.png";
 
 	//Fields
 	int returnVal = 0; // returns the number of steps the player should move based on their answer
@@ -356,6 +360,28 @@ import javafx.scene.layout.StackPane;
 			        	delay.play();
 			        });
 		    	}
+		    	else if (nextTile.gettType().equals(TileType.Surprise)){
+		    		int newRow = nextTile.getRow();
+				    int newColumn = nextTile.getColumn();	
+				    
+				    Platform.runLater(() -> {
+				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
+			        	player.setPlayerPlace(nextPos);
+				    });
+				    
+		    		// Wait 3 seconds before moving to the next tile
+				    int surpriseSteps = handleSurpriseTileReached();
+			        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+			        delay.setOnFinished(event -> {
+			        	System.out.println("newRow is: "+newPosition+surpriseSteps);
+			        	System.out.println("newColumn is: "+newPosition+surpriseSteps);
+					    displayPlayerToken(newRow, newColumn, player, newPosition+surpriseSteps);
+					    player.setPlayerPlace(newPosition+surpriseSteps);
+			        });
+			        Platform.runLater(() -> {
+			        	delay.play();
+			        });
+		    	}
 		    	else {
 			    	// Set player's new position
 		    		Platform.runLater(() -> {
@@ -440,61 +466,55 @@ import javafx.scene.layout.StackPane;
 	    if (playerToken == null) {
 	    	System.out.println("playerToken is NULL!");
 	    }
-	    if(newPosition!=0) { // new position is on the grid
-	    	// If the token is not already in the grid, add it
-		    if (getTokenFromGrid(player) == null) {
-		        grid.getChildren().add(playerToken);
-		    }
-		    Tile pos = board.getTile(newPosition);
-		    int row = pos.getRow();
-		    int column = pos.getColumn();
-		    playerToken.toFront();
-		    moveTokenToCell(currentR, currentC, row, column, playerToken);
-		    
-		    // Check if other players are already on this tile to avoid covering each other's tokens
-		    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
-		    for (Player p : game.getPlayers())
-		    	otherPlayers.add(p);
-		    otherPlayers.remove(player); // remove the current player playing from this list
-		    
-		    ArrayList<Integer> enteredTileOrder = new ArrayList<>(); // ArrayList for how the other players entered this tile
-		    // A player can be positioned on the tile in 4 different places in order to avoid covering each other
-		    for (Player p : otherPlayers) { // loop over the other players
-		    	if (p.getPlayerPlace() == newPosition) { // if the other player is on this tile i'm heading to
-		    		enteredTileOrder.add(p.getEnteredTile()); // save where they are positioned on the tile so I don't cover them
-		    	}
-		    }
-		    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER); // Center horizontally
-		    	GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER); // Center vertically
-		    	player.setEnteredTile(1); // I entered in the first position
-		    }
-		    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.LEFT); // set player at the cell's left
-		        GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
-		        player.setEnteredTile(2); // I entered in the second position
-		    }
-		    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.RIGHT); // set player at the cell's right
-	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
-	    		player.setEnteredTile(3); // I entered in the third position
-		    }
-		    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
-		    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER);
-	    		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
-	    		player.setEnteredTile(4); // I entered in the fourth position
-		    }
+//	    if (newPosition == 0 && getTokenFromStart(player) == null) { // if the player is not outside the board and new position is 0
+//	    	// place the player at first position in the board (tile 1)
+//	    	newPosition = 1;
+//	    }
+	    if (newPosition == 0 && getTokenFromGrid(player) == null) { // if player hasn't entered the board yet and new position is 0
+	    	return; // Do nothing
 	    }
-	    else { // if the new position is 0
-	    	if (getTokenFromStart(player) == null) { // if the player is not outside the board
-	    		playersStart.getChildren().add(playerToken); // place the player outside the board = position 0
-	    		playerToken.setVisible(true);
-	    		if (playerToken.isVisible()) {
-	    			System.out.println("player "+player.getPlayerName()+" is visible");
-	    		}
-	    		playerToken.toFront();
-	    		System.out.println("player "+player.getPlayerName()+" was added to the start HBox");
+	    else if (newPosition != 0 && getTokenFromGrid(player) == null) { // if new position is > 1 and player is outside the board
+	    	// If the token is not already in the grid, add it
+		    grid.getChildren().add(playerToken);
+	    }
+	    Tile pos = board.getTile(newPosition);
+	    int row = pos.getRow();
+	    int column = pos.getColumn();
+	    playerToken.toFront();
+	    moveTokenToCell(currentR, currentC, row, column, playerToken);
+	    
+	    // Check if other players are already on this tile to avoid covering each other's tokens
+	    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
+	    for (Player p : game.getPlayers())
+	    	otherPlayers.add(p);
+	    otherPlayers.remove(player); // remove the current player playing from this list
+	    
+	    ArrayList<Integer> enteredTileOrder = new ArrayList<>(); // ArrayList for how the other players entered this tile
+	    // A player can be positioned on the tile in 4 different places in order to avoid covering each other
+	    for (Player p : otherPlayers) { // loop over the other players
+	    	if (p.getPlayerPlace() == newPosition) { // if the other player is on this tile i'm heading to
+	    		enteredTileOrder.add(p.getEnteredTile()); // save where they are positioned on the tile so I don't cover them
 	    	}
+	    }
+	    if (!enteredTileOrder.contains(1)) { // if no other player is in position number 1 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER); // Center horizontally
+	    	GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER); // Center vertically
+	    	player.setEnteredTile(1); // I entered in the first position
+	    }
+	    else if (!enteredTileOrder.contains(2)) { // if no other player is in position number 2 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.LEFT); // set player at the cell's left
+	        GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
+	        player.setEnteredTile(2); // I entered in the second position
+	    }
+	    else if (!enteredTileOrder.contains(3)) { // if no other player is in position number 3 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.RIGHT); // set player at the cell's right
+    		GridPane.setValignment(playerToken, javafx.geometry.VPos.CENTER);
+    		player.setEnteredTile(3); // I entered in the third position
+	    }
+	    else if (!enteredTileOrder.contains(4)) { // if no other player is in position number 4 on the tile
+	    	GridPane.setHalignment(playerToken, javafx.geometry.HPos.CENTER);
+    		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
+    		player.setEnteredTile(4); // I entered in the fourth position
 	    }
 	}
 	
@@ -536,8 +556,12 @@ import javafx.scene.layout.StackPane;
 	        return currPosition; // Ensure next position is within the board boundaries
 	    }
 	    
-	    if (nextPos < 1) // Ensure next position is within the board boundaries
-	    	return 0;
+	    if (nextPos < 1) {// Ensure next position is within the board boundaries
+	    	if (p.getPlayerPlace() == 0)
+	    		return 0;
+	    	else
+	    		return 1;
+	    }
 
 	    Tile nextTile = board.getTile(nextPos);
 	    if (nextTile == null) {
@@ -565,8 +589,26 @@ import javafx.scene.layout.StackPane;
 	            
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
-	            int surpriseSteps = handleSurpriseTileReached();
-	            return nextPos+surpriseSteps;
+	            //int surpriseSteps = handleSurpriseTileReached();
+	            //return nextPos+surpriseSteps;
+	            
+	            
+	            int newPosition1 = nextPos;
+	    	    p.setPlayerPrevPlace(currPosition);
+	    	    // Set player's new position
+	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition1);
+	    	    p.setPlayerPlace(newPosition1);
+	    	    System.out.println("current player position on surprise tile: "+newPosition1);
+	    	    // Wait 2 seconds before showing the question dialog
+		        PauseTransition delay1 = new PauseTransition(Duration.seconds(5));
+		        delay1.setOnFinished(event -> {
+		        	int surpriseSteps = handleSurpriseTileReached();
+		    		move(p, newPosition1+surpriseSteps);
+		        });
+		        Platform.runLater(() -> {
+		        	delay1.play();
+		        });
+	            return p.getPlayerPlace();
 	            
 	        case Question:
 	            System.out.println("I have a question for you");
@@ -601,6 +643,8 @@ import javafx.scene.layout.StackPane;
     public int showQuestionPopup(Difficulty difficulty) { // view the question  dialog  and return the number of steps to move
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Question");
+	    // Disable the close button
+		dialog.initStyle(StageStyle.UNDECORATED);
 		
 			QuestionFactory qf = new QuestionFactory();
 			Question q = qf.returnQuestion(difficulty);
@@ -1031,6 +1075,7 @@ import javafx.scene.layout.StackPane;
             StackPane dialogContent = new StackPane();
             // Add the AnchorPane to the StackPane which centers better in a dialog than an AnchorPane
             dialogContent.getChildren().add(anchorPane);
+            dialogContent.setPadding(new Insets(0)); // Set padding of the StackPane to zero
             // Get the controller associated with the FXML of the game rules
             infoController controller = loader.getController();
             
@@ -1038,17 +1083,49 @@ import javafx.scene.layout.StackPane;
             Button homeButton = controller.getHomeButton();
             homeButton.setDisable(true);
             homeButton.setOpacity(0);
+            // Disable the button with fx:id "closeButton"
+            Button closeGame = controller.getCloseButton();
+            closeGame.setDisable(true);
+            closeGame.setOpacity(0);
+            
             
             // Create a dialog
             Dialog<Void> dialog = new Dialog<>();      
             dialog.getDialogPane().setContent(dialogContent);
+            dialog.initStyle(StageStyle.UNDECORATED);
             dialog.setTitle("Game Rules");
             ButtonType closeButton = new ButtonType("Close", ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().add(closeButton);
+
+            Button cancelButton = (Button) dialog.getDialogPane().lookupButton(closeButton);
+            ImageView exitIcon = new ImageView(new Image(EXIT_ICON));
+            exitIcon.setFitWidth(20);
+            exitIcon.setFitHeight(20);
+            cancelButton.setGraphic(exitIcon);
+            cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
+            cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
+            cancelButton.setOnMouseEntered(e -> methods.entered(e));
+            cancelButton.setOnMouseExited(e -> methods.exited(e));
+            StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
+            StackPane.setMargin(cancelButton, new Insets(10));            
             // Show the dialog
             dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+	
+	
+    // Method to reset the game state
+    public void resetGame() {
+        // Reset game duration, winner, and player positions
+        game.setGameDuration(null);
+        game.setWinner(null);
+        game.getPlayersOrder().clear();
+        for (Player p : game.getPlayers()) {
+            p.setPlayerPlace(0);
+            p.setPlayerPrevPlace(0);
+            p.setNumberOrder(0);
         }
     }
 

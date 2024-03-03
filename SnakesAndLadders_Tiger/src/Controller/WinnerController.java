@@ -70,8 +70,15 @@ public class WinnerController implements Initializable{
     
     Difficulty diff = game.getDifficulty();
 
-     @FXML
-     void playAgain(ActionEvent event) {
+    @FXML
+    private Button musicIcon;
+    
+    @FXML
+    void TurnOffOn(ActionEvent event) {
+    	methods.turnOffOn(event, musicIcon);
+    }
+    @FXML
+    void playAgain(ActionEvent event) {
     	if (diff == Difficulty.Easy) {
     		resetGame(EasyController.game);
      		EasyController.game = new Game(diff, EasyController.game.getPlayers(), LocalDate.now());
@@ -87,18 +94,18 @@ public class WinnerController implements Initializable{
      		HardController.game = new Game(diff, HardController.game.getPlayers(), LocalDate.now());
      		methods.newScreen("hardBoard");
      	}
-     }
+    }
      
-     void resetGame(Game game) {
-    	 game.setGameDuration(null);
-    	 game.setWinner(null);
-    	 game.getPlayersOrder().clear();
-    	 for (Player p : game.getPlayers()) {
-    		 p.setPlayerPlace(0);
-    		 p.setPlayerPrevPlace(0);
-    		 p.setNumberOrder(0);
-    	 }
-     }
+    void resetGame(Game game) {
+    	game.setGameDuration(null);
+    	game.setWinner(null);
+    	game.getPlayersOrder().clear();
+    	for (Player p : game.getPlayers()) {
+    		p.setPlayerPlace(0);
+    		p.setPlayerPrevPlace(0);
+    		p.setNumberOrder(0);
+    	}
+    }
      
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -137,6 +144,13 @@ public class WinnerController implements Initializable{
         winnerLabel.setStyle("-fx-text-fill: #cc8624; " +
                 "-fx-font-size: 36px; " +
                 "-fx-font-family: Broadway; ");
+        
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
     }
 
 	public void fillSummary() {
