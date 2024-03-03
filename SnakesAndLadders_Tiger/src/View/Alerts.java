@@ -113,7 +113,7 @@ public class Alerts {
         alert.setGraphic(warningAlert);
 		
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(customImage);
+		stage.getIcons().add(new Image("/img/icons/alert.png"));
 		stage.setAlwaysOnTop(true);
 		alert.show();
 	}
@@ -148,7 +148,7 @@ public class Alerts {
         alert.setGraphic(home);
 		
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(new Image("/img/icons/warning.png"));
+		stage.getIcons().add(new Image("/img/icons/alert.png"));
 		Optional<ButtonType> option = alert.showAndWait();
 		if (option.get() == ButtonType.OK)
 			return 1;
@@ -169,7 +169,7 @@ public class Alerts {
         alert.setGraphic(resart);
 		
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(new Image("/img/icons/warning.png"));
+		stage.getIcons().add(new Image("/img/icons/alert.png"));
 		Optional<ButtonType> option = alert.showAndWait();
 		if (option.get() == ButtonType.OK)
 			return 1;

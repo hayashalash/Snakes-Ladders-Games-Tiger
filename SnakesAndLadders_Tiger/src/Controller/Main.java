@@ -66,7 +66,6 @@ public class Main extends Application {
         }
     }
 
-
     public static void main(String[] args) {
         try {
 //        	String audioFile = "/img/wavs/gameSound.mp3";
