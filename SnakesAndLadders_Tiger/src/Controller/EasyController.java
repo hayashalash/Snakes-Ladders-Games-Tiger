@@ -15,6 +15,7 @@ import View.Alerts;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.util.Duration;
@@ -28,7 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-public class EasyController implements Initializable{
+public class EasyController extends BoardController implements Initializable{
 
 	Methods methods = new Methods();
 	
@@ -101,7 +102,7 @@ public class EasyController implements Initializable{
     void TurnOffOn(ActionEvent event) {
     	methods.turnOffOn(event, musicIcon);
     }
-
+	@Override
     public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
@@ -145,7 +146,7 @@ public class EasyController implements Initializable{
 	}
     
     @FXML
-    void handleDiceClick(ActionEvent event) throws InterruptedException {
+	public void handleDiceClick(ActionEvent event) throws InterruptedException {
     	// Enable the button after animation completes
         diceButton.setDisable(true);
         diceButton.setOpacity(1.0);
@@ -183,56 +184,56 @@ public class EasyController implements Initializable{
 
         timeline.play(); // Start the animation
     }
-
+	@Override
     public void onFinished(Player currentPlayer, int lastResult) {
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
         diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
     }
-    
-    private Player getNextPlayerToMove() {
+	@Override
+    public Player getNextPlayerToMove() {
         Player nextPlayer = game.getPlayersOrder().poll();
         game.getPlayersOrder().offer(nextPlayer);
         return nextPlayer;
     }
 
-
-    private void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+	@Override
+    public void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
     	if(diceResult <= 4) {
     		gameController.move(currentPlayer, diceResult);
 		}
     	else if(diceResult == 5) {
     		//display easy question 
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Easy);
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
+  		Platform.runLater(() -> {
+  	    int steps = gameController.showQuestionPopup(Difficulty.Easy);
+		System.out.println("steps to move after question are: "+steps);
+  		gameController.move(currentPlayer, steps); 
+		});
     		gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 6) {
     		//display normal question 
-//    		Platform.runLater(() -> {
-	//			int steps = showQuestionPopup(Difficulty.Medium);
-	//			System.out.println("steps to move after question are: "+steps);
-	//    		gameController.move(currentPlayer, steps); 
-//			});
+  		Platform.runLater(() -> {
+		int steps = gameController.showQuestionPopup(Difficulty.Medium);
+		System.out.println("steps to move after question are: "+steps);
+   		gameController.move(currentPlayer, steps); 
+     	});
     		gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
 
     	}
     	else if(diceResult == 7) {
     		//display hard question 	
-//    		Platform.runLater(() -> {
-	//			int steps = showQuestionPopup(Difficulty.Hard);
-	//			System.out.println("steps to move after question are: "+steps);
-	//    		gameController.move(currentPlayer, steps); 
-//		});
+ 		Platform.runLater(() -> {
+		int steps = gameController.showQuestionPopup(Difficulty.Hard);
+	    System.out.println("steps to move after question are: "+steps);
+ 		gameController.move(currentPlayer, steps); 
+	});
 		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
-
-	private void updateDiceImage(String imagePath) {//update the dice image 
+	@Override
+    public void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
     	 if (imagePath.equals(DEFAULT_DICE_IMAGE_PATH)) { // Add shadow only to the default image to show clickable
@@ -244,35 +245,10 @@ public class EasyController implements Initializable{
     }
     
 	
-	@FXML
-	void returnHome(ActionEvent event) {
-		if (Alerts.retunHome() == 1)
-			methods.newScreen("Home");
-    }
 	
+	@Override
 	@FXML
-    void exit(ActionEvent event) {
-		if (Alerts.exit()==1)
-			Main.mainWindow.close();
-    }
-	
-	@FXML
-    void entered(MouseEvent event){
-		methods.entered(event);
-    }
-	
-    @FXML
-    void exited(MouseEvent event){
-    	methods.exited(event);
-    }
-    
-    @FXML
-    void showInfo(ActionEvent event) throws IOException{
-    	gameController.showInfo();
-    }
-    
-	@FXML
-	void updateBoard(ActionEvent event) throws IOException {
+    public void updateBoard(ActionEvent event) {
 		if (Alerts.restartGame() == 1) {
 		    // Reset the game state through the GameController instance
 		    if (gameController != null) {
@@ -286,5 +262,14 @@ public class EasyController implements Initializable{
 		    methods.newScreen("easyBoard");
 		}
 	}
+	@Override
+	protected void entered() {
+		// TODO Auto-generated method stub
+		
+	}
+	 @FXML
+	    void showInfo(ActionEvent event) throws IOException{
+	    	gameController.showInfo();
+	    }
 
 }

@@ -5,14 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import Model.Board;
 import Model.Dice;
 import Model.Difficulty;
 import Model.Game;
-
 import Model.Player;
-
 import View.Alerts;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -32,8 +29,17 @@ import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 
-public class NormalController implements Initializable{
-    //Path
+public class NormalController extends BoardController implements Initializable  {
+	
+	public NormalController() {
+	    // Initialization code, if needed
+	}
+	
+    public NormalController(Difficulty bType) {
+		super();
+	}
+
+	//Path
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
 	
 	Methods methods = new Methods();
@@ -103,6 +109,8 @@ public class NormalController implements Initializable{
     @FXML
     private Button musicIcon;
     
+    
+    
     @FXML
     void TurnOffOn(ActionEvent event) {
     	methods.turnOffOn(event, musicIcon);
@@ -137,7 +145,8 @@ public class NormalController implements Initializable{
 	    gameController.showQuestions();
 	    gameController.showSurprises();
 	}
-    
+	
+	@Override
 	public void initializeMap() {
         // Initialize the mapping between dice numbers and image paths of it 
         diceImageMap = new HashMap<>();
@@ -156,8 +165,9 @@ public class NormalController implements Initializable{
         diceImageMap.put(12, "/img/icons/diceQ.png");
     }
 	
+	@Override
     @FXML
-    void handleDiceClick(ActionEvent event) throws InterruptedException {
+    public void handleDiceClick(ActionEvent event) throws InterruptedException {
     	// Enable the button after animation completes
         diceButton.setDisable(true);
         diceButton.setOpacity(1.0);
@@ -195,21 +205,24 @@ public class NormalController implements Initializable{
 
         timeline.play(); // Start the animation
     }
-
-    public void onFinished(Player currentPlayer, int lastResult) {
+	
+	@Override
+	public void onFinished(Player currentPlayer, int lastResult) {
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
         diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
     }
-    
-    private Player getNextPlayerToMove() {
+	
+	@Override
+	public Player getNextPlayerToMove() {
         Player nextPlayer = game.getPlayersOrder().poll(); // Take the player out of the queue to start their turn
         game.getPlayersOrder().offer(nextPlayer); // Return the player to the end of the queue
         return nextPlayer;
     }
-
-    private void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+	
+	@Override
+	public void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
     	if(diceResult <= 6) {
     		gameController.move(currentPlayer, diceResult);
 		}
@@ -241,8 +254,8 @@ public class NormalController implements Initializable{
 //    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
-
-	private void updateDiceImage(String imagePath) {//update the dice image 
+	@Override
+	public void updateDiceImage(String imagePath) {//update the dice image 
     	 Image image = new Image(getClass().getResource(imagePath).toExternalForm());
     	 diceResult.setImage(image);
     	 if (imagePath.equals(DEFAULT_DICE_IMAGE_PATH)) { // Add shadow only to the default image to show clickable
@@ -253,35 +266,10 @@ public class NormalController implements Initializable{
     	 }
     }
 
-    @FXML
-    void showInfo(ActionEvent event) throws IOException{	
-    	gameController.showInfo();
-    }
-	
+   
+	@Override
 	@FXML
-	void returnHome(ActionEvent event) {
-		if (Alerts.retunHome() == 1)
-			methods.newScreen("Home");
-    }
-	
-	@FXML
-    void exit(ActionEvent event) {
-		if (Alerts.exit() == 1)
-			Main.mainWindow.close();
-    }
-	
-	@FXML
-    void entered(MouseEvent event){
-    	methods.entered(event);
-    }
-	
-    @FXML
-    void exited(MouseEvent event){
-    	methods.exited(event);
-    }
-    
-	@FXML
-	void updateBoard(ActionEvent event) throws IOException {
+	public void updateBoard(ActionEvent event) throws IOException {
 		if (Alerts.restartGame() == 1) {
 			// Reset the game state through the GameController instance
 		    if (gameController != null) {
@@ -295,6 +283,16 @@ public class NormalController implements Initializable{
 		    methods.newScreen("normalBoard");
 		}
 	}
+
+	@Override
+	protected void entered() {
+		// TODO Auto-generated method stub
+		
+	}
+	 @FXML
+	    void showInfo(ActionEvent event) throws IOException{
+	    	gameController.showInfo();
+	    }
 
 
 }
