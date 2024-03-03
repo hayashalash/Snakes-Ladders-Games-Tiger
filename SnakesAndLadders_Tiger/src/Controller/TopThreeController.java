@@ -38,13 +38,31 @@ public class TopThreeController implements Initializable {
 
     @FXML
     private Text player3;
+    
+    @FXML
+    private Button previousButton;
+
+
+    @FXML
+    void previous(ActionEvent event) {
+    	methods.newScreen("GameHistory");
+    }
 
     @FXML
     void exit(ActionEvent event) {
-    	methods.newScreen("GameHistory");
-
+    	if (Alerts.exit()==1)
+			Main.mainWindow.close();
     }
-	
+    
+    @FXML
+	 void entered(MouseEvent event) {
+		 methods.entered(event);
+	 }
+	 
+	@FXML
+	 void exited(MouseEvent event) {
+		methods.exited(event);
+	 }	
 	 
     
     private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them

@@ -86,7 +86,7 @@ public class historyController implements Initializable{
     private ComboBox<String> orderBox;
     
     @FXML
-    private Button reset;
+    private Button resetbutton;
 
     @FXML
     private Button topthree;

@@ -11,51 +11,57 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TopThreeController">
    <children>
-      <ImageView fitHeight="500.0" fitWidth="726.0" layoutX="-4.0" layoutY="-13.0">
+      <ImageView fitHeight="492.0" fitWidth="727.0" layoutX="-4.0" layoutY="45.0">
          <image>
             <Image url="@../img/screens/topThreeScreen.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="48.0" fitWidth="46.0" layoutX="336.0" layoutY="129.0">
+      <ImageView fitHeight="48.0" fitWidth="46.0" layoutX="341.0" layoutY="129.0">
          <image>
             <Image url="@../img/icons/crown.png" />
          </image>
       </ImageView>
-      <Circle fill="#3e2f0c" layoutX="269.0" layoutY="260.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fill="#3e2f0c" layoutX="364.0" layoutY="215.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fill="#3e2f0c" layoutX="456.0" layoutY="271.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#0d0d38" layoutX="224.0" layoutY="273.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#660909" layoutX="364.0" layoutY="215.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#01330f" layoutX="498.0" layoutY="273.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
       <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="325.0" layoutY="177.0">
          <image>
             <Image url="@../img/icons/tiger.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="230.0" layoutY="222.0">
+      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="185.0" layoutY="235.0">
          <image>
             <Image url="@../img/icons/tiger.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="417.0" layoutY="233.0">
+      <ImageView fitHeight="76.0" fitWidth="78.0" layoutX="459.0" layoutY="235.0">
          <image>
             <Image url="@../img/icons/tiger.png" />
          </image>
       </ImageView>
-      <Text fx:id="player1" fill="#3e2f0c" layoutX="336.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruba">
+      <Text fx:id="player1" fill="#660909" layoutX="336.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruba">
          <font>
-            <Font name="System Italic" size="25.0" />
+            <Font name="Baskerville Old Face" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="player2" fill="#3e2f0c" layoutX="241.0" layoutY="333.0" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="0.0" text="Haya" textAlignment="CENTER">
+      <Text fx:id="player2" fill="#0d0d38" layoutX="196.0" layoutY="346.0" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="0.0" text="Haya" textAlignment="CENTER">
          <font>
-            <Font name="System Italic" size="25.0" />
+            <Font name="Baskerville Old Face" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="player3" fill="#3e2f0c" layoutX="427.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bisan">
+      <Text fx:id="player3" fill="#01330f" layoutX="469.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bisan">
          <font>
-            <Font name="System Italic" size="25.0" />
+            <Font name="Baskerville Old Face" size="27.0" />
          </font>
       </Text>
-      <Text layoutX="259.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2nd" />
-      <Text layoutX="447.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3rd" />
+      <Text fill="#0d0d38" layoutX="206.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2nd">
+         <font>
+            <Font name="Baskerville Old Face" size="23.0" />
+         </font></Text>
+      <Text fill="#01330f" layoutX="484.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3rd">
+         <font>
+            <Font name="Baskerville Old Face" size="23.0" />
+         </font></Text>
       <Button fx:id="exitButton" accessibleText="exit" layoutX="664.0" layoutY="8.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -64,6 +70,18 @@
             <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
                   <Image url="@../img/icons/X.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="previousButton" layoutX="14.0" layoutY="396.0" mnemonicParsing="false" onAction="#previous" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="38.0" fitWidth="90.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/previous.png" />
                </image>
             </ImageView>
          </graphic>
