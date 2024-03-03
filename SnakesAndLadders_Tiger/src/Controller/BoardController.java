@@ -3,29 +3,18 @@ package Controller;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
-import Model.Game;
 import Model.Player;
 import View.Alerts;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 
-	
-	
-
-		 // Common UI elements
+		// Common UI elements
 	    @FXML
 	    protected Button exitButton;
 
@@ -43,12 +32,7 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 		@FXML
 	    private GridPane grid;
 
-	    
-	     	    
-	    
-	    
-	  //template method, final so subclasses can't override
-		
+		//template method, final so subclasses can't override
 
 	    protected abstract void entered();
 
@@ -101,12 +85,6 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 			entered(null);
 			exited(null);
 		    
-		    
 		}
-	  
-	    
-	      
 
 	}
-
-

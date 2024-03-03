@@ -17,6 +17,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -99,6 +100,7 @@ public class HardController extends BoardController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		playersStart.setAlignment(Pos.BASELINE_RIGHT);
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);

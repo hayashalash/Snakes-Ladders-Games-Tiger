@@ -253,6 +253,7 @@ import javafx.scene.layout.StackPane;
 				icons.put(p, yellowPlayer); // associate created icon with the player
 			}
 		}
+		
 		for (ImageView iv : playerIcons) { // the player icons that will move on the board
 			iv.setFitHeight(TOKEN_SIZE);
 			iv.setFitWidth(TOKEN_SIZE);
@@ -360,28 +361,28 @@ import javafx.scene.layout.StackPane;
 			        	delay.play();
 			        });
 		    	}
-		    	else if (nextTile.gettType().equals(TileType.Surprise)){
-		    		int newRow = nextTile.getRow();
-				    int newColumn = nextTile.getColumn();	
-				    
-				    Platform.runLater(() -> {
-				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
-			        	player.setPlayerPlace(nextPos);
-				    });
-				    
-		    		// Wait 3 seconds before moving to the next tile
-				    int surpriseSteps = handleSurpriseTileReached();
-			        PauseTransition delay = new PauseTransition(Duration.seconds(5));
-			        delay.setOnFinished(event -> {
-			        	System.out.println("newRow is: "+newPosition+surpriseSteps);
-			        	System.out.println("newColumn is: "+newPosition+surpriseSteps);
-					    displayPlayerToken(newRow, newColumn, player, newPosition+surpriseSteps);
-					    player.setPlayerPlace(newPosition+surpriseSteps);
-			        });
-			        Platform.runLater(() -> {
-			        	delay.play();
-			        });
-		    	}
+//		    	else if (nextTile.gettType().equals(TileType.Surprise)){
+//		    		int newRow = nextTile.getRow();
+//				    int newColumn = nextTile.getColumn();	
+//				    
+//				    Platform.runLater(() -> {
+//				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
+//			        	player.setPlayerPlace(nextPos);
+//				    });
+//				    
+//		    		// Wait 3 seconds before moving to the next tile
+//				    int surpriseSteps = handleSurpriseTileReached();
+//			        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+//			        delay.setOnFinished(event -> {
+//			        	System.out.println("newRow is: "+newPosition+surpriseSteps);
+//			        	System.out.println("newColumn is: "+newPosition+surpriseSteps);
+//					    displayPlayerToken(newRow, newColumn, player, newPosition+surpriseSteps);
+//					    player.setPlayerPlace(newPosition+surpriseSteps);
+//			        });
+//			        Platform.runLater(() -> {
+//			        	delay.play();
+//			        });
+//		    	}
 		    	else {
 			    	// Set player's new position
 		    		Platform.runLater(() -> {
@@ -466,10 +467,6 @@ import javafx.scene.layout.StackPane;
 	    if (playerToken == null) {
 	    	System.out.println("playerToken is NULL!");
 	    }
-//	    if (newPosition == 0 && getTokenFromStart(player) == null) { // if the player is not outside the board and new position is 0
-//	    	// place the player at first position in the board (tile 1)
-//	    	newPosition = 1;
-//	    }
 	    if (newPosition == 0 && getTokenFromGrid(player) == null) { // if player hasn't entered the board yet and new position is 0
 	    	return; // Do nothing
 	    }
@@ -589,50 +586,56 @@ import javafx.scene.layout.StackPane;
 	            
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
-	            //int surpriseSteps = handleSurpriseTileReached();
-	            //return nextPos+surpriseSteps;
-	            
-	            
-	            int newPosition1 = nextPos;
-	    	    p.setPlayerPrevPlace(currPosition);
+	            p.setPlayerPrevPlace(currPosition);
 	    	    // Set player's new position
-	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition1);
-	    	    p.setPlayerPlace(newPosition1);
-	    	    System.out.println("current player position on surprise tile: "+newPosition1);
-	    	    // Wait 2 seconds before showing the question dialog
-		        PauseTransition delay1 = new PauseTransition(Duration.seconds(5));
-		        delay1.setOnFinished(event -> {
-		        	int surpriseSteps = handleSurpriseTileReached();
-		    		move(p, newPosition1+surpriseSteps);
-		        });
-		        Platform.runLater(() -> {
-		        	delay1.play();
-		        });
-	            return p.getPlayerPlace();
+	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
+	    	    p.setPlayerPlace(nextPos);
+	    	    Platform.runLater(() -> {
+		            int surpriseSteps = handleSurpriseTileReached();
+		            move(p, surpriseSteps);
+	    	    });
+	    	    
+	            return p.getPlayerPlace();            
+	            
+//	            int newPosition1 = nextPos;
+//	    	    p.setPlayerPrevPlace(currPosition);
+//	    	    // Set player's new position
+//	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition1);
+//	    	    p.setPlayerPlace(newPosition1);
+//	    	    System.out.println("current player position on surprise tile: "+newPosition1);
+//	    	    // Wait 2 seconds before showing the question dialog
+//		        PauseTransition delay1 = new PauseTransition(Duration.seconds(5));
+//		        delay1.setOnFinished(event -> {
+//		        	int surpriseSteps = handleSurpriseTileReached();
+//		    		move(p, newPosition1+surpriseSteps);
+//		        });
+//		        Platform.runLater(() -> {
+//		        	delay1.play();
+//		        });
+//	            return p.getPlayerPlace();
 	            
 	        case Question:
 	            System.out.println("I have a question for you");
-	            int newPosition = nextPos;
 	    	    p.setPlayerPrevPlace(currPosition);
 	    	    // Set player's new position
-	    	    displayPlayerToken(currentRow, currentColumn, p, newPosition);
-	    	    p.setPlayerPlace(newPosition);
-	    	    System.out.println("current player position on question tile: "+newPosition);
-	    	    // Wait 2 seconds before showing the question dialog
-		        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
-		        delay.setOnFinished(event -> {
-		        	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
-	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
-		    		move(p, newSteps);
-		        });
-		        Platform.runLater(() -> {
-		        	delay.play();
-		        });
-//	    	    Platform.runLater(() -> {
-//	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
+	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
+	    	    p.setPlayerPlace(nextPos);
+//	    	    System.out.println("current player position on question tile: "+newPosition);
+//	    	    // Wait 2 seconds before showing the question dialog
+//		        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
+//		        delay.setOnFinished(event -> {
+//		        	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
 //	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
 //		    		move(p, newSteps);
-//	    	    });
+//		        });
+//		        Platform.runLater(() -> {
+//		        	delay.play();
+//		        });
+	    	    Platform.runLater(() -> {
+	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
+	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
+		    		move(p, newSteps);
+	    	    });
 	            return p.getPlayerPlace();
 	        default: // Handle the rest of the tile types which do not require special treatment
 	        	System.out.println("Next step will be: " + nextPos);
@@ -648,7 +651,6 @@ import javafx.scene.layout.StackPane;
 		
 			QuestionFactory qf = new QuestionFactory();
 			Question q = qf.returnQuestion(difficulty);
-			System.out.println(q);
 		
 		// Create elements for the question and answers
 		VBox vbox = new VBox();
@@ -809,35 +811,6 @@ import javafx.scene.layout.StackPane;
         // Call the function to display the surprise and return [-10/+10] steps for the player to move
         return displaySurprise();
     }
-	
-//	public static void viewSurpriseTile() {
-//        Dialog<ButtonType> dialog = new Dialog<>();
-//        dialog.setTitle("Surprise");
-//
-//        StackPane stackPane = new StackPane();
-//        Image backgroundImage = new Image("/img/screens/surpriseBackground.jpg");//set  the background
-//        ImageView backgroundImageView = new ImageView(backgroundImage);
-//
-//        // Add the background image to the StackPane
-//        stackPane.getChildren().add(backgroundImageView);
-//
-//        // Create a label for displaying random text
-//        Label randomTextLabel = new Label();
-//        randomTextLabel.setStyle("-fx-font-size: 18; -fx-text-fill: Black;");
-//
-//        String[] possibleTexts = {"10 steps forward !", "10 steps back!"};
-//        Random random = new Random();
-//        int surpriseResult=random.nextInt(possibleTexts.length);
-//        String randomText = possibleTexts[surpriseResult];
-//        randomTextLabel.setText(randomText);
-//
-//        stackPane.getChildren().add(randomTextLabel);
-//        dialog.getDialogPane().setContent(stackPane);
-//
-//        // buttons, labels, or other components to the StackPane as needed
-//
-//        dialog.showAndWait();
-//    }
  
 	public void showOneCellIcon(Image img, int row, int col, double imgSize) {
 		// Create ImageView for the icon
@@ -926,10 +899,6 @@ import javafx.scene.layout.StackPane;
 
 	        // Calculate the length of the snake
 	        double snakeLength = Math.sqrt(Math.pow(xTail - xHead, 2) + Math.pow(yTail - yHead, 2)) * TILE_SIZE;
-
-	        // Calculate the position of the snake
-//	        int xPos = (xTail + xHead) / 2;
-//	        int yPos = (yTail + yHead) / 2;
 
 	        // Create ImageView for the snake image
 	        ImageView snakeImageView = new ImageView(snakeImage);
@@ -1113,8 +1082,7 @@ import javafx.scene.layout.StackPane;
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-	
+    }	
 	
     // Method to reset the game state
     public void resetGame() {
