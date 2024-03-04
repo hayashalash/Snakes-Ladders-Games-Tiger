@@ -49,7 +49,6 @@ public class AddQuestionController implements Initializable{
     @FXML
     private Button clear;
 
-
     @FXML
     private Button previousButton;
 
@@ -128,6 +127,7 @@ public class AddQuestionController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) { // fill the combobox
+		add.setStyle(methods.getButtonStyle());
 		difficulty.getItems().clear();
 		for (Difficulty d : Difficulty.values()) {
 			difficulty.getItems().add(d);

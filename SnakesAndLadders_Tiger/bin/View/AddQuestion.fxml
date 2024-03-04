@@ -100,7 +100,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="add" layoutX="610.0" layoutY="420.0" mnemonicParsing="false" onAction="#addQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="164.0" style="-fx-background-color: #FAFAD2; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );" text="Add Question" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS">
+      <Button fx:id="add" layoutX="643.0" layoutY="420.0" mnemonicParsing="false" onAction="#addQuestion" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #FAFAD2; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );" text="Add Question" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS">
          <font>
             <Font name="Serif Regular" size="22.0" />
          </font>

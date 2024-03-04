@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 public class Methods {
 	// Class for methods shared across all screens
 	
+	// Maintain theme by sharing the same button style
 	String buttonStyle = "-fx-background-color: #D2691E; " +  // Background color
             "-fx-text-fill: white; " +           // Text color
             "-fx-font-size: 14px; " +            // Font size

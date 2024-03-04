@@ -75,6 +75,7 @@ public class RestoreQuestionController  implements Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	restore.setStyle(methods.getButtonStyle());
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}

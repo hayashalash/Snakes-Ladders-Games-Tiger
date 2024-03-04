@@ -4,15 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
-import javafx.scene.Parent;
 import org.json.simple.parser.ParseException;
-import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import View.Alerts;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,9 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -32,7 +25,6 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 import Model.SysData;
 import Model.Difficulty;
@@ -110,6 +102,8 @@ public class historyController implements Initializable{
 
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	resetbutton.setStyle(methods.getButtonStyle());
+    	topthree.setStyle(methods.getButtonStyle());
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}
@@ -126,104 +120,10 @@ public class historyController implements Initializable{
 		
 		orderBox.getItems().addAll("Difficulty", "Date", "Duration");
 		
-	    /*if (topPlayersList.size() >= 3) {
-	        // Display the names of the top 3 players
-	        player1.setText(topPlayersList.get(0).getKey().getPlayerName());
-	        player2.setText(topPlayersList.get(1).getKey().getPlayerName());
-	        player3.setText(topPlayersList.get(2).getKey().getPlayerName());
-
-	    } else {
-	        //display default values just for test
-	        player1.setText("Ruba");
-	        player2.setText("Haya");
-	        player3.setText("Bisan");
-	    }
-*/
 		fillHistoryTable();	
 		History.refresh();
 	}
     
-   /* private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
-        HashMap<Player, Integer> playersWinningGames = new HashMap<>();
-        //save
-    	List<Game> games = new ArrayList<>(SysData.getInstance().getGames());
-        for (Game game : games) {
-            Player winner = game.getWinner();
-            playersWinningGames.put(winner, playersWinningGames.getOrDefault(winner, 0) + 1);
-        }
-        //sort
-        PriorityQueue<HashMap.Entry<Player, Integer>> topPlayersQueue =
-                new PriorityQueue<>(Comparator.comparingInt(HashMap.Entry::getValue));
-
-        // Populate the priority queue with initial values
-        for (HashMap.Entry<Player, Integer> entry : playersWinningGames.entrySet()) {
-            topPlayersQueue.offer(entry);
-            if (topPlayersQueue.size() > 3) {
-                topPlayersQueue.poll(); // Remove the player with the lowest winning count
-            }
-        }
-
-        // Retrieve the top 3 players from the priority queue
-        List<HashMap.Entry<Player, Integer>> topPlayersList = new ArrayList<>(topPlayersQueue);
-        Collections.reverse(topPlayersList); // Reverse to display in descending order
-
-        return topPlayersList;
-    }*/
-   // @FXML
-    //void OrderDuration(ActionEvent event) {
-//    	if (!isSorted) {
-//            Sort sort = new Game();
-//            for (Object obj : sort.getSorted("Duration"))
-//                 sortedByDuration.add((Game) obj);
-//			System.out.println("by Duration:"+sortedByDuration);
-//            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDuration);
-//            sort(dataGame);
-//    	}
-//    	else {
-//    		ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
-//    	     History.setItems(temp);
-//    	     
-//    	     isSorted = false;
-//    	}
-  //  }
-//   
-  //  @FXML
-    //void OrderDate(ActionEvent event) {
-//    	if (!isSorted) {
-//            Sort sort = new Game();
-//			for (Object obj : sort.getSorted("Date"))
-//                 sortedByDate.add((Game) obj);
-//			System.out.println("by date:"+sortedByDate);
-//            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDate);
-//            sort(dataGame); 	
-//    	}
-//    	else {
-//    		ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
-//    	     History.setItems(temp);
-//    	     
-//    	     isSorted = false;
-//    	}
-  //  }
-//
-  //  @FXML
-    //void OrderDifficulty(ActionEvent event) {
-//    	 if (!isSorted) {
-//            Sort sort = new Game();
-//			for (Object obj : sort.getSorted("Difficulty"))
-//                 sortedByDifficulty.add((Game) obj);
-//			System.out.println("by diff:"+sortedByDifficulty);
-//            ObservableList<Game> dataGame = FXCollections.observableArrayList(sortedByDifficulty);
-//            sort(dataGame);   
-//    	 }
-//            else {
-//                // Restore the original order
-//                ObservableList<Game> temp = FXCollections.observableArrayList(originalOrder);
-//                History.setItems(temp);
-//                
-//                isSorted = false;
-//                }
-  //  }
-//    
     void sort(ObservableList<Game> dataGame) {
 		 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
 	     History.setItems(temp);

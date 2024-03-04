@@ -63,7 +63,7 @@ public class EditQuestionController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		edit.setStyle(methods.getButtonStyle());
 		fill();
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);

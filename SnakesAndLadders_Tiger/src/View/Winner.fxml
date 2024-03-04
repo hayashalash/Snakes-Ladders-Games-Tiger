@@ -46,7 +46,7 @@
          <graphic>
             <ImageView fitHeight="19.0" fitWidth="19.0" rotate="3.2">
                <image>
-                  <Image url="@../img/icons/PlayAgain.jpeg" />
+                  <Image url="@../img/icons/PlayAgain.png" />
                </image>
             </ImageView>
          </graphic>

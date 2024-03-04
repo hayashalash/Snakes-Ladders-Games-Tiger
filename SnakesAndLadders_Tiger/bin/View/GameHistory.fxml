@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
+<AnchorPane prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.historyController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -70,7 +70,7 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="topthree1" layoutX="580.0" layoutY="156.0" mnemonicParsing="false" onAction="#showTopThree" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="28.0" prefWidth="131.0" style="-fx-background-color: #FFEFD5 #FFEFD5; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );" text="Show Top Three" textOverrun="CLIP">
+      <Button fx:id="topthree" layoutX="580.0" layoutY="156.0" mnemonicParsing="false" onAction="#showTopThree" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="28.0" prefWidth="131.0" style="-fx-background-color: #FFEFD5 #FFEFD5; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );" text="Show Top Three" textOverrun="CLIP">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

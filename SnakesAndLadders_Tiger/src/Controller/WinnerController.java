@@ -115,7 +115,7 @@ public class WinnerController implements Initializable{
     	Image i = new Image(getClass().getResourceAsStream("/img/icons/celebrating-tiger.gif"));
         // Set the loaded image to the existing ImageView (celebrate)
         celebrate.setImage(i);
-
+        playAgainButton.setStyle(methods.getButtonStyle());
         System.out.println("Image width: " + i.getWidth());
         System.out.println("Image height: " + i.getHeight());
         String congrats = null;
