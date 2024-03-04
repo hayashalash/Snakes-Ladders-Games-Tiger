@@ -68,22 +68,15 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         try {
-//        	String audioFile = "/img/wavs/gameSound.mp3";
-//        	Media media = new Media(new File(audioFile).toURI().toString());
-//
-//            // Create the media player
-//            MediaPlayer mediaPlayer = new MediaPlayer(media);
-//
-//            // Set cycle count to indefinite
-//            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-//
-//            // Start playing the media
-//            mediaPlayer.play();
             note = new AudioClip(Main.class.getResource("/img/wavs/gameSound.mp3").toString());
         } catch (NullPointerException e) {
             System.err.println("Error: Audio file not found or path is incorrect.");
             e.printStackTrace();
         }
+
+        // Start playing the background sound
+        note.setCycleCount(AudioClip.INDEFINITE); // Set cycle count to indefinite for continuous playback
+        note.play();
 
         launch(args);
 
