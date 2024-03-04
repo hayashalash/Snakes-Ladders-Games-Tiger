@@ -146,8 +146,8 @@ public class homeController implements Initializable{
         textField.setPromptText("Enter Password");
         textField.setStyle("-fx-border-radius: 10;");
         Button logInButton = new Button("Log In");
-        logInButton.setPrefHeight(40);
-        logInButton.setPrefWidth(200); // Set the same width as the text field
+        logInButton.setPrefHeight(30);
+        logInButton.setPrefWidth(80); // Set the same width as the text field
         logInButton.setPadding(new Insets(5, 5, 5, 5));
         logInButton.setStyle("-fx-border-radius: 20; -fx-background-color: #dfbc95; " + methods.getButtonStyle()); // Drop shadow effect
         logInButton.setOnMouseEntered(e -> entered(e));
@@ -155,6 +155,7 @@ public class homeController implements Initializable{
         Label errorLabel = new Label("Incorrect Password");
         errorLabel.setTextFill(Color.RED);
         errorLabel.setOpacity(0);
+        errorLabel.setPadding(new Insets(3,0,3,0)); // top right bottom left
         // Add the elements to an HBox layout
         VBox vbox = new VBox(textField, errorLabel, logInButton);
 

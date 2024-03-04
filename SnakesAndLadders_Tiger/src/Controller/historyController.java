@@ -62,17 +62,17 @@ public class historyController implements Initializable{
     @FXML
     private Button exitButton;
     
-    @FXML
-    private CheckBox winnerCheck;
-
-    @FXML
-    private CheckBox durationCheck;
-    
-    @FXML
-    private CheckBox DateCheck;
-
-    @FXML
-    private CheckBox DifficultyCheck;
+//    @FXML
+//    private CheckBox winnerCheck;
+//
+//    @FXML
+//    private CheckBox durationCheck;
+//    
+//    @FXML
+//    private CheckBox DateCheck;
+//
+//    @FXML
+//    private CheckBox DifficultyCheck;
       
     @FXML
     private ComboBox<String> orderBox;
@@ -127,7 +127,6 @@ public class historyController implements Initializable{
     void sort(ObservableList<Game> dataGame) {
 		 ObservableList<Game> temp = FXCollections.observableArrayList(dataGame);
 	     History.setItems(temp);
-	     
     }
 
     @FXML
@@ -188,8 +187,7 @@ public class historyController implements Initializable{
         Gamesdata.clear();
         Gamesdata.addAll(sortedList);
         History.refresh();
-    }
-   
+    }   
    
     @FXML
     void exit(ActionEvent event) {
@@ -239,6 +237,7 @@ public class historyController implements Initializable{
     void reset(ActionEvent event) {
     	ObservableList<Game> dataGame = FXCollections.observableArrayList(originalOrder);
         sort(dataGame);
+        orderBox.setValue(null);
     }
     
 	 @FXML
