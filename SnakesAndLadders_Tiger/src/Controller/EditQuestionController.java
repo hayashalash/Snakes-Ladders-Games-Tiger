@@ -100,6 +100,16 @@ public class EditQuestionController implements Initializable {
     			difficulty.getSelectionModel().getSelectedIndex() == -1){
     			Alerts.message("Error","Please fill all the fields");
     	}
+    	
+    	String regex = "^[a-zA-Z0-9?]+(?:[\\s]+[a-zA-Z0-9?]+)*$";
+    	if (!questionText.getText().matches(regex) || 
+    	    !ans1Text.getText().matches(regex) ||
+    	    !ans2Text.getText().matches(regex) ||
+    	    !ans3Text.getText().matches(regex) ||
+    	    !ans4Text.getText().matches(regex)) {
+    	    // If any input contains characters other than letters, numbers, and question marks or has leading/trailing spaces
+    	    Alerts.message("Error", "Please use only letters, numbers, and question mark.");
+    	}
     	if (Alerts.edit() == 1) {
 	    	String quesEdit= questionText.getText();
 	    	String ans1Edit= ans1Text.getText();
