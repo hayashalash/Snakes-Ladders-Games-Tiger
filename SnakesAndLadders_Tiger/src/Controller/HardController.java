@@ -25,6 +25,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class HardController extends BoardController implements Initializable{
@@ -35,6 +37,20 @@ public class HardController extends BoardController implements Initializable{
 	Board board = new Board(game.getDifficulty());
 	
 	Methods methods = new Methods();
+	
+    private static final String DICE_SOUND_FILE = "/img/wavs/dice.wav";
+    private static MediaPlayer diceSoundPlayer;
+
+
+    static {       
+        Media diceSound = new Media(Alerts.class.getResource(DICE_SOUND_FILE).toString());
+        diceSoundPlayer = new MediaPlayer(diceSound);
+    }
+  
+    public static void playDiceSound() {
+    	diceSoundPlayer.stop(); // Stop the sound in case it's already playing
+    	diceSoundPlayer.play();
+    }
 	
     @FXML
     private ImageView surpriseValue;
@@ -151,7 +167,13 @@ public class HardController extends BoardController implements Initializable{
 	
 	@Override
     @FXML
-    public  void handleDiceClick(ActionEvent event) throws InterruptedException {
+    public void handleDiceClick(ActionEvent event) throws InterruptedException {
+    	rollDice();
+    }
+	
+	public void rollDice() {
+		// Enable the button after animation completes
+		playDiceSound();
     	// Enable the button after animation completes
         diceButton.setDisable(true);
         diceButton.setOpacity(1.0);

@@ -26,6 +26,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 
@@ -52,6 +54,20 @@ public class NormalController extends BoardController implements Initializable  
 //	private boolean systemsTurn = false; // determines whether it is now the systems turn or not in games with the system
 	
 	private boolean gameWithSystem = false;
+	
+    private static final String DICE_SOUND_FILE = "/img/wavs/dice.wav";
+    private static MediaPlayer diceSoundPlayer;
+
+
+    static {       
+        Media diceSound = new Media(Alerts.class.getResource(DICE_SOUND_FILE).toString());
+        diceSoundPlayer = new MediaPlayer(diceSound);
+    }
+  
+    public static void playDiceSound() {
+    	diceSoundPlayer.stop(); // Stop the sound in case it's already playing
+    	diceSoundPlayer.play();
+    }
 	
     @FXML
     private ImageView surpriseValue;
@@ -186,7 +202,7 @@ public class NormalController extends BoardController implements Initializable  
         diceImageMap.put(11, "/img/icons/diceQ.png");
         diceImageMap.put(12, "/img/icons/diceQ.png");
     }
-	
+
 	@Override
     @FXML
     public void handleDiceClick(ActionEvent event) throws InterruptedException {
@@ -195,6 +211,7 @@ public class NormalController extends BoardController implements Initializable  
 	
 	public void rollDice() {
 		// Enable the button after animation completes
+		playDiceSound();
         diceButton.setDisable(true);
         diceButton.setOpacity(1.0);
         diceButton.setStyle("-fx-background-color: transparent;");
