@@ -148,7 +148,9 @@ import javafx.scene.layout.StackPane;
     private static final String LADDER_SOUND_FILE = "/img/wavs/ladderSound.wav";
     private static final String CLASSIC_SOUND_FILE = "/img/wavs/moveSound.wav";
     private static final String CORRECT_SOUND_FILE = "/img/wavs/correctSound.mp3";
-    private static final String INCORRECT_SOUND_FILE = "/img/wavs/incorrectSound.mp3";
+    private static final String INCORRECT_SOUND_FILE = "/img/wavs/wrong.wav";
+    private static final String SURPRISE_SOUND_FILE = "/img/wavs/surpriseSound.wav";
+    private static final String QUESTION_SOUND_FILE = "/img/wavs/questionSound.wav";
 
 
     private static MediaPlayer snakeSoundPlayer;
@@ -156,6 +158,8 @@ import javafx.scene.layout.StackPane;
     private static MediaPlayer classicSoundPlayer;
     private static MediaPlayer correctSoundPlayer;
     private static MediaPlayer incorrectSoundPlayer;
+    private static MediaPlayer surpriseSoundPlayer;
+    private static MediaPlayer questionSoundPlayer;
 
     static {
         // Initialize MediaPlayer objects for each sound effect
@@ -173,6 +177,12 @@ import javafx.scene.layout.StackPane;
         
         Media incorrectSound = new Media(Alerts.class.getResource(INCORRECT_SOUND_FILE).toString());
         incorrectSoundPlayer = new MediaPlayer(incorrectSound);
+        
+        Media surpriseSound = new Media(Alerts.class.getResource(SURPRISE_SOUND_FILE).toString());
+        surpriseSoundPlayer = new MediaPlayer(surpriseSound);
+        
+        Media questionSound = new Media(Alerts.class.getResource(QUESTION_SOUND_FILE).toString());
+        questionSoundPlayer = new MediaPlayer(questionSound);
 
     }
 
@@ -200,6 +210,16 @@ import javafx.scene.layout.StackPane;
     public static void playIncorrectSound() {
     	incorrectSoundPlayer.stop();
     	incorrectSoundPlayer.play();
+    }
+    
+    public static void playSurpriseSound() {
+    	surpriseSoundPlayer.stop();
+    	surpriseSoundPlayer.play();
+    }
+
+    public static void playQuestionSound() {
+    	questionSoundPlayer.stop();
+    	questionSoundPlayer.play();
     }
     
     // Constructor
@@ -670,6 +690,7 @@ import javafx.scene.layout.StackPane;
 	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
 	    	    p.setPlayerPlace(nextPos);
 	    	    Platform.runLater(() -> {
+	    	    	playSurpriseSound();
 		            int surpriseSteps = handleSurpriseTileReached();
 		            move(p, surpriseSteps);
 	    	    });
@@ -711,6 +732,7 @@ import javafx.scene.layout.StackPane;
 //		        	delay.play();
 //		        });
 	    	    Platform.runLater(() -> {
+	    	    	playQuestionSound();
 	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
 	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
 		    		move(p, newSteps);
@@ -818,7 +840,6 @@ import javafx.scene.layout.StackPane;
 				}
 			}
 			else {
-				playIncorrectSound();
 			      selectedAnswer.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
 				switch (q.getCorrectAnswer()) {//mark the right answer in green
 				case 1:
@@ -835,14 +856,17 @@ import javafx.scene.layout.StackPane;
 					break;
 				}
 				if(difficulty==Difficulty.Easy) {
+					playIncorrectSound();
 					resultText.setText("Your answer is wrong! You will move one step backward!");
 					returnVal = -1;
 				}
 				if(difficulty==Difficulty.Medium) {
+					playIncorrectSound();
 					resultText.setText("Your answer is wrong! You will move two steps backward!");
 					returnVal = -2;
 				}
 				if(difficulty==Difficulty.Hard) {
+					playIncorrectSound();
 					resultText.setText("Your answer is wrong! You will move three steps backward!");
 					returnVal = -3;
 				}
