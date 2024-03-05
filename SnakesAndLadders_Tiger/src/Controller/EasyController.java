@@ -42,17 +42,28 @@ public class EasyController extends BoardController implements Initializable{
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
 
     private static final String DICE_SOUND_FILE = "/img/wavs/dice.wav";
+    private static final String QUESTION_SOUND_FILE = "/img/wavs/questionSound.wav";
+    
     private static MediaPlayer diceSoundPlayer;
+    private static MediaPlayer questionSoundPlayer;
 
 
     static {       
         Media diceSound = new Media(Alerts.class.getResource(DICE_SOUND_FILE).toString());
         diceSoundPlayer = new MediaPlayer(diceSound);
+        
+        Media questionSound = new Media(Alerts.class.getResource(QUESTION_SOUND_FILE).toString());
+        questionSoundPlayer = new MediaPlayer(questionSound);
     }
   
     public static void playDiceSound() {
     	diceSoundPlayer.stop(); // Stop the sound in case it's already playing
     	diceSoundPlayer.play();
+    }
+    
+    public static void playQuestionSound() {
+    	questionSoundPlayer.stop();
+    	questionSoundPlayer.play();
     }
 	
 	@FXML
@@ -238,6 +249,7 @@ public class EasyController extends BoardController implements Initializable{
     	}
     	else if(diceResult == 6) {
     		//display normal question 
+    	playQuestionSound();
   		Platform.runLater(() -> {
 		int steps = gameController.showQuestionPopup(Difficulty.Medium);
 		System.out.println("steps to move after question are: "+steps);
@@ -247,7 +259,8 @@ public class EasyController extends BoardController implements Initializable{
 
     	}
     	else if(diceResult == 7) {
-    		//display hard question 	
+    		//display hard question
+    	playQuestionSound();
  		Platform.runLater(() -> {
 		int steps = gameController.showQuestionPopup(Difficulty.Hard);
 	    System.out.println("steps to move after question are: "+steps);
