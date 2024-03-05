@@ -23,6 +23,7 @@ import Model.SnakeColor;
 import Model.SnakeTile;
 import Model.Tile;
 import Model.TileType;
+import View.Alerts;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -43,11 +44,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import Model.SysData;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+
 
  public class GameController {
 	Methods methods = new Methods();
@@ -139,6 +143,64 @@ import javafx.scene.layout.StackPane;
     private HBox player2;
     private HBox player3;
     private HBox player4;
+    
+    private static final String SNAKE_SOUND_FILE = "/img/wavs/snakeSound.mp3";
+    private static final String LADDER_SOUND_FILE = "/img/wavs/ladderSound.wav";
+    private static final String CLASSIC_SOUND_FILE = "/img/wavs/moveSound.wav";
+    private static final String CORRECT_SOUND_FILE = "/img/wavs/correctSound.mp3";
+    private static final String INCORRECT_SOUND_FILE = "/img/wavs/incorrectSound.mp3";
+
+
+    private static MediaPlayer snakeSoundPlayer;
+    private static MediaPlayer ladderSoundPlayer;
+    private static MediaPlayer classicSoundPlayer;
+    private static MediaPlayer correctSoundPlayer;
+    private static MediaPlayer incorrectSoundPlayer;
+
+    static {
+        // Initialize MediaPlayer objects for each sound effect
+        Media snakeSound = new Media(Alerts.class.getResource(SNAKE_SOUND_FILE).toString());
+        snakeSoundPlayer = new MediaPlayer(snakeSound);
+        
+        Media ladderSound = new Media(Alerts.class.getResource(LADDER_SOUND_FILE).toString());
+        ladderSoundPlayer = new MediaPlayer(ladderSound);
+        
+        Media moveSound = new Media(Alerts.class.getResource(CLASSIC_SOUND_FILE).toString());
+        classicSoundPlayer = new MediaPlayer(moveSound);
+
+        Media correctSound = new Media(Alerts.class.getResource(CORRECT_SOUND_FILE).toString());
+        correctSoundPlayer = new MediaPlayer(correctSound);
+        
+        Media incorrectSound = new Media(Alerts.class.getResource(INCORRECT_SOUND_FILE).toString());
+        incorrectSoundPlayer = new MediaPlayer(incorrectSound);
+
+    }
+
+    public static void playSnakeSound() {
+        snakeSoundPlayer.stop(); // Stop the sound in case it's already playing
+        snakeSoundPlayer.play();
+    }
+
+    public static void playLadderSound() {
+        ladderSoundPlayer.stop();
+        ladderSoundPlayer.play();
+    }
+
+    public static void playClassicSound() {
+        classicSoundPlayer.stop();
+        classicSoundPlayer.play();
+    }
+    
+
+    public static void playCorrectSound() {
+    	correctSoundPlayer.stop();
+    	correctSoundPlayer.play();
+    }
+
+    public static void playIncorrectSound() {
+    	incorrectSoundPlayer.stop();
+    	incorrectSoundPlayer.play();
+    }
     
     // Constructor
     public GameController(Game game, Board board, GridPane grid, HBox playersStart, Label time,
@@ -354,11 +416,17 @@ import javafx.scene.layout.StackPane;
 		    		int newRow = nextTile.getRow();
 				    int newColumn = nextTile.getColumn();
 				    // move to the ladder bottom / snake head
+                    
 				    Platform.runLater(() -> {
 				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
 			        	player.setPlayerPlace(nextPos);
 				    });
-				    
+				    if(nextTile.gettType().equals(TileType.LadderBottom)) {
+				    	playLadderSound();
+				    }
+				    else {
+					    playSnakeSound();
+				    }
 				    // Wait 2 seconds before climbing up the ladder or sliding down the snake
 			        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
 			        delay.setOnFinished(event -> {
@@ -395,6 +463,7 @@ import javafx.scene.layout.StackPane;
 //		    	}
 		    	else {
 			    	// Set player's new position
+		    		playClassicSound();
 		    		Platform.runLater(() -> {
 		    			displayPlayerToken(currentRow, currentColumn, player, newPosition);
 		    			player.setPlayerPlace(newPosition);
@@ -737,6 +806,7 @@ import javafx.scene.layout.StackPane;
 			int selectedAnswerNumber = (int) selectedAnswer.getUserData();// Get the number of selected answer
 			int correctAnswerNumber=q.getCorrectAnswer();
 			if(selectedAnswerNumber == correctAnswerNumber) {
+				playCorrectSound();
 				selectedAnswer.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
 			    if(difficulty==Difficulty.Easy || difficulty==Difficulty.Medium) {
 			    	resultText.setText("Your answer is correct! You will stay in place!");
@@ -748,6 +818,7 @@ import javafx.scene.layout.StackPane;
 				}
 			}
 			else {
+				playIncorrectSound();
 			      selectedAnswer.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
 				switch (q.getCorrectAnswer()) {//mark the right answer in green
 				case 1:

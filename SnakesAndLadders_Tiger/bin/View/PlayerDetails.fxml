@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PlayerDetailsController">
+   <children>
+      <ImageView fitHeight="595.0" fitWidth="852.0">
+         <image>
+            <Image url="@../img/screens/blank.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="545.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+               <image>
+                  <Image url="@../img/icons/music.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exitGame" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/X.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <AnchorPane layoutX="63.0" layoutY="411.0" prefHeight="80.0" prefWidth="737.0">
+         <children>
+            <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" onAction="#backToDifficulty" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+               <font>
+                  <Font name="Californian FB Italic" size="18.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -2 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/previous.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="startGameBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="539.0" layoutY="9.0" mnemonicParsing="false" onAction="#startGame" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="150.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
+                     <image>
+                        <Image url="@../img/icons/startGame.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <VBox layoutX="314.0" layoutY="235.0" prefHeight="80.0" prefWidth="263.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Nickname:">
+                     <font>
+                        <Font name="Baskerville Old Face" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="playerTxt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0" promptText="Enter nickname">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Color:">
+                     <font>
+                        <Font name="Baskerville Old Face" size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="playerClr" prefHeight="25.0" prefWidth="140.0" promptText="Pick a color" visibleRowCount="6">
+                     <HBox.margin>
+                        <Insets left="62.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="110.0" layoutY="121.0" text="Please choose a nickname and a color for your pawn">
+         <font>
+            <Font name="Baskerville Old Face" size="24.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="329.0" layoutY="160.0" prefHeight="38.0" prefWidth="206.0">
+         <children>
+            <Label fx:id="difficulty" alignment="CENTER" style="-fx-background-color: #dfbc95; -fx-background-radius: 5; -fx-font-weight: bolder;" text="Label">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
