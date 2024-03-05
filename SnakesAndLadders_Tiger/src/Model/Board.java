@@ -2,7 +2,6 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Board {
 	static final int minItemLen = -1;

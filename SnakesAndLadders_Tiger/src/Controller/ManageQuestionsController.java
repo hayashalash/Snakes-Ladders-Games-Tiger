@@ -108,10 +108,29 @@ public class ManageQuestionsController implements Initializable {
     	methods.turnOffOn(event, musicIcon);
     }
 
+    @Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+    	Tooltip a = new Tooltip("Add Question");
+        Tooltip.install(add, a);
+        Tooltip ed = new Tooltip("Edit");
+        Tooltip.install(edit, ed);
+        Tooltip d = new Tooltip("Delete");
+        Tooltip.install(delete, d);
+        Tooltip r = new Tooltip("Restore Question");
+        Tooltip.install(retrive, r);
+    	if (Main.note.isPlaying()) {
+    		musicIcon.setOpacity(1.0);
+    	}
+    	else {
+    		musicIcon.setOpacity(0.5);
+    	}
+        fill();
+        questionTable.refresh();
+	}
+    
     @FXML
     void OrderDifficulty(ActionEvent event) {
-    	
-    	
         if (!isSorted) {
             Sort sort = new Question();
             for (Object obj : sort.getSorted("difficulty"))
@@ -192,27 +211,6 @@ public class ManageQuestionsController implements Initializable {
     void returnHome(ActionEvent event) {
     	methods.newScreen("Home");
     }
-
-    @Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-    	Tooltip a = new Tooltip("Add Question");
-        Tooltip.install(add, a);
-        Tooltip ed = new Tooltip("Edit");
-        Tooltip.install(edit, ed);
-        Tooltip d = new Tooltip("Delete");
-        Tooltip.install(delete, d);
-        Tooltip r = new Tooltip("Restore Question");
-        Tooltip.install(retrive, r);
-    	if (Main.note.isPlaying()) {
-    		musicIcon.setOpacity(1.0);
-    	}
-    	else {
-    		musicIcon.setOpacity(0.5);
-    	}
-        fill();
-        questionTable.refresh();
-	}
     
     public void fill() {
 
@@ -266,7 +264,8 @@ public class ManageQuestionsController implements Initializable {
 		                	btn.setOnAction(e -> {
 		                        Question q = getTableView().getItems().get(getIndex());
 		                        int correctAnswerIndex = q.getCorrectAnswer();
-		                        String correctAnswer = "";
+		                        @SuppressWarnings("unused")
+								String correctAnswer = "";
 
 		                        switch (correctAnswerIndex) {
 		                            case 1:

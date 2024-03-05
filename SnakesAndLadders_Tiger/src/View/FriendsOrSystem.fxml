@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PlayWithController">
+   <children>
+      <ImageView fitHeight="595.0" fitWidth="852.0">
+         <image>
+            <Image url="@../img/screens/blank.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="musicIcon" layoutX="3.0" layoutY="545.0" mnemonicParsing="false" onAction="#TurnOffOn" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 ,-6 , 0 );">
+               <image>
+                  <Image url="@../img/icons/music.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="exitBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="800.0" layoutY="10.0" mnemonicParsing="false" onAction="#exitGame" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );">
+               <image>
+                  <Image url="@../img/icons/X.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="friends" layoutX="504.0" layoutY="223.0" mnemonicParsing="false" onAction="#playWithFriends" prefHeight="89.0" prefWidth="166.0" text="Play With Friends" />
+      <Button fx:id="computer" layoutX="215.0" layoutY="223.0" mnemonicParsing="false" onAction="#playWithComputer" prefHeight="89.0" prefWidth="166.0" text="Play With Computer" />
+      <Button fx:id="homeButton" layoutX="716.0" layoutY="74.0" mnemonicParsing="false" onAction="#goHome" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+               <image>
+                  <Image url="@../img/icons/home.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>

@@ -48,7 +48,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <AnchorPane layoutX="71.0" layoutY="412.0" prefHeight="80.0" prefWidth="737.0">
+      <AnchorPane layoutX="63.0" layoutY="411.0" prefHeight="80.0" prefWidth="737.0">
          <children>
             <Button fx:id="backBtn" layoutX="23.0" layoutY="9.0" mnemonicParsing="false" onAction="#backToDifficulty" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="46.0" prefWidth="101.0" style="-fx-background-color: transparent; -fx-background-radius: 50;">
                <font>
@@ -100,7 +100,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="player1txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                  <TextField fx:id="player1txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0" promptText="Enter nickname">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -114,7 +114,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                  <ComboBox fx:id="player1clr" prefHeight="25.0" prefWidth="140.0" promptText="Pick a color" visibleRowCount="6">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -132,7 +132,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="player2txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                  <TextField fx:id="player2txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0" promptText="Enter nickname">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -146,7 +146,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                  <ComboBox fx:id="player2clr" prefHeight="25.0" prefWidth="140.0" promptText="Pick a color" visibleRowCount="6">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -164,7 +164,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="player3txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                  <TextField fx:id="player3txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0" promptText="Enter nickname">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -178,7 +178,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                  <ComboBox fx:id="player3clr" prefHeight="25.0" prefWidth="140.0" promptText="Pick a color" visibleRowCount="6">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>
@@ -196,7 +196,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="player4txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0">
+                  <TextField fx:id="player4txt" alignment="CENTER" prefHeight="25.0" prefWidth="140.0" promptText="Enter nickname">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -210,7 +210,7 @@
                         <Font name="Baskerville Old Face" size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" visibleRowCount="6">
+                  <ComboBox fx:id="player4clr" prefHeight="25.0" prefWidth="140.0" promptText="Pick a color" visibleRowCount="6">
                      <HBox.margin>
                         <Insets left="25.0" />
                      </HBox.margin>

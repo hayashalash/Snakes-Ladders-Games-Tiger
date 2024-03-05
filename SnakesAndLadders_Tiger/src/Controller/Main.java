@@ -1,17 +1,14 @@
 package Controller;
-import java.io.File;
 import java.io.IOException;
-
 import org.json.simple.parser.ParseException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.animation.FadeTransition;
@@ -30,6 +27,11 @@ public class Main extends Application {
         try {
             primaryStage.initStyle(StageStyle.UNDECORATED);
 
+            // Load the icon
+            Image tiger = new Image(getClass().getResourceAsStream("/img/icons/tiger.png"));
+            // Set the icon for the primary stage
+            primaryStage.getIcons().add(tiger);
+            
             // Load the splash screen
             Parent splashScreenFXML = FXMLLoader.load(getClass().getResource("/View/SplashScreen.fxml"));
             Parent homeFXML = FXMLLoader.load(getClass().getResource("/View/Home.fxml"));
@@ -76,7 +78,8 @@ public class Main extends Application {
 
         // Start playing the background sound
         note.setCycleCount(AudioClip.INDEFINITE); // Set cycle count to indefinite for continuous playback
-        note.play();
+//        note.setVolume(0.1);
+//        note.play();
 
         launch(args);
 

@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import org.json.simple.parser.ParseException;
 import java.util.ResourceBundle;
 import View.Alerts;
@@ -17,8 +15,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -36,7 +34,7 @@ public class historyController implements Initializable{
 
 	Methods methods = new Methods();
 	
-    private HashMap<Player, Integer> playersWinningGames;//the value represent the number of games the player wins  
+//    private HashMap<Player, Integer> playersWinningGames;//the value represent the number of games the player wins  
     @FXML
     private TableView<Game> History;
 
@@ -55,25 +53,12 @@ public class historyController implements Initializable{
     @FXML
     private TableColumn<Game, LocalDate> date;
     
-    
     @FXML
     private Button homeButton;
 
     @FXML
     private Button exitButton;
-    
-//    @FXML
-//    private CheckBox winnerCheck;
-//
-//    @FXML
-//    private CheckBox durationCheck;
-//    
-//    @FXML
-//    private CheckBox DateCheck;
-//
-//    @FXML
-//    private CheckBox DifficultyCheck;
-      
+
     @FXML
     private ComboBox<String> orderBox;
     
@@ -103,6 +88,7 @@ public class historyController implements Initializable{
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
     	resetbutton.setStyle(methods.getButtonStyle());
+    	resetbutton.setPadding(new Insets(2,2,5,2)); // top right bottom left
     	topthree.setStyle(methods.getButtonStyle());
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
@@ -114,7 +100,6 @@ public class historyController implements Initializable{
 		try {
 			SysData.getInstance().ReadFromJsonGames();
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -180,14 +165,7 @@ public class historyController implements Initializable{
                     History.setItems(temp);
                 }
         }
-    }
-
-    // Update your table with the sorted data
-    private void updateTable(List<Game> sortedList) {
-        Gamesdata.clear();
-        Gamesdata.addAll(sortedList);
-        History.refresh();
-    }   
+    } 
    
     @FXML
     void exit(ActionEvent event) {
@@ -211,7 +189,8 @@ public class historyController implements Initializable{
     	
 		// Set cell value factory to display winner's name
         winner.setCellValueFactory(new Callback<CellDataFeatures<Game, Player>, ObservableValue<Player>>() {
-            @Override
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
             public ObservableValue<Player> call(CellDataFeatures<Game, Player> param) {
                 Player winner = param.getValue().getWinner();
                 String winnerName = (winner != null) ? winner.getPlayerName() : "";
@@ -237,7 +216,7 @@ public class historyController implements Initializable{
     void reset(ActionEvent event) {
     	ObservableList<Game> dataGame = FXCollections.observableArrayList(originalOrder);
         sort(dataGame);
-        orderBox.setValue(null);
+//        orderBox.getSelectionModel().clearSelection(); // Clear the selection
     }
     
 	 @FXML

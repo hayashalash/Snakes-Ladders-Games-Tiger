@@ -65,6 +65,7 @@ public class SysData {
  * which implies that observers are being notified of the change.	
  */
 
+	@SuppressWarnings("unchecked")
 	public void readFromJson() throws IOException,  ParseException {
 		
 		JSONParser parser = new JSONParser();
@@ -106,6 +107,7 @@ public class SysData {
 		questions.removeAll(deleted);
 	}
 		
+	@SuppressWarnings("unchecked")
 	public void writeToJson(Question question) throws IOException, ParseException {
 
 	    JSONParser parser = new JSONParser();
@@ -169,6 +171,7 @@ public class SysData {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public void deleteFromJson(Question question) throws IOException, ParseException {
 	    JSONParser parser = new JSONParser();
 
@@ -210,6 +213,7 @@ public class SysData {
 
     
 //	 Saving the Games history in json file, Not checked yet! 
+	@SuppressWarnings("unchecked")
 	public void writeToJsonGames(Game g) throws IOException, ParseException { 
 		JSONParser parser = new JSONParser();
 		
@@ -263,6 +267,7 @@ public class SysData {
 	
 
     
+	@SuppressWarnings("unchecked")
 	public void ReadFromJsonGames() throws IOException, ParseException {
 
 	 			JSONParser parser2 = new JSONParser();
@@ -302,6 +307,7 @@ public class SysData {
 				}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void ReadFromDeletedQ() throws IOException, ParseException {
 
 
@@ -342,6 +348,7 @@ public class SysData {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void addAgainDeletedQ(Question question) throws IOException, ParseException {
 
 		JSONParser parser = new JSONParser();
@@ -395,6 +402,7 @@ public class SysData {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void DeleteFromDeletedQ(Question question) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();
 		FileInputStream file = new FileInputStream(RJSON);

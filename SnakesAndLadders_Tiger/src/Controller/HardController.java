@@ -23,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -107,7 +106,8 @@ public class HardController extends BoardController implements Initializable{
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
-        
+        Tooltip res = new Tooltip("Restart Game");
+        Tooltip.install(update, res);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}

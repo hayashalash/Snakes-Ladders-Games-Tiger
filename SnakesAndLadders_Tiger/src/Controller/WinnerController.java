@@ -153,6 +153,7 @@ public class WinnerController implements Initializable{
     	}
     }
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void fillSummary() {
 		HashSet<Game> arr = new HashSet<>();
   		arr.add(game);

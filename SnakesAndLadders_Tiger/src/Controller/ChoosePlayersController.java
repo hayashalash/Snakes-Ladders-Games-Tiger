@@ -125,17 +125,6 @@ public class ChoosePlayersController implements Initializable{
     	else {
     		musicIcon.setOpacity(0.5);
     	}
-        
-//    	player1clr.getItems().addAll(Color.values());
-//    	player1clr.getSelectionModel().select(0);
-//    	Media mediaFile = new Media(this.getClass().getResource(MEDIA_URL).toExternalForm());
-//    	player = new MediaPlayer(mediaFile);
-//    	media.setMediaPlayer(player);
-//    	player.setAutoPlay(true);
-//    	media.setVisible(true);
-//    	player.setVolume(0.1);
-//    	player.play();
-    	
 	}
     
     private void fillComboBox(ComboBox<Image> combo, ObservableList<Image> options) {
@@ -298,33 +287,33 @@ public class ChoosePlayersController implements Initializable{
     		Alerts.warning("Please choose a unique name for each player");
     		return;
     	}
-    	// Regular expression to match letters only
-        Pattern pattern = Pattern.compile("[a-zA-Z]+");
+    	// Regular expression to match letters nd numbers only
+    	Pattern pattern = Pattern.compile("[a-zA-Z\\d]+");
 
         // Matcher to match the pattern against the input
         Matcher matcher1 = pattern.matcher(player1txt.getText());
         Matcher matcher2 = pattern.matcher(player2txt.getText());
                 
         if (!matcher1.matches()) {
-        	Alerts.warning("Players names cannot contain numbers or special characters.");
+        	Alerts.warning("Players names cannot contain spaces or special characters.");
     		return;
         }
         if (!matcher2.matches()) {
-        	Alerts.warning("Players names cannot contain numbers or special characters.");
+        	Alerts.warning("Players names cannot contain spaces or special characters.");
     		return;
         }
         
         if (playersNum > 2) {
         	Matcher matcher3 = pattern.matcher(player3txt.getText());
         	if (!matcher3.matches()) {
-            	Alerts.warning("Players names cannot contain numbers or special characters.");
+            	Alerts.warning("Players names cannot contain spaces or special characters.");
         		return;
             }
         }
         if (playersNum == 4) {
         	Matcher matcher4 = pattern.matcher(player4txt.getText());
         	if (!matcher4.matches()) {
-            	Alerts.warning("Players names cannot contain numbers or special characters.");
+            	Alerts.warning("Players names cannot contain spaces or special characters.");
         		return;
             }
         }

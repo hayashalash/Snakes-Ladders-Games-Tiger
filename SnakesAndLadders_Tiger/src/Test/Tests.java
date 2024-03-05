@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import Model.Board;
 import Model.Difficulty;
-import Model.Game;
 import Model.Ladder;
 import Model.Question;
 import Model.QuestionTile;

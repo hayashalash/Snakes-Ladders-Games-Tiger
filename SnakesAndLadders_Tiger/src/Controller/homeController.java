@@ -96,7 +96,7 @@ public class homeController implements Initializable{
     
     @FXML
     void start(ActionEvent event) {
-    	methods.newScreen("ChooseDifficulty");
+    	methods.newScreen("FriendsOrSystem");
     }
 
     @FXML

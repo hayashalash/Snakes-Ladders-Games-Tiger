@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import View.Alerts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
@@ -70,8 +69,7 @@ public class TopThreeController implements Initializable {
 	@FXML
 	 void exited(MouseEvent event) {
 		methods.exited(event);
-	 }	
-	 
+	 }		 
     
     private List<Entry<Player, Integer>> calculateTopThree() {//bring games and save for each players the number of winning games then sort them
         HashMap<Player, Integer> playersWinningGames = new HashMap<>();
@@ -100,7 +98,6 @@ public class TopThreeController implements Initializable {
         return topPlayersList;
     }
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		List<Entry<Player, Integer>> topPlayersList = calculateTopThree();
@@ -120,7 +117,4 @@ public class TopThreeController implements Initializable {
 
 	    }
 	}			
-	}
-
-
-
+}

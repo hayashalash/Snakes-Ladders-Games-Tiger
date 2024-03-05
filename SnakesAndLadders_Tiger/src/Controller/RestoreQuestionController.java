@@ -142,7 +142,8 @@ public class RestoreQuestionController  implements Initializable {
 		                	btn.setOnAction(e -> {
 		                        Question q = getTableView().getItems().get(getIndex());
 		                        int correctAnswerIndex = q.getCorrectAnswer();
-		                        String correctAnswer = "";
+		                        @SuppressWarnings("unused")
+								String correctAnswer = "";
 
 		                        switch (correctAnswerIndex) {
 		                            case 1:
@@ -190,7 +191,6 @@ public class RestoreQuestionController  implements Initializable {
 
 		                        dialog.showAndWait();
 		                    });
-
 		                }
 
 		                @Override

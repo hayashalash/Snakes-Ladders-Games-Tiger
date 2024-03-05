@@ -11,8 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
-public class difficultyController implements Initializable {
+public class DifficultyController implements Initializable {
 	Methods methods = new Methods();
+	
+	public static boolean playWithSystem;
 	
     @FXML
     private Button easyButton;
@@ -23,6 +25,9 @@ public class difficultyController implements Initializable {
     @FXML
     private Button hardButton;
 
+    @FXML
+    private Button backBtn;
+    
     @FXML
     private Button exitButton;
 
@@ -47,26 +52,46 @@ public class difficultyController implements Initializable {
     void goHome(ActionEvent event) {
     	methods.newScreen("Home");
     }
+    
+    @FXML
+    void backToFriendsOrSystem(ActionEvent event) {
+    	methods.newScreen("FriendsOrSystem");
+    }
 
     @FXML
     void hard(ActionEvent event) {
-    	ChoosePlayersController.diff = Difficulty.Hard;
-    	// TODO pass difficulty to next screen
-    	methods.newScreen("ChoosePlayers");
+    	if (playWithSystem) {
+    		PlayerDetailsController.diff = Difficulty.Hard;
+    		methods.newScreen("PlayerDetails");
+    	}
+    	else {
+        	ChoosePlayersController.diff = Difficulty.Hard;
+        	methods.newScreen("ChoosePlayers");
+    	}
     }
 
     @FXML
     void normal(ActionEvent event) {
-    	ChoosePlayersController.diff = Difficulty.Medium;
-    	// TODO pass difficulty to next screen
-    	methods.newScreen("ChoosePlayers");
+    	if (playWithSystem) {
+    		PlayerDetailsController.diff = Difficulty.Medium;
+    		methods.newScreen("PlayerDetails");    		
+    	}
+    	else {
+    		ChoosePlayersController.diff = Difficulty.Medium;
+        	methods.newScreen("ChoosePlayers");
+    	}
     }
 
     @FXML
     void easy(ActionEvent event) {
-    	ChoosePlayersController.diff = Difficulty.Easy;
-    	// TODO pass difficulty to next screen
-    	methods.newScreen("ChoosePlayers");
+    	if (playWithSystem) {
+    		PlayerDetailsController.diff = Difficulty.Easy;
+    		methods.newScreen("PlayerDetails");    		
+    	}
+    	else {
+        	ChoosePlayersController.diff = Difficulty.Easy;
+        	methods.newScreen("ChoosePlayers");
+    	}
     }
     
 	@Override

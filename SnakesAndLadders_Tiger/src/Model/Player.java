@@ -11,6 +11,7 @@ public class Player {
 	private int playerPrevPlace=0; //player previous position
 	private int numberOrder=0;
 	private int enteredTile=0; // if the player entered their current position (playerPlace) first/second/third/fourth
+	public boolean isSystem = false; // if this player represents the system
 	
 	public Player(String playerName, Color playerColor) {
 		super();
@@ -28,6 +29,14 @@ public class Player {
 	public void printPlayerAddedSuccess() {
         System.out.println("New player" + playerName + "added successfully!");
     }
+
+	public boolean isSystem() {
+		return isSystem;
+	}
+
+	public void setSystem(boolean isSystem) {
+		this.isSystem = isSystem;
+	}
 
 	public int getPlayerID() {
 		return playerID;

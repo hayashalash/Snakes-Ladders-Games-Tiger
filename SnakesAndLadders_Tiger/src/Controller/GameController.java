@@ -88,6 +88,7 @@ import javafx.scene.layout.StackPane;
 	private static final String RED = "/img/icons/redPlayer.png"; //Player Token path
 	private static final String PURPLE = "/img/icons/purplePlayer.png"; //Player Token path
 	private static final String YELLOW = "/img/icons/yellowPlayer.png";	//Player Token path
+	private static final String SYSTEM = "/img/icons/systemToken.png";	//System player Token path
 	private static final String ARROW = "/img/icons/arrow3.gif"; //Player's turn arrow path
 	private static final String RED_SNAKE_IMAGE_PATH = "/img/icons/redSnake.png";
 	private static final String YELLOW_SNAKE_IMAGE_PATH = "/img/icons/yellowSnake.png";
@@ -122,7 +123,8 @@ import javafx.scene.layout.StackPane;
 	int returnVal = 0; // returns the number of steps the player should move based on their answer
 	private Duration gameDuration = Duration.ZERO;
 	private static final int VISIBLE_DURATION_MS = 4500; // 4.5 seconds
-
+//	private boolean gameWithSystem = false;
+	
 	private ImageView surpriseValue;
 	private ImageView surprise;
     private Board board;
@@ -137,7 +139,7 @@ import javafx.scene.layout.StackPane;
     private HBox player2;
     private HBox player3;
     private HBox player4;
-	
+    
     // Constructor
     public GameController(Game game, Board board, GridPane grid, HBox playersStart, Label time,
     		Timeline timer, HBox player1, HBox player2, HBox player3, HBox player4, ImageView surpriseValue, ImageView surprise) {
@@ -153,6 +155,7 @@ import javafx.scene.layout.StackPane;
         this.surpriseValue = surpriseValue;
         this.surprise = surprise;
         InitSizes();
+        
     }
 	private void InitSizes(){
 		if(board.getbType()== Difficulty.Easy) {
@@ -252,6 +255,13 @@ import javafx.scene.layout.StackPane;
 				yellowImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
 				icons.put(p, yellowPlayer); // associate created icon with the player
 			}
+			else if (p.getPlayerColor() == Color.System) {
+				Image system = new Image(getClass().getResource(SYSTEM).toExternalForm());
+				ImageView systemImageView = new ImageView(system);
+				playerIcons.add(systemImageView);
+				systemImageView.setId(String.valueOf(p.getPlayerID())); // setting an index to the player icon in order to easily retrieve it later
+				icons.put(p, system); // associate created icon with the player
+			}
 		}
 		
 		for (ImageView iv : playerIcons) { // the player icons that will move on the board
@@ -317,7 +327,7 @@ import javafx.scene.layout.StackPane;
         delay.play();
 	}
 	
-	void move(Player player, int steps) {	    
+	synchronized void move(Player player, int steps) {	    
 	    int currentPosition = player.getPlayerPlace();
 	    int currentRow;
 	    int currentColumn;

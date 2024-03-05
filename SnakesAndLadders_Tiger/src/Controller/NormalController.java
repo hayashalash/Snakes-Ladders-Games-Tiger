@@ -24,7 +24,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -50,6 +49,9 @@ public class NormalController extends BoardController implements Initializable  
 	private GameController gameController;
 	public static Game game;
 	Board board = new Board(game.getDifficulty());
+//	private boolean systemsTurn = false; // determines whether it is now the systems turn or not in games with the system
+	
+	private boolean gameWithSystem = false;
 	
     @FXML
     private ImageView surpriseValue;
@@ -108,8 +110,7 @@ public class NormalController extends BoardController implements Initializable  
     private HashMap<Integer, String> diceImageMap;
     
     @FXML
-    private Button musicIcon;
-    
+    private Button musicIcon;    
     
     
     @FXML
@@ -120,13 +121,18 @@ public class NormalController extends BoardController implements Initializable  
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		playersStart.setAlignment(Pos.BASELINE_RIGHT);
+		for (Player p : game.getPlayers()) { // check whether this is a game with friends or eith the system
+			if (p.isSystem)
+				gameWithSystem = true;
+		}
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
-        
+        Tooltip res = new Tooltip("Restart Game");
+        Tooltip.install(update, res);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}
@@ -140,7 +146,21 @@ public class NormalController extends BoardController implements Initializable  
     		return;
     	}
 		gameController.startTimer();
-        Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
+		if (!gameWithSystem) // if game is with friends
+			Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
+		else { // if game is one player VS. system
+			// set player to be first
+			Player system = null;
+			Player player = null;
+			for (Player p : game.getPlayers()) {
+				if (p.isSystem)
+					system = p;
+				else
+					player = p;
+			}
+			game.getPlayersOrder().add(player);
+			game.getPlayersOrder().add(system);
+		}
         gameController.showPlayers();
 	    gameController.showLadders();
 	    gameController.showSnakes();
@@ -170,7 +190,11 @@ public class NormalController extends BoardController implements Initializable  
 	@Override
     @FXML
     public void handleDiceClick(ActionEvent event) throws InterruptedException {
-    	// Enable the button after animation completes
+    	rollDice();
+    }
+	
+	public void rollDice() {
+		// Enable the button after animation completes
         diceButton.setDisable(true);
         diceButton.setOpacity(1.0);
         diceButton.setStyle("-fx-background-color: transparent;");
@@ -206,14 +230,27 @@ public class NormalController extends BoardController implements Initializable  
         // Display the dice result
 
         timeline.play(); // Start the animation
-    }
+	}
 	
 	@Override
 	public void onFinished(Player currentPlayer, int lastResult) {
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
-        diceButton.setDisable(false); // Enable the button after animation completes
+    	diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
+        if (gameWithSystem) {
+        	if (!currentPlayer.isSystem) { // if the current player is not the system
+        		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
+        		// Wait 3 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+		        delay.setOnFinished(event -> {
+            		rollDice(); // roll the dice automatically for the system player
+		        });
+		        Platform.runLater(() -> {
+		        	delay.play();
+		        });
+        	}
+        }
     }
 	
 	@Override
@@ -224,36 +261,36 @@ public class NormalController extends BoardController implements Initializable  
     }
 	
 	@Override
-	public void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+	public void viewResultDice(Player currentPlayer,int diceResult) {
     	if(diceResult <= 6) {
     		gameController.move(currentPlayer, diceResult);
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
-    		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Easy);
-    			System.out.println("steps to move after question are: "+steps);
-        		gameController.move(currentPlayer, steps); 
-    		});
-//    		gameController.move(currentPlayer, 50); // TODO this is temporary for testing purposes, revert back when done
+//    		Platform.runLater(() -> {
+//    			int steps = gameController.showQuestionPopup(Difficulty.Easy);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		gameController.move(currentPlayer, steps); 
+//    		});
+    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
-    		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Medium);
-    			System.out.println("steps to move after question are: "+steps);
-        		gameController.move(currentPlayer, steps); 
-    		});
-//    		gameController.move(currentPlayer, 50); // TODO this is temporary for testing purposes, revert back when done
+//    		Platform.runLater(() -> {
+//    			int steps = gameController.showQuestionPopup(Difficulty.Medium);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		gameController.move(currentPlayer, steps); 
+//    		});
+    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 	
-    		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Hard);
-    			System.out.println("steps to move after question are: "+steps);
-        		gameController.move(currentPlayer, steps); 
-    		});
-//    		gameController.move(currentPlayer, 50); // TODO this is temporary for testing purposes, revert back when done
+//    		Platform.runLater(() -> {
+//    			int steps = gameController.showQuestionPopup(Difficulty.Hard);
+//    			System.out.println("steps to move after question are: "+steps);
+//        		gameController.move(currentPlayer, steps); 
+//    		});
+    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 	@Override
@@ -291,10 +328,9 @@ public class NormalController extends BoardController implements Initializable  
 		// TODO Auto-generated method stub
 		
 	}
-	 @FXML
-	    void showInfo(ActionEvent event) throws IOException{
-	    	gameController.showInfo();
-	    }
-
+	@FXML
+    void showInfo(ActionEvent event) throws IOException{
+    	gameController.showInfo();
+    }
 
 }
