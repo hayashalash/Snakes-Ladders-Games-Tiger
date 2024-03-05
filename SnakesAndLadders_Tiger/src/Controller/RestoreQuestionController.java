@@ -62,6 +62,9 @@ public class RestoreQuestionController  implements Initializable {
     @FXML
     private Button previousButton;
     
+    @FXML
+    private Button delete;
+    
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
 
@@ -96,7 +99,7 @@ public class RestoreQuestionController  implements Initializable {
     
     public void fill() {
 
-    	dataQues = FXCollections.observableArrayList(SysData.getInstance().deletedFromJSON);
+    	dataQues = FXCollections.observableArrayList(SysData.getInstance().getDeleted());
   		question.setCellValueFactory(new PropertyValueFactory<Question, String>("question"));
 		difficulty.setCellValueFactory(new PropertyValueFactory<Question, Difficulty>("difficulty"));
 		 questionNum.setCellValueFactory(cellData -> {
@@ -243,6 +246,36 @@ public class RestoreQuestionController  implements Initializable {
 		fill();// fil
     }
     
+    @FXML
+    void deleteQuestion(ActionEvent event) throws IOException, ParseException {
+    	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
+    		Alerts.warning("Please select a question to delete.");
+    		return;
+    	}
+    	String deletedQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
+    	Difficulty deletedDifficulty = questionTable.getSelectionModel().getSelectedItem().getDifficulty();
+    	String deletedAnswer1 = questionTable.getSelectionModel().getSelectedItem().getAnswer1();
+    	String deletedAnswer2 = questionTable.getSelectionModel().getSelectedItem().getAnswer2();
+    	String deletedAnswer3 = questionTable.getSelectionModel().getSelectedItem().getAnswer3();
+    	String deletedAnswer4 = questionTable.getSelectionModel().getSelectedItem().getAnswer4();
+    	Integer deletedCorrect = questionTable.getSelectionModel().getSelectedItem().getCorrectAnswer();
+
+    	Question deletedQ = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
+    			,deletedDifficulty,deletedCorrect);
+    	
+    	if (Alerts.delete(deletedQuestion) == 1) {
+    	    SysData.getInstance().deleteFromDeletedQJson(deletedQ);
+    	    
+    	    if (SysData.getInstance().getDeleted().contains(deletedQ)) {
+    	        System.out.println("Question not removed from data structure.");
+    	    } else {
+    	        System.out.println("Question successfully removed from data structure.");
+    	    }
+    	    
+    	    questionTable.getItems().clear();
+    	    fill();
+    	}
+    }
     
     @FXML
     void entered(MouseEvent event) {
