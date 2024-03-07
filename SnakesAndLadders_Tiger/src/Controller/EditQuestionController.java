@@ -2,7 +2,10 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
@@ -101,15 +104,21 @@ public class EditQuestionController implements Initializable {
     			Alerts.message("Error","Please fill all the fields");
     	}
     	
-    	String regex = "^[a-zA-Z0-9?]+(?:[\\s]+[a-zA-Z0-9?]+)*$";
+    	String regex = "^[^\\s]*$";
     	if (!questionText.getText().matches(regex) || 
     	    !ans1Text.getText().matches(regex) ||
     	    !ans2Text.getText().matches(regex) ||
     	    !ans3Text.getText().matches(regex) ||
     	    !ans4Text.getText().matches(regex)) {
-    	    // If any input contains characters other than letters, numbers, and question marks or has leading/trailing spaces
-    	    Alerts.message("Error", "Please use only letters, numbers, and question mark.");
+    	    Alerts.message("Error", "Please use any characters without spaces.");
     	}
+    	
+		//check if there the answers is not the same, it should be unique
+ 	   Set<String> uniqueAnswers = new HashSet<>(Arrays.asList(ans1Text.getText(), ans2Text.getText(), ans3Text.getText(), ans4Text.getText()));
+ 	    if (uniqueAnswers.size() < 4) {
+ 	        Alerts.message("Error", "Please ensure that all answers are unique.");
+ 	    }
+ 	    
     	if (Alerts.edit() == 1) {
 	    	String quesEdit= questionText.getText();
 	    	String ans1Edit= ans1Text.getText();

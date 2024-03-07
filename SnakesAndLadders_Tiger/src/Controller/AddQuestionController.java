@@ -2,7 +2,10 @@ package Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.json.simple.parser.ParseException;
 
@@ -73,22 +76,30 @@ public class AddQuestionController implements Initializable{
 			return false;
 		}
     	
-    	String regex = "^[a-zA-Z0-9?]+(?:[\\s]+[a-zA-Z0-9?]+)*$";
+    	String regex = "^[^\\s]*$";
     	if (!questionText.getText().matches(regex) || 
     	    !ans1Text.getText().matches(regex) ||
     	    !ans2Text.getText().matches(regex) ||
     	    !ans3Text.getText().matches(regex) ||
     	    !ans4Text.getText().matches(regex)) {
-    	    // If any input contains characters other than letters, numbers, and question marks or has leading/trailing spaces
-    	    Alerts.message("Error", "Please use only letters, numbers, and question mark.");
+    	    Alerts.message("Error", "Please use any characters without spaces.");
     	    return false;
     	}
+
 
 		//check if the combo box selected (filled)
 		if(difficulty.getSelectionModel().getSelectedIndex() == -1 || correctAnswer.getSelectionModel().getSelectedIndex() == -1) {
 			Alerts.message("Error", "Please fill all the fileds");
 			return false;
 		}
+		
+		//check if there the answers is not the same, it should be unique
+	   Set<String> uniqueAnswers = new HashSet<>(Arrays.asList(ans1Text.getText(), ans2Text.getText(), ans3Text.getText(), ans4Text.getText()));
+	    if (uniqueAnswers.size() < 4) {
+	        Alerts.message("Error", "Please ensure that all answers are unique.");
+	        return false;
+	    }
+		    
 		String ques = questionText.getText();
 		String ans1 = ans1Text.getText();
 		String ans2 = ans2Text.getText();
