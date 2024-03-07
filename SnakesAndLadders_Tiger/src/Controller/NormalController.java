@@ -148,7 +148,7 @@ public class NormalController extends BoardController implements Initializable  
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		playersStart.setAlignment(Pos.BASELINE_RIGHT);
-		for (Player p : game.getPlayers()) { // check whether this is a game with friends or eith the system
+		for (Player p : game.getPlayers()) { // check whether this is a game with friends or with the system
 			if (p.isSystem)
 				gameWithSystem = true;
 		}
@@ -265,11 +265,11 @@ public class NormalController extends BoardController implements Initializable  
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
     	diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
-        viewResultDice(currentPlayer, lastResult);
+    	viewResultDice(currentPlayer, lastResult);
         if (gameWithSystem) {
         	if (!currentPlayer.isSystem) { // if the current player is not the system
         		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
-        		// Wait 3 seconds before starting the system's turn
+    			// Wait 3 seconds before starting the system's turn
 		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
 		        delay.setOnFinished(event -> {
             		rollDice(); // roll the dice automatically for the system player
@@ -297,32 +297,32 @@ public class NormalController extends BoardController implements Initializable  
     		//display easy question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Easy);
+    			int steps = gameController.showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
         		gameController.move(currentPlayer, steps); 
     		});
-    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
+//    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Medium);
+    			int steps = gameController.showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
         		gameController.move(currentPlayer, steps); 
     		});
-    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
+//    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			int steps = gameController.showQuestionPopup(Difficulty.Hard);
+    			int steps = gameController.showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
         		gameController.move(currentPlayer, steps); 
     		});
-    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
-        }	
+//    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
+        }
 	}
 	@Override
 	public void updateDiceImage(String imagePath) {//update the dice image 
@@ -335,7 +335,6 @@ public class NormalController extends BoardController implements Initializable  
     		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 0);");
     	 }
     }
-
    
 	@Override
 	@FXML

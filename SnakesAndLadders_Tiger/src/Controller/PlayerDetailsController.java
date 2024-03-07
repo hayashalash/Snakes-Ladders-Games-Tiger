@@ -204,5 +204,4 @@ public class PlayerDetailsController implements Initializable{
     		methods.newScreen("hardBoard");
     	}
     }
-
 }

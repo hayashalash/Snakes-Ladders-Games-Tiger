@@ -40,7 +40,9 @@ public class EasyController extends BoardController implements Initializable{
 	Board board = new Board(game.getDifficulty());
 	private static final String DEFAULT_DICE_IMAGE_PATH = "/img/icons/dice.png";
 	ArrayList<Player> playersOutsideBoard = new ArrayList<>();
-
+    
+    private boolean gameWithSystem = false;
+    
     private static final String DICE_SOUND_FILE = "/img/wavs/dice.wav";
     private static final String QUESTION_SOUND_FILE = "/img/wavs/questionSound.wav";
     
@@ -145,6 +147,10 @@ public class EasyController extends BoardController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		playersStart.setAlignment(Pos.BASELINE_RIGHT);
+		for (Player p : game.getPlayers()) { // check whether this is a game with friends or with the system
+			if (p.isSystem)
+				gameWithSystem = true;
+		}
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
@@ -165,8 +171,22 @@ public class EasyController extends BoardController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
+		if (!gameWithSystem) // if game is with friends
+			Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
+		else { // if game is one player VS. system
+			// set player to be first
+			Player system = null;
+			Player player = null;
+			for (Player p : game.getPlayers()) {
+				if (p.isSystem)
+					system = p;
+				else
+					player = p;
+			}
+			game.getPlayersOrder().add(player);
+			game.getPlayersOrder().add(system);
+		}
 		gameController.startTimer();
-        Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
         gameController.showPlayers();
 	    gameController.showLadders();
 	    gameController.showSnakes();
@@ -225,6 +245,21 @@ public class EasyController extends BoardController implements Initializable{
         diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
+        if (gameWithSystem) {
+        	System.out.println("game is with the system");
+        	if (!currentPlayer.isSystem) { // if the current player is not the system
+        		System.out.println("it is now the system's turn");
+        		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
+    			// Wait 3 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+		        delay.setOnFinished(event -> {
+            		rollDice(); // roll the dice automatically for the system player
+		        });
+		        Platform.runLater(() -> {
+		        	delay.play();
+		        });
+        	}
+        }
     }
 	@Override
     public Player getNextPlayerToMove() {
@@ -240,33 +275,32 @@ public class EasyController extends BoardController implements Initializable{
 		}
     	else if(diceResult == 5) {
     		//display easy question 
-  		Platform.runLater(() -> {
-  	    int steps = gameController.showQuestionPopup(Difficulty.Easy);
-		System.out.println("steps to move after question are: "+steps);
-  		gameController.move(currentPlayer, steps); 
-		});
-    		gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
+	  		Platform.runLater(() -> {
+		  	    int steps = gameController.showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
+				System.out.println("steps to move after question are: "+steps);
+		  		gameController.move(currentPlayer, steps); 
+			});
+//	    	gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 6) {
     		//display normal question 
-    	playQuestionSound();
-  		Platform.runLater(() -> {
-		int steps = gameController.showQuestionPopup(Difficulty.Medium);
-		System.out.println("steps to move after question are: "+steps);
-   		gameController.move(currentPlayer, steps); 
-     	});
-    		gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
-
+	    	playQuestionSound();
+	  		Platform.runLater(() -> {
+				int steps = gameController.showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
+				System.out.println("steps to move after question are: "+steps);
+		   		gameController.move(currentPlayer, steps); 
+	     	});
+//	    	gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 7) {
     		//display hard question
-    	playQuestionSound();
- 		Platform.runLater(() -> {
-		int steps = gameController.showQuestionPopup(Difficulty.Hard);
-	    System.out.println("steps to move after question are: "+steps);
- 		gameController.move(currentPlayer, steps); 
-	});
-		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+	    	playQuestionSound();
+	 		Platform.runLater(() -> {
+				int steps = gameController.showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
+			    System.out.println("steps to move after question are: "+steps);
+		 		gameController.move(currentPlayer, steps); 
+	 		});
+//			gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 	@Override
@@ -280,8 +314,6 @@ public class EasyController extends BoardController implements Initializable{
     		 diceResult.setStyle("-fx-effect:  dropshadow(one-pass-box , black , 8 , 0.0 , 0 , 0);");
     	 }
     }
-    
-	
 	
 	@Override
 	@FXML

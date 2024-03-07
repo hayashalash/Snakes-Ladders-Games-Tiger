@@ -14,6 +14,7 @@ import View.Alerts;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,6 +36,8 @@ public class HardController extends BoardController implements Initializable{
 	private GameController gameController;
 	public static Game game;
 	Board board = new Board(game.getDifficulty());
+	
+	private boolean gameWithSystem = false;
 	
 	Methods methods = new Methods();
 	
@@ -127,6 +130,10 @@ public class HardController extends BoardController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		playersStart.setAlignment(Pos.BASELINE_RIGHT);
+		for (Player p : game.getPlayers()) { // check whether this is a game with friends or with the system
+			if (p.isSystem)
+				gameWithSystem = true;
+		}
 		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
@@ -147,8 +154,22 @@ public class HardController extends BoardController implements Initializable{
     		Alerts.warning("An error occured while creating the board!");
     		return;
     	}
+		if (!gameWithSystem) // if game is with friends
+			Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
+		else { // if game is one player VS. system
+			// set player to be first
+			Player system = null;
+			Player player = null;
+			for (Player p : game.getPlayers()) {
+				if (p.isSystem)
+					system = p;
+				else
+					player = p;
+			}
+			game.getPlayersOrder().add(player);
+			game.getPlayersOrder().add(system);
+		}
 		gameController.startTimer();
-        Dice.RollingDiceStartingGame(game); // fills the queue randomly to determine the order of player turns
         gameController.showPlayers();
 	    gameController.showLadders();
 	    gameController.showSnakes();
@@ -228,6 +249,19 @@ public class HardController extends BoardController implements Initializable{
         diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
         viewResultDice(currentPlayer, lastResult);
+        if (gameWithSystem) {
+        	if (!currentPlayer.isSystem) { // if the current player is not the system
+        		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
+    			// Wait 3 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+		        delay.setOnFinished(event -> {
+            		rollDice(); // roll the dice automatically for the system player
+		        });
+		        Platform.runLater(() -> {
+		        	delay.play();
+		        });
+        	}
+        }
     }
 	@Override
 	public Player getNextPlayerToMove() {
@@ -244,7 +278,7 @@ public class HardController extends BoardController implements Initializable{
     		//display easy question 
     		playQuestionSound();
 //    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Easy);
+//    			int steps = showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
 //    			System.out.println("steps to move after question are: "+steps);
 //        		gameController.move(currentPlayer, steps); 
 //    		});
@@ -254,7 +288,7 @@ public class HardController extends BoardController implements Initializable{
     		//display normal question 
     		playQuestionSound();
 //    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Medium);
+//    			int steps = showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
 //    			System.out.println("steps to move after question are: "+steps);
 //        		gameController.move(currentPlayer, steps); 
 //    		});
@@ -264,7 +298,7 @@ public class HardController extends BoardController implements Initializable{
     		//display hard question 
     		
 //    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Hard);
+//    			int steps = showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
 //    			System.out.println("steps to move after question are: "+steps);
 //        		gameController.move(currentPlayer, steps); 
 //    		});

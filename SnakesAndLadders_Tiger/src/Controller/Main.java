@@ -92,7 +92,7 @@ public class Main extends Application {
 
     private void playBackgroundMusic() {
         if (note != null) {
-        	note.setVolume(0.1);
+        	note.setVolume(0.5);
         	note.play();
         }
     }

@@ -409,7 +409,7 @@ import javafx.scene.layout.StackPane;
         delay.play();
 	}
 	
-	synchronized void move(Player player, int steps) {	    
+	synchronized void move(Player player, int steps) {
 	    int currentPosition = player.getPlayerPlace();
 	    int currentRow;
 	    int currentColumn;
@@ -441,17 +441,17 @@ import javafx.scene.layout.StackPane;
 				    	displayPlayerToken(currentRow, currentColumn, player, nextPos);
 			        	player.setPlayerPlace(nextPos);
 				    });
-				    if(nextTile.gettType().equals(TileType.LadderBottom)) {
-				    	playLadderSound();
-				    }
-				    else {
-					    playSnakeSound();
-				    }
 				    // Wait 2 seconds before climbing up the ladder or sliding down the snake
 			        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
 			        delay.setOnFinished(event -> {
 			        	System.out.println("newRow is: "+newRow);
 			        	System.out.println("newColumn is: "+newColumn);
+			        	if(nextTile.gettType().equals(TileType.LadderBottom)) {
+					    	playLadderSound();
+					    }
+					    else {
+						    playSnakeSound();
+					    }
 					    displayPlayerToken(newRow, newColumn, player, newPosition);
 					    player.setPlayerPlace(newPosition);
 			        });
@@ -734,7 +734,7 @@ import javafx.scene.layout.StackPane;
 	    	    Platform.runLater(() -> {
 	    	    	playQuestionSound();
 	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
-	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff());
+	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff(), p.isSystem());
 		    		move(p, newSteps);
 	    	    });
 	            return p.getPlayerPlace();
@@ -744,7 +744,7 @@ import javafx.scene.layout.StackPane;
 	    }
 	}
 	
-    public int showQuestionPopup(Difficulty difficulty) { // view the question  dialog  and return the number of steps to move
+    public int showQuestionPopup(Difficulty difficulty, boolean isSystem) { // view the question  dialog  and return the number of steps to move
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Question");
 	    // Disable the close button
@@ -814,6 +814,30 @@ import javafx.scene.layout.StackPane;
 		    if (newToggle != null) // Enable submit button only when a radio button is selected
 		        submit.setDisable(false);
 		});
+		if (isSystem) { // if this question appeared in the System's turn, it must be answered correctly
+			int correctAnswerNumber=q.getCorrectAnswer();
+			// wait 2 second before choosing the correct answer
+			PauseTransition delay = new PauseTransition(Duration.seconds(2));
+	        delay.setOnFinished(event -> {
+	        	for (Toggle toggle : answerGroup.getToggles()) { // go over answers
+		            RadioButton radioButton = (RadioButton) toggle;
+		            if ( (int) radioButton.getUserData() == correctAnswerNumber) // if this is the correct answer
+		            	answerGroup.selectToggle(toggle); // select it
+		        }
+	        	submit.fire(); // submit the correct answer chosen
+	        });
+	        Platform.runLater(() -> {
+	        	delay.play();
+	        });
+	        // wait 4 additional seconds before closing the dialog
+	        PauseTransition delay2 = new PauseTransition(Duration.seconds(6));
+	        delay2.setOnFinished(event -> {
+	        	dialog.close();
+	        });
+	        Platform.runLater(() -> {
+	        	delay2.play();
+	        });
+		}
 		returnVal = 0; // initialize the return value to a  default: 0
 		submit.setOnAction(e -> {
 			okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
