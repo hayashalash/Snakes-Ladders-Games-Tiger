@@ -252,8 +252,8 @@ public class HardController extends BoardController implements Initializable{
         if (gameWithSystem) {
         	if (!currentPlayer.isSystem) { // if the current player is not the system
         		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
-    			// Wait 3 seconds before starting the system's turn
-		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+    			// Wait 5 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(5));
 		        delay.setOnFinished(event -> {
             		rollDice(); // roll the dice automatically for the system player
 		        });
@@ -277,32 +277,32 @@ public class HardController extends BoardController implements Initializable{
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
     		playQuestionSound();
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
     		playQuestionSound();
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult > 10) {
     		//display hard question 
     		
-//    		Platform.runLater(() -> {
-//    			int steps = showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
-//    			System.out.println("steps to move after question are: "+steps);
-//        		gameController.move(currentPlayer, steps); 
-//    		});
-    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
+    		Platform.runLater(() -> {
+    			int steps = gameController.showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
+    			System.out.println("steps to move after question are: "+steps);
+        		gameController.move(currentPlayer, steps); 
+    		});
+//    		gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
 	@Override

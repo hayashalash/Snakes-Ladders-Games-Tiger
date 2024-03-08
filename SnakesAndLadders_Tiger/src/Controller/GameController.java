@@ -8,6 +8,8 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+
 import Model.Board;
 import Model.Color;
 import Model.Difficulty;
@@ -410,9 +412,7 @@ import javafx.scene.layout.StackPane;
         delay.play();
 	}
 	
-	synchronized double move(Player player, int steps) {
-		double turnLength = 0;
-		ArrayList<Double> lengths = new ArrayList<>();
+	synchronized void move(Player player, int steps) {
 	    int currentPosition = player.getPlayerPlace();
 	    int currentRow;
 	    int currentColumn;
@@ -429,9 +429,7 @@ import javafx.scene.layout.StackPane;
 	    if (steps != 0) {
 		    
 		    int nextPos = currentPosition + steps;
-		    ArrayList<Double> nextMoveVals = NextMove(currentRow, currentColumn, currentPosition, steps, player);
-		    int newPosition =  (int) Math.round(nextMoveVals.get(0));
-		    lengths.add(nextMoveVals.get(1));
+		    int newPosition = NextMove(currentRow, currentColumn, currentPosition, steps, player); // TODO get length of func in seconds
 		    if (nextPos < board.getBoardSize() && nextPos >= 1) { // if nextPos is within the board boundaries, it could be a snake/ladder
 		    	player.setPlayerPrevPlace(currentPosition);
 		    	Tile nextTile = board.getTile(nextPos);
@@ -442,7 +440,7 @@ import javafx.scene.layout.StackPane;
 				    int newColumn = nextTile.getColumn();
 				    // move to the ladder bottom / snake head
                     
-				    lengths.add((double)displayPlayerToken(currentRow, currentColumn, player, nextPos));
+				    displayPlayerToken(currentRow, currentColumn, player, nextPos);
 		        	player.setPlayerPlace(nextPos);
 
 				    // Wait 2 seconds before climbing up the ladder or sliding down the snake
@@ -456,7 +454,7 @@ import javafx.scene.layout.StackPane;
 					    else {
 						    playSnakeSound();
 					    }
-					    lengths.add((double)displayPlayerToken(newRow, newColumn, player, newPosition));
+					    displayPlayerToken(newRow, newColumn, player, newPosition);
 					    player.setPlayerPlace(newPosition);
 			        });
 			        Platform.runLater(() -> {
@@ -488,13 +486,13 @@ import javafx.scene.layout.StackPane;
 		    	else {
 			    	// Set player's new position
 		    		playClassicSound();
-		    		lengths.add((double)displayPlayerToken(currentRow, currentColumn, player, newPosition));
+		    		displayPlayerToken(currentRow, currentColumn, player, newPosition);
 	    			player.setPlayerPlace(newPosition);
 			    }
 		    }
 		    else { // new position is outside the board --> 0
 		    	// Set player's new position
-		    	lengths.add((double)displayPlayerToken(currentRow, currentColumn, player, newPosition));
+		    	displayPlayerToken(currentRow, currentColumn, player, newPosition);
     			player.setPlayerPlace(newPosition);
 		    }
 		   
@@ -530,9 +528,6 @@ import javafx.scene.layout.StackPane;
         else if (nextPlayer.equals(originalOrder.get(3))) {
         		player4.getChildren().get(0).setOpacity(1);
         }
-        for (Double len : lengths)
-        	turnLength+=len;
-        return turnLength;
 	}
 	
 	private ImageView getTokenFromGrid(Player player) {
@@ -555,8 +550,7 @@ import javafx.scene.layout.StackPane;
         return null; // Return null if a token with the player ID is not found
     }
 	
-	private int displayPlayerToken(int currentR, int currentC, Player player, int newPosition) {
-		int funcLen = 0; // how long this function took in seconds
+	private void displayPlayerToken(int currentR, int currentC, Player player, int newPosition) {
 		ImageView playerToken = null;
 		if (player.getPlayerPlace() == 0) {
 			playerToken = getTokenFromStart(player);
@@ -571,7 +565,7 @@ import javafx.scene.layout.StackPane;
 	    	System.out.println("playerToken is NULL!");
 	    }
 	    if (newPosition == 0 && getTokenFromGrid(player) == null) { // if player hasn't entered the board yet and new position is 0
-	    	return funcLen; // Do nothing
+	    	return; // Do nothing
 	    }
 	    else if (newPosition != 0 && getTokenFromGrid(player) == null) { // if new position is > 1 and player is outside the board
 	    	// If the token is not already in the grid, add it
@@ -581,7 +575,7 @@ import javafx.scene.layout.StackPane;
 	    int row = pos.getRow();
 	    int column = pos.getColumn();
 	    playerToken.toFront();
-	    funcLen += moveTokenToCell(currentR, currentC, row, column, playerToken);
+	    moveTokenToCell(currentR, currentC, row, column, playerToken);
 	    
 	    // Check if other players are already on this tile to avoid covering each other's tokens
 	    ArrayList<Player> otherPlayers = new ArrayList<>(); // ArrayList for the other players
@@ -616,10 +610,9 @@ import javafx.scene.layout.StackPane;
     		GridPane.setValignment(playerToken, javafx.geometry.VPos.BOTTOM); // set player at the cell's bottom
     		player.setEnteredTile(4); // I entered in the fourth position
 	    }
-	    return funcLen;
 	}
 	
-	private int moveTokenToCell(int currentRow, int currentColumn, int targetRow, int targetColumn, ImageView token) {
+	private CompletableFuture<Void> moveTokenToCell(int currentRow, int currentColumn, int targetRow, int targetColumn, ImageView token) {
 		double tileWidth = grid.getPrefWidth()/board.getBoardLen();
 		double tileHeight = grid.getPrefHeight()/board.getBoardLen();
 
@@ -631,9 +624,8 @@ import javafx.scene.layout.StackPane;
         double endX = targetColumn * tileWidth;
         double endY = targetRow * tileHeight;
 
-        int seconds = 2; // transition duration
         // Create TranslateTransition to move the ImageView to the target position
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(seconds), token);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), token);
 
         // Set the starting position
         translateTransition.setFromX(startX);
@@ -643,41 +635,40 @@ import javafx.scene.layout.StackPane;
         translateTransition.setToX(endX);
         translateTransition.setToY(endY);
 
+        // Create a CompletableFuture to wait for the transition to be completed
+        CompletableFuture<Void> transitionCompleted = new CompletableFuture<>();
+        
+        // Add an event handler to the TranslateTransition to complete the CompletableFuture when the transition finishes
+        translateTransition.setOnFinished(event -> transitionCompleted.complete(null));
+        
         // Play the TranslateTransition
         translateTransition.play();
+        
         System.out.println("currentRow in moveTokenToCell: "+currentRow);
         System.out.println("currentColumn in moveTokenToCell: "+currentColumn);
-        return seconds;
+        return transitionCompleted;
     }
 
-	ArrayList<Double> NextMove(int currentRow, int currentColumn, int currPosition, int steps, Player p) {
-    	double nextMoveLen = 0; // the duration of the function in GUI
-    	ArrayList<Double> lengths = new ArrayList<>();
-    	ArrayList<Double> returnVals = new ArrayList<>();
-    	returnVals.add(0.0); // first element in the list is the steps
-    	returnVals.add(nextMoveLen); // second element of list is the func duration
+    int NextMove(int currentRow, int currentColumn, int currPosition, int steps, Player p) {
     	System.out.println("steps to move in NextMove are: " + steps);
 	    int nextPos = currPosition + steps;
+
 	    if (nextPos > board.getBoardSize()) {
 	    	System.out.println("next position is "+ nextPos +" and is larger than the board size os smaller than 1.");
-	    	returnVals.set(0, (double)currPosition);
-	        return returnVals; // Ensure next position is within the board boundaries
+	        return currPosition; // Ensure next position is within the board boundaries
 	    }
 	    
 	    if (nextPos < 1) {// Ensure next position is within the board boundaries
 	    	if (p.getPlayerPlace() == 0) // if player is outside the board
-	    		return returnVals; // player will stay outside the board
-	    	else {// if player is already on the board
-	    		returnVals.set(0, 1.0);
-	    		return returnVals; // return player to tile 1
-	    	}
+	    		return 0; // player will stay outside the board
+	    	else // if player is already on the board
+	    		return 1; // return player to tile 1
 	    }
 
 	    Tile nextTile = board.getTile(nextPos);
 	    if (nextTile == null) {
 	    	System.out.println("next position is "+ nextPos +" and that tile is null.");
-	    	returnVals.set(0, (double)currPosition);
-	        return returnVals; // Handle case where tile is null
+	        return currPosition; // Handle case where tile is null
 	    }
 	    
 	    switch (nextTile.gettType()) {
@@ -686,39 +677,36 @@ import javafx.scene.layout.StackPane;
 	            Snake snake = snakeT.getSnake();
 	            if (snake.getColor() == SnakeColor.Red) {
 	                System.out.println("NextMove will be: 1");
-	                returnVals.set(0, 1.0);
-		    		return returnVals; // return player to tile 1
+	                return 1;
 	            } else {
 	                System.out.println("NextMove will be: " + snake.getSnakeTail());
-	                returnVals.set(0, (double)snake.getSnakeTail());
-	                return returnVals;
+	                return snake.getSnakeTail();
 	            }
 	            
 	        case LadderBottom:
 	            LadderTile ladderT = (LadderTile) nextTile;
 	            Ladder ladder = ladderT.getLadder();
 	            System.out.println("NextMove will be: " + ladder.getLadderTop());
-	            returnVals.set(0, (double)ladder.getLadderTop());
-                return returnVals;
+	            return ladder.getLadderTop();
 	            
 	        case Surprise:
 	            System.out.println("Yaaaay you got a gift!");
 	            p.setPlayerPrevPlace(currPosition);
 	    	    // Set player's new position
-	    	    lengths.add((double)displayPlayerToken(currentRow, currentColumn, p, nextPos));
+	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
 	    	    p.setPlayerPlace(nextPos);
 	    	    Platform.runLater(() -> {
 	    	    	playSurpriseSound();
 		            int surpriseSteps = handleSurpriseTileReached();
-		            lengths.add(move(p, surpriseSteps)); //TODO get how long this function took
+		            move(p, surpriseSteps); 
 	    	    });
-	    	    lengths.add(4.0); // surprise GIF is 4 seconds
-	    	    for (Double len : lengths) {
-	    	    	nextMoveLen += len;
-	    	    }
-	    	    returnVals.set(0, (double)p.getPlayerPlace());
-	    	    returnVals.set(1, nextMoveLen);
-	            return returnVals;          
+	    	    // wait 4 seconds for the surprise GIF to finish
+		        PauseTransition delay = new PauseTransition(Duration.seconds(4));
+		        delay.setOnFinished(event -> {});
+		        Platform.runLater(() -> {
+		        	delay.play();
+		        });
+	            return p.getPlayerPlace();            
 	            
 //	            int newPosition1 = nextPos;
 //	    	    p.setPlayerPrevPlace(currPosition);
@@ -741,7 +729,7 @@ import javafx.scene.layout.StackPane;
 	            System.out.println("I have a question for you");
 	    	    p.setPlayerPrevPlace(currPosition);
 	    	    // Set player's new position
-	    	    lengths.add((double)displayPlayerToken(currentRow, currentColumn, p, nextPos));
+	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
 	    	    p.setPlayerPlace(nextPos);
 //	    	    System.out.println("current player position on question tile: "+newPosition);
 //	    	    // Wait 2 seconds before showing the question dialog
@@ -757,21 +745,14 @@ import javafx.scene.layout.StackPane;
 	    	    Platform.runLater(() -> {
 	    	    	playQuestionSound();
 	    	    	QuestionTile qt = (QuestionTile) board.getTile(nextPos);
-	    	    	ArrayList<Double> vals = new ArrayList<>();
-	    	    	vals = showQuestionPopup(qt.getQuestionDiff(), p.isSystem());
-	    	    	int newSteps = (int) Math.round(vals.get(1));
-		    		lengths.add(vals.get(0));
-		    		lengths.add(move(p, newSteps));
+	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff(), p.isSystem());
+	    	    	move(p, newSteps);
 	    	    });
-	    	    for (Double len : lengths) {
-	    	    	nextMoveLen += len;
-	    	    }
-	    	    returnVals.set(0, (double)p.getPlayerPlace());
-	    	    returnVals.set(1, nextMoveLen);
-	            return returnVals;
+	            return p.getPlayerPlace();
+	            
 	        default: // Handle the rest of the tile types which do not require special treatment
 	        	System.out.println("Next step will be: " + nextPos);
-	            return returnVals;
+	            return nextPos;
 	    }
 	}
 	
@@ -795,9 +776,8 @@ import javafx.scene.layout.StackPane;
         return (double) getDurationInMillis() / 1000;
     }
     
-    public ArrayList<Double> showQuestionPopup(Difficulty difficulty, boolean isSystem) { // view the question  dialog  and return the number of steps to move
+    public int showQuestionPopup(Difficulty difficulty, boolean isSystem) { // view the question  dialog  and return the number of steps to move
 		Dialog<ButtonType> dialog = new Dialog<>();
-		ArrayList<Double> returnVals = new ArrayList<>();
 		dialog.setTitle("Question");
 	    // Disable the close button
 		dialog.initStyle(StageStyle.UNDECORATED);
@@ -869,30 +849,25 @@ import javafx.scene.layout.StackPane;
 		dialog.setOnCloseRequest(event -> {
             stopTime();
             System.out.println("Dialog was open for " + getDurationInSeconds() + " seconds.");
-            returnVals.add(getDurationInSeconds());
         });
 		if (isSystem) { // if this question appeared in the System's turn, it must be answered correctly
 			int correctAnswerNumber=q.getCorrectAnswer();
-			// wait 2 second before choosing the correct answer
-			PauseTransition delay = new PauseTransition(Duration.seconds(2));
+
+        	Platform.runLater(() -> {
+        		for (Toggle toggle : answerGroup.getToggles()) { // go over answers
+    	            RadioButton radioButton = (RadioButton) toggle;
+    	            if ( (int) radioButton.getUserData() == correctAnswerNumber) // if this is the correct answer
+    	            	answerGroup.selectToggle(toggle); // select it
+    	        }
+            	submit.fire(); // submit the correct answer chosen
+        	});
+	        // wait 7 seconds before closing the dialog
+	        PauseTransition delay = new PauseTransition(Duration.seconds(7));
 	        delay.setOnFinished(event -> {
-	        	for (Toggle toggle : answerGroup.getToggles()) { // go over answers
-		            RadioButton radioButton = (RadioButton) toggle;
-		            if ( (int) radioButton.getUserData() == correctAnswerNumber) // if this is the correct answer
-		            	answerGroup.selectToggle(toggle); // select it
-		        }
-	        	submit.fire(); // submit the correct answer chosen
-	        });
-	        Platform.runLater(() -> {
-	        	delay.play();
-	        });
-	        // wait 4 additional seconds before closing the dialog
-	        PauseTransition delay2 = new PauseTransition(Duration.seconds(6));
-	        delay2.setOnFinished(event -> {
 	        	dialog.close();
 	        });
 	        Platform.runLater(() -> {
-	        	delay2.play();
+	        	delay.play();
 	        });
 		}
 		returnVal = 0; // initialize the return value to a  default: 0
@@ -956,10 +931,8 @@ import javafx.scene.layout.StackPane;
 			dialog.getDialogPane().getScene().getWindow().sizeToScene(); 
 		});
 		startTime();
-		returnVals.add((double)returnVal);
 		dialog.showAndWait();
-		System.out.println(returnVals);
-		return returnVals;
+		return returnVal;
 	}
 
     public int displaySurprise() {

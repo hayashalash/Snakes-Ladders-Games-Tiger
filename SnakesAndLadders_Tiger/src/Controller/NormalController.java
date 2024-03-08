@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+
 import Model.Board;
 import Model.Dice;
 import Model.Difficulty;
@@ -265,15 +267,14 @@ public class NormalController extends BoardController implements Initializable  
     	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
     	diceButton.setDisable(false); // Enable the button after animation completes
         // Move the current player based on the dice result after animation completes
-    	double playersTurnDuration = viewResultDice(currentPlayer, lastResult);
-    	System.out.println("player's Turn Duration was: "+playersTurnDuration);
-        if (gameWithSystem) {
+    	viewResultDice(currentPlayer, lastResult);
+    	if (gameWithSystem) {
         	if (!currentPlayer.isSystem) { // if the current player is not the system
         		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
-    			// Wait 3 seconds before starting the system's turn
-		        PauseTransition delay = new PauseTransition(Duration.seconds(4));
+    			// Wait 5 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(5));
 		        delay.setOnFinished(event -> {
-            		rollDice(); // roll the dice automatically for the system player
+		        	rollDice(); // roll the dice automatically for the system player
 		        });
 		        Platform.runLater(() -> {
 		        	delay.play();
@@ -290,53 +291,40 @@ public class NormalController extends BoardController implements Initializable  
     }
 	
 	@Override
-	public double viewResultDice(Player currentPlayer, int diceResult) {
-		ArrayList<Double> lengths = new ArrayList<>();
-		double totalLen = 0;
+	public void viewResultDice(Player currentPlayer, int diceResult) {
     	if(diceResult <= 6) {
-    		lengths.add(gameController.move(currentPlayer, diceResult));
+    		gameController.move(currentPlayer, diceResult);
 		}
     	else if(diceResult == 7 || diceResult == 8) {
     		//display easy question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			ArrayList<Double> returnVals = gameController.showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
-    			int steps = (int) Math.round(returnVals.get(0));
-    			lengths.add(returnVals.get(1));
+    			int steps = gameController.showQuestionPopup(Difficulty.Easy, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
-    			System.out.println("question len was "+returnVals.get(1));
-        		lengths.add(gameController.move(currentPlayer, steps));
-    		});
+        		gameController.move(currentPlayer, steps);
+    		});  		
 //    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 9 || diceResult == 10) {
     		//display normal question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			ArrayList<Double> returnVals = gameController.showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
-    			int steps = (int) Math.round(returnVals.get(0));
-    			lengths.add(returnVals.get(1));
+    			int steps = gameController.showQuestionPopup(Difficulty.Medium, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
-        		lengths.add(gameController.move(currentPlayer, steps));
-    		});
+        		gameController.move(currentPlayer, steps);
+    		});           
 //    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 11 || diceResult == 12) {
     		//display hard question 
     		playQuestionSound();
     		Platform.runLater(() -> {
-    			ArrayList<Double> returnVals = gameController.showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
-    			int steps = (int) Math.round(returnVals.get(0));
-    			lengths.add(returnVals.get(1));
+    			int steps = gameController.showQuestionPopup(Difficulty.Hard, currentPlayer.isSystem());
     			System.out.println("steps to move after question are: "+steps);
-        		lengths.add(gameController.move(currentPlayer, steps));
+        		gameController.move(currentPlayer, steps);
     		});
 //    		gameController.move(currentPlayer, 5); // TODO this is temporary for testing purposes, revert back when done
         }
-    	for (Double len : lengths)
-    		totalLen += len;
-    	System.out.println("total len in viewDiceResult is: "+totalLen);
-    	return totalLen;
 	}
 	@Override
 	public void updateDiceImage(String imagePath) {//update the dice image 

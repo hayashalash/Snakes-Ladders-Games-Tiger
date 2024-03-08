@@ -250,8 +250,8 @@ public class EasyController extends BoardController implements Initializable{
         	if (!currentPlayer.isSystem) { // if the current player is not the system
         		System.out.println("it is now the system's turn");
         		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
-    			// Wait 3 seconds before starting the system's turn
-		        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+    			// Wait 5 seconds before starting the system's turn
+		        PauseTransition delay = new PauseTransition(Duration.seconds(5));
 		        delay.setOnFinished(event -> {
             		rollDice(); // roll the dice automatically for the system player
 		        });
