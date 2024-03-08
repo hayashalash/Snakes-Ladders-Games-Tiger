@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -68,6 +69,9 @@ public class EasyController extends BoardController implements Initializable{
     	questionSoundPlayer.play();
     }
 	
+    @FXML
+    private AnchorPane rootAnchorPane;
+    
 	@FXML
 	private ImageView surpriseValue;
 
@@ -102,7 +106,10 @@ public class EasyController extends BoardController implements Initializable{
     private Button info;
     
     @FXML
-    private Button update;
+    private Button reset;
+    
+    @FXML
+    private Button pause;
     
     @FXML
     private Label time;
@@ -151,7 +158,7 @@ public class EasyController extends BoardController implements Initializable{
 			if (p.isSystem)
 				gameWithSystem = true;
 		}
-		gameController = new GameController(game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
+		gameController = new GameController(rootAnchorPane, game, board, grid, playersStart, time, timer, player1, player2, player3, player4, surpriseValue, surprise);
 		Image defaultImage = new Image(getClass().getResource(DEFAULT_DICE_IMAGE_PATH).toExternalForm());
 	    diceResult.setImage(defaultImage);
 	    exitButton.toFront(); // Ensure the exit button is always in the front
@@ -317,7 +324,7 @@ public class EasyController extends BoardController implements Initializable{
 	
 	@Override
 	@FXML
-    public void updateBoard(ActionEvent event) {
+    public void resetBoard(ActionEvent event) {
 		if (Alerts.restartGame() == 1) {
 		    // Reset the game state through the GameController instance
 		    if (gameController != null) {
@@ -336,9 +343,14 @@ public class EasyController extends BoardController implements Initializable{
 		// TODO Auto-generated method stub
 		
 	}
-	 @FXML
-	    void showInfo(ActionEvent event) throws IOException{
-	    	gameController.showInfo();
-	    }
+	@FXML
+    void showInfo(ActionEvent event) throws IOException{
+    	gameController.showInfo();
+    }
+	
+	@FXML
+    void pauseGame(ActionEvent event) {
+		gameController.pauseGame();
+    }
 
 }
