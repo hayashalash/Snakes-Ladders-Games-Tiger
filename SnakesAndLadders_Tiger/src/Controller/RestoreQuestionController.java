@@ -263,7 +263,7 @@ public class RestoreQuestionController  implements Initializable {
     	Question deletedQ = new Question(deletedAnswer1,deletedAnswer2,deletedAnswer3,deletedAnswer4,deletedQuestion
     			,deletedDifficulty,deletedCorrect);
     	
-    	if (Alerts.delete(deletedQuestion) == 1) {
+    	if (Alerts.permanentDelete(deletedQuestion) == 1) {
     	    SysData.getInstance().deleteFromDeletedQJson(deletedQ);
     	    
     	    if (SysData.getInstance().getDeleted().contains(deletedQ)) {

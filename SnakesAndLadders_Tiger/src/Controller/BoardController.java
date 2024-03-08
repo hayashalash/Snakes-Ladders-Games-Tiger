@@ -41,7 +41,7 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 	    @FXML
 	    public abstract void handleDiceClick(ActionEvent event) throws InterruptedException;
 	    public  abstract void onFinished(Player currentPlayer, int lastResult) ;
-	    public abstract void viewResultDice(Player currentPlayer,int diceResult);
+	    public abstract double viewResultDice(Player currentPlayer,int diceResult);
 	    public abstract void updateDiceImage(String imagePath);//update the dice image 
 	    public  abstract Player getNextPlayerToMove();
 	    @FXML

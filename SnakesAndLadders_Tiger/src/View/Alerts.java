@@ -44,6 +44,17 @@ public class Alerts {
 		return -1;
 	}
 	
+	public static int permanentDelete(String content){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Delete");
+		alert.setHeaderText("You're about to permanently delete the question: "+ "\"" + content +"\"");
+		alert.setContentText("Are you sure you want to permanently delete the selected question?");
+		playAlertSound();
+		if (alert.showAndWait().get() == ButtonType.OK)
+			return 1;
+		return -1;
+	}
+	
 	public static int restore(String content){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Restore");
