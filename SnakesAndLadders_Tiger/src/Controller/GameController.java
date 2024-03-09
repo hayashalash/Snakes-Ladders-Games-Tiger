@@ -168,6 +168,8 @@ import javafx.scene.layout.StackPane;
     private static MediaPlayer incorrectSoundPlayer;
     private static MediaPlayer surpriseSoundPlayer;
     private static MediaPlayer questionSoundPlayer;
+    
+    private boolean PCsTurn = false;
 
     static {
         // Initialize MediaPlayer objects for each sound effect
@@ -462,17 +464,18 @@ import javafx.scene.layout.StackPane;
 			        delay.setOnFinished(event -> {
 			        	System.out.println("newRow is: "+newRow);
 			        	System.out.println("newColumn is: "+newColumn);
+
+					    displayPlayerToken(newRow, newColumn, player, newPosition);
+					    player.setPlayerPlace(newPosition);
+			        });
+			        Platform.runLater(() -> {
+			        	delay.play();
 			        	if(nextTile.gettType().equals(TileType.LadderBottom)) {
 					    	playLadderSound();
 					    }
 					    else {
 						    playSnakeSound();
 					    }
-					    displayPlayerToken(newRow, newColumn, player, newPosition);
-					    player.setPlayerPlace(newPosition);
-			        });
-			        Platform.runLater(() -> {
-			        	delay.play();
 			        });
 		    	}
 //		    	else if (nextTile.gettType().equals(TileType.Surprise)){
@@ -502,6 +505,7 @@ import javafx.scene.layout.StackPane;
 		    		playClassicSound();
 		    		displayPlayerToken(currentRow, currentColumn, player, newPosition);
 	    			player.setPlayerPlace(newPosition);
+	    			playClassicSound();
 			    }
 		    }
 		    else { // new position is outside the board --> 0
@@ -668,11 +672,14 @@ import javafx.scene.layout.StackPane;
 	    int nextPos = currPosition + steps;
 
 	    if (nextPos > board.getBoardSize()) {
-	    	System.out.println("next position is "+ nextPos +" and is larger than the board size os smaller than 1.");
-	        return currPosition; // Ensure next position is within the board boundaries
+	    	System.out.println("next position is "+ nextPos +" and is larger than the board size.");
+	    	PCsTurn = true;
+	    	return currPosition; // Ensure next position is within the board boundaries
 	    }
-	    
+        
 	    if (nextPos < 1) {// Ensure next position is within the board boundaries
+	    	System.out.println("next position is "+ nextPos +" and is smaller than 1.");
+	    	PCsTurn = true;
 	    	if (p.getPlayerPlace() == 0) // if player is outside the board
 	    		return 0; // player will stay outside the board
 	    	else // if player is already on the board
@@ -687,40 +694,71 @@ import javafx.scene.layout.StackPane;
 	    
 	    switch (nextTile.gettType()) {
 	        case SnakeHead:
-	            SnakeTile snakeT = (SnakeTile) nextTile;
-	            Snake snake = snakeT.getSnake();
-	            if (snake.getColor() == SnakeColor.Red) {
-	                System.out.println("NextMove will be: 1");
-	                return 1;
-	            } else {
-	                System.out.println("NextMove will be: " + snake.getSnakeTail());
-	                return snake.getSnakeTail();
-	            }
+
+	        	PCsTurn = false;
+	        	SnakeTile snakeT = (SnakeTile) nextTile;
+	        	Snake snake = snakeT.getSnake();
+
+	        	if (snake.getColor() == SnakeColor.Red) {
+	        	    System.out.println("NextMove will be: 1");
+	        	    return 1;
+	        	} else {
+	        	    System.out.println("NextMove will be: " + snake.getSnakeTail());
+	        	    int nextMove = snake.getSnakeTail();
+	        	    
+	        	    // Create a PauseTransition to delay setting PCsTurn back to true
+	        	    PauseTransition delay1 = new PauseTransition(Duration.seconds(5));
+	        	    delay1.setOnFinished(event -> {
+	        	        PCsTurn = true;
+	        	    });
+
+	        	    // Start the delay transition
+	        	    delay1.play();
+
+	        	    return nextMove;
+	        	}
+
 	            
 	        case LadderBottom:
-	            LadderTile ladderT = (LadderTile) nextTile;
-	            Ladder ladder = ladderT.getLadder();
-	            System.out.println("NextMove will be: " + ladder.getLadderTop());
-	            return ladder.getLadderTop();
+	        	PCsTurn = false;
+	        	LadderTile ladderT = (LadderTile) nextTile;
+	        	Ladder ladder = ladderT.getLadder();
+	        	System.out.println("NextMove will be: " + ladder.getLadderTop());
+
+	        	// Create a PauseTransition to delay setting PCsTurn back to true
+	        	PauseTransition delay2 = new PauseTransition(Duration.seconds(5));
+	        	delay2.setOnFinished(event -> {
+	        	    PCsTurn = true;
+	        	});
+
+	        	// Start the delay transition
+	        	delay2.play();
+
+	        	return ladder.getLadderTop();
 	            
 	        case Surprise:
+	            PCsTurn = false;
 	            System.out.println("Yaaaay you got a gift!");
 	            p.setPlayerPrevPlace(currPosition);
-	    	    // Set player's new position
-	    	    displayPlayerToken(currentRow, currentColumn, p, nextPos);
-	    	    p.setPlayerPlace(nextPos);
-	    	    Platform.runLater(() -> {
-	    	    	playSurpriseSound();
-		            int surpriseSteps = handleSurpriseTileReached();
-		            move(p, surpriseSteps); 
-	    	    });
-	    	    // wait 4 seconds for the surprise GIF to finish
-		        PauseTransition delay = new PauseTransition(Duration.seconds(4));
-		        delay.setOnFinished(event -> {});
-		        Platform.runLater(() -> {
-		        	delay.play();
-		        });
-	            return p.getPlayerPlace();            
+	            // Set player's new position
+	            displayPlayerToken(currentRow, currentColumn, p, nextPos);
+	            p.setPlayerPlace(nextPos);
+	            Platform.runLater(() -> {
+	                //playSurpriseSound();
+	                int surpriseSteps = handleSurpriseTileReached();
+	                move(p, surpriseSteps); 
+	            });
+	            // wait 4 seconds for the surprise GIF to finish
+	            PauseTransition delay3 = new PauseTransition(Duration.seconds(4));
+	            delay3.setOnFinished(event -> {
+	                // After 4 seconds, set PCsTurn back to true
+	                PCsTurn = true;
+	            });
+	            Platform.runLater(() -> {
+	                delay3.play();
+	                playSurpriseSound();
+	            });
+	            return p.getPlayerPlace();           
 	            
 //	            int newPosition1 = nextPos;
 //	    	    p.setPlayerPrevPlace(currPosition);
@@ -740,6 +778,7 @@ import javafx.scene.layout.StackPane;
 //	            return p.getPlayerPlace();
 	            
 	        case Question:
+	        	PCsTurn = false;
 	            System.out.println("I have a question for you");
 	    	    p.setPlayerPrevPlace(currPosition);
 	    	    // Set player's new position
@@ -762,9 +801,11 @@ import javafx.scene.layout.StackPane;
 	    	    	int newSteps = showQuestionPopup(qt.getQuestionDiff(), p.isSystem());
 	    	    	move(p, newSteps);
 	    	    });
+	    	    //playQuestionSound();
 	            return p.getPlayerPlace();
 	            
 	        default: // Handle the rest of the tile types which do not require special treatment
+	        	PCsTurn = true;
 	        	System.out.println("Next step will be: " + nextPos);
 	            return nextPos;
 	    }
@@ -791,7 +832,8 @@ import javafx.scene.layout.StackPane;
     }
     
     public int showQuestionPopup(Difficulty difficulty, boolean isSystem) { // view the question  dialog  and return the number of steps to move
-		Dialog<ButtonType> dialog = new Dialog<>();
+    	PCsTurn = false;
+    	Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Question");
 	    // Disable the close button
 		dialog.initStyle(StageStyle.UNDECORATED);
@@ -862,6 +904,7 @@ import javafx.scene.layout.StackPane;
 		});
 		dialog.setOnCloseRequest(event -> {
             stopTime();
+            PCsTurn = true;
             System.out.println("Dialog was open for " + getDurationInSeconds() + " seconds.");
         });
 		if (isSystem) { // if this question appeared in the System's turn, it must be answered correctly
@@ -951,6 +994,7 @@ import javafx.scene.layout.StackPane;
 
     public int displaySurprise() {
     	// Load the surprise value image
+    	playSurpriseSound();
     	Image p = new Image(getClass().getResourceAsStream(SURPRISE_PLUS_PATH));
     	Image m = new Image(getClass().getResourceAsStream(SURPRISE_MINUS_PATH));
         int[] possibleValues = {-10, 10};
@@ -1330,4 +1374,10 @@ import javafx.scene.layout.StackPane;
             root.getChildren().removeIf(node -> node instanceof Rectangle);
         }
     }
+
+	
+    public boolean playerFinishedTurn() {
+		// TODO Auto-generated method stub
+		return PCsTurn;
+	}
 }
