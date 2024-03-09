@@ -2,6 +2,7 @@ package Controller;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
+import Model.Admin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -76,13 +77,18 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+        // Loading Admin from file
+        Admin loadedAdmin = Admin.loadAdminFromFile("admin.ser");
+        if (loadedAdmin != null) {
+            System.out.println("Password loaded from file: " + loadedAdmin.getPassword());
+        }
         // Start playing the background sound
         note.setCycleCount(AudioClip.INDEFINITE); // Set cycle count to indefinite for continuous playback
 //        note.setVolume(0.1);
 //        note.play();
 
         launch(args);
-
+        
         try {
             Model.SysData.getInstance().readFromJson();
         } catch (IOException | ParseException e) {

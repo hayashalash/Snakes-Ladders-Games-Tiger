@@ -223,7 +223,7 @@ public class RestoreQuestionController  implements Initializable {
     @FXML
     void restoreQuestion(ActionEvent event) throws IOException, ParseException  {
     	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
-    		Alerts.message("Error","Please select a question to restore.");
+    		Alerts.warning("Please select a question to restore.");
     		return;
     	}
     	String restoreQuestion = questionTable.getSelectionModel().getSelectedItem().getQuestion();
@@ -238,12 +238,13 @@ public class RestoreQuestionController  implements Initializable {
     			,restoreDifficulty,restoreCorrect);
     	
     	if (Alerts.restore(restoreQuestion) == 1) {
-    	//delete question from Deleted Question JSON file
-    	SysData.getInstance().DeleteFromDeletedQ(deletedQ);
-		SysData.getInstance().deletedFromJSON.removeAll(SysData.getInstance().getQuestions());
+	    	//delete question from Deleted Question JSON file
+	    	SysData.getInstance().DeleteFromDeletedQ(deletedQ);
+			SysData.getInstance().deletedFromJSON.removeAll(SysData.getInstance().getQuestions());
     	}
 		questionTable.getItems().clear();
-		fill();// fil
+		fill();
+		Alerts.confirmation("Question has been restored succesfully!");
     }
     
     @FXML
@@ -270,6 +271,7 @@ public class RestoreQuestionController  implements Initializable {
     	        System.out.println("Question not removed from data structure.");
     	    } else {
     	        System.out.println("Question successfully removed from data structure.");
+    	        Alerts.confirmation("Question has been permanently deleted!");
     	    }
     	    
     	    questionTable.getItems().clear();
