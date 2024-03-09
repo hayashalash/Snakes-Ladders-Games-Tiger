@@ -132,6 +132,7 @@ import javafx.scene.layout.StackPane;
 	private Duration gameDuration = Duration.ZERO;
 	private static final int VISIBLE_DURATION_MS = 4500; // 4.5 seconds
 	private boolean gamePaused = false;
+	private boolean musicBeforePause = false; // if the music was playing before pausing the game, this will be true
 	private long startTime;
     private long endTime;
 	
@@ -1277,6 +1278,13 @@ import javafx.scene.layout.StackPane;
             // Pause the game
             gamePaused = true;
             pauseTimer();
+            
+            // pause the music if it's playing
+            if (Main.note.isPlaying()) {
+            	musicBeforePause = true;
+            	Main.stopBackgroundMusic();
+        	}
+            
             // Darken the screen
             Rectangle overlay = new Rectangle(root.getWidth(), root.getHeight(), javafx.scene.paint.Color.rgb(0, 0, 0, 0.5));
             root.getChildren().add(overlay);
@@ -1310,6 +1318,13 @@ import javafx.scene.layout.StackPane;
             // Resume the game
             gamePaused = false;
             startTimer();
+            
+            // Resume music if it was playing before pause
+            if (musicBeforePause) {
+            	Main.resumeBackgroundMusic();
+            	musicBeforePause = false;
+            }
+            
             // Remove the overlay and pause menu from the root pane
             root.getChildren().removeAll(pauseMenu);
             root.getChildren().removeIf(node -> node instanceof Rectangle);

@@ -278,6 +278,7 @@ public class HardController extends BoardController implements Initializable{
         game.getPlayersOrder().offer(nextPlayer); // Return the player to the end of the queue
         return nextPlayer;
     }
+	
 	@Override
 	public void viewResultDice(Player currentPlayer,int diceResult) {
     	if(diceResult <= 6) {
