@@ -148,7 +148,9 @@ public class HardController extends BoardController implements Initializable{
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
         Tooltip res = new Tooltip("Restart Game");
-        Tooltip.install(update, res);
+        Tooltip.install(reset, res);
+        Tooltip pauseG = new Tooltip("Pause Game");
+        Tooltip.install(pause, pauseG);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}

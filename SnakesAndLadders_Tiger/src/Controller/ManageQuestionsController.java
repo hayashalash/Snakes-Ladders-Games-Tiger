@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -14,17 +15,24 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import Model.SysData;
 
@@ -37,7 +45,7 @@ import java.util.ResourceBundle;
 
 import org.json.simple.parser.ParseException;
 
-
+import Model.Admin;
 import Model.Difficulty;
 import Model.Question;
 import Model.Sort;
@@ -45,6 +53,8 @@ import Model.Sort;
 public class ManageQuestionsController implements Initializable {
 	
 	Methods methods = new Methods();
+	private static final String ADMIN = "/img/screens/bg.png";
+	private static final String EXIT_ICON = "/img/icons/X.png";
 	
 	@FXML
 	 private TableView<Question> questionTable;
@@ -94,6 +104,9 @@ public class ManageQuestionsController implements Initializable {
     @FXML
     private Button searchbutton;
     
+    @FXML
+    private Button changePassBtn;
+    
     private ObservableList<Question> dataQues;
     private ObservableList<Question> dataQues2;
     List<Question> originalOrder = new ArrayList<>(SysData.getInstance().getQuestions()); // Save the original order to revert back to after sorting
@@ -119,6 +132,8 @@ public class ManageQuestionsController implements Initializable {
         Tooltip.install(delete, d);
         Tooltip r = new Tooltip("Restore Question");
         Tooltip.install(retrive, r);
+        Tooltip cp = new Tooltip("Change Password");
+        Tooltip.install(changePassBtn, cp);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}
@@ -179,7 +194,7 @@ public class ManageQuestionsController implements Initializable {
     	}
     	questionTable.getItems().clear();
 		fill();
-		
+		Alerts.confirmation("Question has been deleted succesfully!");
     }
     
     
@@ -355,6 +370,165 @@ public class ManageQuestionsController implements Initializable {
          }
      }
     
+    @FXML
+    void changePassword(ActionEvent event) {
+    	changePasswordDialog();
+    }
+    
+    private void changePasswordDialog() {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Change Admin Password");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        ImageView imageView = new ImageView(new Image(ADMIN));
+        imageView.setFitWidth(300);
+        imageView.setFitHeight(300);
+        dialog.getDialogPane().setPrefWidth(300);
+        dialog.getDialogPane().setPrefHeight(300);
+
+        PasswordField currentPasswordField = new PasswordField();
+        currentPasswordField.setPrefHeight(40);
+        currentPasswordField.setMaxWidth(200);
+        currentPasswordField.setStyle("-fx-border-radius: 10;");
+        currentPasswordField.setPromptText("Enter Current Password");
+
+        PasswordField newPasswordField = new PasswordField();
+        newPasswordField.setPrefHeight(40);
+        newPasswordField.setMaxWidth(200);
+        newPasswordField.setStyle("-fx-border-radius: 10;");
+        newPasswordField.setPromptText("Enter New Password");
+
+        PasswordField confirmNewPasswordField = new PasswordField();
+        confirmNewPasswordField.setPrefHeight(40);
+        confirmNewPasswordField.setMaxWidth(200);
+        confirmNewPasswordField.setStyle("-fx-border-radius: 10;");
+        confirmNewPasswordField.setPromptText("Confirm New Password");
+        
+        Label errorLabel = new Label("Current Password is incorrect!");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setOpacity(0);
+        errorLabel.setPadding(new Insets(3,0,3,0)); // top right bottom left
+        
+        Label errorLabel2 = new Label();
+        errorLabel2.setOpacity(0);
+        errorLabel2.setPadding(new Insets(3,0,3,0)); // top right bottom left
+
+        Button changePasswordButton = new Button("Change Password");
+        changePasswordButton.setStyle("-fx-border-radius: 20; -fx-background-color: #dfbc95; " + methods.getButtonStyle());
+        changePasswordButton.setOnMouseEntered(e -> entered(e));
+        changePasswordButton.setOnMouseExited(e -> exited(e));
+        changePasswordButton.setOnAction(e -> {
+        	if (Admin.getInstance().checkPassword(currentPasswordField.getText())) {
+        		if(!(newPasswordField.getText().equals(currentPasswordField.getText()))) {
+            		if (newPasswordField.getText().equals(confirmNewPasswordField.getText())) {               
+                    	
+                    	Admin.getInstance().setPassword(newPasswordField.getText());
+                    	Admin.saveAdminToFile("admin.ser");
+                    	Alerts.confirmation("Password was changed successfully!");
+                    	System.out.println("Password changed successfully!");
+                        dialog.close();
+                    } else {
+                        System.out.println("Passwords do not match. Please try again.");
+                		confirmNewPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                        newPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                        errorLabel2.setTextFill(Color.RED);
+                        errorLabel2.setText("Passwords do not match!");
+                        // Show a label with red text underneath the text field to notify the user of a wrong password
+                		errorLabel2.setOpacity(1);
+                    }
+        		}
+        		else {
+                    System.out.println("Passwords are identical!");
+            		currentPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
+            		confirmNewPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
+                    newPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
+                    errorLabel2.setTextFill(Color.YELLOW);
+                    errorLabel2.setText("Passwords are identical!");
+                    // Show a label with yellow text underneath the text field to notify the user of identical passwords
+            		errorLabel2.setOpacity(1);
+
+        		}
+
+        	}
+        	else {
+        		System.out.println("The current password is incorrect.");
+        		currentPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                // Show a label with red text underneath the text field to notify the user of a wrong password
+        		errorLabel.setOpacity(1);
+        	}
+            
+        });
+        
+        changePasswordButton.setDefaultButton(true);
+        currentPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the user starts typing, remove the error label if it exists
+            if (errorLabel.getOpacity() != 0 || errorLabel2.getOpacity() != 0  ) {
+                errorLabel.setOpacity(0);
+                errorLabel2.setOpacity(0);
+                // Reset the style of the text field to its default state
+                currentPasswordField.setStyle("");
+                newPasswordField.setStyle("");
+                confirmNewPasswordField.setStyle("");
+            }
+        });
+        newPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the user starts typing, remove the error label if it exists
+            if (errorLabel2.getOpacity() != 0) {
+                errorLabel2.setOpacity(0);
+                // Reset the style of the text field to its default state
+                currentPasswordField.setStyle("");
+                newPasswordField.setStyle("");
+                confirmNewPasswordField.setStyle("");
+            }
+        });
+        confirmNewPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the user starts typing, remove the error label if it exists
+            if (errorLabel2.getOpacity() != 0) {
+                errorLabel2.setOpacity(0);
+                // Reset the style of the text field to its default state
+                currentPasswordField.setStyle("");
+                newPasswordField.setStyle("");
+                confirmNewPasswordField.setStyle("");
+            }
+        });
+        
+
+        VBox vbox = new VBox(10);
+        vbox.getChildren().addAll(
+                currentPasswordField,
+                errorLabel,
+                newPasswordField,
+                confirmNewPasswordField,
+                errorLabel2,
+                changePasswordButton
+        );
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(2); // Set spacing between the text field and button
+        // Add the background image and the elements to a layout
+        StackPane content = new StackPane();
+        content.getChildren().addAll(imageView, vbox);
+        
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(cancelButtonType);
+
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(cancelButtonType);
+        ImageView exitIcon = new ImageView(new Image(EXIT_ICON));
+        exitIcon.setFitWidth(20);
+        exitIcon.setFitHeight(20);
+        cancelButton.setGraphic(exitIcon);
+        cancelButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 0;");
+        cancelButton.setCursor(Cursor.HAND); // Set cursor to hand
+        cancelButton.setOnMouseEntered(e -> entered(e));
+        cancelButton.setOnMouseExited(e -> exited(e));
+        StackPane.setAlignment(cancelButton, Pos.TOP_RIGHT);
+        StackPane.setMargin(cancelButton, new Insets(10));
+
+
+        content.setPadding(new Insets(0)); // Set padding of the StackPane to zero
+        // Set the layout as the content of the dialog
+        dialog.getDialogPane().setContent(content);
+        dialog.showAndWait();
+    }
+
     @FXML
     void entered(MouseEvent event){
     	methods.entered(event);

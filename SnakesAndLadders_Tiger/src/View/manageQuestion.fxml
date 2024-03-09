@@ -31,7 +31,7 @@
             <Glow />
          </effect>
       </TableView>
-      <Button fx:id="home" layoutX="730.0" layoutY="65.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
+      <Button fx:id="home" layoutX="716.0" layoutY="74.0" mnemonicParsing="false" onAction="#returnHome" onMouseDragEntered="#entered" onMouseDragExited="#exited" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#651d1d">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
                <image>
@@ -121,6 +121,21 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+      </Button>
+      <Button fx:id="changePassBtn" layoutX="662.0" layoutY="73.0" mnemonicParsing="false" onAction="#changePassword" onMouseEntered="#entered" onMouseExited="#exited" style="-fx-background-color: transparent; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );">
+         <font>
+            <Font name="Baskerville Old Face" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0">
+               <image>
+                  <Image url="@../img/icons/password.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </AnchorPane>

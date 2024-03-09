@@ -109,16 +109,23 @@ public class Alerts {
 	/** Confirmation alert tells us that the item or question was added or edited successfully
 	 * @param operation
 	 */
-	public static void confirmation(String operation) {
+	public static void confirmation(String message) {
 		playAlertSound();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation");
-		alert.setHeaderText("Question was " + operation + " successfully");
+		alert.setHeaderText(message);
+
+		// Set a custom graphic (icon)
+		Image customImage = new Image("/img/icons/check.png");
+	    ImageView warningAlert = new ImageView(customImage);
+	    warningAlert.setFitHeight(50);
+	    warningAlert.setFitWidth(50);
+        alert.setGraphic(warningAlert);
+		
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-//		stage.getIcons().add(Constants.SUCCESS_IMAGE); // change
+		stage.getIcons().add(new Image("/img/icons/check-mark.png"));
 		stage.setAlwaysOnTop(true);
 		alert.show();
-
 	}
 
 	/** Warning alert

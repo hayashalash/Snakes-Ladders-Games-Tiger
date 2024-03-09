@@ -101,7 +101,7 @@ public class EditQuestionController implements Initializable {
     			ans2Text.getText().length() == 0 || ans3Text.getText().length() == 0 ||
     			ans4Text.getText().length() == 0 ||correctAnswer.getSelectionModel().getSelectedIndex() == -1||
     			difficulty.getSelectionModel().getSelectedIndex() == -1){
-    			Alerts.message("Error","Please fill all the fields");
+    			Alerts.warning("Please fill all the fields");
     	}
     	
     	String regex = "^[^\\s]*$";
@@ -110,13 +110,13 @@ public class EditQuestionController implements Initializable {
     	    !ans2Text.getText().matches(regex) ||
     	    !ans3Text.getText().matches(regex) ||
     	    !ans4Text.getText().matches(regex)) {
-    	    Alerts.message("Error", "Please use any characters without spaces.");
+    	    Alerts.warning("Please use any characters without spaces.");
     	}
     	
 		//check if there the answers is not the same, it should be unique
  	   Set<String> uniqueAnswers = new HashSet<>(Arrays.asList(ans1Text.getText(), ans2Text.getText(), ans3Text.getText(), ans4Text.getText()));
  	    if (uniqueAnswers.size() < 4) {
- 	        Alerts.message("Error", "Please ensure that all answers are unique.");
+ 	        Alerts.warning("Please ensure that all answers are unique.");
  	    }
  	    
     	if (Alerts.edit() == 1) {
@@ -129,11 +129,9 @@ public class EditQuestionController implements Initializable {
 	    	Integer corr = correctAnswer.getSelectionModel().getSelectedIndex()+1;
 	    			
 	    	Question ques = new Question(ans1Edit,ans2Edit,ans3Edit,ans4Edit,quesEdit,di,corr); 	
-//	    	SysData.getInstance().deleteFromJson(edited);
-//	    	SysData.getInstance().writeToJson(ques);
 	    	SysData.getInstance().updateInJson(edited, ques);
+	    	Alerts.confirmation("Question has been edited succesfully!");
 	    	return;
-
     	}
     }
 

@@ -72,7 +72,7 @@ public class AddQuestionController implements Initializable{
     			ans2Text.getText().length() == 0 || ans3Text.getText().length() == 0 ||
     			ans4Text.getText().length() == 0) {
 		     //if there's one field empty the user gets a note : add is not applied!
-			Alerts.message("Error", "Please fill all the fileds");
+			Alerts.warning("Please fill all the fileds");
 			return false;
 		}
     	
@@ -82,21 +82,21 @@ public class AddQuestionController implements Initializable{
     	    !ans2Text.getText().matches(regex) ||
     	    !ans3Text.getText().matches(regex) ||
     	    !ans4Text.getText().matches(regex)) {
-    	    Alerts.message("Error", "Please use any characters without spaces.");
+    	    Alerts.warning("Please use any characters without spaces.");
     	    return false;
     	}
 
 
 		//check if the combo box selected (filled)
 		if(difficulty.getSelectionModel().getSelectedIndex() == -1 || correctAnswer.getSelectionModel().getSelectedIndex() == -1) {
-			Alerts.message("Error", "Please fill all the fileds");
+			Alerts.warning("Please fill all the fileds");
 			return false;
 		}
 		
 		//check if there the answers is not the same, it should be unique
 	   Set<String> uniqueAnswers = new HashSet<>(Arrays.asList(ans1Text.getText(), ans2Text.getText(), ans3Text.getText(), ans4Text.getText()));
 	    if (uniqueAnswers.size() < 4) {
-	        Alerts.message("Error", "Please ensure that all answers are unique.");
+	        Alerts.warning("Please ensure that all answers are unique.");
 	        return false;
 	    }
 		    
@@ -119,7 +119,7 @@ public class AddQuestionController implements Initializable{
 		SysData.getInstance().writeToJson(question);
 		//clear fields
 		clearFields();
-		Alerts.message("Added", "Question has been added succesfully!");
+		Alerts.confirmation("Question has been added succesfully!");
 		
 //		Question.idCounter++;
 		return true;
