@@ -167,8 +167,10 @@ public class NormalController extends BoardController implements Initializable  
 	    exitButton.toFront(); // Ensure the exit button is always in the front
 		Tooltip r = new Tooltip("Game Rules");
         Tooltip.install(info, r);
+        Tooltip pauseG = new Tooltip("Pause Game");
+        Tooltip.install(pause, pauseG);
         Tooltip res = new Tooltip("Restart Game");
-        Tooltip.install(update, res);
+        Tooltip.install(reset, res);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}

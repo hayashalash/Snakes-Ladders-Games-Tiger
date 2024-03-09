@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HardController">
+<AnchorPane fx:id="rootAnchorPane" prefHeight="595.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HardController">
    <children>
       <ImageView fitHeight="595.0" fitWidth="852.0">
          <image>
@@ -95,7 +95,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="reset" layoutX="110.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+      <Button fx:id="reset" layoutX="800.0" layoutY="492.0" mnemonicParsing="false" onAction="#resetBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -139,7 +139,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="pause" layoutX="161.0" layoutY="10.0" mnemonicParsing="false" onAction="#pauseGame" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+      <Button fx:id="pause" layoutX="800.0" layoutY="548.0" mnemonicParsing="false" onAction="#pauseGame" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
