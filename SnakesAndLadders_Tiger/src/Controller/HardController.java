@@ -277,7 +277,7 @@ public class HardController extends BoardController implements Initializable{
         return nextPlayer;
     }
 	@Override
-	public void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+	public void viewResultDice(Player currentPlayer,int diceResult) {
     	if(diceResult <= 6) {
     		gameController.move(currentPlayer, diceResult);
 		}

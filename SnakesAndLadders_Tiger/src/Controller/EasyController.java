@@ -276,7 +276,7 @@ public class EasyController extends BoardController implements Initializable{
     }
 
 	@Override
-    public void viewResultDice(Player currentPlayer,int diceResult) {//this for easy difficulty only
+    public void viewResultDice(Player currentPlayer,int diceResult) {
     	if(diceResult <= 4) {
     		gameController.move(currentPlayer, diceResult);
 		}
