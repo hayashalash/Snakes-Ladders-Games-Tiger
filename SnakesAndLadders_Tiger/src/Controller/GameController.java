@@ -48,6 +48,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import Model.SysData;
@@ -123,12 +124,14 @@ import javafx.scene.layout.StackPane;
 	private static final String SURPRISE_GIF_PATH =  "/img/icons/surpriseGIF.gif";
 	private static final String SURPRISE_PLUS_PATH = "/img/icons/surprisePlus.png"; 
 	private static final String SURPRISE_MINUS_PATH = "/img/icons/surpriseMinus.png";
+	private static final String RESUME = "/img/icons/resumeGame.png";
 	private static final String EXIT_ICON = "/img/icons/X.png";
 
 	//Fields
 	int returnVal = 0; // returns the number of steps the player should move based on their answer
 	private Duration gameDuration = Duration.ZERO;
 	private static final int VISIBLE_DURATION_MS = 4500; // 4.5 seconds
+	private boolean gamePaused = false;
 	private long startTime;
     private long endTime;
 	
@@ -139,8 +142,9 @@ import javafx.scene.layout.StackPane;
     private Game game;
     private Label time; // shows game duration on screen
     private Timeline timer;
-        
+    private AnchorPane root;
     private HBox playersStart;
+    private VBox pauseMenu;
     
     private HBox player1;
     private HBox player2;
@@ -226,8 +230,9 @@ import javafx.scene.layout.StackPane;
     }
     
     // Constructor
-    public GameController(Game game, Board board, GridPane grid, HBox playersStart, Label time,
+    public GameController(AnchorPane root, Game game, Board board, GridPane grid, HBox playersStart, Label time,
     		Timeline timer, HBox player1, HBox player2, HBox player3, HBox player4, ImageView surpriseValue, ImageView surprise) {
+    	this.root = root;
         this.game = game;
     	this.board = board;
         this.grid = grid;
@@ -287,11 +292,19 @@ import javafx.scene.layout.StackPane;
 	}
 	
 	// Method to stop the timer and return the duration of the game as a String
+	// Used when the game ends
 	private String stopTimer() {
 	    timer.stop();
 	    String durationGame = Game.formatDuration(gameDuration);
 	    return durationGame;
 	}
+	
+	//Used when the game is paused only
+	private void pauseTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+    }
 
 	// Method to show the player names and associated colors according to their randomly chosen order of play
 	// and additionally show the player tokens that will be moving on the board during the game
@@ -1259,4 +1272,47 @@ import javafx.scene.layout.StackPane;
         }
     }
 
+    public void pauseGame() {
+    	if (!gamePaused) {
+            // Pause the game
+            gamePaused = true;
+            pauseTimer();
+            // Darken the screen
+            Rectangle overlay = new Rectangle(root.getWidth(), root.getHeight(), javafx.scene.paint.Color.rgb(0, 0, 0, 0.5));
+            root.getChildren().add(overlay);
+
+            // Create the pause menu
+            pauseMenu = new VBox(10);
+            pauseMenu.setAlignment(Pos.CENTER);
+            pauseMenu.setPrefSize(root.getWidth(), root.getHeight());
+            
+            Image resumeImage = new Image(RESUME);
+            ImageView resumeImageView = new ImageView(resumeImage);
+            resumeImageView.setFitHeight(100);
+            resumeImageView.setFitWidth(100);
+			
+            // Add a "resume" button
+            Button resumeButton = new Button();
+            resumeButton.setStyle("-fx-background-color: transparent; -fx-effect:  dropshadow( one-pass-box , black , 8 , 0.0 , 3 , 0 );");
+            resumeButton.setGraphic(resumeImageView);
+            resumeButton.setOnMouseEntered(e -> methods.entered(e));
+            resumeButton.setOnMouseExited(e -> methods.exited(e));
+            resumeButton.setOnAction(event -> resumeGame());
+            pauseMenu.getChildren().add(resumeButton);
+
+            // Add the pause menu to the root pane
+            root.getChildren().add(pauseMenu);
+        }
+    }
+    
+    public void resumeGame() {
+    	if (gamePaused) {
+            // Resume the game
+            gamePaused = false;
+            startTimer();
+            // Remove the overlay and pause menu from the root pane
+            root.getChildren().removeAll(pauseMenu);
+            root.getChildren().removeIf(node -> node instanceof Rectangle);
+        }
+    }
 }

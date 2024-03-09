@@ -45,7 +45,7 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 	    public abstract void updateDiceImage(String imagePath);//update the dice image 
 	    public  abstract Player getNextPlayerToMove();
 	    @FXML
-		public abstract void updateBoard(ActionEvent event)throws IOException ;
+		public abstract void resetBoard(ActionEvent event)throws IOException ;
 
 	    @FXML
 		void returnHome(ActionEvent event) {
@@ -79,7 +79,7 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 			viewResultDice(null,0);
 			updateDiceImage(null);//update the dice image 
 		    getNextPlayerToMove();
-            updateBoard(null);
+		    resetBoard(null);
 			returnHome(null) ;
 		    exit(null);
 			entered(null);
