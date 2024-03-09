@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Alerts {
 	
@@ -39,6 +40,7 @@ public class Alerts {
 		alert.setTitle("Delete");
 		alert.setHeaderText("You're about to delete the question: "+ "\"" + content +"\"");
 		alert.setContentText("Are you sure you want to delete the selected question?");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		if (alert.showAndWait().get() == ButtonType.OK)
 			return 1;
@@ -50,6 +52,7 @@ public class Alerts {
 		alert.setTitle("Delete");
 		alert.setHeaderText("You're about to permanently delete the question: "+ "\"" + content +"\"");
 		alert.setContentText("Are you sure you want to permanently delete the selected question?");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		if (alert.showAndWait().get() == ButtonType.OK)
 			return 1;
@@ -61,6 +64,7 @@ public class Alerts {
 		alert.setTitle("Restore");
 		alert.setHeaderText("You're about to restore the question: "+ "\"" + content +"\"");
 		alert.setContentText("Are you sure you want to restore the selected question?");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		if (alert.showAndWait().get() == ButtonType.OK)
 			return 1;
@@ -77,6 +81,7 @@ public class Alerts {
 		alert.setTitle("Edit");
 		alert.setHeaderText("Are you sure you want to edit the question?");
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+    	alert.initStyle(StageStyle.UNDECORATED);
 //		stage.getIcons().add(new Image("img/logo.png"));
 		playAlertSound();
 		stage.setAlwaysOnTop(true);
@@ -92,6 +97,7 @@ public class Alerts {
 		alert.setTitle("Exit");
 		alert.setHeaderText("You're about to exit the game!");
 		alert.setContentText("Are you sure you want to exit?");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		// Set a custom graphic (icon)
 		Image customImage = new Image("/img/icons/logout.png");
@@ -115,7 +121,7 @@ public class Alerts {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation");
 		alert.setHeaderText(message);
-
+		alert.initStyle(StageStyle.UNDECORATED);
 		// Set a custom graphic (icon)
 		Image customImage = new Image("/img/icons/check.png");
 	    ImageView warningAlert = new ImageView(customImage);
@@ -136,6 +142,7 @@ public class Alerts {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Warning");
 		alert.setHeaderText(content);
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		// Set a custom graphic (icon)
 		Image customImage = new Image("/img/icons/warning.png");
@@ -159,6 +166,7 @@ public class Alerts {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);
 		alert.setHeaderText(content);
+		alert.initStyle(StageStyle.UNDECORATED);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 //		stage.getIcons().add(new Image("images/Success.png"));
 		stage.setAlwaysOnTop(true);
@@ -171,6 +179,7 @@ public class Alerts {
 		alert.setTitle("End Game");
 		alert.setHeaderText("Go to homepage?");
 		alert.setContentText("Are you sure you want to go to the homepage?\nPlease note this will result in ending the game!");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		// Set a custom graphic (icon) 
 		Image customImage = new Image("/img/icons/home.png");
@@ -192,6 +201,7 @@ public class Alerts {
 		alert.setTitle("Restart Game");
 		alert.setHeaderText("Restart Game?");
 		alert.setContentText("Are you sure you want to restart the game?");
+		alert.initStyle(StageStyle.UNDECORATED);
 		playAlertSound();
 		// Set a custom graphic (icon) 
 		Image customImage = new Image("/img/icons/PlayAgain.jpeg");

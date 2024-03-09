@@ -247,29 +247,36 @@ public class EasyController extends BoardController implements Initializable{
         // Display the dice result
 
         timeline.play(); // Start the animation
+        playDiceSound();
     }
 	@Override
-    public void onFinished(Player currentPlayer, int lastResult) {
-    	updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
-        diceButton.setDisable(false); // Enable the button after animation completes
-        // Move the current player based on the dice result after animation completes
-        viewResultDice(currentPlayer, lastResult);
-        if (gameWithSystem) {
-        	System.out.println("game is with the system");
-        	if (!currentPlayer.isSystem) { // if the current player is not the system
-        		System.out.println("it is now the system's turn");
-        		diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
-    			// Wait 5 seconds before starting the system's turn
-		        PauseTransition delay = new PauseTransition(Duration.seconds(5));
-		        delay.setOnFinished(event -> {
-            		rollDice(); // roll the dice automatically for the system player
-		        });
-		        Platform.runLater(() -> {
-		        	delay.play();
-		        });
-        	}
-        }
-    }
+	public void onFinished(Player currentPlayer, int lastResult) {
+	    updateDiceImage(DEFAULT_DICE_IMAGE_PATH); // Reset dice image to original
+	    diceButton.setDisable(false); // Enable the button after animation completes
+	    // Move the current player based on the dice result after animation completes
+	    viewResultDice(currentPlayer, lastResult);
+
+	    // Declare and initialize systemTurnTimeline outside the block
+	    final Timeline[] systemTurnTimeline = new Timeline[1];
+
+	    if (gameWithSystem) {
+	        if (!currentPlayer.isSystem) { // if the current player is not the system
+	            diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
+	            
+	            // Initialize systemTurnTimeline inside the block
+	            systemTurnTimeline[0] = new Timeline(
+	                new KeyFrame(Duration.seconds(1), event -> {
+	                    if (gameController.playerFinishedTurn()) { // Check if the player has finished their turn
+	                        systemTurnTimeline[0].stop(); // Stop checking once player has finished turn
+	                        rollDice(); // roll the dice automatically for the system player
+	                    }
+	                })
+	            );
+	            systemTurnTimeline[0].setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+	            systemTurnTimeline[0].play(); // Start the timeline
+	        }
+	    }
+	}
 	@Override
     public Player getNextPlayerToMove() {
         Player nextPlayer = game.getPlayersOrder().poll();
@@ -289,6 +296,7 @@ public class EasyController extends BoardController implements Initializable{
 				System.out.println("steps to move after question are: "+steps);
 		  		gameController.move(currentPlayer, steps); 
 			});
+	  		playQuestionSound();
 //	    	gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 6) {
@@ -299,6 +307,7 @@ public class EasyController extends BoardController implements Initializable{
 				System.out.println("steps to move after question are: "+steps);
 		   		gameController.move(currentPlayer, steps); 
 	     	});
+	  		playQuestionSound();
 //	    	gameController.move(currentPlayer, 15); // TODO this is temporary for testing purposes, revert back when done
     	}
     	else if(diceResult == 7) {
@@ -309,6 +318,7 @@ public class EasyController extends BoardController implements Initializable{
 			    System.out.println("steps to move after question are: "+steps);
 		 		gameController.move(currentPlayer, steps); 
 	 		});
+	 		playQuestionSound();
 //			gameController.move(currentPlayer, 20); // TODO this is temporary for testing purposes, revert back when done
         }	
 	}
