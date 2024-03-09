@@ -53,7 +53,7 @@ import Model.Sort;
 public class ManageQuestionsController implements Initializable {
 	
 	Methods methods = new Methods();
-	private static final String ADMIN = "/img/screens/bg.png";
+	private static final String ADMIN = "/img/screens/pass2.png";
 	private static final String EXIT_ICON = "/img/icons/X.png";
 	
 	@FXML
@@ -417,7 +417,17 @@ public class ManageQuestionsController implements Initializable {
         changePasswordButton.setOnMouseEntered(e -> entered(e));
         changePasswordButton.setOnMouseExited(e -> exited(e));
         changePasswordButton.setOnAction(e -> {
-        	if (Admin.getInstance().checkPassword(currentPasswordField.getText())) {
+        	//I have to check if the user fill all the fields
+        	if(currentPasswordField.getText().length() == 0 || newPasswordField.getText().length() == 0 ||
+        			confirmNewPasswordField.getText().length() == 0) {
+    		     //if there's one field empty the user gets a note : add is not applied!
+        		currentPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+        		confirmNewPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                newPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+                errorLabel2.setTextFill(Color.RED);
+                errorLabel2.setText("Please fill all the fields!");	
+    		}
+        	else if (Admin.getInstance().checkPassword(currentPasswordField.getText()) && currentPasswordField.getText().length() != 0) {
         		if(!(newPasswordField.getText().equals(currentPasswordField.getText()))) {
             		if (newPasswordField.getText().equals(confirmNewPasswordField.getText())) {               
                     	
@@ -455,6 +465,7 @@ public class ManageQuestionsController implements Initializable {
                 // Show a label with red text underneath the text field to notify the user of a wrong password
         		errorLabel.setOpacity(1);
         	}
+
             
         });
         

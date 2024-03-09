@@ -26,6 +26,7 @@ public class Alerts {
     private static void playAlertSound() {
         alertSoundPlayer.stop(); // Stop the sound in case it's already playing
         alertSoundPlayer.play();
+        alertSoundPlayer.setVolume(0.1);
     }
     
 	/** delete alert

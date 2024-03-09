@@ -95,7 +95,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="reset" layoutX="800.0" layoutY="492.0" mnemonicParsing="false" onAction="#resetBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+      <Button fx:id="reset" layoutX="107.0" layoutY="13.0" mnemonicParsing="false" onAction="#resetBoard" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -139,14 +139,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="pause" layoutX="800.0" layoutY="548.0" mnemonicParsing="false" onAction="#pauseGame" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+      <Button fx:id="pause" layoutX="795.0" layoutY="541.0" mnemonicParsing="false" onAction="#pauseGame" onMouseEntered="#entered" onMouseExited="#exited" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
          <graphic>
-            <ImageView fitHeight="35.0" fitWidth="35.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
+            <ImageView fitHeight="40.0" fitWidth="40.0" style="-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , -3 , 0 );">
                <image>
-                  <Image url="@../img/icons/pause.png" />
+                  <Image url="@../img/icons/pauseGame.png" />
                </image>
             </ImageView>
          </graphic>
