@@ -76,7 +76,7 @@ public class AddQuestionController implements Initializable{
 			return false;
 		}
     	
-    	String regex = "^[^\\s]*$";
+    	String regex = "^\\s*\\S.*$";
     	if (!questionText.getText().matches(regex) || 
     	    !ans1Text.getText().matches(regex) ||
     	    !ans2Text.getText().matches(regex) ||
