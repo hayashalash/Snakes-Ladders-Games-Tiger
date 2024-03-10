@@ -173,6 +173,7 @@ import javafx.scene.layout.StackPane;
     private static MediaPlayer questionSoundPlayer;
     
     private boolean PCsTurn = false;
+    private boolean PlayerPositionAtZero = false;
 
     static {
         // Initialize MediaPlayer objects for each sound effect
@@ -753,7 +754,7 @@ import javafx.scene.layout.StackPane;
 	    
 	    switch (nextTile.gettType()) {
 	        case SnakeHead:
-
+	        	PlayerPositionAtZero = false;
 	        	PCsTurn = false;
 	        	SnakeTile snakeT = (SnakeTile) nextTile;
 	        	Snake snake = snakeT.getSnake();
@@ -779,6 +780,7 @@ import javafx.scene.layout.StackPane;
 
 	            
 	        case LadderBottom:
+	        	PlayerPositionAtZero = false;
 	        	PCsTurn = false;
 	        	LadderTile ladderT = (LadderTile) nextTile;
 	        	Ladder ladder = ladderT.getLadder();
@@ -796,6 +798,7 @@ import javafx.scene.layout.StackPane;
 	        	return ladder.getLadderTop();
 	            
 	        case Surprise:
+	        	PlayerPositionAtZero = false;
 	            PCsTurn = false;
 	            System.out.println("Yaaaay you got a gift!");
 	            p.setPlayerPrevPlace(currPosition);
@@ -837,6 +840,7 @@ import javafx.scene.layout.StackPane;
 //	            return p.getPlayerPlace();
 	            
 	        case Question:
+	        	PlayerPositionAtZero = false;
 	        	PCsTurn = false;
 	            System.out.println("I have a question for you");
 	    	    p.setPlayerPrevPlace(currPosition);
@@ -864,10 +868,14 @@ import javafx.scene.layout.StackPane;
 	            return p.getPlayerPlace();
 	            
 	        default: // Handle the rest of the tile types which do not require special treatment
+	            if (p.getPlayerPlace() == 0)
+	            	PlayerPositionAtZero = true;
+	            else PlayerPositionAtZero = false;
 	        	PCsTurn = true;
 	        	System.out.println("Next step will be: " + nextPos);
 	            return nextPos;
 	    }
+	    
 	}
 	
     // Method to start the timer calculating the duration of the question dialog being open
@@ -1512,5 +1520,10 @@ import javafx.scene.layout.StackPane;
     public boolean playerFinishedTurn() {
 		// TODO Auto-generated method stub
 		return PCsTurn;
+	}
+    
+    public boolean playerAtZero() {
+		// TODO Auto-generated method stub
+		return PlayerPositionAtZero;
 	}
 }

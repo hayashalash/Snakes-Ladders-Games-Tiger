@@ -307,7 +307,7 @@ public class NormalController extends BoardController implements Initializable  
 	            // Initialize systemTurnTimeline inside the block
 	            systemTurnTimeline[0] = new Timeline(
 	                new KeyFrame(Duration.seconds(1), event -> {
-	                    if (gameController.playerFinishedTurn()) { // Check if the player has finished their turn
+	                    if (gameController.playerFinishedTurn() || gameController.playerAtZero()) { // Check if the player has finished their turn
 	                        systemTurnTimeline[0].stop(); // Stop checking once player has finished turn
 	                        rollDice(); // roll the dice automatically for the system player
 	                    }
