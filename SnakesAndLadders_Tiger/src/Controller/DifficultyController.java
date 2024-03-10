@@ -39,27 +39,32 @@ public class DifficultyController implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     
     @FXML
     void exit(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
 
     @FXML
     void goHome(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("Home");
     }
     
     @FXML
     void backToFriendsOrSystem(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("FriendsOrSystem");
     }
 
     @FXML
     void hard(ActionEvent event) {
+    	methods.clickSound();
     	if (playWithSystem) {
     		PlayerDetailsController.diff = Difficulty.Hard;
     		methods.newScreen("PlayerDetails");
@@ -72,6 +77,7 @@ public class DifficultyController implements Initializable {
 
     @FXML
     void normal(ActionEvent event) {
+    	methods.clickSound();
     	if (playWithSystem) {
     		PlayerDetailsController.diff = Difficulty.Medium;
     		methods.newScreen("PlayerDetails");    		
@@ -84,6 +90,7 @@ public class DifficultyController implements Initializable {
 
     @FXML
     void easy(ActionEvent event) {
+    	methods.clickSound();
     	if (playWithSystem) {
     		PlayerDetailsController.diff = Difficulty.Easy;
     		methods.newScreen("PlayerDetails");    		

@@ -61,6 +61,7 @@ public class EditQuestionController implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 
@@ -97,6 +98,7 @@ public class EditQuestionController implements Initializable {
 	
     @FXML
     void editQuestion(ActionEvent event) throws IOException, ParseException {
+    	methods.clickSound();
     	if(questionText.getText().length() == 0 || ans1Text.getText().length() == 0 || 
     			ans2Text.getText().length() == 0 || ans3Text.getText().length() == 0 ||
     			ans4Text.getText().length() == 0 ||correctAnswer.getSelectionModel().getSelectedIndex() == -1||
@@ -137,22 +139,26 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void exit(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
 
     @FXML
     void previous(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("manageQuestion");
     }
 
 	@FXML
 	void entered(MouseEvent event){
+    	methods.clickSound();
 		 methods.entered(event);
 	}
 	 
 	@FXML
 	void exited(MouseEvent event){
+    	methods.clickSound();
 		methods.exited(event);
 	}	
 	

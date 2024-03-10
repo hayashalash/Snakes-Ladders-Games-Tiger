@@ -75,10 +75,12 @@ public class WinnerController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     @FXML
     void playAgain(ActionEvent event) {
+    	methods.clickSound();
     	if (diff == Difficulty.Easy) {
     		resetGame(EasyController.game);
      		EasyController.game = new Game(diff, EasyController.game.getPlayers(), LocalDate.now());
@@ -187,6 +189,7 @@ public class WinnerController implements Initializable{
 	
     @FXML
     void returnHome(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("Home");
     }
 
@@ -202,6 +205,7 @@ public class WinnerController implements Initializable{
 	    
     @FXML
     void exit(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }

@@ -106,6 +106,7 @@ public class ChoosePlayersController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     
@@ -119,6 +120,7 @@ public class ChoosePlayersController implements Initializable{
         difficulty.setText("Game Difficulty: "+diff);
         StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
         startGameBtn.setDefaultButton(true);
+    	methods.clickSound();
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}
@@ -171,7 +173,8 @@ public class ChoosePlayersController implements Initializable{
     }
     
     @FXML
-    void addFourthP(ActionEvent event) {
+    void addFourthP(ActionEvent event) {    	
+    	methods.clickSound();
     	if (player3box.isDisable()) // cannot add 4th player before 3rd
     		return;
     	if (player4box.isDisable()) {
@@ -184,6 +187,7 @@ public class ChoosePlayersController implements Initializable{
 
     @FXML
     void addThirdP(ActionEvent event) {
+    	methods.clickSound();
     	if (player3box.isDisable()) { // add third player
     		player3box.setDisable(false); // enable the box
     		removeThird.setDisable(false); // enable the option to remove 3rd player
@@ -194,6 +198,7 @@ public class ChoosePlayersController implements Initializable{
 
     @FXML
     void removeFourthP(ActionEvent event) {
+    	methods.clickSound();
     	if (player4box.isDisable()) // this player is already grayed out
     		return;
     	player4txt.clear(); // clear the name
@@ -205,6 +210,7 @@ public class ChoosePlayersController implements Initializable{
 
     @FXML
     void remvoveThirdP(ActionEvent event) {
+    	methods.clickSound();
     	if (!player4box.isDisable()) // cannot disable 3rd player before 4th
     		return;
     	if (player3box.isDisable()) // this player is already grayed out
@@ -220,17 +226,20 @@ public class ChoosePlayersController implements Initializable{
     
     @FXML
     void backToDifficulty(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("ChooseDifficulty");
     }
 
     @FXML
     void exitGame(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
 
     @FXML
     void startGame(ActionEvent event) {
+    	methods.clickSound();
     	if ((playersNum == 2) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");

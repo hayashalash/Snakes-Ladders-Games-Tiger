@@ -148,6 +148,7 @@ public class HardController extends BoardController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     
@@ -359,6 +360,7 @@ public class HardController extends BoardController implements Initializable{
 	@Override
 	@FXML
 	public void resetBoard(ActionEvent event) throws IOException {
+    	methods.clickSound();
 		if (Alerts.restartGame() == 1) {
 			// Reset the game state through the GameController instance
 		    if (gameController != null) {
@@ -380,11 +382,13 @@ public class HardController extends BoardController implements Initializable{
 	}
 	@FXML
     void showInfo(ActionEvent event) throws IOException{
+    	methods.clickSound();
     	gameController.showInfo();
     }
 	
 	@FXML
     void pauseGame(ActionEvent event) {
+    	methods.clickSound();
 		gameController.pauseGame();
     }
 	

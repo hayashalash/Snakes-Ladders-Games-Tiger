@@ -118,6 +118,7 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 
@@ -200,7 +201,7 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     void editQuestion(ActionEvent event) {
- 
+    	methods.clickSound();
     		if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
     			Alerts.warning("Please choose question that you want to edit.");
     			return;
@@ -213,17 +214,20 @@ public class ManageQuestionsController implements Initializable {
 
     @FXML
     void retriveQuestion(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("RestoreQuestion");
     }
 
     @FXML
     void exitGame(ActionEvent event) {
+    	methods.clickSound();
 		if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
 
     @FXML
     void returnHome(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("Home");
     }
     
@@ -372,7 +376,9 @@ public class ManageQuestionsController implements Initializable {
     
     @FXML
     void changePassword(ActionEvent event) {
+    	methods.clickSound();
     	changePasswordDialog();
+    	methods.clickSound();
     }
     
     private void changePasswordDialog() {

@@ -83,11 +83,13 @@ public class PlayerDetailsController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 
     @FXML
     void backToDifficulty(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("ChooseDifficulty");
     }
 
@@ -98,6 +100,7 @@ public class PlayerDetailsController implements Initializable{
 
     @FXML
     void exitGame(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }

@@ -154,6 +154,7 @@ public class EasyController extends BoardController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 	@Override
@@ -223,6 +224,7 @@ public class EasyController extends BoardController implements Initializable{
     
     @FXML
     public void handleDiceClick(ActionEvent event) throws InterruptedException {
+    	methods.clickSound();
     	rollDice();
     }
 	
@@ -355,6 +357,7 @@ public class EasyController extends BoardController implements Initializable{
 	@Override
 	@FXML
     public void resetBoard(ActionEvent event) {
+    	methods.clickSound();
 		if (Alerts.restartGame() == 1) {
 		    // Reset the game state through the GameController instance
 		    if (gameController != null) {
@@ -375,11 +378,13 @@ public class EasyController extends BoardController implements Initializable{
 	}
 	@FXML
     void showInfo(ActionEvent event) throws IOException{
+    	methods.clickSound();
     	gameController.showInfo();
     }
 	
 	@FXML
     void pauseGame(ActionEvent event) {
+    	methods.clickSound();
 		gameController.pauseGame();
     }
 

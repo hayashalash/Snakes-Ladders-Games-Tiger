@@ -29,6 +29,7 @@ public class infoController implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 	
@@ -45,6 +46,7 @@ public class infoController implements Initializable {
 	
     @FXML
     void closeStage(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
@@ -59,6 +61,7 @@ public class infoController implements Initializable {
 
 	@FXML
     private void goHome() {
+    	methods.clickSound();
 		methods.newScreen("Home");
 	}
 	

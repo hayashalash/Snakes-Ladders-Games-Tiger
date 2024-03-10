@@ -64,6 +64,7 @@ public class homeController implements Initializable{
 	@FXML
     void TurnOffOn(ActionEvent event) {
     	methods.turnOffOn(event, musicIcon);
+    	methods.clickSound();
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -97,12 +98,16 @@ public class homeController implements Initializable{
     @FXML
     void start(ActionEvent event) {
     	methods.newScreen("FriendsOrSystem");
+    	methods.clickSound();
+
     }
 
     @FXML
     void exit(ActionEvent event) {
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
+    	methods.clickSound();
+
     }
 
     @FXML
@@ -116,17 +121,22 @@ public class homeController implements Initializable{
     
     @FXML
     void showHistory(ActionEvent event) throws IOException{
+    	methods.clickSound();
     	methods.newScreen("GameHistory");
     }
 
     @FXML
     void showInfo(ActionEvent event) throws IOException{
+    	methods.clickSound();
     	methods.newScreen("Info");
     }
 
     @FXML
     void showQuestion(ActionEvent event) throws IOException{
-    	openAdminDialog();
+    	methods.clickSound();
+    	openAdminDialog();	
+    	methods.clickSound();
+
     }
     
     private void openAdminDialog() {

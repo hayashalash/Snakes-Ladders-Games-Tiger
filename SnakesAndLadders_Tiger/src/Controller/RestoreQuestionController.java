@@ -73,6 +73,7 @@ public class RestoreQuestionController  implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     
@@ -249,6 +250,7 @@ public class RestoreQuestionController  implements Initializable {
     
     @FXML
     void deleteQuestion(ActionEvent event) throws IOException, ParseException {
+    	methods.clickSound();
     	if(questionTable.getSelectionModel().getSelectedIndex() == -1) {
     		Alerts.warning("Please select a question to delete.");
     		return;
@@ -287,6 +289,7 @@ public class RestoreQuestionController  implements Initializable {
 
     @FXML
     void exitGame(ActionEvent event) {
+    	methods.clickSound();
 		if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
@@ -299,12 +302,14 @@ public class RestoreQuestionController  implements Initializable {
 
     @FXML
     void returnHome(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("Home");
 
     }
   
     @FXML
     void previous(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("manageQuestion");
     }
 

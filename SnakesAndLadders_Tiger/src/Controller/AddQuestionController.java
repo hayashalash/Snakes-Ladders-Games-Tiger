@@ -64,6 +64,7 @@ public class AddQuestionController implements Initializable{
     @FXML
     void TurnOffOn(ActionEvent event) {
     	methods.turnOffOn(event, musicIcon);
+    	methods.clickSound();
     }
     
     @FXML

@@ -75,6 +75,7 @@ public class historyController implements Initializable{
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
     
@@ -116,6 +117,7 @@ public class historyController implements Initializable{
 
     @FXML
     void OrderByBox(ActionEvent event) {
+    	methods.clickSound();
         // Get the selected sorting option from the ComboBox
         String selectedSortOption = orderBox.getValue();
         // Apply sorting based on the selected option
@@ -169,12 +171,14 @@ public class historyController implements Initializable{
    
     @FXML
     void exit(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
 
     @FXML
     void home(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("Home");
     }
 
@@ -214,6 +218,7 @@ public class historyController implements Initializable{
     }
     @FXML
     void reset(ActionEvent event) {
+    	methods.clickSound();
     	ObservableList<Game> dataGame = FXCollections.observableArrayList(originalOrder);
         sort(dataGame);
 //        orderBox.getSelectionModel().clearSelection(); // Clear the selection
@@ -231,6 +236,7 @@ public class historyController implements Initializable{
 	
 	@FXML
 	   void showTopThree(ActionEvent event){
+			methods.clickSound();
 	    	methods.newScreen("TopThree");
-	}
+		}
 }

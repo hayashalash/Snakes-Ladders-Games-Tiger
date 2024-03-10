@@ -46,17 +46,20 @@ public class TopThreeController implements Initializable {
     
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 
 
     @FXML
     void previous(ActionEvent event) {
+    	methods.clickSound();
     	methods.newScreen("GameHistory");
     }
 
     @FXML
     void exit(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }

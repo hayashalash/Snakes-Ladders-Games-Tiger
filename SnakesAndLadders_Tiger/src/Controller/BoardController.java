@@ -49,12 +49,14 @@ public abstract class BoardController {	// Design Pattern #2 - Template Pattern
 
 	    @FXML
 		void returnHome(ActionEvent event) {
+	    	methods.clickSound();
 			if (Alerts.retunHome() == 1)
 				methods.newScreen("Home");
 	    }
 		
 		@FXML
 	    void exit(ActionEvent event) {
+	    	methods.clickSound();
 			if (Alerts.exit()==1)
 				Main.mainWindow.close();
 	    }

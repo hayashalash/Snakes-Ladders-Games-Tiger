@@ -31,6 +31,7 @@ public class PlayWithController implements Initializable{
 
     @FXML
     void TurnOffOn(ActionEvent event) {
+    	methods.clickSound();
     	methods.turnOffOn(event, musicIcon);
     }
 
@@ -46,6 +47,7 @@ public class PlayWithController implements Initializable{
 
     @FXML
     void exitGame(ActionEvent event) {
+    	methods.clickSound();
     	if (Alerts.exit()==1)
 			Main.mainWindow.close();
     }
@@ -57,12 +59,14 @@ public class PlayWithController implements Initializable{
 
     @FXML
     void playWithComputer(ActionEvent event) {
+    	methods.clickSound();
     	DifficultyController.playWithSystem = true;
     	methods.newScreen("ChooseDifficulty");
     }
 
     @FXML
     void playWithFriends(ActionEvent event) {
+    	methods.clickSound();
     	DifficultyController.playWithSystem = false;
     	methods.newScreen("ChooseDifficulty");
     }
