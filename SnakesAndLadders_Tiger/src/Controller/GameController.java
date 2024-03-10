@@ -975,7 +975,7 @@ import javafx.scene.layout.StackPane;
 		dialog.getDialogPane().getButtonTypes().add(close);
 		Node okButton = dialog.getDialogPane().lookupButton(close);
 		okButton.setDisable(true); //cannot close the dialog without answering the question first
-		
+
 		timerQues = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 			quesDuration= quesDuration.subtract(Duration.seconds(1));
 			Platform.runLater(() ->    
@@ -1025,7 +1025,7 @@ import javafx.scene.layout.StackPane;
 	        }));
 			timerQues.setCycleCount(Animation.INDEFINITE);
 	        timerQues.play();
-
+		
 		
 		StackPane content = new StackPane(vbox);
 		dialog.getDialogPane().setContent(content);
@@ -1041,7 +1041,7 @@ import javafx.scene.layout.StackPane;
         });
 		if (isSystem) { // if this question appeared in the System's turn, it must be answered correctly
 			int correctAnswerNumber=q.getCorrectAnswer();
-
+        	timerQues.stop();
         	Platform.runLater(() -> {
         		for (Toggle toggle : answerGroup.getToggles()) { // go over answers
     	            RadioButton radioButton = (RadioButton) toggle;
