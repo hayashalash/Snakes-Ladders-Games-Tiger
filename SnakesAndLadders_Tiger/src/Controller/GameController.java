@@ -152,6 +152,9 @@ import javafx.scene.layout.StackPane;
     private HBox player3;
     private HBox player4;
     
+    private Duration quesDuration = Duration.seconds(30);
+	private Timeline timerQues;
+    
     private static final String SNAKE_SOUND_FILE = "/img/wavs/snakeSound.mp3";
     private static final String LADDER_SOUND_FILE = "/img/wavs/ladderSound.wav";
     private static final String CLASSIC_SOUND_FILE = "/img/wavs/moveSound.wav";
@@ -868,6 +871,13 @@ import javafx.scene.layout.StackPane;
 		resultText.setPadding(new Insets(10, 0, 10, 0)); // top right bottom left
 		resultText.setStyle("-fx-font-size: 12px; -fx-font-weight: bolder;");
 		Button submit = new Button("Submit Answer");
+		// Create a GridPane to arrange the elements
+		Label timeLabel;
+		quesDuration = Duration.seconds(30);
+        timeLabel = new Label("Time remaining: " + quesDuration.toSeconds() + " seconds");
+        timeLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;-fx-background-color: #D2B48C; ");
+        timeLabel.setPadding(new Insets(5, 5, 5, 5));
+        
 		submit.setPadding(new Insets(5, 5, 5, 5));// top right bottom left
 		// Apply CSS styles to the button
 		String btnStyle = "-fx-background-color: #D2691E; " +  // Background color
@@ -886,14 +896,67 @@ import javafx.scene.layout.StackPane;
 		      
 		HBox submitHB = new HBox(submit);
 		submitHB.setPadding(new Insets(15,0,0,5)); // top right bottom left
-		
-		vbox.getChildren().addAll(diff, questionLabel, answer1, answer2, answer3, answer4, resultText, submitHB);
+
+		// Move timeLabel to the top-right corner
+		VBox.setMargin(timeLabel, new Insets(10, 10, 10, 0)); // Adjust the insets as needed
+		vbox.getChildren().addAll(diff, questionLabel, answer1, answer2, answer3, answer4, resultText, submitHB,timeLabel);
 		dialog.getDialogPane().setContent(vbox); // Set the content of the dialog
 		
 		ButtonType close = new ButtonType("Close", ButtonData.OK_DONE); // button to close the dialog
 		dialog.getDialogPane().getButtonTypes().add(close);
 		Node okButton = dialog.getDialogPane().lookupButton(close);
 		okButton.setDisable(true); //cannot close the dialog without answering the question first
+		
+		timerQues = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+			quesDuration= quesDuration.subtract(Duration.seconds(1));
+			Platform.runLater(() ->    
+			timeLabel.setText("Time remaining: " + quesDuration.toSeconds() + " seconds"));
+		    System.out.println("Updating time label");
+		    System.out.println(quesDuration);
+	            if (quesDuration.compareTo(Duration.ZERO) <= 0) {
+	            	timerQues.stop();
+	                submit.setDisable(true); // do not allow to submit again
+			        for (Toggle toggle : answerGroup.getToggles()) {
+			            RadioButton radioButton = (RadioButton) toggle;
+			            radioButton.setDisable(true); // do not allow to change the answer
+			        }
+			        switch (q.getCorrectAnswer()) {//mark the right answer in green
+					case 1:
+						answer1.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+						break;
+					case 2:
+						answer2.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+						break;
+					case 3:
+						answer3.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+						break;
+					case 4:
+						answer4.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+						break;
+					}
+					if(difficulty==Difficulty.Easy) {
+						playIncorrectSound();
+						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						returnVal = -1;
+					}
+					if(difficulty==Difficulty.Medium) {
+						playIncorrectSound();
+						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						returnVal = -2;
+					}
+					if(difficulty==Difficulty.Hard) {
+						playIncorrectSound();
+						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						returnVal = -3;
+					}
+					okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
+			        timeLabel.setText("Time's up!");
+	                
+	            }
+	        }));
+			timerQues.setCycleCount(Animation.INDEFINITE);
+	        timerQues.play();
+
 		
 		StackPane content = new StackPane(vbox);
 		dialog.getDialogPane().setContent(content);
@@ -929,6 +992,7 @@ import javafx.scene.layout.StackPane;
 		}
 		returnVal = 0; // initialize the return value to a  default: 0
 		submit.setOnAction(e -> {
+			timerQues.stop();//stop the timer when submit 
 			okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
 			RadioButton selectedAnswer = (RadioButton) answerGroup.getSelectedToggle(); // Get the selected answer
 			if (selectedAnswer != null) {
