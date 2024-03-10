@@ -120,7 +120,6 @@ public class ChoosePlayersController implements Initializable{
         difficulty.setText("Game Difficulty: "+diff);
         StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
         startGameBtn.setDefaultButton(true);
-    	methods.clickSound();
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}
@@ -239,7 +238,6 @@ public class ChoosePlayersController implements Initializable{
 
     @FXML
     void startGame(ActionEvent event) {
-    	methods.clickSound();
     	if ((playersNum == 2) && (player1txt.getText().isEmpty() || player1clr.getSelectionModel().isEmpty() || 
     			player2txt.getText().isEmpty() || player2clr.getSelectionModel().isEmpty())) {
     		Alerts.warning("Some of the information is missing. Please fill out all fields");
