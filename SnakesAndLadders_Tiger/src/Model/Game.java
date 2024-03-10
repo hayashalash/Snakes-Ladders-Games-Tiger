@@ -20,7 +20,7 @@ public class Game extends Sort{
 	private int playersNum;
 	private String gameDuration = null;
 	private ArrayList<Player> players = new ArrayList<>();//should delete?
-	private Player winner;
+	private Player winner = null;
 	private Queue<Player> playersOrder = new LinkedList<Player>();
 	
 	public Game(Difficulty type, ArrayList<Player> players, LocalDate date) {

@@ -1005,17 +1005,17 @@ import javafx.scene.layout.StackPane;
 					}
 					if(difficulty==Difficulty.Easy) {
 						playIncorrectSound();
-						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						resultText.setText("Time's up! You didn't answer in time. Please try again next time.");
 						returnVal = -1;
 					}
 					if(difficulty==Difficulty.Medium) {
 						playIncorrectSound();
-						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						resultText.setText("Time's up! You didn't answer in time. Please try again next time.");
 						returnVal = -2;
 					}
 					if(difficulty==Difficulty.Hard) {
 						playIncorrectSound();
-						resultText.setText("Time's up! You didn't answer in time. Please try the next question.");
+						resultText.setText("Time's up! You didn't answer in time. Please try again next time.");
 						returnVal = -3;
 					}
 					okButton.setDisable(false); // enable closing the dialog after the answer has been submitted
@@ -1050,8 +1050,8 @@ import javafx.scene.layout.StackPane;
     	        }
             	submit.fire(); // submit the correct answer chosen
         	});
-	        // wait 7 seconds before closing the dialog
-	        PauseTransition delay = new PauseTransition(Duration.seconds(7));
+	        // wait 10 seconds before closing the dialog
+	        PauseTransition delay = new PauseTransition(Duration.seconds(10));
 	        delay.setOnFinished(event -> {
 	        	dialog.close();
 	        });
