@@ -155,9 +155,9 @@ import javafx.scene.layout.StackPane;
     private Duration quesDuration = Duration.seconds(30);
 	private Timeline timerQues;
     
-    private static final String SNAKE_SOUND_FILE = "/img/wavs/snakeSound.mp3";
+    private static final String SNAKE_SOUND_FILE = "/img/wavs/SnakeSound.mp3";
     private static final String LADDER_SOUND_FILE = "/img/wavs/ladderSound.wav";
-    private static final String CLASSIC_SOUND_FILE = "/img/wavs/moveSound.wav";
+    private static final String CLASSIC_SOUND_FILE = "/img/wavs/MoveSound.wav";
     private static final String CORRECT_SOUND_FILE = "/img/wavs/correctSound.mp3";
     private static final String INCORRECT_SOUND_FILE = "/img/wavs/wrong.wav";
     private static final String SURPRISE_SOUND_FILE = "/img/wavs/surpriseSound.wav";

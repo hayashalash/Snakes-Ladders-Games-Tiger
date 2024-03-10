@@ -334,7 +334,6 @@ public class ChoosePlayersController implements Initializable{
     	Player firstP;
     	Player secondP;
     	
-    	
     	//create first player
     	if (player1indx == 0) //first color is green
     		firstP = new Player(p1name, Color.Green);
