@@ -74,13 +74,31 @@ public class NormalController extends BoardController implements Initializable  
     }
   
     public static void playDiceSound() {
-    	diceSoundPlayer.stop(); // Stop the sound in case it's already playing
-    	diceSoundPlayer.play();
+        diceSoundPlayer.stop(); // Stop the sound in case it's already playing
+        diceSoundPlayer.play();
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+                diceSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
+
     
     public static void playQuestionSound() {
     	questionSoundPlayer.stop();
     	questionSoundPlayer.play();
+    	
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	questionSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
     
     @FXML
@@ -237,6 +255,7 @@ public class NormalController extends BoardController implements Initializable  
         diceButton.setOpacity(1.0);
         diceButton.setStyle("-fx-background-color: transparent;");
         initializeMap();
+        playDiceSound();
         int[] lastDiceResult = new int[1]; // Array to hold the result
         Player currentPlayer = getNextPlayerToMove();
         Duration duration = Duration.millis(1000);
@@ -245,20 +264,21 @@ public class NormalController extends BoardController implements Initializable  
         Timeline timeline = new Timeline();
         // Add keyframes to the timeline
         for (int i = 0; i < numFrames; i++) {
-        	int result = Dice.RandomNumberGenerator(Difficulty.Medium);
+            int result = Dice.RandomNumberGenerator(Difficulty.Medium);
             lastDiceResult[0] = result; // Save the result into the array
             String imagePath = diceImageMap.get(result);
-
             // Create a keyframe for each image of the dice
             KeyFrame keyFrame = new KeyFrame(frameInterval.multiply(i),
-                    e -> updateDiceImage(imagePath));
+                    e -> {
+                        updateDiceImage(imagePath);
+                    });
 
             timeline.getKeyFrames().add(keyFrame);
         }
-		playDiceSound();
+		//playDiceSound();
         timeline.setCycleCount(1); // Set the timeline to one cycle
         timeline.setOnFinished(e -> {
-            
+        	//playDiceSound();
             // After 3 seconds, reset the dice image to the default
             PauseTransition pauseTransition = new PauseTransition(Duration.seconds(3));
             pauseTransition.setOnFinished(event1 -> onFinished(currentPlayer, lastDiceResult[0]));

@@ -202,37 +202,93 @@ import javafx.scene.layout.StackPane;
     public static void playSnakeSound() {
         snakeSoundPlayer.stop(); // Stop the sound in case it's already playing
         snakeSoundPlayer.play();
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	snakeSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
 
     public static void playLadderSound() {
         ladderSoundPlayer.stop();
         ladderSoundPlayer.play();
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	ladderSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
 
     public static void playClassicSound() {
         classicSoundPlayer.stop();
         classicSoundPlayer.play();
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	classicSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
     
 
     public static void playCorrectSound() {
     	correctSoundPlayer.stop();
     	correctSoundPlayer.play();
+    	
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	correctSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
 
     public static void playIncorrectSound() {
     	incorrectSoundPlayer.stop();
     	incorrectSoundPlayer.play();
+    	
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	incorrectSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
     
     public static void playSurpriseSound() {
     	surpriseSoundPlayer.stop();
     	surpriseSoundPlayer.play();
+    	
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	surpriseSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
 
     public static void playQuestionSound() {
     	questionSoundPlayer.stop();
     	questionSoundPlayer.play();
+    	
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	questionSoundPlayer.stop();
+            })
+        );
+        questionSoundPlayer.play();
     }
     
     // Constructor
@@ -875,8 +931,21 @@ import javafx.scene.layout.StackPane;
 		Label timeLabel;
 		quesDuration = Duration.seconds(30);
         timeLabel = new Label("Time remaining: " + quesDuration.toSeconds() + " seconds");
-        timeLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;-fx-background-color: #D2B48C; ");
+     //  timeLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;-fx-background-color: #D2B48C; ");
         timeLabel.setPadding(new Insets(5, 5, 5, 5));
+     // Create an HBox to hold the time label and clock icon
+        HBox timeBox = new HBox(5); // spacing between time label and icon
+        timeBox.setAlignment(Pos.CENTER); // center alignment
+
+        // Create the clock icon
+        Image clockImage = new Image("/img/icons/hourglass.png");
+        ImageView clockIcon = new ImageView(clockImage);
+        clockIcon.setFitHeight(20);
+        clockIcon.setFitWidth(20);
+
+        // Add the clock icon and time label to the HBox
+        timeBox.getChildren().addAll(clockIcon, timeLabel);
+
         
 		submit.setPadding(new Insets(5, 5, 5, 5));// top right bottom left
 		// Apply CSS styles to the button
@@ -895,11 +964,11 @@ import javafx.scene.layout.StackPane;
 		submit.setDisable(true); // Initially disabled until an answer is selected
 		      
 		HBox submitHB = new HBox(submit);
-		submitHB.setPadding(new Insets(15,0,0,5)); // top right bottom left
-
+		submitHB.setPadding(new Insets(5, 5, 5, 5)); // Adjust the top padding
+		submitHB.setAlignment(Pos.CENTER);
 		// Move timeLabel to the top-right corner
 		VBox.setMargin(timeLabel, new Insets(10, 10, 10, 0)); // Adjust the insets as needed
-		vbox.getChildren().addAll(diff, questionLabel, answer1, answer2, answer3, answer4, resultText, submitHB,timeLabel);
+		vbox.getChildren().addAll(diff, questionLabel, answer1, answer2, answer3, answer4, resultText, submitHB,timeBox);
 		dialog.getDialogPane().setContent(vbox); // Set the content of the dialog
 		
 		ButtonType close = new ButtonType("Close", ButtonData.OK_DONE); // button to close the dialog

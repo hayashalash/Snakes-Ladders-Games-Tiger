@@ -60,13 +60,31 @@ public class EasyController extends BoardController implements Initializable{
     }
   
     public static void playDiceSound() {
-    	diceSoundPlayer.stop(); // Stop the sound in case it's already playing
-    	diceSoundPlayer.play();
+        diceSoundPlayer.stop(); // Stop the sound in case it's already playing
+        diceSoundPlayer.play();
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+                diceSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
+
     
     public static void playQuestionSound() {
     	questionSoundPlayer.stop();
     	questionSoundPlayer.play();
+    	
+        
+        // Schedule a task to stop the sound after 2 seconds
+        Timeline stopSoundTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(2), event -> {
+            	questionSoundPlayer.stop();
+            })
+        );
+        stopSoundTimeline.play();
     }
 	
     @FXML
