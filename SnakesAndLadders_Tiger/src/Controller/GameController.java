@@ -173,7 +173,7 @@ import javafx.scene.layout.StackPane;
     private static MediaPlayer questionSoundPlayer;
     
     private boolean PCsTurn = false;
-    private boolean PlayerPositionAtZero = false;
+    private boolean PlayerPositionAtZero = true;
 
     static {
         // Initialize MediaPlayer objects for each sound effect
