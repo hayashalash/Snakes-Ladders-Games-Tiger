@@ -118,7 +118,7 @@ public class ChoosePlayersController implements Initializable{
         fillComboBox(player4clr, images);
         difficulty.setText("Game Difficulty: "+diff);
         StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
-        
+        startGameBtn.setDefaultButton(true);
     	if (Main.note.isPlaying()) {
     		musicIcon.setOpacity(1.0);
     	}

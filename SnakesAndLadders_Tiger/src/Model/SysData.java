@@ -165,14 +165,16 @@ public class SysData {
 
 	    questions.add(newQuestion);	    // Add the new question to the HashSet
 
-	    deleteFromJson(oldQuestion);
+	    deleteFromJson(oldQuestion, true);
 	    writeToJson(newQuestion);
 	    
 	}
 
 	
 	@SuppressWarnings("unchecked")
-	public void deleteFromJson(Question question) throws IOException, ParseException {
+	public void deleteFromJson(Question question, boolean inUpdate) throws IOException, ParseException { 
+		// boolean is true if this question should be deleted only for edit question purposes
+		// boolean is false if this question should actually be deleted
 	    JSONParser parser = new JSONParser();
 
 	    FileInputStream file = new FileInputStream(QJSON);
@@ -205,9 +207,11 @@ public class SysData {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    } finally {
-			deleted.add(question);
-			SysData.getInstance().addAgainDeletedQ(question);
-	        SysData.getInstance().readFromJson();
+	    	if (!inUpdate) {
+	    		deleted.add(question);
+				SysData.getInstance().addAgainDeletedQ(question);
+		        SysData.getInstance().readFromJson();
+	    	}
 	    }
 	}
 

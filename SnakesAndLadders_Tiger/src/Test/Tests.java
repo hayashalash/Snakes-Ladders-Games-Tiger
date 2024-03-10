@@ -54,7 +54,7 @@ class Tests {
 	@Test   //Test ID = B1
     public void deleteFromJsonTest() throws IOException, ParseException {
 	   
-        SysData.getInstance().deleteFromJson(question);
+        SysData.getInstance().deleteFromJson(question, false);
         SysData.getInstance().readFromJson();
         assertTrue(!SysData.getInstance().getQuestions().contains(question));
    }
@@ -149,8 +149,8 @@ class Tests {
    @AfterEach
    public void cleanup() throws IOException, ParseException {
        
-	   SysData.getInstance().deleteFromJson(question);
-	   SysData.getInstance().deleteFromJson(newQuestion);
+	   SysData.getInstance().deleteFromJson(question, false);
+	   SysData.getInstance().deleteFromJson(newQuestion, false);
 
 	   SysData.getInstance().readFromJson();
    }

@@ -69,7 +69,7 @@ public class PlayerDetailsController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		final ObservableList<Image> images = fetchImages();
         fillComboBox(playerClr, images);
-		
+        startGameBtn.setDefaultButton(true);
         difficulty.setText("Game Difficulty: "+diff);
         StackPane.setAlignment(difficulty, javafx.geometry.Pos.CENTER);
         

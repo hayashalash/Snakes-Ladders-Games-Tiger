@@ -514,7 +514,7 @@ import javafx.scene.layout.StackPane;
 		    		int newRow = nextTile.getRow();
 				    int newColumn = nextTile.getColumn();
 				    // move to the ladder bottom / snake head
-                    
+				    playClassicSound();
 				    displayPlayerToken(currentRow, currentColumn, player, nextPos);
 		        	player.setPlayerPlace(nextPos);
 
@@ -526,15 +526,15 @@ import javafx.scene.layout.StackPane;
 
 					    displayPlayerToken(newRow, newColumn, player, newPosition);
 					    player.setPlayerPlace(newPosition);
-			        });
-			        Platform.runLater(() -> {
-			        	delay.play();
-			        	if(nextTile.gettType().equals(TileType.LadderBottom)) {
+					    if(nextTile.gettType().equals(TileType.LadderBottom)) {
 					    	playLadderSound();
 					    }
 					    else {
 						    playSnakeSound();
 					    }
+			        });
+			        Platform.runLater(() -> {
+			        	delay.play();
 			        });
 		    	}
 //		    	else if (nextTile.gettType().equals(TileType.Surprise)){

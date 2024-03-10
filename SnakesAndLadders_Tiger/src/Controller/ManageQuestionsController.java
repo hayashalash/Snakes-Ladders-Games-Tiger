@@ -189,7 +189,7 @@ public class ManageQuestionsController implements Initializable {
     			,deletedDifficulty,deletedCorrect);
     	
     	if (Alerts.delete(deletedQuestion) == 1) {
-    		SysData.getInstance().deleteFromJson(deletedQ);
+    		SysData.getInstance().deleteFromJson(deletedQ, false);
     		SysData.getInstance().getQuestions().remove(deletedQ);
     	}
     	questionTable.getItems().clear();
@@ -425,7 +425,8 @@ public class ManageQuestionsController implements Initializable {
         		confirmNewPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
                 newPasswordField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
                 errorLabel2.setTextFill(Color.RED);
-                errorLabel2.setText("Please fill all the fields!");	
+                errorLabel2.setText("Please fill all the fields!");
+                errorLabel2.setOpacity(1);
     		}
         	else if (Admin.getInstance().checkPassword(currentPasswordField.getText()) && currentPasswordField.getText().length() != 0) {
         		if(!(newPasswordField.getText().equals(currentPasswordField.getText()))) {
