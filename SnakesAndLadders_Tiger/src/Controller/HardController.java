@@ -282,7 +282,7 @@ public class HardController extends BoardController implements Initializable{
 	    final Timeline[] systemTurnTimeline = new Timeline[1];
 
 	    if (gameWithSystem) {
-	        if (!currentPlayer.isSystem) { // if the current player is not the system
+	        if (!currentPlayer.isSystem && game.getWinner() == null) { // if the current player is not the system
 	            diceButton.setDisable(true); // don't allow the player to roll the dice as it is the system's turn
 	            
 	            // Initialize systemTurnTimeline inside the block
