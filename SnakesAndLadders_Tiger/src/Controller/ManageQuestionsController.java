@@ -53,7 +53,7 @@ import Model.Sort;
 public class ManageQuestionsController implements Initializable {
 	
 	Methods methods = new Methods();
-	private static final String ADMIN = "/img/screens/pass2.png";
+	private static final String ADMIN = "/img/screens/pass.png";
 	private static final String EXIT_ICON = "/img/icons/X.png";
 	
 	@FXML
@@ -451,7 +451,7 @@ public class ManageQuestionsController implements Initializable {
             		currentPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
             		confirmNewPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
                     newPasswordField.setStyle("-fx-text-box-border: yellow ; -fx-focus-color: yellow ;");
-                    errorLabel2.setTextFill(Color.YELLOW);
+                    errorLabel2.setStyle("-fx-text-fill: #635518;");
                     errorLabel2.setText("Passwords are identical!");
                     // Show a label with yellow text underneath the text field to notify the user of identical passwords
             		errorLabel2.setOpacity(1);
@@ -513,7 +513,9 @@ public class ManageQuestionsController implements Initializable {
                 changePasswordButton
         );
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(2); // Set spacing between the text field and button
+        vbox.setSpacing(1); // Set spacing between the text field and button
+        vbox.setPadding(new Insets(80, 0, 0, 0)); // Add padding to the top
+
         // Add the background image and the elements to a layout
         StackPane content = new StackPane();
         content.getChildren().addAll(imageView, vbox);
